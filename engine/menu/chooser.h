@@ -36,7 +36,7 @@ class BTANKSAPI Chooser : public Control {
 public: 
 	Chooser(const std::string &font, const std::vector<std::string> &options, const std::string &surface = std::string(), bool with_background = false);
 	~Chooser();
-	void getSize(int &w, int &h) const;
+	void get_size(int &w, int &h) const;
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);

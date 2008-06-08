@@ -41,7 +41,7 @@ public:
 	OptionsMenu(MainMenu *parent, const int w, const int h);
 	~OptionsMenu();
 	
-	void getSize(int &w, int &h) const;
+	void get_size(int &w, int &h) const;
 	void tick(const float dt);
 	
 	void reload();

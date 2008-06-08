@@ -50,7 +50,7 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 	return *this;
 }
 
-void Chunk::setSize(size_t s) {
+void Chunk::set_size(size_t s) {
 	if (s == size)
 		return;
 	
@@ -66,9 +66,9 @@ void Chunk::setSize(size_t s) {
 	size = s;
 }
 
-void Chunk::setData(const void *p, const size_t s) {
+void Chunk::set_data(const void *p, const size_t s) {
 	if (p == NULL || s == 0)
-		throw_ex(("calling setData(%p, %u) is invalid", p, (unsigned)s));
+		throw_ex(("calling set_data(%p, %u) is invalid", p, (unsigned)s));
 
 	void *x = realloc(ptr, s);
 
@@ -79,9 +79,9 @@ void Chunk::setData(const void *p, const size_t s) {
 	size = s;
 }
 
-void Chunk::setData(void *p, const size_t s, const bool own) {
+void Chunk::set_data(void *p, const size_t s, const bool own) {
 	if (p == NULL || s == 0) 
-		throw_ex(("calling setData(%p, %u, %s) is invalid", p, (unsigned)s, own?"true":"false"));
+		throw_ex(("calling set_data(%p, %u, %s) is invalid", p, (unsigned)s, own?"true":"false"));
 	
 	if (own) {
 		free();
@@ -98,15 +98,15 @@ void Chunk::setData(void *p, const size_t s, const bool own) {
 }
 
 void Chunk::append(const Chunk &other) {
-	size_t s1 = size, s2 = other.getSize();
+	size_t s1 = size, s2 = other.get_size();
 	if (s2 == 0)
 		return;
-	setSize(s1 + s2);
+	set_size(s1 + s2);
 	memcpy((char *) ptr + s1, other.ptr, s2);
 }
 
 void* Chunk::reserve(const int more) {
-	setSize(size + more);
+	set_size(size + more);
 	return ptr;
 }
 
@@ -123,17 +123,17 @@ const std::string Chunk::dump() const {
 		return "empty memory chunk";
 	assert(ptr != 0);
 	
-	std::string result = formatString("-[memory dump]-[size: %u]---", (unsigned)size);
+	std::string result = format_string("-[memory dump]-[size: %u]---", (unsigned)size);
 	size_t n = (size - 1)/ 16 + 1;
 	for(size_t i = 0; i < n; ++i) {
-		result += mrt::formatString("\n%06x\t", (unsigned)(i * 16));
+		result += mrt::format_string("\n%06x\t", (unsigned)(i * 16));
 		size_t j, m = (size - i * 16);
 		if (m > 16) 
 			m = 16;
 		
 		for(j = 0; j < m; ++j) {
 			const unsigned char *p = ((unsigned char *)ptr) + i*16 + j;
-			result += formatString("%02x ", *p);
+			result += format_string("%02x ", *p);
 			if (j == 7) 
 				result += " ";
 		}
@@ -146,7 +146,7 @@ const std::string Chunk::dump() const {
 
 		for(j = 0; j < m; ++j) {
 			const unsigned char *p = ((unsigned char *)ptr) + i*16 + j;
-			result += formatString("%c", (*p>=32 && *p < 127)? *p: '.');
+			result += format_string("%c", (*p>=32 && *p < 127)? *p: '.');
 			if (j == 7) 
 				result += " ";
 		}

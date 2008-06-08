@@ -50,7 +50,7 @@ public:
 	void deinit();
 	virtual ~IWindow();
 
-	const sdlx::Rect getSize() const { return _window.getSize(); }
+	const sdlx::Rect get_size() const { return _window.get_size(); }
 	const float getFrameRate() const { return _fr; }
 	
 	void resetTimer();

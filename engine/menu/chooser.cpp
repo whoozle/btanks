@@ -42,7 +42,7 @@ _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0), _background
 	}
 	if (with_background) {
 		int w, h;
-		Chooser::getSize(w, h);
+		Chooser::get_size(w, h);
 		_background = new Box("menu/background_box_dark.png", w, h);
 	}
 }
@@ -54,18 +54,18 @@ const std::string& Chooser::getValue() const {
 }
 
 
-void Chooser::getSize(int &w, int &h) const {
+void Chooser::get_size(int &w, int &h) const {
 	if (_n == 0) {
-		w = _left_right->getWidth();
-		h = _left_right->getHeight();
+		w = _left_right->get_width();
+		h = _left_right->get_height();
 		return;
 	}
 	if (_surface != NULL) {
-		w = _left_right->getWidth() + _surface->getWidth() / _n;
-		h = math::max(_left_right->getHeight(), _surface->getHeight());
+		w = _left_right->get_width() + _surface->get_width() / _n;
+		h = math::max(_left_right->get_height(), _surface->get_height());
 	} else {
-		w = _left_right->getWidth() + _w;
-		h = math::max(_left_right->getHeight(), _font->getHeight());
+		w = _left_right->get_width() + _w;
+		h = math::max(_left_right->get_height(), _font->get_height());
 	}
 }
 
@@ -73,27 +73,27 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (_background != NULL) 
 		_background->render(surface, x - 4, y - 4);
 	
-	int lrw = _left_right->getWidth() / 2;
-	int lrh = _left_right->getHeight();
+	int lrw = _left_right->get_width() / 2;
+	int lrh = _left_right->get_height();
 	
 	int w, h;
-	getSize(w, h);
+	get_size(w, h);
 	
 	_left_area = sdlx::Rect(0, 0, lrw, lrh);
 	_right_area = sdlx::Rect(w - lrw, 0, lrw, lrh);
 	
-	surface.copyFrom(*_left_right, sdlx::Rect(0, 0, lrw, lrh), x + _left_area.x, y + _left_area.y);
+	surface.blit(*_left_right, sdlx::Rect(0, 0, lrw, lrh), x + _left_area.x, y + _left_area.y);
 	
 	if (_surface) {
-		surface.copyFrom(*_surface, 
-			sdlx::Rect(_i * _surface->getWidth() / _n, 0, _surface->getWidth() / _n, _surface->getHeight()), 
-			x + _left_area.x + lrw, y + (_left_area.h - _surface->getHeight())/ 2);
+		surface.blit(*_surface, 
+			sdlx::Rect(_i * _surface->get_width() / _n, 0, _surface->get_width() / _n, _surface->get_height()), 
+			x + _left_area.x + lrw, y + (_left_area.h - _surface->get_height())/ 2);
 	} else { 
 		int tw = _font->render(NULL, 0, 0, _options[_i]);
-		_font->render(surface, x + _left_area.x + (w - tw) / 2, y + (_left_area.h - _font->getHeight())/ 2, _options[_i]);
+		_font->render(surface, x + _left_area.x + (w - tw) / 2, y + (_left_area.h - _font->get_height())/ 2, _options[_i]);
 	} 
 	
-	surface.copyFrom(*_left_right, sdlx::Rect(lrw, 0, lrw, lrh), x +  _right_area.x, y + _right_area.y);
+	surface.blit(*_left_right, sdlx::Rect(lrw, 0, lrw, lrh), x +  _right_area.x, y + _right_area.y);
 }
 
 bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {

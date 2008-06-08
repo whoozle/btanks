@@ -26,7 +26,7 @@ using namespace mrt;
 IOException::IOException() {}
 
 
-const std::string IOException::getCustomMessage() {
+const std::string IOException::get_custom_message() {
 	char buf[1024];
 	memset(buf, 0, sizeof(buf));
 

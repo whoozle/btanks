@@ -24,25 +24,25 @@
 NotifyingXMLParser::NotifyingXMLParser() : reset_progress(), notify_progress(), status(NULL) {}
 
 
-void NotifyingXMLParser::parseFile(const std::string &file) {
+void NotifyingXMLParser::parse_file(const std::string &file) {
 	scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
-	parseFile(*f);
+	parse_file(*f);
 	f->close();
 }
 
-void NotifyingXMLParser::parseFile(const mrt::BaseFile &file) {
+void NotifyingXMLParser::parse_file(const mrt::BaseFile &file) {
 	int tags;
-	getFileStats(tags, file);
+	get_file_stats(tags, file);
 	reset_progress.emit(tags);
-	mrt::XMLParser::parseFile(file);
+	mrt::XMLParser::parse_file(file);
 }
 
-void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std::string> > &files) {
+void NotifyingXMLParser::parse_files(const std::vector<std::pair<std::string, std::string> > &files) {
 	int progress = 0;
 	for(size_t i = 0; i < files.size(); ++i) {
 		int tags;
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(files[i].second, "rt"));
-		getFileStats(tags, *f);
+		get_file_stats(tags, *f);
 		progress += tags;
 	}
 	
@@ -51,7 +51,7 @@ void NotifyingXMLParser::parseFiles(const std::vector<std::pair<std::string, std
 	for(size_t i = 0; i < files.size(); ++i) {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(files[i].second, "rt"));
 		onFile(files[i].first, files[i].second);
-		mrt::XMLParser::parseFile(*f);
+		mrt::XMLParser::parse_file(*f);
 	}
 }
 

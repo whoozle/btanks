@@ -24,13 +24,13 @@ using namespace mrt;
 
 #define throw_xml(parser) { \
 	mrt::XMLException e; \
-	e.addMessage(__FILE__, __LINE__); \
-	e.addMessage("XML error" + parser->getErrorMessage()); throw e; }
+	e.add_message(__FILE__, __LINE__); \
+	e.add_message("XML error" + parser->getErrorMessage()); throw e; }
 
 
 XMLException::XMLException() {}
 
-const std::string XMLException::getCustomMessage() { return ""; }
+const std::string XMLException::get_custom_message() { return ""; }
 
 XMLException::~XMLException() throw() {}
 
@@ -62,17 +62,17 @@ static void XMLCALL endElementStats(void *userData, const char *name) {
 
 static void XMLCALL char_data(void *userData, const XML_Char *s, int len) {
 	XMLParser * p = (XMLParser *)userData;
-	p->charData(std::string(s, len));
+	p->cdata(std::string(s, len));
 }
 
-void XMLParser::getFileStats(int &tags, const std::string &fname) {
+void XMLParser::get_file_stats(int &tags, const std::string &fname) {
 	mrt::File f;
 	f.open(fname, "rt");
-	getFileStats(tags, f);
+	get_file_stats(tags, f);
 	f.close();
 }
 
-void XMLParser::getFileStats(int &tags, const mrt::BaseFile &f) {
+void XMLParser::get_file_stats(int &tags, const mrt::BaseFile &f) {
 	XML_Parser parser = NULL;
 
 	TRY {
@@ -92,27 +92,27 @@ void XMLParser::getFileStats(int &tags, const mrt::BaseFile &f) {
 			done = len < sizeof(buf);
 			if (XML_Parse(parser, buf, len, done) == XML_STATUS_ERROR) {
 				mrt::XMLException e;
-				std::string error = mrt::formatString("%s at line %d", XML_ErrorString(XML_GetErrorCode(parser)), (int)XML_GetCurrentLineNumber(parser));
-				e.addMessage("XML error: " + error); throw e; 
+				std::string error = mrt::format_string("%s at line %d", XML_ErrorString(XML_GetErrorCode(parser)), (int)XML_GetCurrentLineNumber(parser));
+				e.add_message("XML error: " + error); throw e; 
 			}
 		} while(!done);
 		XML_ParserFree(parser);
 		parser = NULL;
-	} CATCH("getFileStats", {
+	} CATCH("get_file_stats", {
 		if (parser) {
 			XML_ParserFree(parser);
 		}
 	})
 }
 
-void XMLParser::parseFile(const std::string &fname) {
+void XMLParser::parse_file(const std::string &fname) {
 	mrt::File f;
 	f.open(fname, "rt");
-	parseFile(f);
+	parse_file(f);
 	f.close();
 }
 
-void XMLParser::parseFile(const mrt::BaseFile &f) {
+void XMLParser::parse_file(const mrt::BaseFile &f) {
 	f.seek(0, SEEK_SET);
 	clear();
 	_parser = XML_ParserCreate("UTF-8");
@@ -134,13 +134,13 @@ void XMLParser::parseFile(const mrt::BaseFile &f) {
 }
 
 const std::string XMLParser::getErrorMessage() const {
-	return mrt::formatString("%s at line %d", 
+	return mrt::format_string("%s at line %d", 
 				XML_ErrorString(XML_GetErrorCode(_parser)),
 				(int)XML_GetCurrentLineNumber(_parser));
 }
 
 	
-void XMLParser::charData(const std::string &data) {}
+void XMLParser::cdata(const std::string &data) {}
 	
 XMLParser::XMLParser() : _parser(0) {}
 	

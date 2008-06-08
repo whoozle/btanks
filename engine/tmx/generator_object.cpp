@@ -69,7 +69,7 @@ void TileBox::init(const std::map<const std::string, std::string>& _attrs, const
 		throw_ex(("invalid box(in: %s, out: %s) description: got %u numbers, need: %d", attrs["in"].c_str(), attrs["out"].c_str(), (unsigned) numbers.size(), w * h));
 	
 	//LOG_DEBUG(("parsing numbers: %s", data.c_str()));
-	tiles.setSize(w, h, 0);
+	tiles.set_size(w, h, 0);
 	for(size_t i = 0; i < numbers.size(); ++i) {
 		int y = i / w, x = i % w;
 		mrt::trim(numbers[i]);

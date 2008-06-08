@@ -66,7 +66,7 @@ void TCPSocket::send(const void *data, const int len) const {
 }
 
 void TCPSocket::send(const mrt::Chunk &data) const {
-	send(data.getPtr(), data.getSize());
+	send(data.get_ptr(), data.get_size());
 }
 
 

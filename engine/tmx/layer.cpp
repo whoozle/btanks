@@ -65,7 +65,7 @@ void DestructableLayer::onDeath(const int idx) {
 	v2<float> pos(x * tsize.x + tsize.x/2, y * tsize.y + tsize.y/2); //big fixme.
 	pos -= o->size / 2;
 	
-	int dirs = (s->getWidth() - 1) / (int)o->size.x + 1;
+	int dirs = (s->get_width() - 1) / (int)o->size.x + 1;
 	int dir = mrt::random(dirs);
 	//LOG_DEBUG(("set dir %d (%d)", dir, dirs));
 	o->setDirectionsNumber(dirs);
@@ -243,11 +243,11 @@ void Layer::init(const int w, const int h, const mrt::Chunk & data) {
 	_w = w;
 	_h = h;
 	_data = data;
-	size_t n = _data.getSize();
+	size_t n = _data.get_size();
 	assert((int)n == (4 * _w * _h));
 	
 	//convert all stuff.
-	Uint32 *p = (Uint32 *)_data.getPtr();
+	Uint32 *p = (Uint32 *)_data.get_ptr();
 	n /= 4;
 	for(size_t i = 0; i < n; ++i) {
 		Uint32 x = SDL_SwapLE32(*p);
@@ -259,11 +259,11 @@ void Layer::correct(const unsigned old_id, const unsigned max_id, const int delt
 	if (delta == 0)
 		return;
 	
-	size_t n = _data.getSize() / 4;
+	size_t n = _data.get_size() / 4;
 	assert((int)n == (_w * _h));
 	
 	//convert all stuff.
-	Uint32 *p = (Uint32 *)_data.getPtr();
+	Uint32 *p = (Uint32 *)_data.get_ptr();
 	for(size_t i = 0; i < n; ++i, ++p) {
 		if (*p >= old_id && *p < max_id) 
 			*p += delta;
@@ -272,14 +272,14 @@ void Layer::correct(const unsigned old_id, const unsigned max_id, const int delt
 
 void Layer::init(const int w, const int h) {
 	_w = w; _h = h;
-	_data.setSize(_w * _h * 4);
+	_data.set_size(_w * _h * 4);
 	_data.fill(0);
 }
 
 const Uint32 Layer::_get(const int i) const {
 	if (i < 0 || i >= _w * _h)
 		return 0;
-	Uint32 id = *((Uint32 *) _data.getPtr() + i);
+	Uint32 id = *((Uint32 *) _data.get_ptr() + i);
 	return (id != 0)? base + id: 0;
 }
 
@@ -295,7 +295,7 @@ void Layer::set(const int x, const int y, const Uint32 tid) {
 void Layer::_set(const int i, const Uint32 tid) {
 	if (i < 0 || i >= _w * _h)
 		return;
-	Uint32 *id = (Uint32 *) _data.getPtr() + i;
+	Uint32 *id = (Uint32 *) _data.get_ptr() + i;
 	*id = tid;
 }
 
@@ -303,7 +303,7 @@ void Layer::_set(const int i, const Uint32 tid) {
 void Layer::clear(const int i) {
 	if (i < 0 || i >= _w * _h)
 		return;
-	*((Uint32 *) _data.getPtr() + i) = 0;
+	*((Uint32 *) _data.get_ptr() + i) = 0;
 }
 
 const bool Layer::damage(const int x, const int y, const int hp) { return false; }
@@ -370,12 +370,12 @@ void Layer::deserialize(const mrt::Serializator &s) {
 Layer::~Layer() { }
 
 void Layer::generateXML(std::string &result) const {
-	result = mrt::formatString("\t<layer name=\"%s\" width=\"%d\" height=\"%d\"%s>\n", mrt::XMLParser::escape(name).c_str(), _w, _h, visible?"":" visible=\"0\"");
+	result = mrt::format_string("\t<layer name=\"%s\" width=\"%d\" height=\"%d\"%s>\n", mrt::XMLParser::escape(name).c_str(), _w, _h, visible?"":" visible=\"0\"");
 
 	if (!properties.empty()) {
 		result += "\t\t<properties>\n";
 		for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
-			result += mrt::formatString("\t\t\t<property name=\"%s\" value=\"%s\"/>\n", mrt::XMLParser::escape(i->first).c_str(), mrt::XMLParser::escape(i->second).c_str());
+			result += mrt::format_string("\t\t\t<property name=\"%s\" value=\"%s\"/>\n", mrt::XMLParser::escape(i->first).c_str(), mrt::XMLParser::escape(i->second).c_str());
 		}
 		result += "\t\t</properties>\n";
 	}
@@ -384,11 +384,11 @@ void Layer::generateXML(std::string &result) const {
 	{
 		mrt::Chunk zipped_data, data;
 		data = _data;
-		size_t n = data.getSize() / 4;
+		size_t n = data.get_size() / 4;
 		assert((int)n == (_w * _h));
 	
 		//convert all stuff.
-		Uint32 *p = (Uint32 *)data.getPtr();
+		Uint32 *p = (Uint32 *)data.get_ptr();
 		for(size_t i = 0; i < n; ++i) {
 			Uint32 x = SDL_SwapLE32(*p);
 			*p++ = x;
@@ -408,16 +408,16 @@ void Layer::resize(const int left, const int right, const int up, const int down
 	mrt::Chunk new_data;
 	int new_w = _w + left + right, new_h = _h + up + down;
 
-	new_data.setSize(new_w * new_h * 4);
+	new_data.set_size(new_w * new_h * 4);
 	new_data.fill(0);
 	
-	Uint32 *src = (Uint32 *)_data.getPtr();
-	Uint32 *dst = (Uint32 *)new_data.getPtr();
+	Uint32 *src = (Uint32 *)_data.get_ptr();
+	Uint32 *dst = (Uint32 *)new_data.get_ptr();
 	
 	for(int yd = 0; yd < new_h; ++yd) {
 		for(int xd = 0; xd < new_w; ++xd) {
 			int idx = xd + yd * new_w;
-			assert(idx * 4 < (int)new_data.getSize());
+			assert(idx * 4 < (int)new_data.get_size());
 
 			if (xd < left || xd >= new_w - right) 
 				continue;
@@ -425,7 +425,7 @@ void Layer::resize(const int left, const int right, const int up, const int down
 				continue;
 			
 			int src_idx = xd - left + (yd - up) * _w;
-			assert(src_idx * 4 < (int)_data.getSize());
+			assert(src_idx * 4 < (int)_data.get_size());
 			dst[idx] = src[src_idx];
 		}
 	}

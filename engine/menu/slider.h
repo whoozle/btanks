@@ -28,7 +28,7 @@ public:
 	Slider(const float value);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	virtual void getSize(int &w, int &h) const;
+	virtual void get_size(int &w, int &h) const;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	const float get() const { return _value; }
 	void set(const float value);

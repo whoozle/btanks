@@ -40,11 +40,11 @@ void Container::render(sdlx::Surface &surface, const int x, const int y) const {
 	}
 }
 
-void Container::getSize(int &w, int &h) const {
+void Container::get_size(int &w, int &h) const {
 	w = h = 0;
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		int cw = -1, ch = -1; //for a broken controls
-		i->second->getSize(cw, ch);
+		i->second->get_size(cw, ch);
 		assert(cw != -1 && ch != -1);
 
 		int x2 = i->first.x + cw;
@@ -79,7 +79,7 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 		if (i->second->hidden())
 			continue;
 		int bw, bh;
-		i->second->getSize(bw, bh);
+		i->second->get_size(bw, bh);
 		
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)i->second, dst.x, dst.y, dst.w, dst.h));
@@ -102,7 +102,7 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 		if (i->second->hidden())
 			continue;
 		int bw, bh;
-		i->second->getSize(bw, bh);
+		i->second->get_size(bw, bh);
 		
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		if (dst.in(x, y) && i->second->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
@@ -146,7 +146,7 @@ const bool Container::in(const Control *c, const int x, const int y) const {
 		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
 	
 	int bw, bh;
-	c->getSize(bw, bh);
+	c->get_size(bw, bh);
 	
 	const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 	return dst.in(x, y);

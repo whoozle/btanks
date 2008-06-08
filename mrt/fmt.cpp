@@ -43,7 +43,7 @@ using namespace mrt;
 
 //#include "logger.h"
 
-const std::string mrt::formatString(const char *fmt, ...) {
+const std::string mrt::format_string(const char *fmt, ...) {
 	va_list ap;
 
 	//try static buffer on the stack to avoid malloc calls
@@ -61,12 +61,12 @@ const std::string mrt::formatString(const char *fmt, ...) {
 	mrt::Chunk buf;
 
     while(true) {
-		buf.setSize(size);
+		buf.set_size(size);
 	    va_start(ap, fmt);    
-    	int r = vsnprintf ((char *)buf.getPtr(), size - 1, fmt, ap);
+    	int r = vsnprintf ((char *)buf.get_ptr(), size - 1, fmt, ap);
 	    va_end(ap);
 	    if (r > -1 && r <= size) 
-    		return std::string((char *)buf.getPtr(), r);
+    		return std::string((char *)buf.get_ptr(), r);
     	size *= 2;
     }
 }
@@ -133,11 +133,11 @@ void mrt::split(std::vector<std::string> & result, const std::string &str, const
 		result.resize(limit);
 }
 
-void mrt::toUpper(std::string &str) {
+void mrt::to_upper(std::string &str) {
 	std::transform(str.begin(), str.end(), str.begin(), toupper);
 }
 
-void mrt::toLower(std::string &str) {
+void mrt::to_lower(std::string &str) {
 	std::transform(str.begin(), str.end(), str.begin(), tolower);
 }
 

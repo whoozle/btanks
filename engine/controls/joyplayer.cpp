@@ -26,7 +26,7 @@
 
 JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
 	_name = sdlx::Joystick::getName(idx);
-	_bindings.load(sdlx::Joystick::getName(idx), _joy.getNumButtons(), _joy.getNumAxes(), _joy.getNumHats());
+	_bindings.load(sdlx::Joystick::getName(idx), _joy.get_buttons_num(), _joy.get_axis_num(), _joy.get_hats_num());
 }
 
 void JoyPlayer::probe() const {
@@ -43,8 +43,8 @@ void JoyPlayer::probe() const {
 
 void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state) {
 	SDL_JoystickUpdate();
-	Sint16 x = _joy.getAxis(_bindings.get(tAxis, 0));
-	Sint16 y = _joy.getAxis(_bindings.get(tAxis, 1));
+	Sint16 x = _joy.get_axis(_bindings.get(tAxis, 0));
+	Sint16 y = _joy.get_axis(_bindings.get(tAxis, 1));
 	
 	_state.clear();	
 	
@@ -53,23 +53,23 @@ void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state) {
 	if (y >= THRESHOLD) _state.down = true;
 	if (y <= -THRESHOLD) _state.up = true;
 	
-	_state.fire = _joy.getButton(_bindings.get(tButton, 0)) || _joy.getButton(_bindings.get(tButton, 5));
-	_state.alt_fire = _joy.getButton(_bindings.get(tButton, 1))  || _joy.getButton(_bindings.get(tButton, 6));
-	_state.leave = _joy.getButton(_bindings.get(tButton, 3));
-	_state.hint_control = _joy.getButton(_bindings.get(tButton, 4));
+	_state.fire = _joy.get_button(_bindings.get(tButton, 0)) || _joy.get_button(_bindings.get(tButton, 5));
+	_state.alt_fire = _joy.get_button(_bindings.get(tButton, 1))  || _joy.get_button(_bindings.get(tButton, 6));
+	_state.leave = _joy.get_button(_bindings.get(tButton, 3));
+	_state.hint_control = _joy.get_button(_bindings.get(tButton, 4));
 
 	int r;
 	Config->get("player.controls.maximum-camera-slide", r, 200);
 	
 	bool im2x;
-	Config->get(mrt::formatString("player.controls.joystick.%s.ignore-more-than-two-axis", _name.c_str()), im2x, false);
+	Config->get(mrt::format_string("player.controls.joystick.%s.ignore-more-than-two-axis", _name.c_str()), im2x, false);
 	if (im2x)
 		return;
 	
-	int n = _joy.getNumAxes();
+	int n = _joy.get_axis_num();
 	if (n >= 4) {
-		int xa = _joy.getAxis(_bindings.get(tAxis, 2));
-		int ya = _joy.getAxis(_bindings.get(tAxis, 3));
+		int xa = _joy.get_axis(_bindings.get(tAxis, 2));
+		int ya = _joy.get_axis(_bindings.get(tAxis, 3));
 
 		slot.map_dpos.x = (xa * r) / 32767;
 		slot.map_dpos.y = (ya * r) / 32767;

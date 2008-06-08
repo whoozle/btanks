@@ -15,10 +15,10 @@ screenshot(NULL)
 }
 
 void DisabledVideoControl::render(sdlx::Surface &surface, const int x, const int y) const {
-	surface.copyFrom(*screenshot, x, y);
+	surface.blit(*screenshot, x, y);
 }
 
-void DisabledVideoControl::getSize(int &w, int &h) const {
-	w = screenshot->getWidth();
-	h = screenshot->getHeight();
+void DisabledVideoControl::get_size(int &w, int &h) const {
+	w = screenshot->get_width();
+	h = screenshot->get_height();
 }

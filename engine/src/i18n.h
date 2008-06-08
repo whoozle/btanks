@@ -52,7 +52,7 @@ private:
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 	
 	std::deque<std::string> _path;
 

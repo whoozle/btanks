@@ -50,7 +50,7 @@ TRY {
 	mrt::UDPSocket udp_sock;
 	//udp_sock.listen(bindaddr, port, false);
 	udp_sock.create();
-	udp_sock.setBroadcastMode(1);
+	udp_sock.set_broadcast_mode(1);
 	LOG_DEBUG(("udp socket started..."));
 
 	std::set<mrt_uint32_t> banned_addrs;
@@ -98,7 +98,7 @@ TRY {
 			} CATCH("select", )
 			LOG_DEBUG(("restarting udp socket..."));
 			udp_sock.create();
-			udp_sock.setBroadcastMode(1);
+			udp_sock.set_broadcast_mode(1);
 		} else if (set.check(udp_sock, mrt::SocketSet::Read)) {
 			mrt::Socket::addr addr;
 			unsigned char buf[1500]; //fixme ?
@@ -201,7 +201,7 @@ void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 			}
 			mrt::Chunk data;
 			createMessage(data);
-			udp_sock.send(addr, data.getPtr(), data.getSize());
+			udp_sock.send(addr, data.get_ptr(), data.get_size());
 		} CATCH("pinging known server", )
 }
 

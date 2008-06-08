@@ -26,9 +26,9 @@ Label::Label(const sdlx::Font *font, const std::string &label) :
 Label::Label(const std::string &font, const std::string &label) : 
 	_font(ResourceManager->loadFont(font, true)), _label(label), _label_size(_font->render(0, 0, 0, _label)) {}
 
-void Label::getSize(int &w, int &h) const {
+void Label::get_size(int &w, int &h) const {
 	w = _label_size;
-	h = _font->getHeight();
+	h = _font->get_height();
 }
 
 void Label::setFont(const std::string &font) {

@@ -61,7 +61,7 @@ public:
 	static const float getCollisionTime(const v2<float> &pos, const v2<float> &vel, const float r);
 	
 	inline const bool isDead() const { return _dead; }
-	inline const int getID() const { return _id; }
+	inline const int get_id() const { return _id; }
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

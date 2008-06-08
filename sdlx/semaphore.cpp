@@ -47,7 +47,7 @@ const bool Semaphore::wait(const Uint32 timeout) {
 	return false;
 }
 
-const bool Semaphore::tryWait() {
+const bool Semaphore::try_wait() {
 	int r = SDL_SemTryWait(_sem);
 	switch(r) {
 		case 0: return true;

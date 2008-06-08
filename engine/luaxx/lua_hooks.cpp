@@ -75,7 +75,7 @@ LUA_TRY {
 	v2<int> obj_size = ((obj->size.convert<int>() - 1) / tile_size) + 1;
 	LOG_DEBUG(("searching random %dx%d spot", obj_size.x, obj_size.y));
 	
-	int w = matrix.getWidth(), h = matrix.getHeight();
+	int w = matrix.get_width(), h = matrix.get_height();
 	std::vector<v2<int> > spots;
 	for(int y = 0; y < h - obj_size.y + 1; ++y) 
 		for(int x= 0; x < w - obj_size.x + 1; ++x) {
@@ -102,14 +102,14 @@ LUA_TRY {
 	obj_size = tile_size * obj_size / 2;
 	World->addObject(obj, pos + obj_size.convert<float>() - obj->size / 2);
 	
-	lua_pushinteger(L, obj->getID());
+	lua_pushinteger(L, obj->get_id());
 	return 1;
 } LUA_CATCH("lua_hooks_spawn_random")
 }
 
 static int lua_hooks_map_size(lua_State *L) {
 LUA_TRY {
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->get_size();
 	lua_pushinteger(L, map_size.x);
 	lua_pushinteger(L, map_size.y);
 	return 2;
@@ -188,7 +188,7 @@ LUA_TRY {
 		return 1;	
 	}
 
-	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::format_string("object_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
@@ -222,7 +222,7 @@ LUA_TRY {
 		return 0;	
 	} 
 
-	lua_pushstring(L, mrt::formatString("set_object_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::format_string("set_object_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
@@ -267,7 +267,7 @@ LUA_TRY {
 		return 0;
 	}
 	
-	lua_pushstring(L, mrt::formatString("slot_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::format_string("slot_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
@@ -351,7 +351,7 @@ LUA_TRY {
 		return 1;
 	}
 	
-	lua_pushstring(L, mrt::formatString("object_property: unknown property %s", prop.c_str()).c_str());
+	lua_pushstring(L, mrt::format_string("object_property: unknown property %s", prop.c_str()).c_str());
 	lua_error(L);
 	return 0;
 	
@@ -543,7 +543,7 @@ static int lua_hooks_spawn(lua_State *L) {
 	//		o->setDirection(dir);
 	
 		World->addObject(o, v2<float>(x, y) - o->size / 2);
-		lua_pushinteger(L, o->getID());
+		lua_pushinteger(L, o->get_id());
 		return 1;
 	} LUA_CATCH("spawn")
 }
@@ -812,7 +812,7 @@ LUA_TRY {
 	}
 
 	v2<int> dst_pos; 
-	dst->getCenterPosition(dst_pos);
+	dst->get_center_position(dst_pos);
 
 	Way way;
 	way.push_back(dst_pos);
@@ -889,7 +889,7 @@ LUA_TRY {
 	const char * name = lua_tostring(L, 1);
 	const char *value = lua_tostring(L, 2);
 	if (name == NULL || value == NULL) {
-		lua_pushstring(L, mrt::formatString("set_config_override: %s argument must be a string", (name == NULL)?"first":"second").c_str());
+		lua_pushstring(L, mrt::format_string("set_config_override: %s argument must be a string", (name == NULL)?"first":"second").c_str());
 		lua_error(L);
 		return 0;
 	}
@@ -1161,7 +1161,7 @@ LUA_TRY {
 		throw_ex(("name: %s, cname: %s, aname: %s: some argument(s) cannot be converted", name, cname, aname));
 
 	Object *child = o->add(name, cname, aname, v2<float>(), Centered);
-	lua_pushinteger(L, child->getID());
+	lua_pushinteger(L, child->get_id());
 	return 1;
 } LUA_CATCH("group_add")
 }
@@ -1186,7 +1186,7 @@ LUA_TRY {
 	if (name == NULL)
 		throw_ex(("name cannot be converted to the string"));
 
-	lua_pushinteger(L, o->has(name)? o->get(name)->getID(): 0);
+	lua_pushinteger(L, o->has(name)? o->get(name)->get_id(): 0);
 	return 1;
 } LUA_CATCH("group_has")
 }

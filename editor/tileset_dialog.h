@@ -20,7 +20,7 @@ public:
 	TilesetDialog(const int w, const int h);
 	virtual bool onKey(const SDL_keysym sym);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	virtual void getSize(int &w, int &h) const { w = _w; h = _h; }
+	virtual void get_size(int &w, int &h) const { w = _w; h = _h; }
 	
 	BaseBrush *getBrush();
 	const bool tileset_added() { bool r = _tileset_added; _tileset_added = false; return r; }

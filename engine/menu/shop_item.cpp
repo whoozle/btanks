@@ -10,11 +10,11 @@
 ShopItem::ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, const int w) : _active(false), t(0), dir_t(0) {
 	_name = new Label("medium", item.name);
 	int fw, fh;
-	_name->getSize(fw, fh);
+	_name->get_size(fw, fh);
 
 	int bw, bh;
 	_b_plus = new Button("medium", "+");
-	_b_plus->getSize(bw, bh);
+	_b_plus->get_size(bw, bh);
 	_b_minus = new Button("medium", "-");
 	
 	int h = math::max(bh, fh);
@@ -22,7 +22,7 @@ ShopItem::ShopItem(const Campaign &campaign, const Campaign::ShopItem &item, con
 	int yfont = h / 2 - fh / 2;
 
 	add(0, yfont, _name);
-	add(w / 2, yfont, _price = new Label("medium", mrt::formatString("%d", item.price).c_str()));
+	add(w / 2, yfont, _price = new Label("medium", mrt::format_string("%d", item.price).c_str()));
 
 	int x_am = 3 * w / 4;
 	add(x_am, yfont, _amount = new Label("medium", "0"));
@@ -47,7 +47,7 @@ void ShopItem::revalidate(const Campaign &campaign, const Campaign::ShopItem &it
 	_name->setFont(font);
 	_price->setFont(font);
 	_amount->setFont(font);
-	_amount->set(mrt::formatString("%d", item.amount));
+	_amount->set(mrt::format_string("%d", item.amount));
 	
 	if (!item.object.empty() && !item.animation.empty() && !item.pose.empty()) {
 		_animation = ResourceManager.get_const()->getAnimation(item.animation);
@@ -67,11 +67,11 @@ void ShopItem::render(sdlx::Surface &surface, const int x, const int y) const {
 		return;
 	int frame = ((int)(t * _pose->speed)) % _pose->frames.size();
 
-	int dirs = (_surface->getWidth() - 1) / _animation->tw + 1;
+	int dirs = (_surface->get_width() - 1) / _animation->tw + 1;
 	int dir = ((int)(dir_t * dir_speed)) % dirs;
 
 	sdlx::Rect from(dir * _animation->tw, _pose->frames[frame] * _animation->th, _animation->tw, _animation->th);
-	surface.copyFrom(*_surface, from, x + xbase - _animation->tw / 2, y + ybase - _animation->th / 2);
+	surface.blit(*_surface, from, x + xbase - _animation->tw / 2, y + ybase - _animation->th / 2);
 }
 
 void ShopItem::tick(const float dt) {
@@ -96,7 +96,7 @@ void ShopItem::tick(const float dt) {
 	if ((t * _pose->speed) > (int)_pose->frames.size())
 		t -= (float)_pose->frames.size() / _pose->speed;
 
-	int dirs = (_surface->getWidth() - 1) / _animation->tw + 1;
+	int dirs = (_surface->get_width() - 1) / _animation->tw + 1;
 	if ((dir_t * dir_speed) > dirs)
 		dir_t -= (float)dirs / dir_speed;
 }

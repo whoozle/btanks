@@ -69,7 +69,7 @@ void Turrel::tick(const float dt) {
 		cancelAll();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
-		std::string animation = mrt::formatString("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
+		std::string animation = mrt::format_string("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
 		Object *bullet = (_parent == NULL? this: _parent)->spawn("buggy-bullet", animation, v2<float>(), _direction);
 		
 		bullet->setZ(air_mode? bullet->getZ() + 2000:getZ() - 1, true);
@@ -108,7 +108,7 @@ void Turrel::calculate(const float dt) {
 			_direction = pos;
 			_state.fire = true;
 			_direction.quantize8();
-			setDirection(_direction.getDirection8() - 1);
+			setDirection(_direction.get_direction8() - 1);
 		} else {
 			_state.fire = false;
 		}
@@ -120,9 +120,9 @@ void Turrel::calculate(const float dt) {
 		if (_parent != NULL) {
 			_state.fire = _parent->getPlayerState().fire;
 
-			int idx = _parent->getDirection();
+			int idx = _parent->get_direction();
 			setDirection(idx);
-			_direction.fromDirection(idx, getDirectionsNumber());
+			_direction.fromDirection(idx, get_directions_number());
 		}
 	}
 }

@@ -30,7 +30,7 @@
 
 using namespace mrt;
 
-const std::string FSNode::getParentDir(const std::string &fname) {
+const std::string FSNode::get_parent_dir(const std::string &fname) {
 	std::string::size_type p = fname.rfind('\\'), p2 = fname.rfind('/');
 	if (p == std::string::npos) {
 		if (p2 == std::string::npos)
@@ -47,7 +47,7 @@ bool FSNode::exists(const std::string &fname) const {
 	return stat(fname.c_str(), &buf) == 0;
 }
 
-const std::string FSNode::getFilename(const std::string &name, const bool return_ext) {
+const std::string FSNode::get_filename(const std::string &name, const bool return_ext) {
 	std::string::size_type p2 = name.rfind('.'), p1 = name.npos;
 	if (p2 == name.npos)
 		p2 = name.size();
@@ -63,10 +63,10 @@ const std::string FSNode::getFilename(const std::string &name, const bool return
 	return name.substr(p1, return_ext?std::string::npos: p2 - p1);	
 }
 
-const std::string FSNode::getDir(const std::string &fname) {
+const std::string FSNode::get_dir(const std::string &fname) {
 	std::string::size_type p = fname.rfind('/');
 	if (p == fname.npos)
-		throw_ex(("getDir('%s') failed", fname.c_str()));
+		throw_ex(("get_dir('%s') failed", fname.c_str()));
 	
 	if (p == 0)
 		return fname;
@@ -86,7 +86,7 @@ static void pack_path(std::deque<std::string> &result, const std::vector<std::st
 	}
 }
 
-const std::string FSNode::relativePath(const std::string &from_dir, const std::string &to_dir) {
+const std::string FSNode::relative_path(const std::string &from_dir, const std::string &to_dir) {
 	std::vector<std::string> f_path, t_path;
 	mrt::split(f_path, from_dir, "/");
 	mrt::split(t_path, to_dir, "/");

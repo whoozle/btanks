@@ -21,7 +21,7 @@ ModePanel::ModePanel(const int width) : mode(-1) {
 		add(0, 0, _background = new Box("menu/background_box.png", width, 48));
 		
 		int w, h;
-		getSize(w, h);
+		get_size(w, h);
 		int mx, my;
 		_background->getMargins(mx, my);
 
@@ -112,7 +112,7 @@ void ModePanel::validate() {
 		for(int i = 0; i < _teams->size(); ++i) 
 			_teams->disable(i, false);
 		try {
-			_teams->set(mrt::formatString("%d", t));
+			_teams->set(mrt::format_string("%d", t));
 		} CATCH("set", );
 	}
 }

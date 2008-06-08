@@ -28,7 +28,7 @@ void Tileset::start(const std::string &name, Attrs &attr) {
 	_attr = attr;
 }
 
-void Tileset::charData(const std::string &data) {
+void Tileset::cdata(const std::string &data) {
 	_cdata += data;
 }
 

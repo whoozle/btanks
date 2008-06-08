@@ -101,7 +101,7 @@ void IMenuConfig::load(const int mode) {
 TRY {
 	mrt::Chunk data;
 	std::string src;
-	Config->get(mrt::formatString("menu.mode-%d.state", mode), src, std::string());
+	Config->get(mrt::format_string("menu.mode-%d.state", mode), src, std::string());
 	if (src.empty())
 		return;
 	mrt::Base64::decode(data, src);
@@ -120,7 +120,7 @@ void IMenuConfig::save() {
 	std::string dump;
 	mrt::Base64::encode(dump, data);
 	//LOG_DEBUG(("dump: %s", dump.c_str()));
-	Config->set(mrt::formatString("menu.mode-%d.state", mode), dump);
+	Config->set(mrt::format_string("menu.mode-%d.state", mode), dump);
 }
 
 void IMenuConfig::serialize(mrt::Serializator &s) const {

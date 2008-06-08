@@ -96,7 +96,7 @@ void OldSchoolDestructableObject::tick(const float dt) {
 				play("broken", true);
 			} else {
 				hp = max_hp;
-				play(mrt::formatString("damaged-%d", _hops), true);
+				play(mrt::format_string("damaged-%d", _hops), true);
 			}
 		}
 		

@@ -190,13 +190,13 @@ void PlayerSlot::tick(const float dt) {
 		return;
 					
 	v2<float> pos, vel;
-	p->getPosition(pos);
+	p->get_position(pos);
 	p->get_velocity(vel);
 	vel.normalize();
 		
 	float moving, idle;
 	p->getTimes(moving, idle);
-	//vel.fromDirection(p->getDirection(), p->getDirectionsNumber());
+	//vel.fromDirection(p->get_direction(), p->get_directions_number());
 
 	
 	moving /= 2;
@@ -401,7 +401,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 		v2<int> obj_size = ((obj->size.convert<int>() - 1) / tile_size) + 1;
 		LOG_DEBUG(("searching random %dx%d spot", obj_size.x, obj_size.y));
 	
-		int w = matrix.getWidth(), h = matrix.getHeight();
+		int w = matrix.get_width(), h = matrix.get_height();
 		std::vector<v2<int> > spots;
 		for(int y = 0; y < h - obj_size.y + 1; ++y) 
 			for(int x= 0; x < w - obj_size.x + 1; ++x) {
@@ -430,7 +430,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 	} else {
 		World->addObject(obj, v2<float>(position.x, position.y) - obj->size / 2, id);
 	}
-	id = obj->getID();
+	id = obj->get_id();
 
 	GET_CONFIG_VALUE("engine.spawn-invulnerability-duration", float, sid, 3);
 	obj->add_effect("invulnerability", sid);
@@ -465,7 +465,7 @@ void PlayerSlot::spawnPlayer(const int slot_id, const std::string &classname_, c
 }
 
 void PlayerSlot::validatePosition(v2<float>& position) {
-	const v2<int> world_size = Map->getSize();
+	const v2<int> world_size = Map->get_size();
 	if (Map->torus()) {
 		if (position.x < 0)
 			position.x += world_size.x;
@@ -513,7 +513,7 @@ void PlayerSlot::setViewport(const sdlx::Rect &rect) {
 	if (o == NULL)
 		return;
 	
-	v2<float> pos = o->getCenterPosition();
+	v2<float> pos = o->get_center_position();
 	map_pos.x = (int)pos.x - rect.w / 2;
 	map_pos.y = (int)pos.y - rect.h / 2;
 }
@@ -564,7 +564,7 @@ void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
 	const Tooltip *t = currentTooltip();
 	if (t != NULL) {
 		int w, h;
-		t->getSize(w, h);
+		t->get_size(w, h);
 		t->render(window, viewport.x, viewport.h - h);
 	}
 
@@ -573,7 +573,7 @@ void PlayerSlot::render(sdlx::Surface &window, const int vx, const int vy) {
 
 	if (join_team != NULL && team == Team::None) {
 		int w, h;
-		join_team->getSize(w, h);
+		join_team->get_size(w, h);
 		join_team->render(window, viewport.x + (viewport.w - w) / 2, viewport.y + (viewport.h - h) / 2);
 	}
 }

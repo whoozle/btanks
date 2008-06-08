@@ -117,11 +117,11 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 	//LOG_DEBUG(("%p->collide(%p, src:(%d, %d, %d, %d), osrc:(%d, %d, %d, %d), [%d, %d, %d, %d])", this, other, src.x, src.y, aw, ah, other_src.x, other_src.y, bw, bh, inter_x0, inter_y0, inter_y0, inter_y1));
 
-	unsigned char * restrict ptr1 = (unsigned char *) _data.getPtr();
-	unsigned char * restrict ptr2 = (unsigned char *) other->_data.getPtr();
+	unsigned char * restrict ptr1 = (unsigned char *) _data.get_ptr();
+	unsigned char * restrict ptr2 = (unsigned char *) other->_data.get_ptr();
 
-	int size1 = _data.getSize();
-	int size2 = other->_data.getSize();
+	int size1 = _data.get_size();
+	int size2 = other->_data.get_size();
 	
 
 //you can play with it, but 8 seems optimal for me.
@@ -195,24 +195,24 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 
 static inline const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y, const CollisionMap::Type type) {
-	Uint32 pixelcolor = surface->getPixel(x, y);
+	Uint32 pixelcolor = surface->get_pixel(x, y);
 	
 	switch(type) {
 	case CollisionMap::OnlyOpaque:
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
 			Uint8 r, g, b, a;
-			surface->getRGBA(pixelcolor, r, g, b, a);
+			surface->get_rgba(pixelcolor, r, g, b, a);
 			return a == 255;
 		}
-		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
+		return (pixelcolor !=  surface->get_pixel_format()->colorkey);
 
 	case CollisionMap::AnyVisible: 
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
 			Uint8 r, g, b, a;
-			surface->getRGBA(pixelcolor, r, g, b, a);
+			surface->get_rgba(pixelcolor, r, g, b, a);
 			return a >= 250;
 		}
-		return (pixelcolor !=  surface->getPixelFormat()->colorkey);
+		return (pixelcolor !=  surface->get_pixel_format()->colorkey);
 	}
 	
 	return false;
@@ -226,7 +226,7 @@ void CollisionMap::create(const unsigned int w, const unsigned int h, const bool
 	_h = h;
 	
 	
-	_data.setSize(_w * _h);
+	_data.set_size(_w * _h);
 	_data.fill(bit?~0:0);
 }
 
@@ -234,20 +234,20 @@ void CollisionMap::create(const unsigned int w, const unsigned int h, const bool
 void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 	_empty = true;
 	_full = true;
-	assert(surface->getWidth() != 0 && surface->getHeight() != 0);
-	_w = (surface->getWidth() - 1) / 8 + 1;
-	_h = surface->getHeight();
-	_data.setSize(_w * _h);
-	//LOG_DEBUG(("got surface %d %d -> %d %d, allocated: %u bytes", surface->getWidth(), surface->getHeight(), _w, _h, (unsigned)_data.getSize()));
+	assert(surface->get_width() != 0 && surface->get_height() != 0);
+	_w = (surface->get_width() - 1) / 8 + 1;
+	_h = surface->get_height();
+	_data.set_size(_w * _h);
+	//LOG_DEBUG(("got surface %d %d -> %d %d, allocated: %u bytes", surface->get_width(), surface->get_height(), _w, _h, (unsigned)_data.get_size()));
 	_data.fill(0);
 	
 	surface->lock();
-	unsigned char * data = (unsigned char *)_data.getPtr();
-	for(int y = 0; y < surface->getHeight(); ++y) {
-		for(int x = 0; x < surface->getWidth(); ++x) {
+	unsigned char * data = (unsigned char *)_data.get_ptr();
+	for(int y = 0; y < surface->get_height(); ++y) {
+		for(int x = 0; x < surface->get_width(); ++x) {
 			unsigned int b = 7-(x&7);
 			unsigned int pos = y * _w + x / 8;
-			assert(pos < _data.getSize());
+			assert(pos < _data.get_size());
 	
 			if (test_pixel(surface, x, y, type)) {
 				data[pos] |= (1 << b);
@@ -256,7 +256,7 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 		}
 	}
 	surface->unlock();	
-	//LOG_DEBUG(("built collision map (size: %u): %s", (unsigned)_data.getSize(), _data.dump().c_str()));
+	//LOG_DEBUG(("built collision map (size: %u): %s", (unsigned)_data.get_size(), _data.dump().c_str()));
 	//if (_empty)
 	//	LOG_DEBUG(("this collision map is empty"));
 }
@@ -264,27 +264,27 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 void CollisionMap::save(const std::string &fname) const {
 	mrt::File f;
 	f.open(fname + ".raw", "wb");
-	f.writeAll(_data);
+	f.write_all(_data);
 	f.close();
 	
 	sdlx::Surface s;
-	s.createRGB(_w * 8, _h, 8, SDL_SWSURFACE);
+	s.create_rgb(_w * 8, _h, 8, SDL_SWSURFACE);
 	s.lock();
-	unsigned char *ptr = (unsigned char *)_data.getPtr();
+	unsigned char *ptr = (unsigned char *)_data.get_ptr();
 	unsigned int idx = 0;
 	for(unsigned y = 0; y < _h; ++y) {
 		for(unsigned x = 0; x < _w; ++x) {
-			assert(idx < _data.getSize());
+			assert(idx < _data.get_size());
 			unsigned int byte = ptr[idx++];
 			for(int b = 0; b < 8; ++b) {
 				bool c = (byte & (0x80 >> b)) != 0;
 				if (c)
-					s.putPixel(x*8 + b, y, 0xffffffff);
+					s.put_pixel(x*8 + b, y, 0xffffffff);
 			}
 		}
 	}
 	s.unlock();
-	s.saveBMP(fname + ".bmp");
+	s.save_bmp(fname + ".bmp");
 }
 
 
@@ -292,9 +292,9 @@ void CollisionMap::project(Matrix<bool> &result, const unsigned w, const unsigne
 	unsigned xs = _w / w, ys = _h / h;
 	if (xs * w != _w || ys * h != _h) 
 		throw_ex(("cannot project collision map %dx%d (square size: %dx%d)", _w, _h, xs, ys));
-	result.setSize(h, w, false);
-	unsigned char *ptr = (unsigned char *)_data.getPtr();
-	unsigned int size = _data.getSize();
+	result.set_size(h, w, false);
+	unsigned char *ptr = (unsigned char *)_data.get_ptr();
+	unsigned int size = _data.get_size();
 	for(unsigned int y = 0; y < _h; ++y) 
 		for(unsigned int x = 0; x < _w; ++x) {
 			assert(x + _w * y < size);

@@ -27,22 +27,22 @@ template <class T> class Matrix {
 public:
 	Matrix() : _data(), _w(0), _h(0), _use_default(false), _default() {}
 	Matrix(const int h, const int w, const T v = 0): _use_default(false) {
-		setSize(h, w, v);
+		set_size(h, w, v);
 	}
 	
 	void useDefault(const T d) { _default = d; _use_default = true; }
 	
 	void fill(const T v) {
-		T *ptr = (T*) _data.getPtr();
+		T *ptr = (T*) _data.get_ptr();
 		for(int i = 0; i < _w * _h; ++i) {
 			*ptr++ = v;
 		}	
 	}
 	
-	void setSize(const int h, const int w, const T v = 0) {
+	void set_size(const int h, const int w, const T v = 0) {
 		_w = w;
 		_h = h;
-		_data.setSize(w * h * sizeof(T));
+		_data.set_size(w * h * sizeof(T));
 
 		fill(v);
 	}
@@ -55,7 +55,7 @@ public:
 			throw_ex(("get(%d, %d) is out of bounds", y, x));
 		}
 		register int idx = y * _w + x;
-		register const T *ptr = (const T*) _data.getPtr();
+		register const T *ptr = (const T*) _data.get_ptr();
 		return *(ptr + idx);
 	}
 	
@@ -67,34 +67,34 @@ public:
 		}
 		
 		register int idx = y * _w + x;
-		register T *ptr = (T*) _data.getPtr();
+		register T *ptr = (T*) _data.get_ptr();
 		*(ptr + idx) = v;
 	}
 	
-	inline const int getWidth() const { return _w; }
-	inline const int getHeight() const { return _h; }
+	inline const int get_width() const { return _w; }
+	inline const int get_height() const { return _h; }
 	
 	const std::string dump() const {
 	//fixme: add template functions for conversion int/float other types to string
 		std::string result;
 		result += "      ";
 		for(int x = 0; x < _w; ++x) 
-			result += mrt::formatString("%-2d ", x);
+			result += mrt::format_string("%-2d ", x);
 		result += "\n";
 		
 		for(int y = 0; y < _h; ++y) {
-			result += mrt::formatString("%-2d ", y);
+			result += mrt::format_string("%-2d ", y);
 			result += "[ ";
 			for(int x = 0; x < _w; ++x) {
-				result += mrt::formatString("%-2d ", (int)get(y, x));
+				result += mrt::format_string("%-2d ", (int)get(y, x));
 			}
 			result += " ]";
-			result += mrt::formatString("%-2d\n", y);
+			result += mrt::format_string("%-2d\n", y);
 		}
 
 		result += "      ";
 		for(int x = 0; x < _w; ++x) 
-			result += mrt::formatString("%-2d ", x);
+			result += mrt::format_string("%-2d ", x);
 		result += "\n";
 
 		return result;

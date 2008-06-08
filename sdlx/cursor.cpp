@@ -31,9 +31,9 @@ void Cursor::Enable() {
     SDL_ShowCursor(SDL_ENABLE);
 }
 
-void Cursor::setPosition(const int x, const int y) {
+void Cursor::set_position(const int x, const int y) {
     SDL_WarpMouse(x, y);
 }
-void Cursor::getPosition(int &x, int &y) {
+void Cursor::get_position(int &x, int &y) {
 	SDL_GetMouseState(&x, &y);
 }

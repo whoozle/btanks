@@ -101,7 +101,7 @@ void IResourceManager::onFile(const std::string &base, const std::string &file) 
 			return;
 		LOG_DEBUG(("parsing preload file: %s", preload.c_str()));
 		PreloadParser p;
-		p.parseFile(preload);
+		p.parse_file(preload);
 		p.update(_preload_map, _object_preload_map, base);
 	} CATCH("parsing preload file", {});
 }
@@ -152,9 +152,9 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					Finder->load(data, "tiles/" + tile);
 					
 					s = new sdlx::Surface;
-					s->loadImage(data);
+					s->load_image(data);
 					if (!RTConfig->server_mode)
-						s->convertAlpha();
+						s->display_format_alpha();
 			
 					cmap = new sdlx::CollisionMap;
 					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
@@ -302,7 +302,7 @@ void IResourceManager::end(const std::string &name) {
 	NotifyingXMLParser::end(name);
 	_data.clear();
 }
-void IResourceManager::charData(const std::string &data) {
+void IResourceManager::cdata(const std::string &data) {
 	_data += data;
 }
 
@@ -358,9 +358,9 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 			Finder->load(data, "tiles/" + id);
 
 			s = new sdlx::Surface;
-			s->loadImage(data);
+			s->load_image(data);
 			if (!RTConfig->server_mode)
-				s->convertAlpha();
+				s->display_format_alpha();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
@@ -387,13 +387,13 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 		const std::string page0400 = Finder->find("font/" + name + "_0400.png", false);
 		if (!page0400.empty()) {
 			Finder->load(data, "font/" + name + "_0400.png");
-			f->addPage(0x0400, data, alpha);
+			f->add_page(0x0400, data, alpha);
 		}
 
 		const std::string page0080 = Finder->find("font/" + name + "_0080.png", false);
 		if (!page0080.empty()) {
 			Finder->load(data, "font/" + name + "_0400.png");
-			f->addPage(0x00a0, data, alpha);
+			f->add_page(0x00a0, data, alpha);
 		}
 	return f;
 }
@@ -408,7 +408,7 @@ const sdlx::CollisionMap *IResourceManager::getCollisionMap(const std::string &i
 
 
 void IResourceManager::init(const std::vector<std::pair<std::string, std::string> > &fname) {
-	parseFiles(fname);
+	parse_files(fname);
 	status = "menu"; //small hack. menu takes some time to setup and load. 
 }
 
@@ -439,19 +439,19 @@ void IResourceManager::clear() {
 	std::map<const std::string, std::string> xml_data;
 	for(PreloadMap::const_iterator i = _preload_map.begin(); i != _preload_map.end(); ++i) {
 		std::string &dst = xml_data[i->first.first];
-		dst += mrt::formatString("\t<map id=\"%s\">\n", escape(i->first.second).c_str());
+		dst += mrt::format_string("\t<map id=\"%s\">\n", escape(i->first.second).c_str());
 		for(std::set<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
 			//LOG_DEBUG(("map: %s, %s", i->first.c_str(), j->c_str()));
-			 dst += mrt::formatString("\t\t<object id=\"%s\"/>\n", escape(*j).c_str());
+			 dst += mrt::format_string("\t\t<object id=\"%s\"/>\n", escape(*j).c_str());
 		}
 		dst += "\t</map>\n";
 	}
 	for(PreloadMap::const_iterator i = _object_preload_map.begin(); i != _object_preload_map.end(); ++i) {
 		std::string &dst = xml_data[i->first.first];
-		dst += mrt::formatString("\t<object id=\"%s\">\n", escape(i->first.second).c_str());
+		dst += mrt::format_string("\t<object id=\"%s\">\n", escape(i->first.second).c_str());
 		for(std::set<std::string>::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
 			//LOG_DEBUG(("map: %s, %s", i->first.c_str(), j->c_str()));
-			 dst += mrt::formatString("\t\t<animation id=\"%s\"/>\n", escape(*j).c_str());
+			 dst += mrt::format_string("\t\t<animation id=\"%s\"/>\n", escape(*j).c_str());
 		}
 		dst += "\t</object>\n";
 	}
@@ -473,7 +473,7 @@ void IResourceManager::clear() {
 			f.open(i->first + "/preload.xml", "wb");
 			i->second.insert(0, "<?xml version=\"1.0\"?>\n<preload>\n");
 			i->second += "</preload>\n";
-			f.writeAll(i->second);
+			f.write_all(i->second);
 		} CATCH("writing to the preload cache", {});
 	}
 }
@@ -594,18 +594,18 @@ void IResourceManager::checkSurface(const std::string &animation, const sdlx::Su
 			mrt::Chunk data;
 			Finder->load(data, "tiles/" + a->surface);
 			s = new sdlx::Surface;
-			s->loadImage(data);
+			s->load_image(data);
 			if (!RTConfig->server_mode)
-				s->convertAlpha();
+				s->display_format_alpha();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
 				s->lock();
 				Uint8 r,g,b,a;
-				for(int y = 0; y < s->getHeight(); ++y) 
-					for(int x = 0; x < s->getWidth(); ++x) {
-						s->getRGBA(s->getPixel(x, y), r, g, b, a);
+				for(int y = 0; y < s->get_height(); ++y) 
+					for(int x = 0; x < s->get_width(); ++x) {
+						s->get_rgba(s->get_pixel(x, y), r, g, b, a);
 						if (a != 255)
-							s->putPixel(x, y, s->mapRGBA(r, g, b, (a > 51)?51:a));
+							s->put_pixel(x, y, s->map_rgba(r, g, b, (a > 51)?51:a));
 					}
 				s->unlock();
 			}

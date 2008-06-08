@@ -53,11 +53,11 @@ ILogger::~ILogger() {
 	close();
 }
 
-void ILogger::setLogLevel(const int level) {
+void ILogger::set_log_level(const int level) {
 	_level = level;
 }
 
-const char * ILogger::getLogLevelName(const int level) {
+const char * ILogger::get_log_level_name(const int level) {
 	switch(level) {
 		case LL_DEBUG: return "debug";
 		case LL_NOTICE: return "notice";
@@ -89,6 +89,6 @@ void ILogger::log(const int level, const char *file, const int line, const std::
 	s = tm.tm_sec;
 	ms = tv.tv_usec / 1000;
 #endif
-	fprintf(fd?fd:stderr, "[%02d:%02d:%02d.%03d][%s:%d]\t [%s] %s\n", h, m, s, ms, file, line, getLogLevelName(level), str.c_str());
+	fprintf(fd?fd:stderr, "[%02d:%02d:%02d.%03d][%s:%d]\t [%s] %s\n", h, m, s, ms, file, line, get_log_level_name(level), str.c_str());
 }
 

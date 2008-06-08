@@ -9,23 +9,23 @@ LayerItem::LayerItem(const int z, Layer *layer) : z(z), layer(layer) {
 	assert(layer != NULL);
 	
 	int cw, ch;
-	const std::string name = mrt::formatString("%3d: %s", z, layer->name.c_str());
+	const std::string name = mrt::format_string("%3d: %s", z, layer->name.c_str());
 	int xp = 0;
 	
 	_c_show = new Checkbox(layer->visible);
-	_c_show->getSize(cw, ch);
+	_c_show->get_size(cw, ch);
 	add(xp, 0, _c_show);
 	xp += cw + 4;
 
 	_c_solo = new Checkbox();
-	_c_show->getSize(cw, ch);
+	_c_show->get_size(cw, ch);
 	add(xp, 0, _c_solo);
 	xp += cw + 4;
 	
 	int max_h = ch;
 	
 	Label *l = new Label("small", name);
-	l->getSize(cw, ch);
+	l->get_size(cw, ch);
 	add(xp, (max_h - ch) / 2, l);
 	xp += cw + 4;
 }

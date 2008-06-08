@@ -40,7 +40,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 
-	_background.init("menu/background_box_dark.png", _bg_table->getWidth() + 96, _bg_table->getHeight() + 140, 24);
+	_background.init("menu/background_box_dark.png", _bg_table->get_width() + 96, _bg_table->get_height() + 140, 24);
 	
 	initDefaults();
 	
@@ -61,16 +61,16 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	int mx, my;
 	_background.getMargins(mx, my);
 	
-	_b_ok->getSize(w, h);
+	_b_ok->get_size(w, h);
 	int ym = 32;
 	int yp = _background.h - h - ym;
 	add (_background.w - mx - w, yp, _b_ok);
 
-	_b_back->getSize(w, h);
+	_b_back->get_size(w, h);
 	yp = _background.h - h - ym;
 	add (mx, yp, _b_back);
 
-	_b_default->getSize(w, h);
+	_b_default->get_size(w, h);
 	yp = _background.h - h - ym;
 	add (_background.w / 2 - w / 2, yp, _b_default);
 	
@@ -110,23 +110,23 @@ void RedefineKeys::reload() {
 
 void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
-	int dx = (_background.w - _bg_table->getWidth()) / 2, dy = (_background.h - _bg_table->getHeight()) / 2;
-	surface.copyFrom(*_bg_table, x + dx, y + dy);
+	int dx = (_background.w - _bg_table->get_width()) / 2, dy = (_background.h - _bg_table->get_height()) / 2;
+	surface.blit(*_bg_table, x + dx, y + dy);
 	
 	int yp = y + dy + 50;
 	for(size_t i = 0; i < _actions.size(); ++i) {
 		sdlx::Rect &rect = _actions[i].second;
 		rect.x = 0;
 		rect.y = yp - 15 - y;
-		rect.h = _font->getHeight() + 30;
+		rect.h = _font->get_height() + 30;
 		rect.w = _background.w;
 		
 		if (_active_row == (int)i) {
-			_background.renderHL(surface, x, yp + _font->getHeight() / 2 + 1);
+			_background.renderHL(surface, x, yp + _font->get_height() / 2 + 1);
 		}
 
 		if (_active_row == (int)i && _active_col != -1) {
-			surface.copyFrom(*_selection, x + 205 + 110 * _active_col, yp - 6);
+			surface.blit(*_selection, x + 205 + 110 * _active_col, yp - 6);
 		}
 
 		_font->render(surface, x + 66, yp, _actions[i].first);
@@ -134,7 +134,7 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) cons
 		for(size_t j = 0; j < 3; ++j) {
 			const char *cname = _keys[j][i] ? SDL_GetKeyName((SDLKey)_keys[j][i]): NULL;
 			std::string name = (cname)?cname:"???";
-			_small_font->render(surface, x + dx + 155 + 110 * j, yp + (_font->getHeight() - _small_font->getHeight()) / 2, name);
+			_small_font->render(surface, x + dx + 155 + 110 * j, yp + (_font->get_height() - _small_font->get_height()) / 2, name);
 		}
 		
 		yp += 30;
@@ -142,8 +142,8 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) cons
 	Container::render(surface, x, y);
 }
 
-void RedefineKeys::getSize(int &w, int &h) const {
-	Container::getSize(w, h);
+void RedefineKeys::get_size(int &w, int &h) const {
+	Container::get_size(w, h);
 	
 	if (_background.w > w)
 		w = _background.w;
@@ -217,7 +217,7 @@ bool RedefineKeys::onMouse(const int button, const bool pressed, const int x, co
 
 bool RedefineKeys::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	_active_col = _active_row = -1;
-	int dx = (_background.w - _bg_table->getWidth()) / 2;
+	int dx = (_background.w - _bg_table->get_width()) / 2;
 	for(size_t i = 0; i < _actions.size(); ++i) {
 		const sdlx::Rect &rect = _actions[i].second;
 		if (rect.in(x, y)) 

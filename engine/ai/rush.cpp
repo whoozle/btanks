@@ -27,19 +27,19 @@ void Rush::calculateW(Way &way, Object *object, const std::string &area) {
 	way.clear();
 	
 	const v2<int> tile_size = Map->getPathTileSize();
-	const v2<int> map_size = Map->getSize();
+	const v2<int> map_size = Map->get_size();
 	const Matrix<int> & water = Map->getAreaMatrix(area);
 	v2<int> pos;
-	object->getCenterPosition(pos);
+	object->get_center_position(pos);
 	int im = water.get(pos.y / tile_size.y, pos.x / tile_size.x);
 	if (im != 1) {
 		LOG_WARN(("object %s:%d is now on non-hint area (%d:%d value: %d)", 
-			object->animation.c_str(), object->getID(), pos.y / tile_size.y, pos.x / tile_size.x, im));
+			object->animation.c_str(), object->get_id(), pos.y / tile_size.y, pos.x / tile_size.x, im));
 		object->emit("death", NULL); //bam! 
 		return;
 	}
 	
-	int dirs = object->getDirectionsNumber();
+	int dirs = object->get_directions_number();
 	if (dirs == 1)
 		dirs = 16;
 	
@@ -56,7 +56,7 @@ void Rush::calculateW(Way &way, Object *object, const std::string &area) {
 	len -= (int)(object->size.x + object->size.y) / (tile_size.x + tile_size.y) / 2 + 1;
 	if (len > 0) {
 		len = 1 + len / 2 + (len % 2) + mrt::random(len / 2);
-		object->getCenterPosition(pos);
+		object->get_center_position(pos);
 		pos += (d * len).convert<int>();
 		if (pos.x < object->size.x / 2) 
 			pos.x = (int)object->size.x / 2;

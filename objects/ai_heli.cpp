@@ -55,7 +55,7 @@ private:
 
 void AIHeli::onIdle(const float dt) {
 	Way way;
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->get_size();
 	
 	for(int i = 0; i < 2; ++i) {
 		v2<int> next_target;
@@ -83,7 +83,7 @@ void AIHeli::calculate(const float dt) {
 		
 	_state.fire = false;
 	
-	_target_dir = getTargetPosition(_velocity, ai::Targets->troops, "helicopter-bullet");
+	_target_dir = getTarget_position(_velocity, ai::Targets->troops, "helicopter-bullet");
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g, dir: %d", _velocity.x, _velocity.y, _velocity.length(), _target_dir));
 		/*
@@ -95,15 +95,15 @@ void AIHeli::calculate(const float dt) {
 		*/
 		if (_velocity.length() >= 25) {
 			quantizeVelocity();
-			//_direction.fromDirection(getDirection(), getDirectionsNumber());
+			//_direction.fromDirection(get_direction(), get_directions_number());
 		} else {
 			_velocity.clear();
 			setDirection(_target_dir);
 			//LOG_DEBUG(("%d", _target_dir));
-			_direction.fromDirection(_target_dir, getDirectionsNumber());
+			_direction.fromDirection(_target_dir, get_directions_number());
 		}
 
-		if (_target_dir == getDirection()) {
+		if (_target_dir == get_direction()) {
 			_state.fire = true;
 		}	
 	} 

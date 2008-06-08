@@ -151,7 +151,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 	if (_owners.size() != _owner_set.size()) { 
 		std::string o;
 		for(std::deque<int>::const_iterator i = _owners.begin(); i != _owners.end(); ++i) 
-			o += mrt::formatString("%d,", *i);
+			o += mrt::format_string("%d,", *i);
 		throw_ex(("broken/duplicate owners recv'ed: %s [%u/%u]", o.substr(0, o.size() - 1).c_str(), (unsigned)_owners.size(), (unsigned)_owner_set.size()));
 	}
 		
@@ -159,7 +159,7 @@ void BaseObject::deserialize(const mrt::Serializator &s) {
 }
 
 const std::string BaseObject::dump() const {
-	return mrt::formatString("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, z: %d, dead: %s",
+	return mrt::format_string("object '%s', mass: %g, speed: %g, ttl: %g, impassability: %g, hp: %d, piercing: %s, pierceable: %s, z: %d, dead: %s",
 		classname.c_str(), mass, speed, ttl, impassability, hp, piercing?"true":"false", pierceable?"true":"false", _z, _dead?"true":"false"
 	);
 }

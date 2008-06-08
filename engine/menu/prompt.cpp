@@ -30,16 +30,16 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), valu
 	_background.init("menu/background_box_dark.png", w, h, 24);
 	int mx, my, bw, bh;
 	_background.getMargins(mx, my);
-	_background.getSize(bw, bh);
+	_background.get_size(bw, bh);
 	_text_rect = sdlx::Rect(mx, my, w - mx * 2, bh - 2 * my);
 	//add(_text_rect, _text = text);
 
 	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
-	_b_back->getSize(bw, bh);
+	_b_back->get_size(bw, bh);
 	add(w / 4 - bw / 2, h/2, _b_back);
 
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
-	_b_ok->getSize(bw, bh);
+	_b_ok->get_size(bw, bh);
 	_text_rect.h -= bh;
 
 	add(3 * w / 4 - bw / 2, h/2, _b_ok);
@@ -89,7 +89,7 @@ bool Prompt::onKey(const SDL_keysym sym) {
 }
 
 
-void Prompt::getSize(int &w , int &h) const {
+void Prompt::get_size(int &w , int &h) const {
 	w = _background.w; h = _background.h;
 }
 
@@ -104,17 +104,17 @@ bool Prompt::onMouse(const int button, const bool pressed, const int x, const in
 void Prompt::render(sdlx::Surface& surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	sdlx::Rect old_clip; 
-	surface.getClipRect(old_clip);
+	surface.get_clip_rect(old_clip);
 	
 	sdlx::Rect clip  = _text_rect;
 	
 	clip.x += x;
 	clip.y += y;
 	
-	surface.setClipRect(clip);
+	surface.set_clip_rect(clip);
 	int w, h;
-	_text->getSize(w, h);
+	_text->get_size(w, h);
 	_text->render(surface, x + _text_rect.x + ((w > _text_rect.w)?(_text_rect.w - w):0), y + _text_rect.y + (_text_rect.h - h) / 2);
-	surface.setClipRect(old_clip);
+	surface.set_clip_rect(old_clip);
 	Container::render(surface, x, y);
 }

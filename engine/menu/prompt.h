@@ -31,7 +31,7 @@ class Button;
 class BTANKSAPI Prompt : public Container {
 public: 
 	Prompt(const int w, const int h, TextControl *text);
-	void getSize(int &w , int &h) const;
+	void get_size(int &w , int &h) const;
 
 	void set(const std::string &value);
 	const std::string &get() const;

@@ -33,7 +33,7 @@ public:
 	void probe() const {}
 private:
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state);
-	void getPosition(v2<float>&pos) const;
+	void get_position(v2<float>&pos) const;
 	Object * getObject() const;
 
 	sl08::slot4<bool, const int, const bool, const int, const int, MouseControl> on_mouse_slot;	

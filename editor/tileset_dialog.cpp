@@ -42,11 +42,11 @@ TilesetDialog::TilesetDialog(const int w, const int h) :
 
 	_sl_tilesets = new ScrollList("menu/background_box.png", "small", 200, h);
 	int cw, ch;
-	_sl_tilesets->getSize(cw, ch);
+	_sl_tilesets->get_size(cw, ch);
 	add(w - cw, 0, _sl_tilesets);
 
 	_add_tileset = new AddTilesetDialog(200, h);
-	_add_tileset->getSize(cw, ch);
+	_add_tileset->get_size(cw, ch);
 	add(w - cw, 0, _add_tileset);
 	_add_tileset->hide();
 }
@@ -56,9 +56,9 @@ void TilesetDialog::initMap() {
 	LOG_DEBUG(("fixme: finder returns %s", _fname.c_str()));
 	
 	_tile_size = Map->getTileSize();
-	_brush.createRGB(_tile_size.x, _tile_size.y, 32);
-	_brush.convertAlpha();
-	_brush.fillRect(_brush.getSize(), _brush.mapRGBA(0xdd, 0xdd, 0x11, 0x80));
+	_brush.create_rgb(_tile_size.x, _tile_size.y, 32);
+	_brush.display_format_alpha();
+	_brush.fill_rect(_brush.get_size(), _brush.map_rgba(0xdd, 0xdd, 0x11, 0x80));
 	_tilesets = Map->getTilesets();
 	
 	_sl_tilesets->clear();
@@ -67,7 +67,7 @@ void TilesetDialog::initMap() {
 		std::string name = _tilesets[i].first;
 		{
 			//beautify name
-			name = mrt::FSNode::getFilename(name, false);
+			name = mrt::FSNode::get_filename(name, false);
 		}
 		
 		char key = '1' + (char)i;
@@ -75,14 +75,14 @@ void TilesetDialog::initMap() {
 			key = '0'; 
 		if (i >= 10)
 			key = 'a' + i - 10;
-		_sl_tilesets->append(mrt::formatString("%c.%s", key, name.c_str()));
+		_sl_tilesets->append(mrt::format_string("%c.%s", key, name.c_str()));
 	}
 }
 
 bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (!Map->loaded())
 		return false;
-	if (_current_tileset != NULL && x <= _current_tileset->getWidth()) {
+	if (_current_tileset != NULL && x <= _current_tileset->get_width()) {
 	switch(button) {
 	case SDL_BUTTON_LEFT: 
 		if (pressed) {
@@ -97,7 +97,7 @@ bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, c
 			int y1 = math::max(_brush_1.y, _brush_2.y);
 			int x0 = math::min(_brush_1.x, _brush_2.x);
 			int x1 = math::max(_brush_1.x, _brush_2.x);
-			int tileset_width = (_current_tileset->getWidth() - 1) / _tile_size.x + 1;
+			int tileset_width = (_current_tileset->get_width() - 1) / _tile_size.x + 1;
 			
 			LOG_DEBUG(("brush : %dx%d-%dx%d", x0, y0, x1, y1));
 			std::vector<int> tiles;
@@ -144,7 +144,7 @@ bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, c
 bool TilesetDialog::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	if (!Map->loaded())
 		return false;
-	if (_current_tileset && _current_tileset->getHeight() > _h) {
+	if (_current_tileset && _current_tileset->get_height() > _h) {
 		if (y + _tile_size.y / 2 >= _h) {
 			_vel.y = 1;
 		} else if (y <= _tile_size.y / 2) {
@@ -178,10 +178,10 @@ void TilesetDialog::tick(const float dt) {
 
 	GET_CONFIG_VALUE("editor.scrolling-speed", int, ss, 500);
 	_pos += _vel * (ss * dt);
-	if (_pos.x + _w > _current_tileset->getWidth())
-		_pos.x = _current_tileset->getWidth() - _w;
-	if (_pos.y + _h > _current_tileset->getHeight())
-		_pos.y = _current_tileset->getHeight() - _h;
+	if (_pos.x + _w > _current_tileset->get_width())
+		_pos.x = _current_tileset->get_width() - _w;
+	if (_pos.y + _h > _current_tileset->get_height())
+		_pos.y = _current_tileset->get_height() - _h;
 
 	if (_pos.x < 0)
 		_pos.x  = 0;
@@ -248,14 +248,14 @@ void TilesetDialog::set(const int tileset) {
 	_current_tileset_gid = _tilesets[tileset].second;
 
 	_current_tileset = ResourceManager->loadSurface("../tilesets/" + name);
-	_tileset_bg->init("transparent_background_box.png", _current_tileset->getWidth(), _current_tileset->getHeight());
+	_tileset_bg->init("transparent_background_box.png", _current_tileset->get_width(), _current_tileset->get_height());
 }
 
 void TilesetDialog::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 	if (_current_tileset == NULL)
 		return;
-	surface.copyFrom(*_current_tileset, -(int)_pos.x, -(int)_pos.y);
+	surface.blit(*_current_tileset, -(int)_pos.x, -(int)_pos.y);
 
 	if (!_brush.isNull() && (_selected || _selecting)) {
 		int y0 = math::min(_brush_1.y, _brush_2.y);
@@ -265,7 +265,7 @@ void TilesetDialog::render(sdlx::Surface &surface, const int x, const int y) con
 
 		for(int yb = y0; yb <= y1; ++yb) {
 			for(int xb = x0; xb <= x1; ++xb) {
-				surface.copyFrom(_brush, x + xb * _tile_size.x - (int)_pos.x, y + yb * _tile_size.y - (int)_pos.y);
+				surface.blit(_brush, x + xb * _tile_size.x - (int)_pos.x, y + yb * _tile_size.y - (int)_pos.y);
 			}
 		}
 	}

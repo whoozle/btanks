@@ -40,8 +40,8 @@ public:
 	virtual void close();
 	virtual ~Directory();
 	
-	static const std::string getHome();
-	static const std::string getAppDir(const std::string &name, const std::string &shortname);
+	static const std::string get_home();
+	static const std::string get_app_dir(const std::string &name, const std::string &shortname);
 	
 private: 
 

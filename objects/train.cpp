@@ -36,7 +36,7 @@ public:
 			emit("death", NULL);
 			return;
 		}
-		addOwner(o->getID());	
+		addOwner(o->get_id());	
 	}	
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void calculate(const float dt) {
@@ -99,7 +99,7 @@ private:
 
 void Train::onSpawn() {
 	play("move", true);
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->get_size();
 	dst_y = map_size.y - (int)(size.y) / 2 - 4; //fixme. :)
 	disown();
 
@@ -119,13 +119,13 @@ void Train::tick(const float dt) {
 	Object::tick(dt);
 	if (Map->torus()) {
 		if (!_wagon_id) {
-			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->getID();
+			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->get_id();
 		}
 	} else { 
 		v2<int> pos;
-		getPosition(pos);
+		get_position(pos);
 		if (pos.y >= 0 && !_wagon_id) {
-			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->getID();
+			_wagon_id = spawn("choo-choo-wagon", "choo-choo-wagon", v2<float>(0, -size.y))->get_id();
 		}
 		if (pos.y  >= dst_y && !GameMonitor->gameOver()) { 
 			LOG_DEBUG(("escaped!"));

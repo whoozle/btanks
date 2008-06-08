@@ -81,7 +81,7 @@ IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), spawn_ai(0) {
 
 	std::string path;
-	path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
+	path = mrt::Directory::get_app_dir("Battle Tanks", "btanks") + "/";
 	Config->load(path + "bt.xml");
 
 #ifndef _WINDOWS
@@ -353,7 +353,7 @@ void IGame::init(const int argc, char *argv[]) {
 		}
 
 		if (lang.empty())
-			lang = mrt::getLanguageCode();
+			lang = mrt::get_lang_code();
 	}
 	
 	
@@ -366,7 +366,7 @@ void IGame::init(const int argc, char *argv[]) {
 		Window->init(argc, argv);
 	} else {
 		sdlx::System::init(SDL_INIT_TIMER);
-		sdlx::Surface::setDefaultFlags(SDL_SRCALPHA);
+		sdlx::Surface::set_default_flags(SDL_SRCALPHA);
 	}
 
 	IFinder::FindResult playlists;
@@ -393,7 +393,7 @@ if (!RTConfig->server_mode) {
 			j.open(i);
 			LOG_DEBUG(("%d: %s axes: %d, buttons: %d, hats: %d, balls: %d", 
 				i, sdlx::Joystick::getName(i).c_str(), 
-				j.getNumAxes(), j.getNumButtons(), j.getNumHats(), j.getNumBalls()
+				j.get_axis_num(), j.get_buttons_num(), j.get_hats_num(), j.get_balls_num()
 				));
 			
 			j.close();
@@ -422,7 +422,7 @@ if (!RTConfig->server_mode) {
 		Window->getSurface().flip();
 	
 		LOG_DEBUG(("initializing hud..."));
-		sdlx::Rect window_size = Window->getSize();
+		sdlx::Rect window_size = Window->get_size();
 		_hud = new Hud(window_size.w, window_size.h);
 	} else {  
 		_hud = NULL;
@@ -466,7 +466,7 @@ if (!RTConfig->server_mode) {
 	} else _log_lines = NULL;
 
 	if (_main_menu != NULL) {
-		sdlx::Rect window_size = Window->getSize();
+		sdlx::Rect window_size = Window->get_size();
 		_main_menu->init(window_size.w, window_size.h);
 	}
 	
@@ -546,7 +546,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 #	ifndef _WINDOWS
 	if (key.sym==SDLK_RETURN && key.mod & KMOD_CTRL) {
 		TRY {
-			Window->getSurface().toggleFullscreen();
+			Window->getSurface().toggle_fullscreen();
 		} CATCH("main loop", {});
 		return true;
 	}
@@ -556,7 +556,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	if (key.sym==SDLK_s && key.mod & KMOD_SHIFT) {
-		std::string path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
+		std::string path = mrt::Directory::get_app_dir("Battle Tanks", "btanks") + "/";
 		std::string name = Map->getName();
 		path += name.empty()?"screenshot":name;
 
@@ -564,32 +564,32 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		std::string fname;
 		mrt::Directory dir;
 		do {
-			fname = path + mrt::formatString("%02d.bmp", n++);
+			fname = path + mrt::format_string("%02d.bmp", n++);
 		} while(dir.exists(fname));
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
 		TRY {
-			Window->getSurface().saveBMP(fname);
+			Window->getSurface().save_bmp(fname);
 		} CATCH("saving screenshot", );
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && Map->loaded()) {
-		std::string path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
+		std::string path = mrt::Directory::get_app_dir("Battle Tanks", "btanks") + "/";
 		std::string name = Map->getName();
 		path += name.empty()?"map":name;
 		path += ".bmp";
 		
-		const v2<int> msize = Map->getSize();
+		const v2<int> msize = Map->get_size();
 		LOG_DEBUG(("creating map screenshot %dx%d", msize.x, msize.y));
 
 		sdlx::Surface screenshot;
-		screenshot.createRGB(msize.x, msize.y, 32, SDL_SWSURFACE | SDL_SRCALPHA);
-		screenshot.convertAlpha();
-		screenshot.fillRect(screenshot.getSize(), screenshot.mapRGBA(0,0,0,255));
+		screenshot.create_rgb(msize.x, msize.y, 32, SDL_SWSURFACE | SDL_SRCALPHA);
+		screenshot.display_format_alpha();
+		screenshot.fill_rect(screenshot.get_size(), screenshot.map_rgba(0,0,0,255));
 
 		sdlx::Rect viewport(0, 0, msize.x, msize.y);
 		World->render(screenshot, viewport, viewport);
 		TRY {
-			screenshot.saveBMP(path);
+			screenshot.save_bmp(path);
 		} CATCH("saving screenshot", );
 		return true;
 	}
@@ -712,8 +712,8 @@ void IGame::onTick(const float dt) {
 			return;
 		}
 		window.fill(0);
-		sdlx::Rect window_size = Window->getSize();
-		window.copyFrom(*_donate, (window_size.w - _donate->getWidth()) / 2, (window_size.h - _donate->getHeight()) / 2);
+		sdlx::Rect window_size = Window->get_size();
+		window.blit(*_donate, (window_size.w - _donate->get_width()) / 2, (window_size.h - _donate->get_height()) / 2);
 		goto flip;
 	}
 
@@ -745,7 +745,7 @@ void IGame::onTick(const float dt) {
 		if (_main_menu)
 			_main_menu->tick(dt);
 
-		window.fill(window.mapRGB(0x10, 0x10, 0x10));
+		window.fill(window.map_rgb(0x10, 0x10, 0x10));
 
 		if (!_credits && !Map->loaded())
 			_hud->renderSplash(window);
@@ -795,12 +795,12 @@ flip:
 		float fr = Window->getFrameRate();
 		if (_show_fps) {
 			_fps->hp = (int)floor(fr);
-			_fps->render(window, window.getWidth() - (int)(_fps->size.x * 3), window.getHeight() - (int)_fps->size.y);
+			_fps->render(window, window.get_width() - (int)(_fps->size.x * 3), window.get_height() - (int)_fps->size.y);
 		}
 		if (_show_log_lines) {
-			_log_lines->hp = mrt::Logger->getLinesCounter();
+			_log_lines->hp = mrt::Logger->get_lines_counter();
 			int size = (_log_lines->hp > 0)? (int)log10((double)_log_lines->hp) + 2:2;
-			_log_lines->render(window, window.getWidth() - (int)(_log_lines->size.x * size), 20);
+			_log_lines->render(window, window.get_width() - (int)(_log_lines->size.x * size), 20);
 		}
 		
 		if (_paused) {
@@ -809,7 +809,7 @@ flip:
 				font = ResourceManager->loadFont("medium_dark", true);
 			std::string pstr = I18n->get("messages", "game-paused");
 			int w = font->render(NULL, 0, 0, pstr);
-			font->render(window, (window.getWidth() - w) / 2, (window.getHeight() - font->getHeight()) / 2, pstr);
+			font->render(window, (window.get_width() - w) / 2, (window.get_height() - font->get_height()) / 2, pstr);
 		}
 }
 
@@ -934,15 +934,15 @@ void IGame::notifyLoadingBar(const int progress, const char *what) {
 	_loading_bar_now += progress;
 	
 	sdlx::Surface &window = Window->getSurface();
-	const sdlx::Rect window_size = Window->getSize();
+	const sdlx::Rect window_size = Window->get_size();
 	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total, what)) {
 		if (_tip != NULL) {
 			int w, h;
-			_tip->getSize(w, h);
+			_tip->get_size(w, h);
 			_tip->render(window, (window_size.w - w) / 2, window_size.h - h * 5 / 4);
 		}
 		Window->flip();
-		window.fill(window.mapRGB(0x10, 0x10, 0x10));
+		window.fill(window.map_rgb(0x10, 0x10, 0x10));
 	}
 }
 
@@ -978,7 +978,7 @@ try {
 				Object *o = PlayerManager->getSlot(idx).getObject();
 				if (o == NULL)
 					throw_ex(("no object in slot %d", idx));
-				o->getPosition(pos);
+				o->get_position(pos);
 			} else pos.fromString(par[2]);
 			if (tiled_pos) {
 				v2<int> ts = Map->getTileSize();
@@ -1009,7 +1009,7 @@ try {
 			throw_ex(("no object in slot %d", idx));
 		int z = atoi(p[1].c_str());
 		o->setZ(z, true);
-		return mrt::formatString("setting z %d for object %d", z, o->getID());
+		return mrt::format_string("setting z %d for object %d", z, o->get_id());
 	} else if (cmd == "position") {
 		if (param.empty())
 			return "usage: position <slot>";
@@ -1019,11 +1019,11 @@ try {
 			throw_ex(("no object in slot %d", idx));
 
 		v2<float> position;
-		o->getCenterPosition(position);
+		o->get_center_position(position);
 
 		v2<int> tile_size = Map->getTileSize();
 		v2<int> tiled = position.convert<int>() / tile_size;
-		const std::string posstr = mrt::formatString("%g %g @%d,%d", position.x, position.y, tiled.x, tiled.y);
+		const std::string posstr = mrt::format_string("%g %g @%d,%d", position.x, position.y, tiled.x, tiled.y);
 		LOG_NOTICE(("%s", posstr.c_str()));
 		return posstr;
 	} 

@@ -68,7 +68,7 @@ area(area), message(message), _use_background(use_background) {
 		unsigned int l = mrt::utf8_length(words[i]);
 		lens[i] = l;
 		sum += l;
-		//lens_dump += mrt::formatString("%s<<%s>>%u", (i == 0)?"":", ", words[i].c_str(), l);
+		//lens_dump += mrt::format_string("%s<<%s>>%u", (i == 0)?"":", ", words[i].c_str(), l);
 	}
 	//LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
@@ -87,7 +87,7 @@ area(area), message(message), _use_background(use_background) {
 		_background.getMargins(mx, my);
 	}
 	
-	int line_h = font->getHeight() + 2;
+	int line_h = font->get_height() + 2;
 
 	int width = 0;
 	std::deque<size_t> lines;
@@ -109,11 +109,11 @@ area(area), message(message), _use_background(use_background) {
 	//LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
 	if (_use_background) {
 		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
-		_surface.createRGB(_background.w, _background.h, 32, SDL_SRCALPHA);
+		_surface.create_rgb(_background.w, _background.h, 32, SDL_SRCALPHA);
 	} else {
-		_surface.createRGB(w, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
+		_surface.create_rgb(w, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
 	}
-	_surface.convertAlpha();
+	_surface.display_format_alpha();
 	
 	int yp = my - (use_background? 2:0);
 	i = 0;
@@ -132,10 +132,10 @@ area(area), message(message), _use_background(use_background) {
 void Tooltip::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (_use_background)
 		_background.render(surface, x, y);
-	surface.copyFrom(_surface, x, y);
+	surface.blit(_surface, x, y);
 }
 
-void Tooltip::getSize(int &w, int &h) const {
-	w = _surface.getWidth();
-	h = _surface.getHeight();
+void Tooltip::get_size(int &w, int &h) const {
+	w = _surface.get_width();
+	h = _surface.get_height();
 }

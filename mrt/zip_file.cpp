@@ -66,7 +66,7 @@ void ZipFile::write(const mrt::Chunk &ch) const {
 	throw_ex(("unimplemented!"));
 }
 
-const off_t ZipFile::getSize() const {
+const off_t ZipFile::get_size() const {
 	return usize;
 }
 

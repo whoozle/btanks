@@ -23,7 +23,7 @@
 
 class BTANKSAPI XMLParser : public mrt::XMLParser {
 public: 
-	virtual void parseFile(const std::string &file);
+	virtual void parse_file(const std::string &file);
 };
 
 #endif

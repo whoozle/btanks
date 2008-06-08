@@ -44,18 +44,18 @@ class Pose;
 class BTANKSAPI Object : public BaseObject {
 public:
 	const v2<float> getRelativePosition(const Object *obj) const;
-	inline const v2<float> getPosition() const { return _parent == NULL? _position: _position + _parent->getPosition(); }
+	inline const v2<float> get_position() const { return _parent == NULL? _position: _position + _parent->get_position(); }
 
 	template<typename T>
-	inline void getPosition(v2<T> &position) const { 
+	inline void get_position(v2<T> &position) const { 
 		position = _position.convert<T>(); 
 		if (_parent != NULL) 
-			position += _parent->getPosition().convert<T>();
+			position += _parent->get_position().convert<T>();
 	}
 
-	inline const v2<float> getCenterPosition() const { return getPosition() + size / 2; }
+	inline const v2<float> get_center_position() const { return get_position() + size / 2; }
 	template<typename T>
-	inline void getCenterPosition(v2<T> &position) const { getPosition<T>(position); position += (size / 2).convert<T>(); }
+	inline void get_center_position(v2<T> &position) const { get_position<T>(position); position += (size / 2).convert<T>(); }
 
 	const std::string registered_name; 
 	
@@ -74,8 +74,8 @@ public:
 	void playRandomSound(const std::string &classname, const bool loop, const float gain = 1.0);
 	void fadeoutSound(const std::string &name);
 
-	inline const int getDirection() const { return _direction_idx; }
-	inline const int getDirectionsNumber() const { return _directions_n; }
+	inline const int get_direction() const { return _direction_idx; }
+	inline const int get_directions_number() const { return _directions_n; }
 	virtual void setDirection(const int dir);
 	void setDirectionsNumber(const int dirs);
 	
@@ -128,10 +128,10 @@ public:
 
 	const float getWeaponRange(const std::string &weapon) const;
 
-	const int getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
-	const int getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const;
-	const int getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
-	const int getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const;
+	const int getTarget_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const;
+	const int getTarget_position(v2<float> &relative_position, const v2<float> &target, const float range) const;
+	const int getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const;
+	const int getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const;
 
 	void quantizeVelocity();
 	

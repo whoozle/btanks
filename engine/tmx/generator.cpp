@@ -21,7 +21,7 @@ use layer_get.
 ******************/
 
 static const int layer_get(const Layer *layer, const int x, const int y) {
-	return layer->Layer::_get(y * layer->getWidth() + x);
+	return layer->Layer::_get(y * layer->get_width() + x);
 }
 
 void MapGenerator::exec(Layer *layer, const std::string &command, const std::string &value) {
@@ -59,7 +59,7 @@ void MapGenerator::fill(Layer *layer, const std::vector<std::string> &args) {
 	const int gid = first_gid[args[0]];
 	if (gid == 0) 
 		throw_ex(("unknown layer %s", args[0].c_str()));
-	int w = layer->getWidth(), h = layer->getHeight();
+	int w = layer->get_width(), h = layer->get_height();
 	for(int y = 0; y < h; y += obj->h) 
 		for(int x = 0; x < w; x += obj->w) {
 			obj->render(this, gid, x, y, true);	
@@ -110,7 +110,7 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 		throw_ex(("pattern size must be exact %d chars", px * py));
 
 	const GeneratorObject *obj = getObject(args[0], args[1]);
-	int w = layer->getWidth(), h = layer->getHeight();
+	int w = layer->get_width(), h = layer->get_height();
 
 	for(int y = 0; y < h + py; y += py) 
 		for(int x = 0; x < w + px; x += px) {
@@ -130,7 +130,7 @@ void MapGenerator::fillPattern(Layer *layer, const std::vector<std::string> &arg
 
 void MapGenerator::pushMatrix(Layer *layer, const std::vector<std::string> &args) {
 	IntMatrix m;
-	m.setSize(layer->getHeight(), layer->getWidth(), 0);
+	m.set_size(layer->get_height(), layer->get_width(), 0);
 	m.useDefault(0);
 	_matrix_stack.push(m);
 }
@@ -149,10 +149,10 @@ void MapGenerator::exclude(Layer *layer, const std::vector<std::string> &args) {
 	v2<int> pos;
 	pos.fromString(args[0]);
 	if (pos.x < 0) 
-		pos.x += layer->getWidth();
+		pos.x += layer->get_width();
 
 	if (pos.y < 0) 
-		pos.y += layer->getHeight();
+		pos.y += layer->get_height();
 	
 	_matrix_stack.top().set(pos.y, pos.x, 1);
 }
@@ -188,7 +188,7 @@ void MapGenerator::getPrimaryBoxes(std::deque<std::pair<std::string, std::string
 
 
 void MapGenerator::tileset(const std::string &fname, const int gid) {
-	std::string name = mrt::FSNode::getFilename(fname, false);
+	std::string name = mrt::FSNode::get_filename(fname, false);
 	//std::string xml_name = getDescName(fname);
 	std::string xml_name = "tilesets/" + name + ".xml";
 	LOG_DEBUG(("tileset: %s, gid: %d, description file: %s", name.c_str(), gid, xml_name.c_str()));
@@ -204,7 +204,7 @@ void MapGenerator::tileset(const std::string &fname, const int gid) {
 	Tileset *t = NULL;
 	TRY {
 		t = new Tileset;
-		t->parseFile(f);
+		t->parse_file(f);
 		_tilesets.insert(Tilesets::value_type(name, t));
 		t = NULL;
 	} CATCH("parsing tileset descriptor", {delete t; throw;} );
@@ -253,7 +253,7 @@ const std::string MapGenerator::getDescName(const std::string &fname) {
 void MapGenerator::projectLayer(Layer *layer, const std::vector<std::string> &args) {
 	if (_matrix_stack.empty())
 		throw_ex(("you cannot use project-layer without push-matrix. (no matrix on stack)"));
-	int w = layer->getWidth(), h = layer->getHeight();
+	int w = layer->get_width(), h = layer->get_height();
 	for(int y = 0; y < h; ++y) 
 		for(int x = 0; x < w; ++x) {
 			int tid = layer_get(layer, x, y);

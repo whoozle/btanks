@@ -38,7 +38,7 @@ void Sample::generateSine(const int freq, const float len) {
 	spec.format = context->get_spec().format;
 
 	unsigned size = ((int)(len * spec.freq)) * 2;
-	data.setSize(size);
+	data.set_size(size);
 
 	static double a = 0;
 	double da = freq * 2 * M_PI / spec.freq;
@@ -46,13 +46,13 @@ void Sample::generateSine(const int freq, const float len) {
 	
 	int n = size / 2;
 
-	Sint16 * stream = (Sint16 *)data.getPtr();
+	Sint16 * stream = (Sint16 *)data.get_ptr();
 	for(int i = 0; i < n; ++i) {
 		*stream++ = (Sint16)(32767 * sin(a));
 		//*stream++ = 0;
 		a += da;
 	}
-	LOG_DEBUG(("generated %u bytes", (unsigned)data.getSize()));
+	LOG_DEBUG(("generated %u bytes", (unsigned)data.get_size()));
 }
 
 void Sample::init(const mrt::Chunk &src_data, int rate, const Uint16 format, const Uint8 channels) {

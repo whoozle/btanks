@@ -80,7 +80,7 @@ public:
 	
 	void tick(const float dt);
 	void render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const;
-	const v2<int> getSize() const;
+	const v2<int> get_size() const;
 	const v2<int> getTileSize() const;
 	const v2<int> getPathTileSize() const;
 	
@@ -245,7 +245,7 @@ private:
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 
 	const Uint32 getTile(const Layer *l, const int x, const int y) const;
 	const sdlx::Surface* getSurface(const Layer *l, const int x, const int y) const;

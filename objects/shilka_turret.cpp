@@ -101,7 +101,7 @@ public:
 		if (_parent == NULL)
 			throw_ex(("turret is only operable attached to shilka "));
 
-		if (_parent->disable_ai && PlayerManager->getSlotByID(_parent->getID()) == NULL) {
+		if (_parent->disable_ai && PlayerManager->getSlotByID(_parent->get_id()) == NULL) {
 			Object::calculate(dt);
 			return;
 		}
@@ -110,15 +110,15 @@ public:
 		std::set<const Object *> objects;
 		_parent->enumerateObjects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
 
-		int dirs = getDirectionsNumber();
-		//int parent_dir = _parent->getDirection();
-		//(_parent->getDirection() - _parent->getDirectionsNumber() / 2) * getDirectionsNumber() / _parent->getDirectionsNumber();
+		int dirs = get_directions_number();
+		//int parent_dir = _parent->get_direction();
+		//(_parent->get_direction() - _parent->get_directions_number() / 2) * get_directions_number() / _parent->get_directions_number();
 
 		const Object *target = NULL;
 		v2<float> target_pos;
 		for(std::set<const Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (o->getID() == _parent->getID() || o->impassability == 0 || 
+			if (o->get_id() == _parent->get_id() || o->impassability == 0 || 
 				PIERCEABLE_PAIR(_parent, o) || !ZBox::sameBox(_parent->getZ(), o->getZ()) || _parent->hasSameOwner(o) ||
 				o->has_effect("invulnerability")
 				)
@@ -133,7 +133,7 @@ public:
 		}
 		
 		target_pos.normalize();
-		int dir = target_pos.getDirection(dirs) - 1;
+		int dir = target_pos.get_direction(dirs) - 1;
 
 		if (target == NULL || dir < 0) {
 			Object::calculate(dt);

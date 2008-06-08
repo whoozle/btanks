@@ -58,7 +58,7 @@ struct MapScanner : mrt::XMLParser {
 	void scan(const std::string &name) {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(Finder->find("maps/" + name + ".tmx"), "rt"));
 
-		parseFile(*f);
+		parse_file(*f);
 		LOG_DEBUG(("parser: slots: %d, object_restriction: '%s'", slots, object_restriction.c_str()));
 	}
 private: 
@@ -86,7 +86,7 @@ private:
 		}
 	}
 	virtual void end(const std::string &name) {}
-//	virtual void charData(const std::string &data);
+//	virtual void cdata(const std::string &data);
 };
 
 const MapDesc &MapPicker::getCurrentMap() const { 
@@ -106,7 +106,7 @@ void MapPicker::scan(const std::string &base) {
 	for(size_t i = 0; i < entries.size(); ++i) {
 		std::string map = entries[i];
 		
-		mrt::toLower(map);
+		mrt::to_lower(map);
 		if (map.size() < 5 || map.compare(map.size() - 4, 4, ".tmx") != 0)
 			continue;
 		map = map.substr(0, map.size() - 4);
@@ -132,7 +132,7 @@ void MapPicker::tick(const float dt) {
 		_upper_box->reset();
 		_upper_box->update(map.game_type);
 
-		Config->set(mrt::formatString("menu.mode-%d.default-mp-map", notepad->get()), map.name);
+		Config->set(mrt::format_string("menu.mode-%d.default-mp-map", notepad->get()), map.name);
 		_details->set(map);
 		_picker->set(map);
 		_mode_panel->set(map, notepad->get());
@@ -157,7 +157,7 @@ void MapPicker::reload() {
 	MenuConfig->load(mode);
 	
 	std::string map, default_map = (mode == 2)?"baykonur": "curfew";
-	Config->get(mrt::formatString("menu.mode-%d.default-mp-map", mode), map, default_map);
+	Config->get(mrt::format_string("menu.mode-%d.default-mp-map", mode), map, default_map);
 
 	_index = 0;
 
@@ -191,7 +191,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		
 	_upper_box = new UpperBox(w, 80, true);
 	int xdummy, ybase;
-	_upper_box->getSize(xdummy, ybase);
+	_upper_box->get_size(xdummy, ybase);
 	ybase += 4;
 	
 	notepad = new Notepad(w, "medium");
@@ -207,7 +207,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	add(16, ybase, notepad);
 	{
 		int w, h;
-		notepad->getSize(w, h);
+		notepad->get_size(w, h);
 		ybase += h;
 	}
 	ybase1 = ybase;
@@ -230,7 +230,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	
 	TRY {
 		int cw, ch;
-		_upper_box->getSize(cw, ch);
+		_upper_box->get_size(cw, ch);
 		add((w - cw) / 2, 0, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
@@ -242,7 +242,7 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 
 	int ydummy;
-	_list->getSize(xdummy, ydummy);
+	_list->get_size(xdummy, ydummy);
 	ybase2 = ybase + ydummy;
 	ybase += ydummy + 4;
 	add(0, ybase, _mode_panel = new ModePanel(w));
@@ -275,12 +275,12 @@ void MapPicker::fillSlots() const {
 		}
 		
 		std::string animation;
-		mrt::toLower(object);
+		mrt::to_lower(object);
 		LOG_DEBUG(("before: %s:%s", object.c_str(), animation.c_str()));
 		slot.getDefaultVehicle(object, animation);
 		LOG_DEBUG(("after: %s:%s", object.c_str(), animation.c_str()));
 		
-		mrt::toLower(type);
+		mrt::to_lower(type);
 
 		std::string cm = "ai";
 		if (!split) {
@@ -307,10 +307,10 @@ void MapPicker::fillSlots() const {
 	}
 
 	if (!split) {	
-		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(Window->getSize());
+		PlayerManager->getSlot((idx1 == -1)?0:idx1).setViewport(Window->get_size());
 	} else {
 		v2<int> ts = Map->getTileSize();
-		sdlx::Rect window_size = Window->getSize();
+		sdlx::Rect window_size = Window->get_size();
 		int w = window_size.w / 2;
 
 		sdlx::Rect vp1(window_size);

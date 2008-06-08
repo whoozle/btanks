@@ -19,7 +19,7 @@ public:
 
 	void tick(const float dt);
 
-	void setPosition(const v2<float> &pos);
+	void set_position(const v2<float> &pos);
 	void setDestination(const v2<float> &pos);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 

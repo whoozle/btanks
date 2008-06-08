@@ -32,7 +32,7 @@ public:
 	void wait();
 
 	const bool wait(const Uint32 timeout);
-	const bool tryWait(); 
+	const bool try_wait(); 
 
 private: 
 	Semaphore(const Semaphore &);

@@ -70,8 +70,8 @@ void OpenMapDialog::tick(const float dt) {
 					dir.create(base + "/maps", true);
 				} catch(...) {}
 
-				file.open(mrt::formatString("%s/maps/%s.tmx", base.c_str(), map.c_str()), "wb");
-				file.writeAll(mrt::formatString(
+				file.open(mrt::format_string("%s/maps/%s.tmx", base.c_str(), map.c_str()), "wb");
+				file.write_all(mrt::format_string(
 					"<?xml version=\"1.0\"?>\n"
 					"<map version=\"0.99b\" orientation=\"orthogonal\" width=\"%d\" height=\"%d\" tilewidth=\"64\" tileheight=\"64\">\n"
 					"</map>\n", n_width->get(), n_height->get()
@@ -132,7 +132,7 @@ OpenMapDialog::OpenMapDialog() {
 		for(size_t j = 0; j < entries.size(); ++j) {
 			std::string map = entries[j];
 		
-			mrt::toLower(map);
+			mrt::to_lower(map);
 			if (map.size() < 5 || map.compare(map.size() - 4, 4, ".tmx") != 0)
 				continue;
 			map = map.substr(0, map.size() - 4);
@@ -146,7 +146,7 @@ OpenMapDialog::OpenMapDialog() {
 	int w = 320, h = 200;
 	Box *b = new Box("menu/background_box.png", w, h);
 	add(0, 0, b);
-	getSize(w, h);
+	get_size(w, h);
 	
 	int mx, my;
 	b->getMargins(mx, my);
@@ -155,7 +155,7 @@ OpenMapDialog::OpenMapDialog() {
 
 	int cw, ch;
 	c_base = new Chooser("small", path);
-	c_base->getSize(cw, ch);
+	c_base->get_size(cw, ch);
 
 	int yp = my;
 	add(mx + (w - cw) / 2, yp, c_base);
@@ -180,19 +180,19 @@ OpenMapDialog::OpenMapDialog() {
 
 	for(std::map<const std::string, Chooser *>::const_iterator i = _map_chooser.begin(); i != _map_chooser.end(); ++i) {
 		int cw, ch;
-		i->second->getSize(cw, ch);
+		i->second->get_size(cw, ch);
 		add(mx + (w - cw) / 2, yp, i->second);
 	}
 
 	c_map = _map_chooser[c_base->getValue()];
 	c_map->hide(false);
-	c_map->getSize(cw, ch);
+	c_map->get_size(cw, ch);
 	yp += ch;
 	
 	n_width = new NumberControl("small", 20);
 	n_height = new NumberControl("small", 20);
 
-	n_width->getSize(cw, ch);
+	n_width->get_size(cw, ch);
 	
 	add(w / 2 - cw - mx, yp, n_width);
 	add(w / 2 + cw + mx, yp, n_height);
@@ -200,13 +200,13 @@ OpenMapDialog::OpenMapDialog() {
 	int b1, b2, b3;
 
 	b_ok = new Button("small", I18n->get("menu", "ok"));
-	b_ok->getSize(b1, ch);
+	b_ok->get_size(b1, ch);
 
 	b_new = new Button("small", I18n->get("editor", "new-map"));
-	b_new->getSize(b2, ch);
+	b_new->get_size(b2, ch);
 
 	b_back = new Button("small", I18n->get("menu", "back"));
-	b_back->getSize(b3, ch);
+	b_back->get_size(b3, ch);
 	
 	
 	int w1 = w * b1 / (b1 + b2 + b3);
@@ -219,7 +219,7 @@ OpenMapDialog::OpenMapDialog() {
 	add(offset + w1 + w2 + w3 / 2 - b3 / 2, h - my - ch, b_back);
 	
 	p_name = new Prompt(w, h * 2 / 3, new TextControl("small"));
-	p_name->getSize(cw, ch);
+	p_name->get_size(cw, ch);
 	p_name->hide();
 	add((w - cw) / 2, (h - ch) / 2, p_name);
 }

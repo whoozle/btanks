@@ -84,7 +84,7 @@ private:
 	
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 	
 	typedef std::map<const std::string, Animation*> AnimationMap;
 	AnimationMap _animations;

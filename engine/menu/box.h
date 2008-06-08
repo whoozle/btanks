@@ -33,7 +33,7 @@ public:
 	Box() : w(0), h(0), _surface(0) {}
 	Box(const std::string &tile, int w, int h);
 	Box(const std::string &tile, int w, int h, int hl_h);
-	virtual void getSize(int &rw, int &rh) const;
+	virtual void get_size(int &rw, int &rh) const;
 	int w, h;
 
 	const bool inited() const { return _surface != 0; }

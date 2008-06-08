@@ -129,7 +129,7 @@ void II18n::load(const std::string &file, const std::string &language) {
 	LOG_DEBUG(("loading file '%s' with language: %s", file.c_str(), language.empty()?"default":language.c_str()));
 
 	scoped_ptr<mrt::BaseFile> f ( Finder->get_file(file, "rt") );
-	parseFile(*f);
+	parse_file(*f);
 	f->close();
 	
 	for(std::set<std::string>::const_iterator i = _unlocalized.begin(); i != _unlocalized.end(); ++i) {
@@ -187,6 +187,6 @@ void II18n::end(const std::string &name) {
 	_cdata.clear();
 }
 
-void II18n::charData(const std::string &data) {
+void II18n::cdata(const std::string &data) {
 	_cdata += data;
 }

@@ -55,7 +55,7 @@ void Heli::tick(const float dt) {
 		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
 		
 		v2<int> pos, pos2;
-		getCenterPosition(pos); 
+		get_center_position(pos); 
 		v2<int> para_size(64, 64);
 		pos -= para_size / 2;
 		

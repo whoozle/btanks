@@ -10,7 +10,7 @@ public:
 	void set(const bool value); 
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	virtual void getSize(int &w, int &h) const;
+	virtual void get_size(int &w, int &h) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	
 private: 

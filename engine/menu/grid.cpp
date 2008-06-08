@@ -42,7 +42,7 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 			if (d.c != NULL && !d.c->hidden()) {
 				int xc, yc;
 				int cw, ch;
-				d.c->getSize(cw, ch);
+				d.c->get_size(cw, ch);
 
 				if (d.align & Center) {
 					xc = (_split_w[j] - cw) / 2;
@@ -84,7 +84,7 @@ Grid::ControlDescriptor * Grid::find(int& x, int& y) {
 			if (d.c != NULL && !d.c->hidden()) {
 				int xc, yc;
 				int cw = -1, ch = -1;
-				d.c->getSize(cw, ch);
+				d.c->get_size(cw, ch);
 				assert(cw >= 0 && ch >= 0);
 
 				if (d.align & Center) {
@@ -133,7 +133,7 @@ void Grid::recalculate(const int w, const int h) {
 			if (c == NULL)
 				continue;
 			int cw = -1, ch = -1;
-			c->getSize(cw, ch);
+			c->get_size(cw, ch);
 			assert(cw >= 0 && ch >= 0);
 			
 			cw += 2 * _spacing;
@@ -166,7 +166,7 @@ void Grid::recalculate(const int w, const int h) {
 	}
 }
 
-void Grid::getSize(int &w, int &h) const {
+void Grid::get_size(int &w, int &h) const {
 	w = h = 0;
 
 	for(size_t i = 0; i < _split_w.size(); ++i) 

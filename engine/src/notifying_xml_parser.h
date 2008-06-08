@@ -30,10 +30,10 @@ public:
 	sl08::signal2<void, const int, const char *> notify_progress;
 
 protected:	
-	virtual void parseFile(const std::string &file);
-	virtual void parseFile(const mrt::BaseFile &file);
+	virtual void parse_file(const std::string &file);
+	virtual void parse_file(const mrt::BaseFile &file);
 	virtual void onFile(const std::string &base, const std::string &file) {}
-	virtual void parseFiles(const std::vector<std::pair<std::string, std::string> > &files);
+	virtual void parse_files(const std::vector<std::pair<std::string, std::string> > &files);
 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);

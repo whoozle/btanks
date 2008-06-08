@@ -149,10 +149,10 @@ const bool Buratino::checkTarget(const Object *object, const Object * target, co
 	{
 		v2<float> d(pos);
 		d.normalize();
-		int dir = d.getDirection(object->getDirectionsNumber()) - 1;
-		codir = dir == object->getDirection();
-		int dd = math::abs(dir - object->getDirection());
-		codir1 = codir || dd == 1 || dd == (object->getDirectionsNumber() - 1);
+		int dir = d.get_direction(object->get_directions_number()) - 1;
+		codir = dir == object->get_direction();
+		int dd = math::abs(dir - object->get_direction());
+		codir1 = codir || dd == 1 || dd == (object->get_directions_number() - 1);
 	}
 
 	//LOG_DEBUG(("checking target(%s/%s): %g %g codir: %c, codir1: %c", wc.c_str(), wt.c_str(), pos.x, pos.y, codir?'+':'-', codir1?'+':'-'));
@@ -178,20 +178,20 @@ void Buratino::calculateCloseCombat(Object *object, const Object *target, const 
 	//LOG_DEBUG(("close combat with %s, range: %g, dumb: %c", target->animation.c_str(), range, dumb?'+':'-'));
 
 	if (!dumb) {
-		_target_dir = object->getTargetPosition(_target_position, object->getRelativePosition(target), range);
+		_target_dir = object->getTarget_position(_target_position, object->getRelativePosition(target), range);
 		if (_target_dir >= 0)
-			Map->add(_target_position, object->getCenterPosition());
+			Map->add(_target_position, object->get_center_position());
 	} 
 
-	object->_velocity = Map->distance(object->getCenterPosition(), _target_position);
+	object->_velocity = Map->distance(object->get_center_position(), _target_position);
 	
 	//LOG_DEBUG(("object velocity: %g,%g, target dir: %d", object->_velocity.x, object->_velocity.y, _target_dir));
 	
 	if (_target_dir >= 0) {
-		int dirs = object->getDirectionsNumber();
+		int dirs = object->get_directions_number();
 		if (object->_velocity.length() >= 9) {
 			object->quantizeVelocity();
-			object->_direction.fromDirection(object->getDirection(), dirs);
+			object->_direction.fromDirection(object->get_direction(), dirs);
 		} else {
 			object->_velocity.clear();
 			object->setDirection(_target_dir);
@@ -296,7 +296,7 @@ void Buratino::calculate(Object *object, const float dt) {
 			goto gogogo;
 		}
 		if (!object->isDriven()) {
-			int slot_id = PlayerManager->getSlotID(object->getID());
+			int slot_id = PlayerManager->getSlotID(object->get_id());
 			if (slot_id <= 0) 
 				throw_ex(("ai in racing mode cannot operate without slot."));
 		
@@ -314,20 +314,20 @@ void Buratino::calculate(Object *object, const float dt) {
 		_traits, _skip_objects);
 	
 	if (target != NULL) {
-		if ( ((refresh_path && isEnemy(target)) || target->getID() != _target_id)) {
-			_target_id = target->getID();
+		if ( ((refresh_path && isEnemy(target)) || target->get_id() != _target_id)) {
+			_target_id = target->get_id();
 			_enemy = isEnemy(target);
 			v2<int> target_position;
-			target->getCenterPosition(target_position);
+			target->get_center_position(target_position);
 /*
 			if (_enemy && !weapon1.empty()) {
 				v2<float> r;
-				if (object->getTargetPosition(r, target->getPosition(), convertName(weapon1)))
+				if (object->getTarget_position(r, target->get_position(), convertName(weapon1)))
 					_target_position = r.convert<int>();
 			}
 */		
 			LOG_DEBUG(("%d: %s: next target: %s at %d,%d", 
-				object->getID(), object->animation.c_str(), target->animation.c_str(), target_position.x, target_position.y));
+				object->get_id(), object->animation.c_str(), target->animation.c_str(), target_position.x, target_position.y));
 			object->findPath(target_position, 24);
 			_refresh_path.reset();
 		
@@ -400,7 +400,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 			!ZBox::sameBox(src->getZ(), o->getZ()) || 
 			o->hasSameOwner(src) || 
 			o->has_effect("invulnerability") || 
-			skip_objects.find(o->getID()) != skip_objects.end()
+			skip_objects.find(o->get_id()) != skip_objects.end()
 			)
 			continue;
 		
@@ -455,7 +455,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 		} else if (o->classname == "vehicle") {
 			max = 1;
 		} else if (o->classname == "ctf-flag") {
-			PlayerSlot *slot = PlayerManager->getSlotByID(src->getID());
+			PlayerSlot *slot = PlayerManager->getSlotByID(src->get_id());
 			if (slot == NULL)
 				continue;
 			Team::ID flag_team = Team::get_team(o);

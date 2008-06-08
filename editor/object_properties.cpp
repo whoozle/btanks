@@ -63,7 +63,7 @@ ObjectPropertiesDialog::ObjectPropertiesDialog(const int w) {
 
 	int sw, sh;
 	Control *label = new Label("medium", "z: ");
-	label->getSize(sw, sh);
+	label->get_size(sw, sh);
 	
 	Box * box = new Box("menu/background_box.png", w, sh + 16);
 	add(xp, yp, box);
@@ -71,7 +71,7 @@ ObjectPropertiesDialog::ObjectPropertiesDialog(const int w) {
 	box->getMargins(mx, my);
 	
 	int bx, by;
-	box->getSize(bx, by);
+	box->get_size(bx, by);
 	yp += by / 2 - sh / 2;
 	xp += mx;
 	
@@ -79,7 +79,7 @@ ObjectPropertiesDialog::ObjectPropertiesDialog(const int w) {
 	
 	_z = new NumericControl("medium", 0);
 	add(xp + sw, yp, _z);
-	_z->getSize(bx, by);
+	_z->get_size(bx, by);
 	yp += by + 3 * my;
 	
 	_menu = new PopupMenu();

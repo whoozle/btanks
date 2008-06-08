@@ -60,7 +60,7 @@ template <typename FuncPtr> union union_ptr {
 #elif not defined _WINDOWS
 //remove it if you want
 
-const bool System::acceleratedGL(const bool windowed) {
+const bool System::accelerated_gl(const bool windowed) {
 	bool accel = true;
 	LOG_DEBUG(("checking for accelerating GL..."));
 TRY {
@@ -196,7 +196,7 @@ end:
 	XCloseDisplay(display);
 	
 #endif
-} CATCH("acceleratedGL", )
+} CATCH("accelerated_gl", )
 	return accel;
 }
 
@@ -208,7 +208,7 @@ void System::init(int system) {
 		throw_sdl(("SDL_Init"));
 }
 
-void System::probeVideoMode() {
+void System::probe_video_mode() {
 	LOG_DEBUG(("probing video info..."));
 	char drv_name[256];
 	if (SDL_VideoDriverName(drv_name, sizeof(drv_name)) == NULL)

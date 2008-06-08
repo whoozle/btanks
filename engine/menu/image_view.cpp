@@ -28,12 +28,12 @@ void ImageView::render(sdlx::Surface &surface, const int x, const int y) const {
 	_box->getMargins(mx, my);
 	sdlx::Rect clip;
 
-	surface.getClipRect(clip);
-	surface.setClipRect(sdlx::Rect(mx + x, my + y, _w - 2 * mx, _h - 2 * my));
-	surface.copyFrom(*_image, x + mx - (int)position.x, y + my - (int)position.y);
+	surface.get_clip_rect(clip);
+	surface.set_clip_rect(sdlx::Rect(mx + x, my + y, _w - 2 * mx, _h - 2 * my));
+	surface.blit(*_image, x + mx - (int)position.x, y + my - (int)position.y);
 	if (_overlay != NULL) 
-		surface.copyFrom(*_overlay, x + mx - (int)position.x + _overlay_dpos.x, y + my - (int)position.y + _overlay_dpos.y);
-	surface.setClipRect(clip);
+		surface.blit(*_overlay, x + mx - (int)position.x + _overlay_dpos.x, y + my - (int)position.y + _overlay_dpos.y);
+	surface.set_clip_rect(clip);
 }
 
 void ImageView::validate(v2<float> & pos) {
@@ -49,10 +49,10 @@ void ImageView::validate(v2<float> & pos) {
 	_box->getMargins(mx, my);
 		
 	int w = _w - 2 * mx, h = _h - 2 * my;
-	if (pos.x + w > _image->getWidth())
-		pos.x = _image->getWidth() - w;
-	if (pos.y + h > _image->getHeight())
-		pos.y = _image->getHeight() - h;
+	if (pos.x + w > _image->get_width())
+		pos.x = _image->get_width() - w;
+	if (pos.y + h > _image->get_height())
+		pos.y = _image->get_height() - h;
 }
 
 void ImageView::tick(const float dt) {
@@ -70,7 +70,7 @@ void ImageView::tick(const float dt) {
 	}
 }
 
-void ImageView::setPosition(const v2<float> &pos) { 
+void ImageView::set_position(const v2<float> &pos) { 
 	setDestination(pos);
 	position = destination;
 }
@@ -78,7 +78,7 @@ void ImageView::setPosition(const v2<float> &pos) {
 void ImageView::setDestination(const v2<float> &pos) {
 	v2<float> p = pos - v2<float>(_w, _h) / 2;
 	if (_overlay)
-		p += v2<float>(_overlay->getWidth(), _overlay->getHeight()) / 2;
+		p += v2<float>(_overlay->get_width(), _overlay->get_height()) / 2;
 	destination = p;
 }
 

@@ -47,18 +47,18 @@ protected:
 
 	void readFE(const mrt::BaseFile &file) {
 		if (fsize > 0) {
-			extra.setSize(fsize);
-			if (file.read(extra.getPtr(), fsize) != fsize)
+			extra.set_size(fsize);
+			if (file.read(extra.get_ptr(), fsize) != fsize)
 				throw_ex(("unexpected end of archive"));
 
-			fname.assign((const char *)extra.getPtr(), fsize);
+			fname.assign((const char *)extra.get_ptr(), fsize);
 		} else {
 			fname.clear();
 		}
 
 		if (esize > 0) {
-			extra.setSize(esize);
-			if (file.read(extra.getPtr(), esize) != esize)
+			extra.set_size(esize);
+			if (file.read(extra.get_ptr(), esize) != esize)
 				throw_ex(("unexpected end of archive"));
 		} else {
 			extra.free();
@@ -99,8 +99,8 @@ public:
 		readFE(file);
 		
 		if (comment_size > 0) {
-			comment.setSize(comment_size);
-			if (file.read(comment.getPtr(), comment_size) != comment_size)
+			comment.set_size(comment_size);
+			if (file.read(comment.get_ptr(), comment_size) != comment_size)
 				throw_ex(("unexpected end of the archive"));
 		} else {
 			comment.free();
@@ -132,8 +132,8 @@ public:
 		file.readLE32(central_offset);
 		file.readLE16(comment_size);
 		if (comment_size > 0) {
-			comment.setSize(comment_size);
-			if (file.read(comment.getPtr(), comment_size) != comment_size) 
+			comment.set_size(comment_size);
+			if (file.read(comment.get_ptr(), comment_size) != comment_size) 
 				throw_ex(("unexpected end of the archive"));
 		} else comment.free();
 	}

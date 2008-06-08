@@ -80,7 +80,7 @@ void ScrollList::getItemY(const int idx, int &y, int &height) const {
 	y = 0;
 	int w = 0, h = 0;
 	for(int i = 0; i < idx; ++i) {
-		_list[i]->getSize(w, h);
+		_list[i]->get_size(w, h);
 		h += _spacing;
 		y += h;
 	}
@@ -91,7 +91,7 @@ const int ScrollList::getItemIndex(const int yp) const {
 	int y = - _spacing/2;
 	for(int i = 0; i < (int)_list.size(); ++i) {
 		int w, h;
-		_list[i]->getSize(w, h);
+		_list[i]->get_size(w, h);
 		h += _spacing;
 		if (yp >= y && yp < y + h)
 			return i; 
@@ -144,7 +144,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	_background.render(surface, x, y);
 	
 	sdlx::Rect old_clip;
-	surface.getClipRect(old_clip);
+	surface.get_clip_rect(old_clip);
 	
 	
 	int mx, my;
@@ -155,13 +155,13 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 
 // scrollers' area
 
-	int scroller_h = _scrollers->getHeight();
-	int scroller_w = _scrollers->getWidth() / 6;
+	int scroller_h = _scrollers->get_height();
+	int scroller_w = _scrollers->get_width() / 6;
 	
 	_up_area = sdlx::Rect(_client_w + my - scroller_w, my, scroller_w, scroller_h);
-	surface.copyFrom(*_scrollers, sdlx::Rect(0, 0, scroller_w, scroller_h), x + (int)_up_area.x, y + (int)_up_area.y);
+	surface.blit(*_scrollers, sdlx::Rect(0, 0, scroller_w, scroller_h), x + (int)_up_area.x, y + (int)_up_area.y);
 	_down_area = sdlx::Rect(_up_area.x, my + _client_h - scroller_h, scroller_w, scroller_h);
-	surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
+	surface.blit(*_scrollers, sdlx::Rect(scroller_w, 0, scroller_w, scroller_h), x + (int)_down_area.x, y + (int)_down_area.y);
 	
 	_items_area = sdlx::Rect(mx, my, _client_w - 2 * mx, _client_h);
 	_scroller_area = sdlx::Rect(_client_w + my - scroller_w, my, scroller_w, _items_area.h - 2 * scroller_h);
@@ -172,7 +172,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	}
 //main list
 	
-	surface.setClipRect(sdlx::Rect(x + mx, y + my, _items_area.w, _items_area.h));
+	surface.set_clip_rect(sdlx::Rect(x + mx, y + my, _items_area.w, _items_area.h));
 
 	assert(_client_h > 0);
 	//int p = 0;
@@ -190,7 +190,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	int visible_items = 0;
 	for(; p < n; ++p) {
 		int w, h;
-		_list[p]->getSize(w, h);
+		_list[p]->get_size(w, h);
 		h += _spacing;
 		average_h += h;	
 		++visible_items;	
@@ -215,7 +215,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 			break;
 	}
 
-	surface.setClipRect(old_clip);
+	surface.set_clip_rect(old_clip);
 
 	int boxes = _scroller_area.h / scroller_h;
 	average_h /= visible_items;
@@ -232,12 +232,12 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 
 		int xp = x + (int)_up_area.x;
 		int yp = y + (int)_up_area.y + (int)_up_area.h + scroller_pos;
-		surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 3, 0, scroller_w, scroller_h), xp, yp);
+		surface.blit(*_scrollers, sdlx::Rect(scroller_w * 3, 0, scroller_w, scroller_h), xp, yp);
 		yp += scroller_h;
 		for(int i = 0; i < vboxes; ++i, yp += scroller_h) {
-			surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 4, 0, scroller_w, scroller_h), xp, yp);
+			surface.blit(*_scrollers, sdlx::Rect(scroller_w * 4, 0, scroller_w, scroller_h), xp, yp);
 		}
-		surface.copyFrom(*_scrollers, sdlx::Rect(scroller_w * 5, 0, scroller_w, scroller_h), xp, yp);
+		surface.blit(*_scrollers, sdlx::Rect(scroller_w * 5, 0, scroller_w, scroller_h), xp, yp);
 	}
 	
 	Container::render(surface, x, y);
@@ -386,7 +386,7 @@ bool ScrollList::onMouseMotion(const int state, const int x, const int y, const 
 	return true;
 }
 
-void ScrollList::getSize(int &w, int &h) const {
+void ScrollList::get_size(int &w, int &h) const {
 	w = _background.w; h = _background.h;
 }
 

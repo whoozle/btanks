@@ -30,7 +30,7 @@ public:
 		_direction = _velocity = v2<float>(0, -1);
 
 		Object *target = spawn("ballistic-missile-target", "target");
-		target_id = target->getID();
+		target_id = target->get_id();
 		speed_backup = speed;
 	}
 	
@@ -47,7 +47,7 @@ public:
 		if (launch) {
 			_velocity = v2<float>(0, -1);
 		} else if (!falling) {
-			v2<float> pos = getPosition();
+			v2<float> pos = get_position();
 			if (react) {
 				Object *target = World->getObjectByID(target_id);
 				if (target == NULL) {
@@ -68,10 +68,10 @@ public:
 			_velocity = v2<float>(0, 1);
 			/*
 			
-			v2<float> pos = getCenterPosition(), tpos;
+			v2<float> pos = get_center_position(), tpos;
 
 			if (target != NULL)			
-				tpos = target->getCenterPosition();
+				tpos = target->get_center_position();
 			
 			if (target == NULL || tpos.y <= 0) {
 				tpos = pos + v2<float>(0, 50);

@@ -62,7 +62,7 @@ Matrix<int> &IMap::getMatrix(int z, const bool only_pierceable) {
 
 	Matrix<int> map;
 	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
-	map.setSize(_h * _split, _w * _split, 0);
+	map.set_size(_h * _split, _w * _split, 0);
 	map.useDefault(-1);
 	std::pair<MatrixMap::iterator, bool> r = _imp_map.insert(MatrixMap::value_type(MatrixMap::key_type(box, only_pierceable), map));
 	return r.first->second;
@@ -74,7 +74,7 @@ Matrix<int> &IMap::getMatrix(const std::string &name) {
 		return i->second;
 
 	Matrix<int> map;
-	map.setSize(_h * _split, _w * _split, 0);
+	map.set_size(_h * _split, _w * _split, 0);
 	map.useDefault(0);
 	std::pair<ObjectAreaMap::iterator, bool> r =_area_map.insert(ObjectAreaMap::value_type(name, map));
 	return r.first->second;
@@ -132,7 +132,7 @@ TRY {
 	}
 	
 	v2<float> position, velocity;
-	obj->getPosition(position);
+	obj->get_position(position);
 	obj->get_velocity(velocity);
 	
 	GET_CONFIG_VALUE("engine.debug-map-collision-code", bool, debug, false);
@@ -347,7 +347,7 @@ TRY {
 	
 	//LOG_DEBUG(("<<IMap::getImpassability"));
 	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
-} CATCH(mrt::formatString("Map::getImpassability(%p, (%d:%d), %p, %p)", 
+} CATCH(mrt::format_string("Map::getImpassability(%p, (%d:%d), %p, %p)", 
 	(void *)obj, pos.x, pos.y, (void *)tile_pos, (void *)hidden ).c_str(), throw;);
 	return 0;
 }
@@ -366,7 +366,7 @@ void IMap::updateMatrix(const int x, const int y) {
 				if (tid == 0)
 					continue;
 				const sdlx::CollisionMap *cmap = getCollisionMap(l->second, x, y);
-				if (cmap == NULL || cmap->isEmpty())
+				if (cmap == NULL || cmap->is_empty())
 					continue;
 
 				Matrix<int> &imp_map = getMatrix(l->first, false);
@@ -415,14 +415,14 @@ void IMap::updateMatrix(const int x, const int y) {
 }
 
 void IMap::updateMatrix(Matrix<int> &imp_map, const Layer *layer) {
-	for(int y = 0; y < layer->getHeight(); ++y) 
-		for(int x = 0; x < layer->getWidth(); ++x) {
+	for(int y = 0; y < layer->get_height(); ++y) 
+		for(int x = 0; x < layer->get_width(); ++x) {
 			int tid = layer->get(x, y);
 			if (tid == 0)
 				continue;
 
 			const sdlx::CollisionMap *cmap = getCollisionMap(layer, x, y);
-			if (cmap == NULL || cmap->isEmpty())
+			if (cmap == NULL || cmap->is_empty())
 				continue;
 
 			Matrix<bool> proj;
@@ -465,7 +465,7 @@ void IMap::load(const std::string &name) {
 		file = fr[0].second;
 	}
 	
-	parseFile(file);
+	parse_file(file);
 	delete _image;
 	_image = NULL;
 	
@@ -509,7 +509,7 @@ void IMap::load(const std::string &name) {
 }
 
 void IMap::generateMatrixes() {
-	_cover_map.setSize(_h, _w, -10000);
+	_cover_map.set_size(_h, _w, -10000);
 	_cover_map.useDefault(-10000);
 	
 	if (!RTConfig->editor_mode) {
@@ -523,7 +523,7 @@ void IMap::generateMatrixes() {
 				const sdlx::CollisionMap * vmap = getVisibilityMap(l->second, tx, ty);
 				if (vmap == NULL)
 					continue;
-				if (vmap->isFull()) {
+				if (vmap->is_full()) {
 					_cover_map.set(ty, tx, l->first);
 					++ot;
 				}
@@ -580,8 +580,8 @@ void IMap::getZBoxes(std::set<int> &layers) {
 }
 
 void IMap::getSurroundings(Matrix<int> &matrix, const Object *obj, const int filler) const {
-	if (matrix.getWidth() % 2 == 0 || matrix.getHeight() % 2 == 0)
-		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.getHeight(), matrix.getWidth()));
+	if (matrix.get_width() % 2 == 0 || matrix.get_height() % 2 == 0)
+		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.get_height(), matrix.get_width()));
 
 	const int box = ZBox::getBox(obj->getZ());
 	MatrixMap::const_iterator map = _imp_map.find(MatrixMap::key_type(box, false));
@@ -592,11 +592,11 @@ void IMap::getSurroundings(Matrix<int> &matrix, const Object *obj, const int fil
 	
 	MatrixMap::const_iterator pmap = (obj->piercing)?_imp_map.find(MatrixMap::key_type(box, true)):_imp_map.end();
 	
-	int dx = (matrix.getWidth() - 1) / 2;
-	int dy = (matrix.getHeight() - 1) / 2;
+	int dx = (matrix.get_width() - 1) / 2;
+	int dy = (matrix.get_height() - 1) / 2;
 	
 	v2<int> p;
-	obj->getCenterPosition(p);
+	obj->get_center_position(p);
 	p.x /= _tw;
 	p.y /= _th;
 	
@@ -705,10 +705,10 @@ void IMap::end(const std::string &name) {
 		if (enc == "base64") {
 			mrt::Base64::decode(data, e.data);
 		} else if (enc == "none") {
-			data.setData(e.data.c_str(), e.data.size());
+			data.set_data(e.data.c_str(), e.data.size());
 		} else throw_ex(("unknown encoding %s used", enc.c_str()));
 		
-		//LOG_DEBUG(("decoded size: %d", data.getSize()));
+		//LOG_DEBUG(("decoded size: %d", data.get_size()));
 		//LOG_DEBUG(("decoded data: %s -> %s", e.data.c_str(), data.dump().c_str()));
 
 		if (comp == "gzip") {
@@ -731,26 +731,26 @@ void IMap::end(const std::string &name) {
 			_image_name = Finder->find("maps/" + source, false);
 			if (_image_name.empty()) {
 				//last resort, try match filename with any tilesets folder.
-				_image_name = Finder->find("tilesets/" + mrt::FSNode::getFilename(source));
+				_image_name = Finder->find("tilesets/" + mrt::FSNode::get_filename(source));
 			}
 			source = _image_name;
 			
 			scoped_ptr<mrt::BaseFile> file(Finder->get_file(source, "rb"));
 
 			mrt::Chunk data;
-			file->readAll(data);
+			file->read_all(data);
 			file->close();
 			
-			_image->loadImage(data);
+			_image->load_image(data);
 			_image_is_tileset = true;
 		} else {
-			_image->loadImage(_data);
+			_image->load_image(_data);
 			_image_is_tileset = false;
 		}
 		if (!RTConfig->server_mode)
-			_image->convertAlpha();
+			_image->display_format_alpha();
 		
-		LOG_DEBUG(("image loaded. (%dx%d)", _image->getWidth(), _image->getHeight()));
+		LOG_DEBUG(("image loaded. (%dx%d)", _image->get_width(), _image->get_height()));
 	} else if (name == "layer") {
 		status = "layer";
 		int w = atol(e.attrs["width"].c_str());
@@ -792,7 +792,7 @@ void IMap::end(const std::string &name) {
 
 		} //editor
 		
-		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %u, impassability: %d", e.attrs["name"].c_str(), w, h, z, (unsigned)_data.getSize(), impassability));
+		LOG_DEBUG(("layer '%s'. %dx%d. z: %d, size: %u, impassability: %d", e.attrs["name"].c_str(), w, h, z, (unsigned)_data.get_size(), impassability));
 		if (_layers.find(z) != _layers.end())
 			throw_ex(("layer with z %d already exists", z));
 		if(layer == NULL)
@@ -845,7 +845,7 @@ void IMap::end(const std::string &name) {
 
 		TRY { 
 			layer->init(w, h, _data); 
-		} CATCH(mrt::formatString("layer '%s'", _layer_name.c_str()).c_str(), 
+		} CATCH(mrt::format_string("layer '%s'", _layer_name.c_str()).c_str(), 
 			{delete layer; layer = NULL; throw; }
 		);
 		
@@ -877,7 +877,7 @@ void IMap::end(const std::string &name) {
 	} else if (name == "tileset" && _image != NULL && _image_is_tileset) {
 		status = "tileset";
 
-		int n = ((_image->getWidth() - 1) / _tw + 1) * ((_image->getHeight() - 1) / _th + 1);
+		int n = ((_image->get_width() - 1) / _tw + 1) * ((_image->get_height() - 1) / _th + 1);
 		LOG_DEBUG(("tileset: %s, first_gid: %d, estimated tiles: %d", _image_source.c_str(), _firstgid, n));
 		
 		int gid = _tilesets.add(_image_source, _firstgid, n);
@@ -908,7 +908,7 @@ void IMap::addTileset(const std::string &tileset) {
 }
 
 
-void IMap::charData(const std::string &d) {
+void IMap::cdata(const std::string &d) {
 	assert(!_stack.empty());
 	//LOG_DEBUG(("char1 %s", d.c_str()));
 	std::string data(d);
@@ -991,7 +991,7 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 					continue;
 				
 				const int dx = dst.x + tx * _tw + shift_pos.x, dy = dst.y + ty * _th + shift_pos.y;
-				window.copyFrom(*s, dx, dy);
+				window.blit(*s, dx, dy);
 			}
 		}
 	}
@@ -1033,7 +1033,7 @@ void IMap::clear() {
 	
 	_damage4.clear();
 	_layer_z.clear();
-	_cover_map.setSize(0, 0, 0);
+	_cover_map.set_size(0, 0, 0);
 
 	_corrections.clear();
 	
@@ -1057,7 +1057,7 @@ const bool IMap::loaded() const {
 	return _w != 0;
 }
 
-const v2<int> IMap::getSize() const {
+const v2<int> IMap::get_size() const {
 	return v2<int>(_tw * _w,_th * _h);
 }
 
@@ -1232,13 +1232,13 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
 
 			mrt::Chunk data;
-			file->readAll(data);
+			file->read_all(data);
 			file->close();
 			
 			image = new sdlx::Surface;
-			image->loadImage(data);
+			image->load_image(data);
 			if (!RTConfig->server_mode)
-				image->convertAlpha();
+				image->display_format_alpha();
 			
 			n = addTiles(image, gid);
 			
@@ -1316,29 +1316,29 @@ void IMap::deserialize(const mrt::Serializator &s) {
 const int IMap::addTiles(const sdlx::Surface *image, const int first_gid) {
 	int id = 0;
 TRY {
-	const_cast<sdlx::Surface *>(image)->setAlpha(0, 0);
-	int w = image->getWidth(), h = image->getHeight();
+	const_cast<sdlx::Surface *>(image)->set_alpha(0, 0);
+	int w = image->get_width(), h = image->get_height();
 
 	for(int y = 0; y < h; y += _th) {
 		for(int x = 0; x < w; x += _tw) {
 			sdlx::Surface *s = new sdlx::Surface;
-			s->createRGB(_tw, _th, 24);
+			s->create_rgb(_tw, _th, 24);
 			if (!RTConfig->server_mode)
-				s->convertAlpha();
+				s->display_format_alpha();
 
 			sdlx::Rect from(x, y, _tw, _th);
-			s->copyFrom(*image, from);
+			s->blit(*image, from);
 			GET_CONFIG_VALUE("engine.strip-alpha-from-map-tiles", bool, strip_alpha, false);
 			bool locked = false;
 			if (strip_alpha) {
 				s->lock();
 				locked = true;
 				Uint8 r,g,b,a;
-				for(int y = 0; y < s->getHeight(); ++y) 
-					for(int x = 0; x < s->getWidth(); ++x) {
-						s->getRGBA(s->getPixel(x, y), r, g, b, a);
+				for(int y = 0; y < s->get_height(); ++y) 
+					for(int x = 0; x < s->get_width(); ++x) {
+						s->get_rgba(s->get_pixel(x, y), r, g, b, a);
 						if (a != 255)
-							s->putPixel(x, y, s->mapRGBA(r, g, b, (a > 51)?51:a));
+							s->put_pixel(x, y, s->map_rgba(r, g, b, (a > 51)?51:a));
 					}
 			}
 
@@ -1348,15 +1348,15 @@ TRY {
 					s->lock();
 					locked = true;
 				}
-				Uint32 color = s->mapRGBA(255,0,255,249); //magic value to avoid Collision map confusing
-				s->putPixel(0, 0, color);
-				s->putPixel(1, 0, color);
-				s->putPixel(0, 1, color);
+				Uint32 color = s->map_rgba(255,0,255,249); //magic value to avoid Collision map confusing
+				s->put_pixel(0, 0, color);
+				s->put_pixel(1, 0, color);
+				s->put_pixel(0, 1, color);
 			}
 			if (locked)
 				s->unlock();
 
-			//s->saveBMP(mrt::formatString("tile-%d.bmp", id));
+			//s->save_bmp(mrt::format_string("tile-%d.bmp", id));
 
 			//LOG_DEBUG(("cut tile %d from tileset [%d:%d, %d:%d]", first_gid + id, x, y, _tw, _th));
 			if ((size_t)(first_gid + id) >= _tiles.size())
@@ -1378,8 +1378,8 @@ TRY {
 			s = NULL;
 		}
 	}
-	const_cast<sdlx::Surface *>(image)->setAlpha(0, SDL_SRCALPHA);	//fixme: dangerous
-} CATCH("addTiles", {const_cast<sdlx::Surface *>(image)->setAlpha(0, SDL_SRCALPHA); throw; })
+	const_cast<sdlx::Surface *>(image)->set_alpha(0, SDL_SRCALPHA);	//fixme: dangerous
+} CATCH("addTiles", {const_cast<sdlx::Surface *>(image)->set_alpha(0, SDL_SRCALPHA); throw; })
 	return id;
 }
 
@@ -1404,7 +1404,7 @@ const IMap::TileDescriptor & IMap::getTile(const size_t idx) const {
 }
 
 void IMap::generateXML(std::string &result) const {
-	result = mrt::formatString(
+	result = mrt::format_string(
 		"<?xml version=\"1.0\"?>\n"
 		"<map version=\"0.99b\" orientation=\"orthogonal\" width=\"%d\" height=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", 
 		_w, _h, _tw, _th
@@ -1412,7 +1412,7 @@ void IMap::generateXML(std::string &result) const {
 	if (!properties.empty()) {
 		result += "\t<properties>\n";
 		for(PropertyMap::const_iterator i = properties.begin(); i != properties.end(); ++i) {
-			result += mrt::formatString("\t\t<property name=\"%s\" value=\"%s\"/>\n", escape(i->first).c_str(), escape(i->second).c_str());
+			result += mrt::format_string("\t\t<property name=\"%s\" value=\"%s\"/>\n", escape(i->first).c_str(), escape(i->second).c_str());
 		}
 		result += "\t</properties>\n";
 	}
@@ -1420,9 +1420,9 @@ void IMap::generateXML(std::string &result) const {
 	size_t n = _tilesets.size();
 	for(size_t i = 0; i < n; ++i) {
 		const TilesetList::value_type &ts = _tilesets[i];
-		result += mrt::formatString("\t<tileset name=\"%s\" firstgid=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", 
-			escape(mrt::FSNode::getFilename(ts.first, false)).c_str(), ts.second, _tw, _th);
-		result += mrt::formatString("\t\t<image source=\"%s\"/>\n", escape(ts.first).c_str());
+		result += mrt::format_string("\t<tileset name=\"%s\" firstgid=\"%d\" tilewidth=\"%d\" tileheight=\"%d\">\n", 
+			escape(mrt::FSNode::get_filename(ts.first, false)).c_str(), ts.second, _tw, _th);
+		result += mrt::format_string("\t\t<image source=\"%s\"/>\n", escape(ts.first).c_str());
 		result += "\t</tileset>\n";	
 	}
 	
@@ -1545,7 +1545,7 @@ static void c2v(T &pos, const std::string &str) {
 
 	TRY {
 		pos.fromString(pos_str);
-	} CATCH(mrt::formatString("parsing '%s'", str.c_str()).c_str() , throw;)
+	} CATCH(mrt::format_string("parsing '%s'", str.c_str()).c_str() , throw;)
 
 	if (tiled_pos) {
 		v2<int> tile_size = Map->getTileSize();
@@ -1578,7 +1578,7 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 			c2v< v3<int> >(pos, value);
 			pos.x += left_cut * _tw;
 			pos.y += up_cut * _th;
-			value = mrt::formatString("%d,%d,%d", pos.x, pos.y, pos.z);
+			value = mrt::format_string("%d,%d,%d", pos.x, pos.y, pos.z);
 			LOG_DEBUG(("fixed %s->%s", name.c_str(), value.c_str()));
 		} else if (name.compare(0, 5, "zone:") == 0) {
 			std::vector<std::string> res;
@@ -1589,7 +1589,7 @@ void IMap::resize(const int left_cut, const int right_cut, const int up_cut, con
 			pos.x += left_cut * _tw;
 			pos.y += up_cut * _th;
 			
-			value = mrt::formatString("%d,%d,%d:", pos.x, pos.y, pos.z) + res[1];
+			value = mrt::format_string("%d,%d,%d:", pos.x, pos.y, pos.z) + res[1];
 			LOG_DEBUG(("fixed %s->%s", name.c_str(), value.c_str()));
 		}
 	}

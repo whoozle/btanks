@@ -31,9 +31,9 @@ namespace mrt {
 class MRTAPI Exception : public std::exception {
 public:
 	Exception();
-	void addMessage(const char *file, const int line);
-	void addMessage(const std::string &msg);
-	virtual const std::string getCustomMessage();
+	void add_message(const char *file, const int line);
+	void add_message(const std::string &msg);
+	virtual const std::string get_custom_message();
 	virtual const char* what() const throw();
 	virtual ~Exception() throw();
 private:
@@ -46,7 +46,7 @@ private:
 	class export name : public mrt::Exception { \
 		public: \
 		name(); \
-		const std::string getCustomMessage(); \
+		const std::string get_custom_message(); \
 		virtual ~name() throw(); \
 	} 
 
@@ -54,14 +54,14 @@ private:
 	class export name : public mrt::Exception { \
 		public: \
 		name ctor; \
-		const std::string getCustomMessage(); \
+		const std::string get_custom_message(); \
 		virtual ~name() throw(); \
 		private: \
 		data \
 	} 
 
-#define throw_generic(name, str) { name e; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
-#define throw_generic_no_default(name, str, args) { name e args; e.addMessage(__FILE__, __LINE__); e.addMessage(mrt::formatString str); e.addMessage(e.getCustomMessage()); throw e; }
+#define throw_generic(name, str) { name e; e.add_message(__FILE__, __LINE__); e.add_message(mrt::format_string str); e.add_message(e.get_custom_message()); throw e; }
+#define throw_generic_no_default(name, str, args) { name e args; e.add_message(__FILE__, __LINE__); e.add_message(mrt::format_string str); e.add_message(e.get_custom_message()); throw e; }
 #define throw_ex(str) throw_generic(mrt::Exception, str)
 
 #define TRY try 

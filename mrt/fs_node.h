@@ -28,10 +28,10 @@ class MRTAPI FSNode {
 public:
 	virtual ~FSNode() {}
 	virtual bool exists(const std::string &fname) const;
-	static const std::string getDir(const std::string &fname);
-	static const std::string getParentDir(const std::string &fname);
-	static const std::string getFilename(const std::string &fname, const bool return_ext = true);
-	static const std::string relativePath(const std::string &from_dir, const std::string &to_dir);
+	static const std::string get_dir(const std::string &fname);
+	static const std::string get_parent_dir(const std::string &fname);
+	static const std::string get_filename(const std::string &fname, const bool return_ext = true);
+	static const std::string relative_path(const std::string &from_dir, const std::string &to_dir);
 	static const std::string normalize(const std::string &path);
 	static bool is_dir(const std::string &name);
 };

@@ -7,9 +7,9 @@
 Notepad::Notepad(const int w, const std::string &font) : width(0),
 tabbg(ResourceManager->loadSurface("menu/background_tab.png")), 
 font(ResourceManager->loadFont(font, true)), current_page(0) {
-	tab_w = tabbg->getWidth() / 5;
+	tab_w = tabbg->get_width() / 5;
 	tab_x1 = 2 * tab_w;
-	tab_x2 = tabbg->getWidth() - tab_x1;
+	tab_x2 = tabbg->get_width() - tab_x1;
 	tab_left.x = 0;
 	tab_left.y = 0;
 	tab_left.w = tab_x1;
@@ -22,7 +22,7 @@ font(ResourceManager->loadFont(font, true)), current_page(0) {
 	tab_bg.y = 0;
 	tab_bg.w = tab_w;
 
-	tab_bg.h = tab_right.h = tab_left.h = tabbg->getHeight();
+	tab_bg.h = tab_right.h = tab_left.h = tabbg->get_height();
 }
 
 void Notepad::add(const std::string &area, const std::string &label) {
@@ -42,7 +42,7 @@ void Notepad::recalculate_sizes() {
 		page.tab_rect.x = width;
 		page.tab_rect.y = 0;
 		page.tab_rect.w = ((font->render(NULL, 0, 0, page.label) - 1) / tab_w + 1) * tab_w;
-		page.tab_rect.h = tabbg->getHeight();
+		page.tab_rect.h = tabbg->get_height();
 		
 		width += page.tab_rect.w;
 	}
@@ -56,9 +56,9 @@ void Notepad::set(const int idx) {
 	invalidate(false);
 }
 
-void Notepad::getSize(int &w, int &h) const {
+void Notepad::get_size(int &w, int &h) const {
 	w = width;
-	h = tabbg->getHeight();
+	h = tabbg->get_height();
 }
 
 bool Notepad::onMouse(const int button, const bool pressed, const int x, const int y) {
@@ -108,22 +108,22 @@ bool Notepad::onKey(const SDL_keysym sym) {
 
 void Notepad::render(sdlx::Surface &surface, const int x, const int y) const {
 	int xp = x;
-	int yp = y + tabbg->getHeight() / 2 - font->getHeight() / 2;
+	int yp = y + tabbg->get_height() / 2 - font->get_height() / 2;
 	for(size_t i = 0; i < pages.size(); ++i) {
 		const Page &page = pages[i];
 		if (i == current_page) {
-			surface.copyFrom(*tabbg, tab_left, xp, y);
+			surface.blit(*tabbg, tab_left, xp, y);
 		}
 		xp += tab_left.w;
 		if (i == current_page) {
 			for(int b = 0; b < page.tab_rect.w / tab_w; ++b) {
-				surface.copyFrom(*tabbg, tab_bg, xp + b * tab_bg.w, y);
+				surface.blit(*tabbg, tab_bg, xp + b * tab_bg.w, y);
 			}
 		}
 		font->render(surface, xp, yp, page.label);
 		xp += page.tab_rect.w;
 		if (i == current_page) {
-			surface.copyFrom(*tabbg, tab_right, xp, y);
+			surface.blit(*tabbg, tab_right, xp, y);
 		}
 	}	
 }

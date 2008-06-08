@@ -40,7 +40,7 @@ const float Traits::get(const std::string &value, const std::string & object, co
 const std::string Traits::save() const {
 	std::string result;
 	for(const_iterator i = begin(); i != end(); ++i) {
-		result += mrt::formatString("%s=%g\n", i->first.c_str(), i->second);
+		result += mrt::format_string("%s=%g\n", i->first.c_str(), i->second);
 	}
 	return result;
 }

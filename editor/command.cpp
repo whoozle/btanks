@@ -112,7 +112,7 @@ void Command::exec() {
 
 	case DeleteObject: {
 		Object * object = getObject();
-		deleteObject(object->getID());
+		deleteObject(object->get_id());
 		Map->properties.erase(property_backup);
 		object = NULL;
 	} break;
@@ -130,8 +130,8 @@ void Command::exec() {
 	case RotateObject: {
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
-		int dirs = object->getDirectionsNumber();
-		object->setDirection((object->getDirection() + dirs + z) % dirs);
+		int dirs = object->get_directions_number();
+		object->setDirection((object->get_direction() + dirs + z) % dirs);
 		item.updateMapProperty();		
 		break;
 	}
@@ -195,8 +195,8 @@ void Command::undo() {
 	case RotateObject: {
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
-		int dirs = object->getDirectionsNumber();
-		object->setDirection((object->getDirection() + dirs - z) % dirs);
+		int dirs = object->get_directions_number();
+		object->setDirection((object->get_direction() + dirs - z) % dirs);
 		item.updateMapProperty();
 		break;
 	}

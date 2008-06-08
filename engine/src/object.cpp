@@ -35,7 +35,7 @@
 #include "zbox.h"
 
 const v2<float> Object::getRelativePosition(const Object *obj) const {
-	return Map->distance(this->getCenterPosition(), obj->getCenterPosition());
+	return Map->distance(this->get_center_position(), obj->get_center_position());
 }
 
 Object::Event::Event() : name(), repeat(false), sound(), gain(1.0f), played(false), cached_pose(NULL) {}
@@ -133,10 +133,10 @@ void Object::quantizeVelocity() {
 	_velocity.normalize();
 	if (_directions_n == 8) {
 		_velocity.quantize8();
-		setDirection(_velocity.getDirection8() - 1);
+		setDirection(_velocity.get_direction8() - 1);
 	} else if (_directions_n == 16) {
 		_velocity.quantize16();
-		setDirection(_velocity.getDirection16() - 1);
+		setDirection(_velocity.get_direction16() - 1);
 	} //else throw_ex(("%s:%s cannot handle %d directions", registered_name.c_str(), animation.c_str(), _directions_n));
 	//redesign this ^^ 
 }
@@ -149,7 +149,7 @@ void Object::play(const std::string &id, const bool repeat) {
 	const Pose *pose = _model->getPose(id);
 	if (pose == NULL) {
 		LOG_WARN(("%d:%s:%s: animation model %s does not have pose '%s'", 
-			getID(), registered_name.c_str(), animation.c_str(), _animation->model.c_str(), id.c_str()));
+			get_id(), registered_name.c_str(), animation.c_str(), _animation->model.c_str(), id.c_str()));
 		return;
 	}
 
@@ -296,7 +296,7 @@ void Object::groupTick(const float dt) {
 		assert(o->_parent == this);
 		
 		if (o->isDead()) {
-			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
+			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", get_id(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			if (!safe_mode) {
 				delete o;
 				_group.erase(i++);
@@ -307,7 +307,7 @@ void Object::groupTick(const float dt) {
 				while(parent->_parent != NULL)
 					parent = parent->_parent;
 				
-				World->sync(parent->getID());
+				World->sync(parent->get_id());
 			
 				++i;
 			}
@@ -319,7 +319,7 @@ void Object::groupTick(const float dt) {
 		}
 
 		if (o->isDead()) {
-			//LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", getID(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
+			//LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", get_id(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			if (!safe_mode) {
 				delete o;
 				_group.erase(i++);
@@ -398,7 +398,7 @@ const bool Object::getRenderRect(sdlx::Rect &src) const {
 	
 	checkSurface();
 	
-	if (frame * _th >= _surface->getHeight()) {
+	if (frame * _th >= _surface->get_height()) {
 		LOG_WARN(("%s:%s event '%s' tile row %d is out of range.", registered_name.c_str(), animation.c_str(), _events.front().name.c_str(), frame));
 		return false;
 	}
@@ -450,7 +450,7 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	checkSurface();
 	
 	if (alpha == 0) {
-		surface.copyFrom(*_surface, src, x, y);
+		surface.blit(*_surface, src, x, y);
 		return;
 	} 
 	
@@ -461,7 +461,7 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	alpha &= ~((1 << strip_alpha_bits) - 1);
 	
 	if (_fadeout_surface != NULL && alpha == _fadeout_alpha) {
-		surface.copyFrom(*_fadeout_surface, x, y);
+		surface.blit(*_fadeout_surface, x, y);
 		//LOG_DEBUG(("skipped all fadeout stuff"));
 		return;
 	}
@@ -469,15 +469,15 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	
 	if (_fadeout_surface == NULL) {
 		_fadeout_surface = new sdlx::Surface;
-		_fadeout_surface->createRGB(_tw, _th, 32, SDL_SWSURFACE);
-		_fadeout_surface->convertAlpha();
+		_fadeout_surface->create_rgb(_tw, _th, 32, SDL_SWSURFACE);
+		_fadeout_surface->display_format_alpha();
 	}
 	
-	const_cast<sdlx::Surface *>(_surface)->setAlpha(0,0);
-	_fadeout_surface->copyFrom(*_surface, src);
-	const_cast<sdlx::Surface *>(_surface)->setAlpha(0);
+	const_cast<sdlx::Surface *>(_surface)->set_alpha(0,0);
+	_fadeout_surface->blit(*_surface, src);
+	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
 
-	SDL_Surface *s = _fadeout_surface->getSDLSurface();
+	SDL_Surface *s = _fadeout_surface->get_sdl_surface();
 	assert(s->format->BytesPerPixel > 2);
 
 	_fadeout_surface->lock();
@@ -486,17 +486,17 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	int size = s->h * s->pitch / 4;
 	for(int i = 0; i < size; ++i) {
 		Uint8 r, g, b, a;
-		_fadeout_surface->getRGBA(*p, r, g, b, a);
+		_fadeout_surface->get_rgba(*p, r, g, b, a);
 		if (a == 0) {
 			++p;
 			continue;
 		}
 		a = (((int)a) * alpha) / 255;
-		*p++ = _fadeout_surface->mapRGBA(r, g, b, a);
+		*p++ = _fadeout_surface->map_rgba(r, g, b, a);
 	}
 	_fadeout_surface->unlock();
 
-	surface.copyFrom(*_fadeout_surface, x, y);
+	surface.blit(*_fadeout_surface, x, y);
 
 }
 
@@ -686,7 +686,7 @@ void Object::emit(const std::string &event, Object * emitter) {
 
 void Object::setWay(const Way & new_way) {
 	v2<int> pos;
-	getCenterPosition(pos);
+	get_center_position(pos);
 
 	_next_target.clear();
 	_velocity.clear();
@@ -711,7 +711,7 @@ void Object::setWay(const Way & new_way) {
 	}
 	
 	if (!_way.empty()) { 
-		//LOG_DEBUG(("%d:%s:%s set %u pending waypoints", getID(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
+		//LOG_DEBUG(("%d:%s:%s set %u pending waypoints", get_id(), registered_name.c_str(), animation.c_str(), (unsigned)_way.size()));
 		_next_target = _way.begin()->convert<float>();
 	}
 
@@ -723,12 +723,12 @@ void Object::calculateWayVelocity() {
 		return;
 	
 	v2<float> position;
-	getPosition(position);	
+	get_position(position);	
 	sdlx::Rect me((int)position.x, (int)position.y, (int)size.x, (int)size.y);
 
 	GET_CONFIG_VALUE("engine.allowed-pathfinding-fault", int, af, 5);
 
-	getCenterPosition(position);
+	get_center_position(position);
 
 	while (!_way.empty()) {
 		_velocity.clear();
@@ -770,7 +770,7 @@ void Object::calculateWayVelocity() {
 			//LOG_DEBUG(("waypoints: %d", _way.size()));
 		}
 //		LOG_DEBUG(("%d:%s:%s next waypoint: %g %g, relative: %g %g", 
-//			getID(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
+//			get_id(), classname.c_str(), animation.c_str(), _next_target.x, _next_target.y, _next_target_rel.x, _next_target_rel.y));
 		
 		_velocity = Map->distance(position, _next_target);
 		if ((_next_target_rel.x != 0 && _velocity.x * _next_target_rel.x <= 0) || (math::abs(_velocity.x) < af))
@@ -785,7 +785,7 @@ void Object::calculateWayVelocity() {
 		} else break;
 	}
 	_velocity.normalize();
-//	LOG_DEBUG(("%d: %s velocity: %g %g", getID(), animation.c_str(), _velocity.x, _velocity.y));
+//	LOG_DEBUG(("%d: %s velocity: %g %g", get_id(), animation.c_str(), _velocity.x, _velocity.y));
 }
 
 
@@ -819,7 +819,7 @@ void Object::onSpawn() {
 }
 
 void Object::limitRotation(const float dt, const float speed, const bool rotate_even_stopped, const bool allow_backward) {
-	const int dirs = getDirectionsNumber();
+	const int dirs = get_directions_number();
 	if (dirs == 1)
 		return;
 	
@@ -831,12 +831,12 @@ void Object::limitRotation(const float dt, const float speed, const bool rotate_
 
 	if (dirs == 8) {
 		_velocity.quantize8();
-		int d = _velocity.getDirection8() - 1;
+		int d = _velocity.get_direction8() - 1;
 		if (d >= 0) 
 			_dst_direction = d;
 	} else {
 		_velocity.quantize16();
-		int d = _velocity.getDirection16() - 1;
+		int d = _velocity.get_direction16() - 1;
 		if (d >= 0) 
 			_dst_direction = d;
 	}
@@ -1065,9 +1065,9 @@ const float Object::getWeaponRange(const std::string &weapon) const {
 
 #include "math/vector.h"
 
-const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
+const int Object::getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const std::string &weapon) const {
 	float range = getWeaponRange(weapon);
-	return getTargetPosition(relative_position, targets, range);
+	return getTarget_position(relative_position, targets, range);
 }
 
 const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, const int z, const bool use_pierceable_fixes) {
@@ -1108,7 +1108,7 @@ const bool Object::checkDistance(const v2<float> &_map1, const v2<float>& map2, 
 	return true;
 }
 
-const int Object::getTargetPosition(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
+const int Object::getTarget_position(v2<float> &relative_position, const std::set<std::string> &targets, const float range) const {
 	if (aiDisabled())
 		return -1;
 
@@ -1119,7 +1119,7 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	std::set<const Object *> objects;
 	World->enumerateObjects(objects, this, range, &targets);
 	
-//		v2<int> map_pos = (pos + getPosition()).convert<int>() / pfs;
+//		v2<int> map_pos = (pos + get_position()).convert<int>() / pfs;
 
 	int result_dir = -1;
 	float distance = -1; //no result if it was bug. ;)
@@ -1137,14 +1137,14 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 				continue;
 			
 			math::getNormalVector(pos, dir, tp);
-			if (pos.quick_length() > tp.quick_length() || !Map->contains(pos + getCenterPosition()))
+			if (pos.quick_length() > tp.quick_length() || !Map->contains(pos + get_center_position()))
 				continue;
 			
 			
 			//skip solid objects
 			if (impassability >= 1.0f) {
 				// i am solid object. 
-				v2<int> map_pos = (pos + getCenterPosition()).convert<int>() / pfs;
+				v2<int> map_pos = (pos + get_center_position()).convert<int>() / pfs;
 				if (matrix.get(map_pos.y, map_pos.x) < 0)
 					continue;
 			}
@@ -1156,12 +1156,12 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 
 			if (impassability >= 1.0f) {
 				//checking map projection
-				v2<float> map1 = pos + getCenterPosition();
-				v2<float> map2 = o->getCenterPosition();
+				v2<float> map1 = pos + get_center_position();
+				v2<float> map2 = o->get_center_position();
 				if (!checkDistance(map1, map2, getZ(), true))
 					continue;
-				map1 = getCenterPosition();
-				map2 = pos + getCenterPosition();
+				map1 = get_center_position();
+				map2 = pos + get_center_position();
 				if (!checkDistance(map1, map2, getZ(), false))
 					continue;
 			} 
@@ -1177,15 +1177,15 @@ const int Object::getTargetPosition(v2<float> &relative_position, const std::set
 	return result_dir;
 }
 
-const int Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
+const int Object::getTarget_position(v2<float> &relative_position, const v2<float> &target, const std::string &weapon) const {
 	if (aiDisabled())
 		return -1;
 
 	float range = getWeaponRange(weapon);
-	return getTargetPosition(relative_position, target, range);
+	return getTarget_position(relative_position, target, range);
 }
 
-const int Object::getTargetPosition(v2<float> &relative_position, const v2<float> &target, const float range) const {
+const int Object::getTarget_position(v2<float> &relative_position, const v2<float> &target, const float range) const {
 	if (aiDisabled())
 		return -1;
 
@@ -1209,13 +1209,13 @@ const int Object::getTargetPosition(v2<float> &relative_position, const v2<float
 		if (impassability >= 1.0f) {
 			//checking map projection
 			
-			v2<float> map1 = pos + getCenterPosition();
-			v2<float> map2 = target + getCenterPosition();
+			v2<float> map1 = pos + get_center_position();
+			v2<float> map2 = target + get_center_position();
 			if (!checkDistance(map1, map2, getZ(), true))
 				continue;
 			
-			map1 = getCenterPosition();
-			map2 = pos + getCenterPosition();
+			map1 = get_center_position();
+			map2 = pos + get_center_position();
 			if (!checkDistance(map1, map2, getZ(), false))
 				continue;
 			
@@ -1275,12 +1275,12 @@ static inline const int h(const v2<int>& src, const v2<int>& dst, const int step
 void Object::findPath(const v2<int> target, const int step) {
 	_step = step;
 	_end = target;
-	getCenterPosition(_begin);
+	get_center_position(_begin);
 
 	_begin /= step;
 	_end /= step;
 	
-	//LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), getID(), _begin.x, _begin.y, _end.x, _end.y));
+	//LOG_DEBUG(("%s[%d]: findPath %d:%d -> %d:%d", registered_name.c_str(), get_id(), _begin.x, _begin.y, _end.x, _end.y));
 	
 	//while(!_open_list.empty())
 	//	_open_list.pop();
@@ -1294,7 +1294,7 @@ void Object::findPath(const v2<int> target, const int step) {
 	p.id = _begin;
 	p.g = 0;
 	p.h = h(p.id, _end, _step);
-	p.dir = getDirection();
+	p.dir = get_direction();
 
 	_open_list.push(PD(p.g + p.h, p.id));
 	_points[p.id] = p;
@@ -1313,8 +1313,8 @@ const bool Object::findPathDone(Way &way) {
 		_open_list = OpenList();
 		return true;
 	}
-	const v2<int> map_size = Map->getSize();
-	int dir_save = getDirection();
+	const v2<int> map_size = Map->get_size();
+	int dir_save = get_direction();
 	GET_CONFIG_VALUE("engine.pathfinding-slice", int, ps, 2);
 	
 	while(ps > 0 && !_open_list.empty()) {
@@ -1327,7 +1327,7 @@ const bool Object::findPathDone(Way &way) {
 		if (_close_list.find(current.id) != _close_list.end())
 			continue;
 
-//		LOG_DEBUG(("%d: popping vertex. x=%d, y=%d, g=%d, h=%d, f=%d", getID(), 
+//		LOG_DEBUG(("%d: popping vertex. x=%d, y=%d, g=%d, h=%d, f=%d", get_id(), 
 //			current.id.x, current.id.y, current.g, current.h, current.g + current.h));
 	
 		_close_list.insert(current.id);
@@ -1339,7 +1339,7 @@ const bool Object::findPathDone(Way &way) {
 
 		//searching surrounds 
 		assert(current.dir != -1);
-		const int dirs = getDirectionsNumber();
+		const int dirs = get_directions_number();
 		if (dirs < 4 || dirs > 8)
 			throw_ex(("pathfinding cannot handle directions number: %d", dirs));
 			
@@ -1535,14 +1535,14 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		
 		
 		GET_CONFIG_VALUE("engine.score-decreasing-factor-for-damage", float, sdf, 0.25f);
-		if ((slot = PlayerManager->getSlotByID(getID())) != NULL) {
+		if ((slot = PlayerManager->getSlotByID(get_id())) != NULL) {
 			slot->addScore(- (int)(o->hp * sdf));
 		}
 		
 	}
 	
 	v2<float> pos;
-	getPosition(pos);
+	get_position(pos);
 	pos.x += size.x * 0.66f;
 	World->addObject(o, pos);
 	o->setZ(getZ() + 1, true);
@@ -1599,7 +1599,7 @@ void Object::enumerateObjects(std::set<const Object *> &o_set, const float range
 }
 
 const int Object::getChildren(const std::string &classname) const {
-	return World->getChildren(getID(), classname);
+	return World->getChildren(get_id(), classname);
 }
 
 const bool Object::take(const BaseObject *obj, const std::string &type) {
@@ -1617,7 +1617,7 @@ const bool Object::take(const BaseObject *obj, const std::string &type) {
 			for(size_t i = 0; i < n; ++i) {
 				PlayerSlot &slot = PlayerManager->getSlot(i);
 				Object *o = slot.getObject();
-				if (o != NULL && o->getID() != getID()) 
+				if (o != NULL && o->get_id() != get_id()) 
 					o->add_effect(type, d);
 			}
 			return true;
@@ -1630,7 +1630,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (vehicle == NULL) 
 		return false;
 	
-	PlayerSlot *slot = PlayerManager->getSlotByID(getID());
+	PlayerSlot *slot = PlayerManager->getSlotByID(get_id());
 	if (slot == NULL)
 		return false;
 	
@@ -1656,7 +1656,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	vehicle->setSlot(getSlot());
 
 	vehicle->pick(".me", this);
-	World->push(getID(), World->pop(vehicle), getPosition());
+	World->push(get_id(), World->pop(vehicle), get_position());
 
 	slot->need_sync = true;
 
@@ -1664,7 +1664,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 }
 
 const bool Object::detachVehicle() {
-	PlayerSlot * slot = PlayerManager->getSlotByID(getID());
+	PlayerSlot * slot = PlayerManager->getSlotByID(get_id());
 	if (
 		slot == NULL || 
 		classname == "monster" ||
@@ -1719,11 +1719,11 @@ const bool Object::detachVehicle() {
 	
 	Object *me = World->pop(this);
 	if (!dead) 
-		World->push(-1, me, getPosition());
+		World->push(-1, me, get_position());
 	else 
 		delete me;
 	
-	World->push(getID(), man, getCenterPosition() + _direction * (size.x + size.y) / 4 - man->size / 2);
+	World->push(get_id(), man, get_center_position() + _direction * (size.x + size.y) / 4 - man->size / 2);
 	
 	return true;
 }

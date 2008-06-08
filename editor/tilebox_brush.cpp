@@ -33,8 +33,8 @@ const bool TileBoxBrush::check(const generator::TileBox *tilebox, const int tid,
 	const int x2 = x1 + tilebox->split_w[1], y2 = y1 + tilebox->split_h[1];
 
 	const Matrix<int> &tiles = tilebox->tiles;
-	for(int y = 0; y < tiles.getHeight(); ++y) 
-		for(int x = 0; x < tiles.getWidth(); ++x) {
+	for(int y = 0; y < tiles.get_height(); ++y) 
+		for(int x = 0; x < tiles.get_width(); ++x) {
 			if (x >= x1 && x < x2 && y >= y1 && y < y2) {
 				if (!base)
 					continue;
@@ -60,7 +60,7 @@ void TileBoxBrush::exec(Command& command,  const int x, const int y) const {
 	int tx = tilebox->split_w[0] + (x % w), ty = tilebox->split_h[0] + (y % h);
 
 	Matrix<int> around;
-	around.setSize(3, 3, 0);
+	around.set_size(3, 3, 0);
 	for(int dy = -1; dy <= 1; ++dy) 
 		for(int dx = - 1; dx <= 1 ; ++dx) {
 			int tid = command.getTile(x + dx, y + dy);
@@ -71,8 +71,8 @@ void TileBoxBrush::exec(Command& command,  const int x, const int y) const {
 		
 	LOG_DEBUG(("surround matrix: %s", around.dump().c_str()));
 
-	for(int dy = 0; dy < around.getHeight(); ++dy) {
-		for(int dx = 0; dx < around.getWidth(); ++dx) {
+	for(int dy = 0; dy < around.get_height(); ++dy) {
+		for(int dx = 0; dx < around.get_width(); ++dx) {
 			if (dx == 1 && dy == 1)
 				continue;
 			morph(around, dy, dx, y + dy - 1, x + dx - 1);
@@ -101,7 +101,7 @@ void TileBoxBrush::morph(Matrix<int> &ground, const int y, const int x, const in
 	for(int dy = -1; dy <= 1; ++dy) 
 		for(int dx = - 1; dx <= 1 ; ++dx) {
 			int yp = y + dy, xp = x + dx;
-			if (xp < 0 || xp >= ground.getWidth() || yp < 0 || yp >= ground.getHeight())
+			if (xp < 0 || xp >= ground.get_width() || yp < 0 || yp >= ground.get_height())
 				continue;
 			//LOG_DEBUG(("tid = %d", ground.get(yp, xp)));
 			bool morphable = check(ground.get(yp, xp), false);
@@ -177,5 +177,5 @@ void TileBoxBrush::render(sdlx::Surface &surface, const v2<int>& window_pos, con
 	const IMap::TileDescriptor &td = Map->getTile(tid);
 	assert(td.surface != NULL);
 	
-	surface.copyFrom(*td.surface, window_pos_aligned.x, window_pos_aligned.y);
+	surface.blit(*td.surface, window_pos_aligned.x, window_pos_aligned.y);
 }

@@ -51,7 +51,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		++n;
 	}
 	const v2<int> tile_size = Map->getPathTileSize();
-	v2<int> pos = sheep->getCenterPosition().convert<int>() / tile_size;
+	v2<int> pos = sheep->get_center_position().convert<int>() / tile_size;
 	
 	const Matrix<int> &hint = Map->getAreaMatrix(sheep->registered_name);
 
@@ -61,7 +61,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		for(int x = -size.x; x < size.x; ++x) {
 			if (hint.get(pos.y + y, pos.x + x)) {
 				v2<float> dpos(x, y);
-				//LOG_DEBUG(("%d:%s %g %g, %g", sheep->getID(), sheep->registered_name.c_str(), dpos.x, dpos.y, dpos.length()));
+				//LOG_DEBUG(("%d:%s %g %g, %g", sheep->get_id(), sheep->registered_name.c_str(), dpos.x, dpos.y, dpos.length()));
 				float r = dpos.normalize();
 				velocity += dpos * hgc / r;
 			}

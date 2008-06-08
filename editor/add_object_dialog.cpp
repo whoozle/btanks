@@ -16,7 +16,7 @@ ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
 	std::string src = Finder->find(_base, _fname, false);
 	if (!src.empty()) {
 		scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(src, "rt"));
-		parseFile(*ptr);
+		parse_file(*ptr);
 	}
 
 	Classes classes;
@@ -55,7 +55,7 @@ ScrollList("menu/background_box_dark.png", "small", w, h), selected_z(0) {
 
 	_z = new ObjectPropertiesDialog(w);
 	int cw, ch;
-	getSize(cw, ch);
+	get_size(cw, ch);
 	add(0, ch, _z);
 }
 
@@ -151,12 +151,12 @@ AddObjectDialog::~AddObjectDialog() {
 				"\t\tto make object visible in \"add new object dialog\" -->\n";
 		
 		for(Classes::const_iterator i = _classes.begin(); i != _classes.end(); ++i) {
-			xml += mrt::formatString("\t<class id=\"%s\">\n", i->c_str()); 
+			xml += mrt::format_string("\t<class id=\"%s\">\n", i->c_str()); 
 			{
 				Animations::const_iterator b = _animations.lower_bound(*i);
 				Animations::const_iterator e = _animations.upper_bound(*i);
 				for(Animations::const_iterator j = b; j != e; ++j) {
-					xml += mrt::formatString("\t\t<animation id=\"%s\" />\n", j->second.c_str());
+					xml += mrt::format_string("\t\t<animation id=\"%s\" />\n", j->second.c_str());
 				}
 			}
 
@@ -164,7 +164,7 @@ AddObjectDialog::~AddObjectDialog() {
 				Variants::const_iterator b = _variants.lower_bound(*i);
 				Variants::const_iterator e = _variants.upper_bound(*i);
 				for(Variants::const_iterator j = b; j != e; ++j) {
-					xml += mrt::formatString("\t\t<variant id=\"%s\" />\n", j->second.c_str());
+					xml += mrt::format_string("\t\t<variant id=\"%s\" />\n", j->second.c_str());
 				}
 			}
 				
@@ -176,7 +176,7 @@ AddObjectDialog::~AddObjectDialog() {
 			mrt::Directory dir;
 			dir.create(_base, true);
 		} catch(...) {}
-		file.writeAll(xml);
+		file.write_all(xml);
 		file.close();
 		
 	} CATCH("AddObjectDialog dtor", );

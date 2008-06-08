@@ -62,53 +62,53 @@ const bool Joystick::opened() const {
 	return _joy != NULL;
 }
 
-Sint16 Joystick::getAxis(const int idx) const {
+Sint16 Joystick::get_axis(const int idx) const {
 	if (_joy == NULL)
-		throw_ex(("getAxis(%d) on uninitialized joystick", idx));
+		throw_ex(("get_axis(%d) on uninitialized joystick", idx));
 	return SDL_JoystickGetAxis(_joy, idx);
 }
 
-const bool Joystick::getButton(const int idx) const {
+const bool Joystick::get_button(const int idx) const {
 	if (_joy == NULL)
-		throw_ex(("getButton(%d) on uninitialized joystick", idx));
+		throw_ex(("get_button(%d) on uninitialized joystick", idx));
 	return SDL_JoystickGetButton(_joy, idx) != 0;
 }
 
-const int Joystick::getHat(const int idx) const {
+const int Joystick::get_hat(const int idx) const {
 	if (_joy == NULL)
-		throw_ex(("getHat(%d) on uninitialized joystick", idx));
+		throw_ex(("get_hat(%d) on uninitialized joystick", idx));
 	return SDL_JoystickGetHat(_joy, idx);
 }
 
-void Joystick::getBall(const int idx, int &dx, int &dy) const {
+void Joystick::get_ball(const int idx, int &dx, int &dy) const {
 	if (_joy == NULL)
-		throw_ex(("getBall(%d) on uninitialized joystick", idx));
+		throw_ex(("get_ball(%d) on uninitialized joystick", idx));
 	if (SDL_JoystickGetBall(_joy, idx, &dx, &dy) == -1)	
 		throw_sdl(("SDL_JoystickGetBall(%d)", idx));
 }
 
 
-const int Joystick::getNumAxes() const {
+const int Joystick::get_axis_num() const {
 	if (_joy == NULL)
-		throw_ex(("getNumAxes() on uninitialized joystick"));
+		throw_ex(("get_axis_num() on uninitialized joystick"));
 	return SDL_JoystickNumAxes(_joy);
 }
 
-const int Joystick::getNumButtons() const {
+const int Joystick::get_buttons_num() const {
 	if (_joy == NULL)
-		throw_ex(("getNumButtons() on uninitialized joystick"));
+		throw_ex(("get_buttons_num() on uninitialized joystick"));
 	return SDL_JoystickNumButtons(_joy);
 }
 
-const int Joystick::getNumBalls() const {
+const int Joystick::get_balls_num() const {
 	if (_joy == NULL)
-		throw_ex(("getNumBalls() on uninitialized joystick"));
+		throw_ex(("get_balls_num() on uninitialized joystick"));
 	return SDL_JoystickNumBalls(_joy);
 }
 
-const int Joystick::getNumHats() const {
+const int Joystick::get_hats_num() const {
 	if (_joy == NULL)
-		throw_ex(("getNumBalls() on uninitialized joystick"));
+		throw_ex(("get_balls_num() on uninitialized joystick"));
 	return SDL_JoystickNumHats(_joy);
 }
 

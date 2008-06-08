@@ -30,10 +30,10 @@ class MRTAPI Chunk {
 public:
 	inline Chunk(): ptr(NULL), size(0) {}
 	inline Chunk(const Chunk& c) : ptr(NULL), size(0) { *this = c; }
-	inline Chunk(const int size): ptr(NULL), size(0) { setSize(size); }
+	inline Chunk(const int size): ptr(NULL), size(0) { set_size(size); }
 	inline ~Chunk() { free(); }
-	inline void *getPtr() const { return ptr; }
-	inline const size_t getSize() const { return size; } 
+	inline void *get_ptr() const { return ptr; }
+	inline const size_t get_size() const { return size; } 
 	inline bool empty() const { return ptr == NULL; }
 
 	//use unlink only if you know what you're doing ;)
@@ -43,9 +43,9 @@ public:
 
 	void free();
 	
-	void setSize(size_t s);
-	void setData(const void *p, const size_t s);
-	void setData(void *p, const size_t s, const bool own = false);
+	void set_size(size_t s);
+	void set_data(const void *p, const size_t s);
+	void set_data(void *p, const size_t s, const bool own = false);
 	void fill(const int b);
 	
 	void append(const Chunk &other);

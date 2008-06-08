@@ -76,7 +76,7 @@ void PoisonCloud::emit(const std::string &event, Object * emitter) {
 			emitter->registered_name != "machinegunner")
 			return;
 		
-		const int id = emitter->getID();
+		const int id = emitter->get_id();
 		if (_damaged_objects.find(id) != _damaged_objects.end())
 			return; //damage was already added for this object.
 		

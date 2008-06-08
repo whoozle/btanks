@@ -75,7 +75,7 @@ public:
 				} 
 			}
 			
-			int dirs = 16/* bullet->getDirectionsNumber() */, d = _direction.getDirection(dirs);
+			int dirs = 16/* bullet->get_directions_number() */, d = _direction.get_direction(dirs);
 			v2<float> dpos; 
 			dpos.fromDirection((d + dirs / 4) % dirs, dirs);
 			dpos *= 16;
@@ -107,7 +107,7 @@ public:
 				continue;
 			
 			v2<float> dpos = getRelativePosition(target);
-			if (checkDistance(getCenterPosition(), target->getCenterPosition(), getZ(), true)) {
+			if (checkDistance(get_center_position(), target->get_center_position(), getZ(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
@@ -119,7 +119,7 @@ public:
 			_state.fire = true;
 			_direction = getRelativePosition(result);
 			_direction.normalize();
-			//setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+			//setDirection(_direction.get_direction(get_directions_number()) - 1);
 		}
 	}
 	

@@ -9,7 +9,7 @@ Chat::Chat() :nick_w(0), lines(10) {
 	//GET_CONFIG_VALUE("multiplayer.chat.lines-number", int, lines, 6);
 	_font[0] = ResourceManager->loadFont("small", true);
 	for(int t = 0; t < 4; ++t)
-		_font[t + 1] = ResourceManager->loadFont(mrt::formatString("small_%s", Team::get_color((Team::ID)t)), true);
+		_font[t + 1] = ResourceManager->loadFont(mrt::format_string("small_%s", Team::get_color((Team::ID)t)), true);
 	 
 	add(4, 0, _input = new TextControl("small"));
 }
@@ -33,7 +33,7 @@ void Chat::render(sdlx::Surface &surface, const int x, const int y) const {
 		} else {
 			line.font->render(surface, x + 4, y + ybase, line.message);
 		}
-		ybase += line.font->getHeight();
+		ybase += line.font->get_height();
 	}
 	if (!hidden())
 		Container::render(surface, x, y);
@@ -50,7 +50,7 @@ void Chat::layout() {
 			if (w > nick_w)
 				nick_w = w;
 		}
-		yp += line.font->getHeight();
+		yp += line.font->get_height();
 	}
 	setBase(_input, xp, yp);
 }
@@ -67,7 +67,7 @@ void Chat::addAction(const std::string &m) {
 
 
 
-void Chat::addMessage(const PlayerSlot &slot, const std::string &m) {
+void Chat::add_message(const PlayerSlot &slot, const std::string &m) {
 	const std::string n = "<" + slot.name + ">";
 	int idx = (int)slot.team + 1;
 	assert(idx >= 0 && idx < 5);

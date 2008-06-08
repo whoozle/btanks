@@ -28,7 +28,7 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 	int bw, bh;
 	
 	Label *l = new Label(font, label);
-	l->getSize(bw, bh);
+	l->get_size(bw, bh);
 	add(0, 0, l);
 	
 	if (variant == "split") {
@@ -43,7 +43,7 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 	
 	int n = sdlx::Joystick::getCount();
 	for(int i = 0; i < 4; ++i) {
-		_values.push_back(mrt::formatString("joy-%d", i + 1));
+		_values.push_back(mrt::format_string("joy-%d", i + 1));
 	}
 
 	_controls = new Chooser("medium", _values, variant == "split"?"menu/controls_split.png":"menu/controls.png");
@@ -54,7 +54,7 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 	}
 
 	int cw, ch;
-	_controls->getSize(cw, ch);
+	_controls->get_size(cw, ch);
 	add(w - 100 - cw/2, 0, _controls);
 	
 	reload();

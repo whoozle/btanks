@@ -41,9 +41,9 @@ void PopupMenu::get(std::set<std::string> &labels) const {
 
 void PopupMenu::append(const std::string &item, const bool state) {
 	int w, h;
-	getSize(w, h);
+	get_size(w, h);
 	add(0, h + 5, new ToggleLabel(item, state));
-	getSize(w, h);
+	get_size(w, h);
 	w += 32; h += 24;
 	_background->init("menu/background_box_dark.png", w, h, 24);
 }
@@ -60,7 +60,7 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 			continue;
 
 		int bw, bh;
-		l->getSize(bw, bh);
+		l->get_size(bw, bh);
 	
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		if (dst.in(x, y)) {
@@ -84,7 +84,7 @@ bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const i
 			continue;
 
 		int bw, bh;
-		l->getSize(bw, bh);
+		l->get_size(bw, bh);
 	
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
 		if (dst.in(x, y)) {

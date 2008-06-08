@@ -25,9 +25,9 @@ using namespace sdlx;
 
 int Surface::default_flags  = Default;
 
-void Surface::setDefaultFlags(const Uint32 flags) {
+void Surface::set_default_flags(const Uint32 flags) {
 	if (flags == Default)
-		throw_ex(("setDefaultFlags doesnt accept 'Default' argument"));
+		throw_ex(("set_default_flags doesnt accept 'Default' argument"));
 	default_flags = flags;
 }
 
@@ -41,12 +41,12 @@ void Surface::assign(SDL_Surface *x) {
 }
 
 
-void Surface::getVideo() {
+void Surface::get_video() {
     free();
     surface = SDL_GetVideoSurface();
 }
 
-void Surface::createRGB(int width, int height, int depth, Uint32 flags) {
+void Surface::create_rgb(int width, int height, int depth, Uint32 flags) {
 	free();
 	if (flags == Default) flags = default_flags;
 	if (flags == Default) throw_ex(("setup default flags before using it."));
@@ -68,7 +68,7 @@ void Surface::createRGB(int width, int height, int depth, Uint32 flags) {
 	if(surface == NULL) throw_sdl(("SDL_CreateRGBSurface(%d, %d, %d)", width, height, depth));
 }
 
-void Surface::createRGBFrom(void *pixels, int width, int height, int depth,  int pitch) {
+void Surface::create_rgb_from(void *pixels, int width, int height, int depth,  int pitch) {
 	free();
 
 	Uint32 rmask, gmask, bmask, amask; 
@@ -114,7 +114,7 @@ void Surface::convert(Uint32 flags) {
 
 
 
-void Surface::setVideoMode(int w, int h, int bpp, int flags) {
+void Surface::set_video_mode(int w, int h, int bpp, int flags) {
 	if (flags == Default) flags = default_flags;
 	if (flags == Default) throw_ex(("setup default flags before using it."));
     free();
@@ -123,9 +123,9 @@ void Surface::setVideoMode(int w, int h, int bpp, int flags) {
 }
 
 
-void Surface::putPixel(int x, int y, Uint32 pixel) {
+void Surface::put_pixel(int x, int y, Uint32 pixel) {
 	if (surface->pixels == NULL)
-		throw_ex(("putPixel called on unlocked surface without pixel information"));
+		throw_ex(("put_pixel called on unlocked surface without pixel information"));
 	if (!(x >= 0 && y >= 0 && x < surface->w && y < surface->h))
 		return;
 	int bpp = surface->format->BytesPerPixel;
@@ -162,9 +162,9 @@ void Surface::putPixel(int x, int y, Uint32 pixel) {
 	}
 }
 
-Uint32 Surface::getPixel(int x, int y) const{
+Uint32 Surface::get_pixel(int x, int y) const{
 	if (surface->pixels == NULL)
-		throw_ex(("getPixel called on unlocked surface without pixel information"));
+		throw_ex(("get_pixel called on unlocked surface without pixel information"));
 	int bpp = surface->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to retrieve */
 	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
@@ -191,14 +191,14 @@ Uint32 Surface::getPixel(int x, int y) const{
 	}
 }
 
-void Surface::loadBMP(const std::string &fname) {
+void Surface::load_bmp(const std::string &fname) {
 	free();
 	surface = SDL_LoadBMP(fname.c_str());
 	if (surface == NULL)
 		throw_sdl(("SDL_LoadBMP"));
 }
 
-void Surface::saveBMP(const std::string &fname)  const {
+void Surface::save_bmp(const std::string &fname)  const {
 	if (SDL_SaveBMP(surface, fname.c_str()) == -1) 
 		throw_sdl(("SDL_SaveBMP"));
 }
@@ -207,14 +207,14 @@ void Surface::saveBMP(const std::string &fname)  const {
 #ifndef NO_SDL_IMAGE
 #include <SDL_image.h>
 
-void Surface::loadImage(const std::string &str) {
+void Surface::load_image(const std::string &str) {
     free();
     if ((surface = IMG_Load(str.c_str())) == NULL ) throw_sdl(("IMG_Load"));
 }
 
-void Surface::loadImage(const mrt::Chunk &memory) {
+void Surface::load_image(const mrt::Chunk &memory) {
 	free();
-	SDL_RWops *op = SDL_RWFromMem(memory.getPtr(), memory.getSize());
+	SDL_RWops *op = SDL_RWFromMem(memory.get_ptr(), memory.get_size());
 	if (op == NULL) throw_sdl(("SDL_RWFromMem"));
 	try {
 		surface = IMG_Load_RW(op, 0);
@@ -222,13 +222,13 @@ void Surface::loadImage(const mrt::Chunk &memory) {
 		op = NULL;
 		if (surface == NULL)
 			throw_sdl(("IMG_Load_RW"));
-	} CATCH("loadImage", {SDL_FreeRW(op); throw;})
+	} CATCH("load_image", {SDL_FreeRW(op); throw;})
 }
 
 #endif
 
 
-void Surface::copyFrom(const Surface &from, const int x, const int y) {
+void Surface::blit(const Surface &from, const int x, const int y) {
     SDL_Rect dst;
 	memset(&dst, 0, sizeof(dst));
     dst.x = x;
@@ -237,14 +237,14 @@ void Surface::copyFrom(const Surface &from, const int x, const int y) {
 		throw_sdl(("SDL_BlitSurface"));
 }
 
-void Surface::copyFrom(const Surface &from, const Rect &fromRect, const int x, const int y) {
+void Surface::blit(const Surface &from, const Rect &fromRect, const int x, const int y) {
     SDL_Rect dst;
     dst.x = x;
     dst.y = y;
     if (SDL_BlitSurface(from.surface, const_cast<Rect*>(&fromRect), surface, &dst) == -1) throw_sdl(("SDL_BlitSurface"));
 }
 
-void Surface::copyFrom(const Surface &from, const Rect &fromRect) {
+void Surface::blit(const Surface &from, const Rect &fromRect) {
     if (SDL_BlitSurface(from.surface, const_cast<Rect*>(&fromRect), surface, NULL) == -1) throw_sdl(("SDL_BlitSurface"));
 }
 
@@ -270,7 +270,7 @@ void Surface::flip() {
 	}
 }
 
-void Surface::toggleFullscreen() {
+void Surface::toggle_fullscreen() {
 	if (SDL_WM_ToggleFullScreen(surface) != 1) 
 		throw_sdl(("SDL_WM_ToggleFullScreen"));
 }
@@ -279,19 +279,19 @@ void Surface::fill(Uint32 color) {
     if ( SDL_FillRect(surface, NULL, color) == -1) throw_sdl(("SDL_FillRect"));
 }
 
-void Surface::fillRect(const Rect &r, Uint32 color) {
+void Surface::fill_rect(const Rect &r, Uint32 color) {
     if ( SDL_FillRect(surface, (SDL_Rect *)&r , color) == -1) throw_sdl(("SDL_FillRect"));
 }
 
 
-void Surface::setAlpha(Uint8 alpha, Uint32 flags) {
+void Surface::set_alpha(Uint8 alpha, Uint32 flags) {
 	if (flags == Default) flags = default_flags;
 	if (flags == Default) throw_ex(("setup default flags before using it."));
 
     if (SDL_SetAlpha(surface, flags, alpha) == -1) throw_sdl(("SDL_SetAlpha"));
 }
 
-void Surface::convertAlpha() {
+void Surface::display_format_alpha() {
 	SDL_Surface *r = SDL_DisplayFormatAlpha(surface);
 	if (r == surface) 
 		return; //hack :)
@@ -301,7 +301,7 @@ void Surface::convertAlpha() {
 	assign(r);
 }
 
-void Surface::convertToDisplay() {
+void Surface::display_format() {
 	SDL_Surface *r = SDL_DisplayFormat(surface);
 	if (r == surface)
 		return;
@@ -331,13 +331,13 @@ void Surface::unlock() const {
 	}
 }
 
-void Surface::setClipRect(const sdlx::Rect &rect) {
+void Surface::set_clip_rect(const sdlx::Rect &rect) {
 	SDL_SetClipRect(surface, const_cast<sdlx::Rect*>(&rect));
 }
-void Surface::resetClipRect() {
+void Surface::reset_clip_rect() {
 	SDL_SetClipRect(surface, NULL);
 }
-void Surface::getClipRect(sdlx::Rect &rect) {
+void Surface::get_clip_rect(sdlx::Rect &rect) {
 	SDL_GetClipRect(surface, &rect);
 }
 
@@ -350,7 +350,7 @@ Surface::~Surface() {
 #	include <windows.h>
 #endif
 
-void Surface::loadFromResource(const char * lpResName) {
+void Surface::load_from_resource(const char * lpResName) {
 #if 0
 #ifdef _WINDOWS
 	free();
@@ -425,7 +425,7 @@ void Surface::loadFromResource(const char * lpResName) {
 #endif
 }
 
-void Surface::setColorKey(Uint32 key, Uint32 flag) {
+void Surface::set_color_key(Uint32 key, Uint32 flag) {
 	if (SDL_SetColorKey(surface, flag, key) != 0)
 		throw_sdl(("SDL_SetColorKey"));
 }

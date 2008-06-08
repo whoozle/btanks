@@ -49,10 +49,10 @@
 using namespace mrt;
 
 #ifdef DEBUG
-#define ASSERT_POS(size) assert(_pos + (size) <= _data->getSize())
+#define ASSERT_POS(size) assert(_pos + (size) <= _data->get_size())
 #else
-#define ASSERT_POS(size) if (_pos + (size) > _data->getSize()) \
-	throw_ex(("buffer overrun %u + %u > %u", (unsigned)_pos, (unsigned)(size), (unsigned)_data->getSize()))
+#define ASSERT_POS(size) if (_pos + (size) > _data->get_size()) \
+	throw_ex(("buffer overrun %u + %u > %u", (unsigned)_pos, (unsigned)(size), (unsigned)_data->get_size()))
 #endif
 
 //ugly hackish trick, upcast const pointer to non-const variant.
@@ -68,7 +68,7 @@ Serializator::~Serializator() {
 }
 
 const bool Serializator::end() const {
-	return _pos >= _data->getSize();
+	return _pos >= _data->get_size();
 }
 
 void Serializator::add(const int n) {
@@ -132,13 +132,13 @@ void Serializator::add(const std::string &str) {
 }
 
 void Serializator::add(const Chunk &c) {
-	int size = c.getSize();
+	int size = c.get_size();
 	add(size);
 	if (size == 0)
 		return;
 
 	unsigned char *ptr = (unsigned char *) _data->reserve(size) + _pos;
-	memcpy(ptr, c.getPtr(), size);
+	memcpy(ptr, c.get_ptr(), size);
 	_pos += size;
 }
 
@@ -164,7 +164,7 @@ void Serializator::add(const float f) {
 }
 
 void Serializator::get(int &n)  const {
-	unsigned char * ptr = (unsigned char *) _data->getPtr();
+	unsigned char * ptr = (unsigned char *) _data->get_ptr();
 
 	ASSERT_POS(1);
 	unsigned char type = *(ptr + _pos++);
@@ -196,7 +196,7 @@ void Serializator::get(int &n)  const {
 		_pos += 4;
 		n = (nh << 32) | nl;
 	} else 
-		throw_ex(("control byte 0x%02x is unsupported. (corrupted data?) (position: %u, size: %u)", (unsigned)type, (unsigned)_pos, (unsigned)_data->getSize()));
+		throw_ex(("control byte 0x%02x is unsupported. (corrupted data?) (position: %u, size: %u)", (unsigned)type, (unsigned)_pos, (unsigned)_data->get_size()));
 
 	if (type & 0x80) 
 		n = -n;
@@ -230,7 +230,7 @@ void Serializator::get(std::string &str)  const {
 	get(size);
 
 	ASSERT_POS(size);
-	const char * ptr = (const char *) _data->getPtr() + _pos;
+	const char * ptr = (const char *) _data->get_ptr() + _pos;
 	str = std::string(ptr, size);
 	_pos += size;
 }
@@ -240,7 +240,7 @@ void Serializator::get(void *raw, const int size) const {
 	if (size == 0) 
 		return;
 	
-	const char * ptr = (const char *) _data->getPtr() + _pos;
+	const char * ptr = (const char *) _data->get_ptr() + _pos;
 	memcpy(raw, ptr, size);
 	_pos += size;
 }
@@ -251,13 +251,13 @@ void Serializator::get(Chunk &c)  const {
 	get(size);
 
 	ASSERT_POS(size);
-	c.setSize(size);
+	c.set_size(size);
 	
 	if (size == 0) 
 		return;
 	
-	const char * ptr = (const char *) _data->getPtr() + _pos;
-	memcpy(c.getPtr(), ptr, size);
+	const char * ptr = (const char *) _data->get_ptr() + _pos;
+	memcpy(c.get_ptr(), ptr, size);
 	_pos += size;
 }
 
@@ -271,6 +271,6 @@ void Serializator::finalize(mrt::Chunk &data) {
 		data.free();
 		return;
 	}
-	data.setData(_data->getPtr(), _data->getSize(), true);
+	data.set_data(_data->get_ptr(), _data->get_size(), true);
 	_data->unlink();
 }

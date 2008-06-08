@@ -34,15 +34,15 @@ public:
 	const bool opened() const;
 	void open(const int idx);
 
-	Sint16 getAxis(const int idx) const;
-	const bool getButton(const int idx) const;
-	const int getHat(const int idx) const;
-	void getBall(const int idx, int &dx, int &dy) const;
+	Sint16 get_axis(const int idx) const;
+	const bool get_button(const int idx) const;
+	const int get_hat(const int idx) const;
+	void get_ball(const int idx, int &dx, int &dy) const;
 
-	const int getNumAxes() const;
-	const int getNumButtons() const;
-	const int getNumBalls() const;
-	const int getNumHats() const;
+	const int get_axis_num() const;
+	const int get_buttons_num() const;
+	const int get_balls_num() const;
+	const int get_hats_num() const;
 
 	void close();
 	~Joystick();

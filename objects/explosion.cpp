@@ -62,7 +62,7 @@ private:
 void Explosion::damageMap() const {
 	//add damage for the map.
 	v2<float> pos;
-	getCenterPosition(pos);
+	get_center_position(pos);
 	Map->damage(pos, max_hp, (size.x + size.y) / 4);
 }
 
@@ -109,7 +109,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			)
 			return;
 			
-		const int id = emitter->getID();
+		const int id = emitter->get_id();
 		assert(emitter != NULL);
 		
 		if (_damaged_objects.find(id) != _damaged_objects.end())
@@ -118,7 +118,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 		if (registered_name == "mutagen-explosion") {
 			if (_variants.has("chained") && emitter->classname == "explosive" && emitter->getState() == "main") {
 				float p = getStateProgress();
-			//LOG_DEBUG(("%d: progress = %g", getID(), p));
+			//LOG_DEBUG(("%d: progress = %g", get_id(), p));
 				if (p < 0.03f)
 					return;
 				emitter->emit("destroy", this);
@@ -169,7 +169,7 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 	} else if (event == "death") {
 		if (_players_killed > 1) {
 			std::string combo = I18n->get("messages", "combo");
-			GameMonitor->pushState(mrt::formatString("%dx %s", _players_killed, combo.c_str()), 2);
+			GameMonitor->pushState(mrt::format_string("%dx %s", _players_killed, combo.c_str()), 2);
 		}
 		Object::emit(event, emitter);
 	} else Object::emit(event, emitter);

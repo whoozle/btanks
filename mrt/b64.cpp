@@ -24,8 +24,8 @@
 using namespace mrt;
 
 void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize) {
-	const unsigned char * p_src = (const unsigned char *)src.getPtr();
-	size_t size = src.getSize();
+	const unsigned char * p_src = (const unsigned char *)src.get_ptr();
+	size_t size = src.get_size();
 	dst.clear();
 	int lost = 0;
 	while(size) {
@@ -49,12 +49,12 @@ void Base64::encode(std::string &dst, const mrt::Chunk &src, int linesize) {
 }
 
 void Base64::decode(mrt::Chunk &dst, const std::string &src) {
-	dst.setSize(3 * src.size() / 4);
+	dst.set_size(3 * src.size() / 4);
 
-	unsigned char * p_dst = (unsigned char *)dst.getPtr();
+	unsigned char * p_dst = (unsigned char *)dst.get_ptr();
 	unsigned int p_idx = 0;
 
-	size_t size = src.size(), dst_size = dst.getSize();
+	size_t size = src.size(), dst_size = dst.get_size();
 
 	unsigned int dst24 = 0;
 	int got = 0, padded = 0;
@@ -108,5 +108,5 @@ void Base64::decode(mrt::Chunk &dst, const std::string &src) {
 		if (padded) 
 			break;
 	}
-	dst.setSize(p_idx);
+	dst.set_size(p_idx);
 }

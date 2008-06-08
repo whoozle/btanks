@@ -82,15 +82,15 @@ void AITrooper::onIdle(const float dt) {
 		if (parent != NULL) {
 			v2<float> dpos = getRelativePosition(parent);
 			float dist = dpos.length();
-			//LOG_DEBUG(("%d: %s: summoner distance: %g", getID(), animation.c_str(), dist));
+			//LOG_DEBUG(("%d: %s: summoner distance: %g", get_id(), animation.c_str(), dist));
 			if (dist > 800) {
 				//teleportation! 
-				LOG_DEBUG(("%d: %s: teleports from distance: %g", getID(), animation.c_str(), dist));
+				LOG_DEBUG(("%d: %s: teleports from distance: %g", get_id(), animation.c_str(), dist));
 				v2<float> dir;
-				dir.fromDirection(getID() % 16, 16);
+				dir.fromDirection(get_id() % 16, 16);
 				dir *= (parent->size.x + parent->size.x) / 3;
 
-				World->teleport(this, parent->getCenterPosition() + dir);
+				World->teleport(this, parent->get_center_position() + dir);
 				return;
 			}
 			
@@ -128,7 +128,7 @@ void AITrooper::calculate(const float dt) {
 	//LOG_DEBUG(("calculate"));
 	if (_target_dir != -1 && has_effect("panic")) {
 		//LOG_DEBUG(("panic: %d", _target_dir));
-		_velocity.fromDirection(_target_dir, getDirectionsNumber());
+		_velocity.fromDirection(_target_dir, get_directions_number());
 	
 		GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05f);
 		limitRotation(dt, rt, true, false);
@@ -158,12 +158,12 @@ void AITrooper::calculate(const float dt) {
 				v2<float> dpos = -(pos + vel * ct);
 				//LOG_DEBUG(("AAAAAAA!!"));
 				dpos.normalize();
-				int dirs = getDirectionsNumber(), escape = dpos.getDirection(dirs) - 1;
+				int dirs = get_directions_number(), escape = dpos.get_direction(dirs) - 1;
 				if (escape >= 0) {
 					_target_dir = escape;
 					setDirection(escape);
-					_velocity.fromDirection(_target_dir, getDirectionsNumber());
-					_direction.fromDirection(_target_dir, getDirectionsNumber());
+					_velocity.fromDirection(_target_dir, get_directions_number());
+					_direction.fromDirection(_target_dir, get_directions_number());
 					addEffect("panic", ct);
 					return;
 				}
@@ -175,7 +175,7 @@ void AITrooper::calculate(const float dt) {
 	float range = getWeaponRange(_object);
 	
 
-	_target_dir = getTargetPosition(_velocity,
+	_target_dir = getTarget_position(_velocity,
 		_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops), 
 		range);
 	if (_target_dir >= 0) {
@@ -189,13 +189,13 @@ void AITrooper::calculate(const float dt) {
 		*/
 		if (_velocity.length() >= 9) {
 			quantizeVelocity();
-			_direction.fromDirection(getDirection(), getDirectionsNumber());
+			_direction.fromDirection(get_direction(), get_directions_number());
 			_state.fire = false;
 		} else {
 			_velocity.clear();
 			setDirection(_target_dir);
 			//LOG_DEBUG(("%d", _target_dir));
-			_direction.fromDirection(_target_dir, getDirectionsNumber());
+			_direction.fromDirection(_target_dir, get_directions_number());
 			_state.fire = true;
 		}
 	
@@ -258,7 +258,7 @@ public:
 				continue;
 			
 			v2<float> dpos = getRelativePosition(target);
-			if (checkDistance(getCenterPosition(), target->getCenterPosition(), getZ(), true)) {
+			if (checkDistance(get_center_position(), target->get_center_position(), getZ(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
@@ -270,7 +270,7 @@ public:
 			_state.fire = true;
 			_direction = getRelativePosition(result);
 			_direction.normalize();
-			setDirection(_direction.getDirection(getDirectionsNumber()) - 1);
+			setDirection(_direction.get_direction(get_directions_number()) - 1);
 		}
 	}
 private: 

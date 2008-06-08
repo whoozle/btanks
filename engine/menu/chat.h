@@ -20,7 +20,7 @@ public:
 	void tick(const float dt);
 	const std::string get() const { return last_message; }
 
-	void addMessage(const PlayerSlot &slot, const std::string &text);
+	void add_message(const PlayerSlot &slot, const std::string &text);
 	void addAction(const std::string &text);
 	void clear();
 	

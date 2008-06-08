@@ -31,14 +31,14 @@ void StupidTrooper::deserialize(const mrt::Serializator &s) {
 StupidTrooper::~StupidTrooper() {}
 
 void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_velocity, v2<float> &_direction, const float dt) {
-	int dirs = object->getDirectionsNumber();
+	int dirs = object->get_directions_number();
 	if (!_reaction.tick(dt)) {
 		return;
 	}
 	
 	float range = object->getWeaponRange(_object);
 
-	_target_dir = object->getTargetPosition(_velocity, _targets, range);
+	_target_dir = object->getTarget_position(_velocity, _targets, range);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
 		/*
@@ -50,7 +50,7 @@ void StupidTrooper::calculate(Object *object, PlayerState &_state, v2<float> &_v
 		*/
 		if (_velocity.length() >= 9) {
 			object->quantizeVelocity();
-			_direction.fromDirection(object->getDirection(), dirs);
+			_direction.fromDirection(object->get_direction(), dirs);
 			_state.fire = false;
 		} else {
 			_velocity.clear();

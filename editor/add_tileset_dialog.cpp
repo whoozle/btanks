@@ -8,7 +8,7 @@ ScrollList("menu/background_box_dark.png", "small", w, h) {}
 const bool AddTilesetDialog::init(const std::string &fname, TilesetList &tilesets, const std::vector<std::string> &all_tilesets) {
 	_tileset.clear();
 	
-	std::string dir = mrt::FSNode::getDir(fname);
+	std::string dir = mrt::FSNode::get_dir(fname);
 	LOG_DEBUG(("map file: %s base dir: %s", fname.c_str(), dir.c_str()));
 	
 	clear();
@@ -16,11 +16,11 @@ const bool AddTilesetDialog::init(const std::string &fname, TilesetList &tileset
 	
 	bool found = false;
 	for(size_t i = 0; i < all_tilesets.size(); ++i) {
-		const std::string tileset = mrt::FSNode::relativePath(dir, all_tilesets[i]);
+		const std::string tileset = mrt::FSNode::relative_path(dir, all_tilesets[i]);
 		//LOG_DEBUG(("tileset: %s", tileset.c_str()));
 		if (!tilesets.exists(tileset)) {
 			_tilesets.push_back(tileset);
-			append(mrt::FSNode::getFilename(tileset, false));
+			append(mrt::FSNode::get_filename(tileset, false));
 			found = true;
 		}
 	}

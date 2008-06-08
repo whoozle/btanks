@@ -22,7 +22,7 @@ void Brush::render(sdlx::Surface &surface, const v2<int>& window_pos, const v2<i
 		for(int x = 0; x < size.x; ++x) {
 			const IMap::TileDescriptor &td = Map->getTile(_tiles[size.x * y + x]);
 			if (td.surface != NULL) {
-				surface.copyFrom(*td.surface, window_pos_aligned.x + _tile_size.x * x, window_pos_aligned.y + _tile_size.y * y);
+				surface.blit(*td.surface, window_pos_aligned.x + _tile_size.x * x, window_pos_aligned.y + _tile_size.y * y);
 			}
 		}
 	}	
@@ -32,9 +32,9 @@ Eraser::Eraser(const v2<int> tile_size) : _tile_size(tile_size) {
 	size.x = size.y = 1;
 	_tiles.push_back(0); //Brush model compatibility
 	
-	_eraser.createRGB(tile_size.x, tile_size.y, 32);
-	_eraser.convertAlpha();
-	_eraser.fill(_eraser.mapRGBA(255, 0, 0, 64));
+	_eraser.create_rgb(tile_size.x, tile_size.y, 32);
+	_eraser.display_format_alpha();
+	_eraser.fill(_eraser.map_rgba(255, 0, 0, 64));
 }
 
 void Eraser::exec(Command& command,  const int x, const int y) const {
@@ -43,7 +43,7 @@ void Eraser::exec(Command& command,  const int x, const int y) const {
 }
 
 void Eraser::render(sdlx::Surface &surface, const v2<int>& window_pos, const v2<int>& window_pos_aligned) {
-	surface.copyFrom(_eraser, window_pos_aligned.x /*+ _tile_size.x * x*/, window_pos_aligned.y/* + _tile_size.y * y */);
+	surface.blit(_eraser, window_pos_aligned.x /*+ _tile_size.x * x*/, window_pos_aligned.y/* + _tile_size.y * y */);
 }
 
 FillerBrush::FillerBrush(const Brush &brush, const v2<int> &map_size) : 

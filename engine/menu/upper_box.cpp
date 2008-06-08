@@ -51,14 +51,14 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 	_big = ResourceManager->loadFont("big", true);
 	
 	int w, h;
-	getSize(w, h);
+	get_size(w, h);
 	
 	int cw1, ch1, cw2, ch2;
 	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "player.name-1");
-	_player1_name->getSize(cw1, ch1);
+	_player1_name->get_size(cw1, ch1);
 
 	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "player.name-2");
-	_player2_name->getSize(cw2, ch2);
+	_player2_name->get_size(cw2, ch2);
 
 	const int dh = 8;
 	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
@@ -66,8 +66,8 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 
 	_name_prompt = new Prompt(320, 80, new TextControl("small", 32));
 	int nw, nh;
-	getSize(w, h);
-	_name_prompt->getSize(nw, nh);
+	get_size(w, h);
+	_name_prompt->get_size(nw, nh);
 	add(w - nw, (h - nh) / 2, _name_prompt);
 	_name_prompt->hide();
 }
@@ -77,11 +77,11 @@ void UpperBox::layout() {
 	_box->getMargins(mx, my);
 
 	int w, h;
-	getSize(w, h);
+	get_size(w, h);
 	
 	int cw1, ch1, cw2, ch2;
-	_player1_name->getSize(cw1, ch1);
-	_player2_name->getSize(cw2, ch2);
+	_player1_name->get_size(cw1, ch1);
+	_player2_name->get_size(cw2, ch2);
 
 	const int dh = 8;
 	setBase(_player1_name, w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1);
@@ -91,7 +91,7 @@ void UpperBox::layout() {
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	Container::render(surface, x, y);
 	
-	int font_dy = (_big->getHeight() - _medium->getHeight()) / 2;
+	int font_dy = (_big->get_height() - _medium->get_height()) / 2;
 	
 	int wt = 0;
 	int line1_y = 10;
@@ -107,10 +107,10 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 
 	_medium->render(surface, x + wt, y + line1_y + font_dy, I18n->get("menu/modes", value));
 	
-	int cw = _checkbox->getWidth() / 2;
+	int cw = _checkbox->get_width() / 2;
 	
-	sdlx::Rect off(0, 0, cw, _checkbox->getHeight());
-	sdlx::Rect on(cw, 0, _checkbox->getWidth(), _checkbox->getHeight());
+	sdlx::Rect off(0, 0, cw, _checkbox->get_height());
+	sdlx::Rect on(cw, 0, _checkbox->get_width(), _checkbox->get_height());
 	
 	bool split;
 	Config->get("multiplayer.split-screen-mode", split, false);
@@ -120,7 +120,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	_off_area.w = wt;
 	_on_area.h = _off_area.h = 32;
 	
-	surface.copyFrom(*_checkbox, split?off:on, x + wt, y + line2_y + font_dy);
+	surface.blit(*_checkbox, split?off:on, x + wt, y + line2_y + font_dy);
 	wt += cw;
 	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "off"));
 	_off_area.w = wt - _off_area.w + 1;
@@ -128,7 +128,7 @@ void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
 	_on_area.x = wt;
 	_on_area.y = line2_y;
 	_on_area.w = wt;
-	surface.copyFrom(*_checkbox, split?on:off, x + wt, y + line2_y + font_dy);
+	surface.blit(*_checkbox, split?on:off, x + wt, y + line2_y + font_dy);
 	wt += cw;
 	wt += 16 + _medium->render(surface, x + wt, y + line2_y + font_dy - 2, I18n->get("menu", "on"));
 	_on_area.w = wt - _on_area.w + 1;

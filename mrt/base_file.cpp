@@ -70,13 +70,13 @@ BaseFile::~BaseFile() {
 
 void BaseFile::close() {}
 
-void BaseFile::readAll(std::string &str) const {
+void BaseFile::read_all(std::string &str) const {
 	mrt::Chunk data;
-	readAll(data);
-	str.assign((const char *)data.getPtr(), data.getSize());
+	read_all(data);
+	str.assign((const char *)data.get_ptr(), data.get_size());
 }
 
-void BaseFile::readAll(Chunk &ch) const {
+void BaseFile::read_all(Chunk &ch) const {
 	ch.free();
 	
 	seek(0, SEEK_SET);
@@ -84,29 +84,29 @@ void BaseFile::readAll(Chunk &ch) const {
 #define BUF_SIZE 524288
 	long r, size = 0;
 	do {
-		ch.setSize(size + BUF_SIZE);
+		ch.set_size(size + BUF_SIZE);
 		
-		unsigned char * ptr = (unsigned char *) ch.getPtr();
+		unsigned char * ptr = (unsigned char *) ch.get_ptr();
 		ptr += size;
 		
 		r = read(ptr, BUF_SIZE);
 		size += r; 
 	} while (r == BUF_SIZE);
-	ch.setSize(size);
+	ch.set_size(size);
 }
 
-void BaseFile::writeAll(const Chunk &ch) const {
+void BaseFile::write_all(const Chunk &ch) const {
 	seek(0, SEEK_SET);
 	write(ch);
 }
 
-void BaseFile::writeAll(const std::string &str) const {
+void BaseFile::write_all(const std::string &str) const {
 	mrt::Chunk data;
-	data.setData(str.c_str(), str.size());
-	writeAll(data);
+	data.set_data(str.c_str(), str.size());
+	write_all(data);
 }
 
-const bool BaseFile::readLine(std::string &str, const size_t bufsize) const {
+const bool BaseFile::readline(std::string &str, const size_t bufsize) const {
 	//FIXME FIXME FIXME!!
 	//very stupid and sloooow implementation. consider it as a stub. 
 	str.clear();

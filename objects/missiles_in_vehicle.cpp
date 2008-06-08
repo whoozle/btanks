@@ -140,7 +140,7 @@ void MissilesInVehicle::updatePose() {
 	if (n == 0)
 		return;
 	cancelAll();
-	std::string pose = mrt::formatString("missile-%d%s", (n > max_v || n == -1)?max_v:n, hold?"-hold":"");
+	std::string pose = mrt::format_string("missile-%d%s", (n > max_v || n == -1)?max_v:n, hold?"-hold":"");
 	//LOG_DEBUG(("updating pose to '%s'", pose.c_str()));
 	play(pose, true);
 }
@@ -176,10 +176,10 @@ void MissilesInVehicle::emit(const std::string &event, Object * emitter) {
 					dpos /= 2;
 		
 					Object *o = emitter->spawn("missile-launch", "missile-launch", dpos, v2<float>());
-					o->setDirection(getDirection());
+					o->setDirection(get_direction());
 				}
 */
-				//LOG_DEBUG(("dir: %d", o->getDirection()));	
+				//LOG_DEBUG(("dir: %d", o->get_direction()));	
 			}
 			updatePose();
 		}

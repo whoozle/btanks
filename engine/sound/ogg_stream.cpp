@@ -107,14 +107,14 @@ bool OggStream::read(mrt::Chunk &data, unsigned hint) {
 	if (hint == 0) 
 		hint = 44100;
 	
-	data.setSize(hint);
+	data.set_size(hint);
 
 	int section = 0;
-	int r = ov_read(&_ogg_stream, (char *)data.getPtr(), hint, 0, 2, 1, & section);
+	int r = ov_read(&_ogg_stream, (char *)data.get_ptr(), hint, 0, 2, 1, & section);
 	//LOG_DEBUG(("ov_read(%d) = %d (section: %d)", hint, r, section));
 	
 	if(r >= 0) {
-		data.setSize(r);
+		data.set_size(r);
 		
 		return r != 0;
 	}
@@ -154,8 +154,8 @@ void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 	int section = 0;
 	
 	do {
-		data.setSize(buffer_size + pos);
-		r = ov_read(&ogg, ((char *)data.getPtr()) + pos, buffer_size, 0, 2, 1, & section);
+		data.set_size(buffer_size + pos);
+		r = ov_read(&ogg, ((char *)data.get_ptr()) + pos, buffer_size, 0, 2, 1, & section);
 		if (r == OV_HOLE) {
 			LOG_WARN(("hole in ogg data, attempt to recover"));
 			continue;
@@ -168,7 +168,7 @@ void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 			throw_ogg(r, ("ov_read"));
 		} else break;
 	} while(true);
-	data.setSize(pos);
+	data.set_size(pos);
 	
 	vorbis_info *info = ov_info(&ogg, -1);
 	assert(info != NULL);

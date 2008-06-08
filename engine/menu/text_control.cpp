@@ -41,7 +41,7 @@ const bool NumericControl::validate(const int idx, const int c) const {
 }
 
 void NumericControl::set(const int value) {
-	TextControl::set(mrt::formatString("%d", value));
+	TextControl::set(mrt::format_string("%d", value));
 }
 
 const int NumericControl::get() const {
@@ -185,7 +185,7 @@ void TextControl::render(sdlx::Surface &surface, const int x, const int y) const
 	}
 }
 
-void TextControl::getSize(int &w, int &h) const {
-	h = _font->getHeight();
+void TextControl::get_size(int &w, int &h) const {
+	h = _font->get_height();
 	w = (_text.empty())?0:_font->render(NULL, 0, 0, _text);
 }

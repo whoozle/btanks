@@ -58,7 +58,7 @@ void Cannon::calculate(const float dt) {
 	v2<float> pos, vel;
 	if (getNearest(_variants.has("trainophobic")? ai::Targets->infantry_and_train: ai::Targets->infantry, range, pos, vel, true)) {
 		pos.normalize();
-		setDirection(pos.getDirection(getDirectionsNumber()) - 1);
+		setDirection(pos.get_direction(get_directions_number()) - 1);
 		_direction = pos;
 		_state.fire = true;
 	} else _state.fire = false;

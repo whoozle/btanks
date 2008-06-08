@@ -138,7 +138,7 @@ void Campaign::init(const std::string &base, const std::string &filename) {
 	map = NULL;
 	_wares_section = false;
 	scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(filename, "rt"));
-	parseFile(*ptr);
+	parse_file(*ptr);
 	for(size_t i = 0; i < maps.size(); ++i) {
 		GameMonitor->useInCampaign(base, maps[i].id);
 	}

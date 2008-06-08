@@ -147,7 +147,7 @@ IFinder::IFinder() {
 			_path.push_back(p);
 			found = true;
 		} 
-		std::string dat = mrt::FSNode::getParentDir(p) + "/resources.dat";
+		std::string dat = mrt::FSNode::get_parent_dir(p) + "/resources.dat";
 		LOG_DEBUG(("checking for compressed resources in %s", dat.c_str()));
 		if (dir.exists(dat)) {
 			TRY {
@@ -268,7 +268,7 @@ void IFinder::findAll(FindResult &result, const std::string &name_) const {
 void IFinder::load(mrt::Chunk &data, const std::string &fname, const bool do_find) const {
 	std::string name = do_find? find(fname): fname;
 	scoped_ptr<mrt::BaseFile> file(get_file(name, "rb"));
-	file->readAll(data);
+	file->read_all(data);
 	file->close();
 }
 

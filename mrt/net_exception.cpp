@@ -138,12 +138,12 @@ NetException::NetException(const int code) {
 			error = "Unknown error";
 	}
 
-	wsa_error = mrt::formatString("error %d: %s", code, error);
+	wsa_error = mrt::format_string("error %d: %s", code, error);
 }
 
 NetException::~NetException() {}
 
-const std::string NetException::getCustomMessage() {
+const std::string NetException::get_custom_message() {
 	return wsa_error;
 }
 

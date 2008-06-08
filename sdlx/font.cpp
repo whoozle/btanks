@@ -27,9 +27,9 @@
 using namespace sdlx;
 
 
-const unsigned Font::toUpper(const unsigned page, const unsigned c) {
+const unsigned Font::to_upper(const unsigned page, const unsigned c) {
 	//fixme: 
-	//LOG_DEBUG(("toUpper(%04x, %x)", page, c));
+	//LOG_DEBUG(("to_upper(%04x, %x)", page, c));
 	switch(page) {
 	case 0x0020: 
 		if (c > 0x40 && c <= 0x5a) 
@@ -63,20 +63,20 @@ void Font::clear() {
 	_pages.clear();
 }
 
-void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha) {
+void Font::add_page(const unsigned base, const mrt::Chunk &data, const bool alpha) {
 	Page page(alpha);
 
 	page.surface = new sdlx::Surface;
-	page.surface->loadImage(data);
-	page.surface->convertAlpha();
+	page.surface->load_image(data);
+	page.surface->display_format_alpha();
 	
 	if (!alpha)
-		page.surface->setAlpha(0, 0);
+		page.surface->set_alpha(0, 0);
 	
 	//scanning pixel width;
-	int h = page.surface->getHeight();
+	int h = page.surface->get_height();
 	int w = h;
-	int n = (page.surface->getWidth() - 1) / w + 1;
+	int n = (page.surface->get_width() - 1) / w + 1;
 	page.surface->lock();
 	
 	page.width_map.resize(n);
@@ -88,14 +88,14 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 		for(int y = 0; y < h; ++y) {
 			int x1, x2;
 			
-			int cw = page.surface->getWidth() - c * w;
+			int cw = page.surface->get_width() - c * w;
 			if (cw > w)
 				cw = w;
 			
 			for(x1 = 0; x1 < cw; ++x1) {
-				Uint32 p = page.surface->getPixel(x1 + c * w, y);
+				Uint32 p = page.surface->get_pixel(x1 + c * w, y);
 				Uint8 r, g, b, a;
-				page.surface->getRGBA(p, r, g, b, a);
+				page.surface->get_rgba(p, r, g, b, a);
 				if (a > 128) { 
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x1, r, g, b, a));
 					break;
@@ -103,9 +103,9 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 			}
 			
 			for(x2 = cw - 1; x2 >= 0; --x2) {
-				Uint32 p = page.surface->getPixel(x2 + c * w, y);
+				Uint32 p = page.surface->get_pixel(x2 + c * w, y);
 				Uint8 r, g, b, a;
-				page.surface->getRGBA(p, r, g, b, a);
+				page.surface->get_rgba(p, r, g, b, a);
 				if (a > 128) {
 					//LOG_DEBUG(("line %d:%d, break on %d %d %d %d", y, x2, r, g, b, a));
 					break;
@@ -132,7 +132,7 @@ void Font::addPage(const unsigned base, const mrt::Chunk &data, const bool alpha
 void Font::load(const mrt::Chunk &data, const Type type, const bool alpha) {
 	clear();
 	_type = type;
-	addPage(0x20, data, alpha);
+	add_page(0x20, data, alpha);
 }
 
 	
@@ -142,19 +142,19 @@ void Font::load(const std::string &file, const Type type, const bool alpha) {
 	mrt::File f;
 	f.open(file, "rb");
 	mrt::Chunk data;
-	f.readAll(data);
+	f.read_all(data);
 	f.close();
-	addPage(0x20, data, alpha);
+	add_page(0x20, data, alpha);
 }
 
-const int Font::getHeight() const {
+const int Font::get_height() const {
 	if (_pages.empty())
 		throw_ex(("font was not loaded"));
-	return _pages.begin()->second.surface->getHeight();
+	return _pages.begin()->second.surface->get_height();
 }
 
-const int Font::getWidth() const {
-	return getHeight();
+const int Font::get_width() const {
+	return get_height();
 }
 
 const int Font::render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
@@ -245,19 +245,19 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		}
 
 		int fw, fh;
-		fw = fh = page.surface->getHeight();
+		fw = fh = page.surface->get_height();
 		
 		switch(_type) {
 		case Ascii:
 
-			if (c < 0x80 && (c - page_base) * fw >= (unsigned)page.surface->getWidth())
+			if (c < 0x80 && (c - page_base) * fw >= (unsigned)page.surface->get_width())
 				c = toupper(c);
 
 
 			c -= page_base;
 	
-			if (c * fw >= (unsigned)page.surface->getWidth())
-				c = toUpper(page_base, c); //last try, try upper
+			if (c * fw >= (unsigned)page.surface->get_width())
+				c = to_upper(page_base, c); //last try, try upper
 			
 		break;
 		case Undefined: 
@@ -294,10 +294,10 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		if (window != NULL) {
 			if (page.alpha) {
 				sdlx::Rect src(c * fw, 0, fw, fh);
-				window->copyFrom(*page.surface, src, x + w - x1, y);
+				window->blit(*page.surface, src, x + w - x1, y);
 			} else {
 				sdlx::Rect src(c * fw + x1, 0, x2 - x1 + 1, fh);
-				window->copyFrom(*page.surface, src, x + w, y);
+				window->blit(*page.surface, src, x + w, y);
 			}
 		}
 		w += spacing;
@@ -311,11 +311,11 @@ const int Font::render(sdlx::Surface &window, const std::string &str) const {
 	if (str.empty())
 		throw_ex(("in method render(new-surface, text), text must be non-empty"));
 
-	int h = getHeight();
+	int h = get_height();
 	int w = render(NULL, 0, 0, str);
 	
-	window.createRGB(w, h, 32, SDL_SRCALPHA);
-	window.convertAlpha();
+	window.create_rgb(w, h, 32, SDL_SRCALPHA);
+	window.display_format_alpha();
 	return render(&window, 0, 0, str);
 }
 

@@ -47,7 +47,7 @@ const bool Base::canFire() {
 }
 
 void Base::onSpawn(Object *src)  {
-	int id = src->getID();
+	int id = src->get_id();
 	row = id % MAGIC_ROWS;
 	pos = (id * 3 + 7)  % MAGIC_SIZE;
 	//LOG_DEBUG(("spawning %s(%d) with %dx%d", src->animation.c_str(), id, row, pos));

@@ -21,8 +21,8 @@
 #include "finder.h"
 #include "mrt/base_file.h"
 
-void XMLParser::parseFile(const std::string &file) {
+void XMLParser::parse_file(const std::string &file) {
 	scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
-	mrt::XMLParser::parseFile(*f);
+	mrt::XMLParser::parse_file(*f);
 	f->close();
 }

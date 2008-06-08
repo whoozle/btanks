@@ -23,7 +23,7 @@ using namespace clunk;
 
 Exception::Exception() {}
 
-const std::string Exception::getCustomMessage() {
+const std::string Exception::get_custom_message() {
 	return SDL_GetError();
 }
 

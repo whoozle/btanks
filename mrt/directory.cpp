@@ -162,8 +162,8 @@ void Directory::create(const std::string &path, const bool recurse) {
 #ifdef _WINDOWS
 #include <shlobj.h>
 
-const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
-	std::string path = getHome() + "\\" + name;
+const std::string Directory::get_app_dir(const std::string &name, const std::string &shortname) {
+	std::string path = get_home() + "\\" + name;
 	mrt::Directory dir;
 	try {
 		dir.create(path);
@@ -171,7 +171,7 @@ const std::string Directory::getAppDir(const std::string &name, const std::strin
 	return path;	
 }
 
-const std::string Directory::getHome() {
+const std::string Directory::get_home() {
 	HWND hwnd = NULL;
 /*
     SDL_SysWMinfo   info;
@@ -187,15 +187,15 @@ const std::string Directory::getHome() {
 
 #else 
 
-const std::string Directory::getHome() {
+const std::string Directory::get_home() {
 	const char *home_env = getenv("HOME");
 	if (home_env == NULL) 
 		throw_ex(("getting home directory now is possible only via HOME variable. fix it if you want."));
 	return home_env;
 }
 
-const std::string Directory::getAppDir(const std::string &name, const std::string &shortname) {
-	std::string path = getHome() + "/." + shortname;
+const std::string Directory::get_app_dir(const std::string &name, const std::string &shortname) {
+	std::string path = get_home() + "/." + shortname;
 	mrt::Directory dir;
 	try {
 		dir.create(path);

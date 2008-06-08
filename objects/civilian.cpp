@@ -78,7 +78,7 @@ public:
 			ai::Waypoints::calculate(this, dt);
 			if (_guard) {
 				_velocity.normalize();
-				int dir = getDirection(), dirs = getDirectionsNumber();
+				int dir = get_direction(), dirs = get_directions_number();
 				if (dir >= 0) {
 					v2<float> dv; 
 					dv.fromDirection((dir - 1 + dirs) % dirs, dirs);
@@ -92,12 +92,12 @@ public:
 	virtual void onObstacle(const Object *o) {
 		if (_guard)
 			return;
-		LOG_DEBUG(("%d:%s: obstacle %s", getID(), animation.c_str(), o->animation.c_str()));
+		LOG_DEBUG(("%d:%s: obstacle %s", get_id(), animation.c_str(), o->animation.c_str()));
 		_thinking = true;
 		_thinking_timer.reset();
 
-		int dirs = getDirectionsNumber();
-		setDirection(getRelativePosition(o).getDirection(dirs));
+		int dirs = get_directions_number();
+		setDirection(getRelativePosition(o).get_direction(dirs));
 	}
 
 	virtual void serialize(mrt::Serializator &s) const {

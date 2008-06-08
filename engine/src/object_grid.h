@@ -32,7 +32,7 @@ class Grid {
 public: 
 	Grid() {}
 
-	void setSize(const v2<int> &size, const int step, const bool wrap) {
+	void set_size(const v2<int> &size, const int step, const bool wrap) {
 		clear();
 		_grid_size = v2<int>(step, step);
 		resize(_grid, _grid_size, size);

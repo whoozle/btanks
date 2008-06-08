@@ -43,12 +43,12 @@ Thread::Thread() : _thread(NULL) {}
 
 Thread::~Thread() {
 	if (_thread != NULL) 
-		LOG_WARN(("~Thread: thread %x was not stopped", getID()));
+		LOG_WARN(("~Thread: thread %x was not stopped", get_id()));
 }
 
-Uint32 Thread::getID() const {
+Uint32 Thread::get_id() const {
 	if (_thread == NULL)
-		throw_sdl(("getID: thread was not started"));
+		throw_sdl(("get_id: thread was not started"));
 	
 	return SDL_GetThreadID(_thread);
 }

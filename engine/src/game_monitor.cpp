@@ -79,7 +79,7 @@ void GameItem::respawn() {
 		o->setDirection(dir);
 	
 	World->addObject(o, position.convert<float>());
-	id = o->getID();
+	id = o->get_id();
 	dead_on = 0;
 	if (spawn_limit > 0)
 		--spawn_limit;
@@ -133,15 +133,15 @@ void GameItem::renameProperty(const std::string &name) {
 void GameItem::updateMapProperty() {
 	std::string &prop = Map->properties[property];
 	if (z) 
-		prop = mrt::formatString("%d,%d,%d", position.x, position.y, z);
+		prop = mrt::format_string("%d,%d,%d", position.x, position.y, z);
 	else 
-		prop = mrt::formatString("%d,%d", position.x, position.y);
+		prop = mrt::format_string("%d,%d", position.x, position.y);
 
 	const Object *o = World->getObjectByID(id);
 	if (o != NULL) {
-		int dir = o->getDirection();
+		int dir = o->get_direction();
 		if (dir)
-			prop += mrt::formatString("/%d", dir);
+			prop += mrt::format_string("/%d", dir);
 	}
 }
 
@@ -189,18 +189,18 @@ void IGameMonitor::addObject(const Object *o) {
 	if (o->registered_name == "ctf-base") {
 		int team = (int)Team::get_team(o);
 		if (team >= 0 && team < 4) 
-			team_base[team] = o->getID();
+			team_base[team] = o->get_id();
 	} else if (o->registered_name == "ctf-flag") {
 		int team = (int)Team::get_team(o);
 		if (team >= 0 && team < 2) {
 			_flag_id.resize(2);
-			_flag_id[team] = o->getID();
+			_flag_id[team] = o->get_id();
 		}
 	}
 	if (_destroy_classes.empty())
 		return;
 	
-	const int id = o->getID();
+	const int id = o->get_id();
 	if (
 		_present_objects.find(id) != _present_objects.end() || //already here. int is faster than classname check and alwaysupdate
 		!o->hasOwner(OWNER_MAP) || 
@@ -217,7 +217,7 @@ void IGameMonitor::deleteObject(const Object *o) {
 	if (_destroy_classes.empty())
 		return;
 
-	const int id = o->getID();	
+	const int id = o->get_id();	
 	_present_objects.erase(id);
 	//LOG_DEBUG(("deleting target object: %s (%s)", o->animation.c_str(), o->classname.c_str()));
 }
@@ -246,7 +246,7 @@ void IGameMonitor::checkItems(const float dt) {
 				continue;
 			
 			v2<int> pos;
-			o->getCenterPosition(pos);
+			o->get_center_position(pos);
 			_specials.push_back(v3<int>(pos.x, pos.y, id));	
 		}
 	}
@@ -258,7 +258,7 @@ void IGameMonitor::checkItems(const float dt) {
 		if (o == NULL)
 			continue;
 		v2<int> pos;
-		o->getPosition(pos);
+		o->get_position(pos);
 		_flags.push_back(v3<int>(pos.x, pos.y, id));
 	}
 	
@@ -269,7 +269,7 @@ void IGameMonitor::checkItems(const float dt) {
 			continue;
 
 		v2<int> pos;
-		o->getCenterPosition(pos);
+		o->get_center_position(pos);
 		_specials.push_back(v3<int>(pos.x, pos.y, id));	
 	}
 	
@@ -294,8 +294,8 @@ void IGameMonitor::checkItems(const float dt) {
 		if (!dead) {
 			if (item.special) {
 				v2<int> pos;
-				o->getCenterPosition(pos);
-				_specials.push_back(v3<int>(pos.x, pos.y, o->getID()));	
+				o->get_center_position(pos);
+				_specials.push_back(v3<int>(pos.x, pos.y, o->get_id()));	
 			}
 
 			continue;
@@ -494,13 +494,13 @@ void IGameMonitor::render(sdlx::Surface &window) {
 		_big_font = ResourceManager->loadFont("big", true);
 
 	if (!_state.empty()) {
-		int w = _big_font->render(NULL, 0, 0, _state), h = _big_font->getHeight();
-		_state_bg.init("menu/background_box.png", window.getWidth() + 32, h); //fixme
+		int w = _big_font->render(NULL, 0, 0, _state), h = _big_font->get_height();
+		_state_bg.init("menu/background_box.png", window.get_width() + 32, h); //fixme
 		
-		int x = (window.getWidth() - w) / 2;
-		//int y = (window.getHeight() - _big_font->getHeight()) / 2;
-		int y = window.getHeight() - _big_font->getHeight() - 32;
-		_state_bg.render(window, (window.getWidth() - _state_bg.w) / 2, y + (h - _state_bg.h) / 2);
+		int x = (window.get_width() - w) / 2;
+		//int y = (window.get_height() - _big_font->get_height()) / 2;
+		int y = window.get_height() - _big_font->get_height() - 32;
+		_state_bg.render(window, (window.get_width() - _state_bg.w) / 2, y + (h - _state_bg.h) / 2);
 		_big_font->render(window, x, y, _state);
 	}
 
@@ -509,13 +509,13 @@ void IGameMonitor::render(sdlx::Surface &window) {
 		int ms = (int)(10 * (_timer - (int)_timer));
 		std::string timer_str; 
 		if (m) {
-			timer_str = mrt::formatString("%2d%c%02d", m, (ms / 2 == 0 || ms /2 == 1 || ms / 2 == 4)?':':'.', ((int)_timer) % 60);
+			timer_str = mrt::format_string("%2d%c%02d", m, (ms / 2 == 0 || ms /2 == 1 || ms / 2 == 4)?':':'.', ((int)_timer) % 60);
 		} else 
-			timer_str = mrt::formatString("   %2d.%d", (int)_timer, ms);
+			timer_str = mrt::format_string("   %2d.%d", (int)_timer, ms);
 		
 		int tw = timer_str.size() + 1;
-		_big_font->render(window, window.getWidth() - _big_font->getWidth() * tw, 
-			 window.getHeight() - _big_font->getHeight() * 3 / 2, 
+		_big_font->render(window, window.get_width() - _big_font->get_width() * tw, 
+			 window.get_height() - _big_font->get_height() * 3 / 2, 
 			 timer_str);
 	}
 
@@ -631,7 +631,7 @@ const std::string IGameMonitor::getRandomWaypoint(const std::string &classname, 
 
 const std::string IGameMonitor::getNearestWaypoint(const Object *obj, const std::string &classname) const {
 	v2<int> pos;
-	obj->getPosition(pos);
+	obj->get_position(pos);
 	int distance = -1;
 	std::string wp;
 	
@@ -676,14 +676,14 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 		//const std::string &classname = i->first;
 		for(WaypointMap::const_iterator j = i->second.begin(); j != i->second.end(); ++j) {
 			const v2<int> &wp = j->second;
-			surface.copyFrom(*s, 
+			surface.blit(*s, 
 			wp.x - src.x + dst.x, 
-			wp.y - src.y + dst.y - s->getHeight());	
+			wp.y - src.y + dst.y - s->get_height());	
 		}
 	}
 	
 	s = ResourceManager->loadSurface("edge.png");
-	int w = s->getWidth() / 3, h = s->getHeight();
+	int w = s->get_width() / 3, h = s->get_height();
 	sdlx::Rect normal(0, 0, w, h), out(w, 0, w, h), in(2 * w, 0, w, h);
 	
 	for(WaypointEdgeMap::const_iterator i = _waypoint_edges.begin(); i != _waypoint_edges.end(); ++i) {
@@ -703,7 +703,7 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 		int len0 = (int)ap.distance(bp); 
 		for(int len = len0; len > w; len -= w, p += d * w) {
 			const sdlx::Rect &r = (len == len0)? out: (len <= 2 * w ? in:normal );
-			surface.copyFrom(*s, r, 
+			surface.blit(*s, r, 
 			(int)(p.x - src.x + dst.x + d.x), 
 			(int)(p.y - src.y + dst.y + d.y));
 		}
@@ -721,7 +721,7 @@ static void coord2v(T &pos, const std::string &str) {
 
 	TRY {
 		pos.fromString(pos_str);
-	} CATCH(mrt::formatString("parsing '%s'", str.c_str()).c_str() , throw;)
+	} CATCH(mrt::format_string("parsing '%s'", str.c_str()).c_str() , throw;)
 
 	if (tiled_pos) {
 		v2<int> tile_size = Map->getTileSize();
@@ -786,7 +786,7 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	}
 
 
-	//const v2<int> size = map.getSize();
+	//const v2<int> size = map.get_size();
 	for (IMap::PropertyMap::iterator i = map.properties.begin(); i != map.properties.end(); ++i) {
 		if (i->first.empty())
 			throw_ex(("property name could not be empty"));
@@ -1031,7 +1031,7 @@ const std::string IGameMonitor::generatePropertyName(const std::string &prefix) 
 	
 	++n;
 
-	std::string name =  mrt::formatString("%s:%d", prefix.c_str(), n);
+	std::string name =  mrt::format_string("%s:%d", prefix.c_str(), n);
 	if (Map->properties.find(name) != Map->properties.end()) 
 		throw_ex(("failed to generate unique name. prefix: %s, n: %d", prefix.c_str(), n));
 	return name;
@@ -1063,7 +1063,7 @@ void IGameMonitor::addBonuses(const PlayerSlot &slot) {
 				bonuses.push_back(GameBonus(i->object + "(ally)", i->animation, 0));
 			if (World->getObjectByID(bonuses[idx].id) == NULL) {
 				Object *bonus = o->spawn(bonuses[idx].classname, bonuses[idx].animation, dir, v2<float>());
-				bonuses[idx].id = bonus->getID();
+				bonuses[idx].id = bonus->get_id();
 			}
 			++idx;
 		}
@@ -1095,7 +1095,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	std::string object, vehicle;
 	slot.getDefaultVehicle(object, vehicle);
 	slot.spawnPlayer(0, object, vehicle);
-	PlayerManager->getSlot(0).setViewport(Window->getSize());
+	PlayerManager->getSlot(0).setViewport(Window->get_size());
 }
 
 IGameMonitor::~IGameMonitor() {

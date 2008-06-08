@@ -50,9 +50,9 @@ void Waypoints::calculate(Object *object, const float dt) {
 			
 			v2<float> dpos = object->getRelativePosition(*i);
 			dpos.normalize();
-			int odir = dpos.getDirection(object->getDirectionsNumber()) - 1;
-			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, getDirection()));
-			if (odir == object->getDirection()) {
+			int odir = dpos.get_direction(object->get_directions_number()) - 1;
+			//LOG_DEBUG(("%s: (%g %g)dir = %d, my_dir = %d", animation.c_str(), dpos.x, dpos.y, odir, get_direction()));
+			if (odir == object->get_direction()) {
 				obstacle = *i;
 				object->_velocity.clear();
 				break;
@@ -82,13 +82,13 @@ void Waypoints::calculate(Object *object, const float dt) {
 				//LOG_DEBUG(("waypoint is too close..."));
 				goto random_wp; //REWRITE THIS UGLY CODE
 			}
-			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", object->animation.c_str(), object->getID(), waypoint.x, waypoint.y));
+			//LOG_DEBUG(("%s[%d] moving to nearest waypoint at %g %g", object->animation.c_str(), object->get_id(), waypoint.x, waypoint.y));
 		} else {
 		random_wp:
-			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", object->animation.c_str(), object->getID(), _waypoint_name.c_str()));
+			//LOG_DEBUG(("%s[%d] reached waypoint '%s'", object->animation.c_str(), object->get_id(), _waypoint_name.c_str()));
 			_waypoint_name = GameMonitor->getRandomWaypoint(object->registered_name, _waypoint_name);
 			GameMonitor->getWaypoint(waypoint, object->registered_name, _waypoint_name);
-			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", object->animation.c_str(), object->getID(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
+			//LOG_DEBUG(("%s[%d] moving to next waypoint '%s' at %g %g", object->animation.c_str(), object->get_id(), _waypoint_name.c_str(), waypoint.x, waypoint.y));
 		}
 		int pfs;
 		Config->get("objects." + object->registered_name + ".pathfinding-step", pfs, 16);
@@ -102,7 +102,7 @@ void Waypoints::calculate(Object *object, const float dt) {
 		} else if (way.empty()) {
 			_waypoint_name.clear();
 			LOG_DEBUG(("%s:%s[%d] no path[%u]. ", 
-				object->registered_name.c_str(), object->animation.c_str(), object->getID(), (unsigned)way.size()));
+				object->registered_name.c_str(), object->animation.c_str(), object->get_id(), (unsigned)way.size()));
 			//emit("death", NULL);
 		}
 		object->setWay(way);

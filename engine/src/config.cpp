@@ -35,7 +35,7 @@ IConfig::IConfig() {}
 void IConfig::load(const std::string &file) {
 	_file = file;
 	TRY {
-		parseFile(file);
+		parse_file(file);
 	} CATCH("load", {}); 
 	on_console_slot.assign(this, &IConfig::onConsole, Console->on_command);
 }
@@ -46,12 +46,12 @@ void IConfig::save() const {
 	LOG_DEBUG(("saving config to %s...", _file.c_str()));	
 	std::string data = "<config>\n";
 	for(VarMap::const_iterator i = _map.begin(); i != _map.end(); ++i) {
-		data += mrt::formatString("\t<value name=\"%s\" type=\"%s\">%s</value>\n", i->first.c_str(), i->second->type.c_str(), i->second->toString().c_str());
+		data += mrt::format_string("\t<value name=\"%s\" type=\"%s\">%s</value>\n", i->first.c_str(), i->second->type.c_str(), i->second->toString().c_str());
 	}
 	data += "</config>\n";
 	mrt::File f;
 	f.open(_file, "wt");
-	f.writeAll(data);
+	f.write_all(data);
 	f.close();
 }
 
@@ -91,7 +91,7 @@ void IConfig::end(const std::string &name) {
 	_data.clear();
 }
 
-void IConfig::charData(const std::string &data) {
+void IConfig::cdata(const std::string &data) {
 	if (_name.empty())
 		return;
 	

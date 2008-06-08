@@ -30,7 +30,7 @@ ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_k
 		if (hosts[i].empty())
 			continue;
 		
-		//mrt::toLower(hosts[i]);
+		//mrt::to_lower(hosts[i]);
 		//ScrollList::append(hosts[i]);
 		append(hosts[i]);
 	}
@@ -50,7 +50,7 @@ void HostList::promote() {
 
 void HostList::append(const std::string &_item) {
 	std::string item = _item;
-	mrt::toLower(item);
+	mrt::to_lower(item);
 	int a;
 	bool has_ip = (sscanf(item.c_str(), "%d.%d.%d.%d", &a, &a, &a, &a) == 4);
 	

@@ -69,8 +69,8 @@ void Teleport::tick(const float dt) {
 		}
 		
 		v2<int> pos, tpos;
-		getCenterPosition(pos);
-		o->getCenterPosition(tpos);
+		get_center_position(pos);
+		o->get_center_position(tpos);
 		if (pos.quick_distance(tpos) >= size.x * size.y / 2) { //~1.5 sizes
 			LOG_DEBUG(("dropped target %d", track));
 			track = 0;
@@ -89,10 +89,10 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		}
 		
 		v2<int> epos, pos;
-		emitter->getCenterPosition(epos);
-		getPosition(pos);
+		emitter->get_center_position(epos);
+		get_position(pos);
 
-		if (emitter->getID() == track) {
+		if (emitter->get_id() == track) {
 			return;
 		}
 
@@ -112,11 +112,11 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 			return;
 
 		Teleport *dst = teleports[(teleports.size() == 1)?0: mrt::random(teleports.size())];
-		World->teleport(emitter, dst->getCenterPosition());
+		World->teleport(emitter, dst->get_center_position());
 
 		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
 		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
-		if (dst->track > 0 && dst->track != emitter->getID()) {
+		if (dst->track > 0 && dst->track != emitter->get_id()) {
 			//telefrag detection
 			PlayerSlot *slot = PlayerManager->getSlotByID(dst->track);
 			Object *o;
@@ -127,7 +127,7 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 			}
 		}
 		
-		dst->track = emitter->getID();
+		dst->track = emitter->get_id();
 		dst->invalidate();
 		dst->playSound("teleport", false);
 	} else Object::emit(event, emitter);

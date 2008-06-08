@@ -33,7 +33,7 @@ namespace sdlx {
 
 	class SDLXAPI Surface {
 	public:
-		static void setDefaultFlags(const Uint32 flags);
+		static void set_default_flags(const Uint32 flags);
 	
 		enum {
 			Default = 0x7fffffff,
@@ -49,90 +49,90 @@ namespace sdlx {
 		void assign(SDL_Surface *x);
 
 		inline const bool isNull() const { return surface == NULL; }
-		inline SDL_Surface * getSDLSurface() { return surface; }
-		inline const SDL_Surface * getSDLSurface() const { return surface; }
+		inline SDL_Surface * get_sdl_surface() { return surface; }
+		inline const SDL_Surface * get_sdl_surface() const { return surface; }
 
-		void putPixel(int x, int y, Uint32 pix);
-		Uint32 getPixel(int x, int y) const;
+		void put_pixel(int x, int y, Uint32 pix);
+		Uint32 get_pixel(int x, int y) const;
 
-		inline void *getPixels() const {return surface->pixels;}
+		inline void *get_pixels() const {return surface->pixels;}
 
-		inline const int getWidth() const { return surface->w; }
-		inline const int getHeight() const { return surface->h; }
+		inline const int get_width() const { return surface->w; }
+		inline const int get_height() const { return surface->h; }
 		inline const int getPitch() const { return surface->pitch; }
-		inline const int getBPP() const { return getPixelFormat()->BitsPerPixel;} 
+		inline const int getBPP() const { return get_pixel_format()->BitsPerPixel;} 
 		inline const int getFlags() const { return surface->flags; }
 		
-		inline const Rect getSize() const { return Rect(0, 0, surface->w, surface->h);} 
+		inline const Rect get_size() const { return Rect(0, 0, surface->w, surface->h);} 
 
-		void createRGB(int width, int height, int depth, Uint32 flags = Default);
-		void createRGBFrom(void *pixels, int width, int height, int depth, int pitch = -1);
+		void create_rgb(int width, int height, int depth, Uint32 flags = Default);
+		void create_rgb_from(void *pixels, int width, int height, int depth, int pitch = -1);
 		void convert(Surface &dest, PixelFormat *fmt, Uint32 flags = Default) const;
 		void convert(Uint32 flags);
 
-		void getVideo();
-		void setVideoMode(int w, int h, int bpp, int flags = Default);
+		void get_video();
+		void set_video_mode(int w, int h, int bpp, int flags = Default);
 
-		void loadBMP(const std::string &fname);
-		void saveBMP(const std::string &fname) const;
+		void load_bmp(const std::string &fname);
+		void save_bmp(const std::string &fname) const;
 #ifndef NO_SDL_IMAGE
-		void loadImage(const std::string &fname);
-		void loadImage(const mrt::Chunk &memory);
+		void load_image(const std::string &fname);
+		void load_image(const mrt::Chunk &memory);
 #endif
 		/*
 		 Quote from manual :
 		 "Only the position is used in the dstrect (the width and height are
 		 ignored)."
 		 */
-		void copyFrom(const Surface &s, const int x, const int y);
-		void copyFrom(const Surface &s, const Rect &from, const int x, const int y);
-		void copyFrom(const Surface &s, const Rect &from); //to pos 0:0
+		void blit(const Surface &s, const int x, const int y);
+		void blit(const Surface &s, const Rect &from, const int x, const int y);
+		void blit(const Surface &s, const Rect &from); //to pos 0:0
 		
 		void update();
 		void update(const Rect &rect);
 		void update(const int x, const int y, const int w, const int h);
 		void flip();
-		void toggleFullscreen();
+		void toggle_fullscreen();
 
-		inline const Uint32 mapRGB(const Uint8 r, const Uint8 g, const Uint8 b) const {
+		inline const Uint32 map_rgb(const Uint8 r, const Uint8 g, const Uint8 b) const {
 		    return SDL_MapRGB(surface->format, r, g, b);
 		}
 		
-		inline const Uint32 mapRGBA(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a) const {
+		inline const Uint32 map_rgba(const Uint8 r, const Uint8 g, const Uint8 b, const Uint8 a) const {
     		return SDL_MapRGBA(surface->format, r, g, b, a);
 		}
 		
-		inline void getRGB(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b) const {
+		inline void get_rgb(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b) const {
 			SDL_GetRGB(color, surface->format, &r, &g, &b);
 		}
 
-		inline void getRGBA(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b, Uint8 &a) const {
+		inline void get_rgba(const Uint32 color, Uint8 &r, Uint8 &g, Uint8 &b, Uint8 &a) const {
 			SDL_GetRGBA(color, surface->format, &r, &g, &b, &a);
 		}
 
 		void fill(Uint32 color);
-		void fillRect(const Rect &r, Uint32 color);
+		void fill_rect(const Rect &r, Uint32 color);
 
-		void setColorKey(Uint32 key, Uint32 flag = SDL_SRCCOLORKEY);
-		void setAlpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
-		void convertAlpha();
-		void convertToDisplay();
+		void set_color_key(Uint32 key, Uint32 flag = SDL_SRCCOLORKEY);
+		void set_alpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
+		void display_format_alpha();
+		void display_format();
 
-		PixelFormat* getPixelFormat() const { return surface->format; }
+		PixelFormat* get_pixel_format() const { return surface->format; }
 
 		void free();
 		
 		void lock() const;
 		void unlock() const;
 		
-		void setClipRect(const sdlx::Rect &rect);
-		void resetClipRect(); 
-		void getClipRect(sdlx::Rect &rect);
+		void set_clip_rect(const sdlx::Rect &rect);
+		void reset_clip_rect(); 
+		void get_clip_rect(sdlx::Rect &rect);
 
 		~Surface();
 		
 		//win32 specific
-		void loadFromResource(const char *name);
+		void load_from_resource(const char *name);
 		
 	private:
 		Surface(const Surface &x);

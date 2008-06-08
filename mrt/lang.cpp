@@ -27,7 +27,7 @@
 #include "lang.h"
 #include "logger.h"
 
-const std::string mrt::getLanguageCode() {
+const std::string mrt::get_lang_code() {
 #ifdef _WINDOWS
 	LANGID lang_id = GetUserDefaultLangID();
 	LOG_DEBUG(("GetUserDefaultLangID() returned %08x", (unsigned)lang_id));
@@ -153,7 +153,7 @@ const std::string mrt::getLanguageCode() {
 	}
 	if (!lang.empty()) {
 		LOG_DEBUG(("language code: %s", lang.c_str()));
-		mrt::toLower(lang);
+		mrt::to_lower(lang);
 		return lang;
 	}
 #endif

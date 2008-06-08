@@ -42,12 +42,12 @@ void MenuItem::render() {
 }
 	
 void MenuItem::render(sdlx::Surface &dst, const int x, const int y) const {
-	dst.copyFrom(_normal, x, y);
+	dst.blit(_normal, x, y);
 }
 
-void MenuItem::getSize(int &w, int &h) const {
-	w = _normal.getWidth();
-	h = _normal.getHeight();
+void MenuItem::get_size(int &w, int &h) const {
+	w = _normal.get_width();
+	h = _normal.get_height();
 }
 
 const bool MenuItem::onKey(const SDL_keysym sym) {

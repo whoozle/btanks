@@ -43,8 +43,8 @@ public :
 	map(map), variant(variant), slot(i), config(config) {
 		
 		_font = ResourceManager->loadFont("medium", true);
-		h = _font->getHeight();
-		int w = _font->getWidth();
+		h = _font->get_height();
+		int w = _font->get_width();
 
 		std::vector<std::string> options;
 		options.push_back("?");
@@ -96,14 +96,14 @@ public :
 		}
 		
 		int cw;
-		_type->getSize(cw, ch);
+		_type->get_size(cw, ch);
 
-		add(0, (ch - h) / 3, new Label(_font, mrt::formatString("%d", i + 1)));
+		add(0, (ch - h) / 3, new Label(_font, mrt::format_string("%d", i + 1)));
 
 
 		sdlx::Rect p1;
 		p1.x = w * 2;
-		//p1.y = (_font->getHeight() - ch) / 2;
+		//p1.y = (_font->get_height() - ch) / 2;
 		p1.w = cw;
 		p1.h = ch;
 		if (ch > h) 
@@ -112,10 +112,10 @@ public :
 		add(p1.x, p1.y, _type);
 		
 		sdlx::Rect p2;
-		p2.x = p1.x + p1.w + _font->getWidth();
+		p2.x = p1.x + p1.w + _font->get_width();
 
 		int vcw, vch;
-		_vehicle->getSize(vcw, vch);
+		_vehicle->get_size(vcw, vch);
 		if (vch > h) 
 			h = vch;
 		p2.w = vcw; p2.h = vch;

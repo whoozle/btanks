@@ -94,7 +94,7 @@ void Context::process(Sint16 *stream, int size) {
 	for(streams_type::iterator i = streams.begin(); i != streams.end();) {
 		//LOG_DEBUG(("processing stream %d", i->first));
 		stream_info &stream_info = i->second;
-		while ((int)stream_info.buffer.getSize() < size) {
+		while ((int)stream_info.buffer.get_size() < size) {
 			mrt::Chunk data;
 			bool eos = !stream_info.stream->read(data, size);
 			if (!data.empty() && stream_info.stream->sample_rate != spec.freq) {
@@ -102,7 +102,7 @@ void Context::process(Sint16 *stream, int size) {
 				convert(data, data, stream_info.stream->sample_rate, stream_info.stream->format, stream_info.stream->channels);
 			}
 			stream_info.buffer.append(data);
-			//LOG_DEBUG(("read %u bytes", (unsigned)data.getSize()));
+			//LOG_DEBUG(("read %u bytes", (unsigned)data.get_size()));
 			if (eos) {
 				if (stream_info.loop) {
 					stream_info.stream->rewind();
@@ -111,7 +111,7 @@ void Context::process(Sint16 *stream, int size) {
 				}
 			}
 		}
-		int buf_size = stream_info.buffer.getSize();
+		int buf_size = stream_info.buffer.get_size();
 		//LOG_DEBUG(("buffered %d bytes", buf_size));
 		if (buf_size == 0) {
 			//all data buffered. continue;
@@ -127,11 +127,11 @@ void Context::process(Sint16 *stream, int size) {
 			buf_size = size;
 
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * stream_info.gain + 0.5f);
-		SDL_MixAudio((Uint8 *)stream, (Uint8 *)stream_info.buffer.getPtr(), buf_size, sdl_v);
+		SDL_MixAudio((Uint8 *)stream, (Uint8 *)stream_info.buffer.get_ptr(), buf_size, sdl_v);
 		
-		if ((int)stream_info.buffer.getSize() > size) {
-			memmove(stream_info.buffer.getPtr(), ((Uint8 *)stream_info.buffer.getPtr()) + size, stream_info.buffer.getSize() - size);
-			stream_info.buffer.setSize(stream_info.buffer.getSize() - size);
+		if ((int)stream_info.buffer.get_size() > size) {
+			memmove(stream_info.buffer.get_ptr(), ((Uint8 *)stream_info.buffer.get_ptr()) + size, stream_info.buffer.get_size() - size);
+			stream_info.buffer.set_size(stream_info.buffer.get_size() - size);
 		} else {
 			stream_info.buffer.free();
 		}
@@ -140,7 +140,7 @@ void Context::process(Sint16 *stream, int size) {
 	}
 	
 	mrt::Chunk buf;
-	buf.setSize(size);
+	buf.set_size(size);
 	
 	//TIMESPY(("mixing sources"));
 	//LOG_DEBUG(("mixing %u sources", (unsigned)lsources.size()));
@@ -154,7 +154,7 @@ void Context::process(Sint16 *stream, int size) {
 			continue;
 		if (sdl_v == 0)
 			continue;
-		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.getPtr(), size, sdl_v);
+		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.get_ptr(), size, sdl_v);
 	}
 }
 
@@ -256,7 +256,7 @@ void Context::stop(const int id) {
 	
 	TRY {
 		delete i->second.stream;
-	} CATCH(mrt::formatString("stop(%d)", id).c_str(), {
+	} CATCH(mrt::format_string("stop(%d)", id).c_str(), {
 		streams.erase(i);
 		throw;
 	})
@@ -304,17 +304,17 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 	if (SDL_BuildAudioCVT(&cvt, format, channels, rate, spec.format, channels, spec.freq) == -1) {
 		throw_sdl(("DL_BuildAudioCVT(%d, %04x, %u)", rate, format, channels));
 	}
-	size_t buf_size = (size_t)(src.getSize() * cvt.len_mult);
+	size_t buf_size = (size_t)(src.get_size() * cvt.len_mult);
 	cvt.buf = (Uint8 *)malloc(buf_size);
-	cvt.len = src.getSize();
+	cvt.len = src.get_size();
 
-	assert(buf_size >= src.getSize());
-	memcpy(cvt.buf, src.getPtr(), src.getSize());
+	assert(buf_size >= src.get_size());
+	memcpy(cvt.buf, src.get_ptr(), src.get_size());
 
 	if (SDL_ConvertAudio(&cvt) == -1) 
 		throw_sdl(("SDL_ConvertAudio"));
 
-	dst.setData(cvt.buf, (size_t)(cvt.len * cvt.len_ratio), true);
+	dst.set_data(cvt.buf, (size_t)(cvt.len * cvt.len_ratio), true);
 }
 
 /*!

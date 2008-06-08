@@ -17,7 +17,7 @@ public:
 	virtual long tell() const;
 	virtual void write(const mrt::Chunk &ch) const;
 
-	virtual const off_t getSize() const;
+	virtual const off_t get_size() const;
 	virtual const size_t read(void *buf, const size_t size) const;
 	virtual void close();
 	

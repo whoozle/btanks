@@ -38,12 +38,12 @@ public:
 	Font();
 	~Font();
 	
-	void addPage(const unsigned base, const mrt::Chunk &data, const bool alpha = true);
+	void add_page(const unsigned base, const mrt::Chunk &data, const bool alpha = true);
 	
 	void load(const mrt::Chunk &data, const Type type, const bool alpha = true);
 	void load(const std::string &file, const Type type, const bool alpha = true);
-	const int getHeight() const;
-	const int getWidth() const; //fixme! returns height ;)
+	const int get_height() const;
+	const int get_width() const; //fixme! returns height ;)
 	const int render(sdlx::Surface *window, const int x, const int y, const std::string &str) const;
 	const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const;
 
@@ -52,7 +52,7 @@ public:
 	void clear();
 
 private:
-	static const unsigned toUpper(const unsigned page, const unsigned c);
+	static const unsigned to_upper(const unsigned page, const unsigned c);
 
 	Type _type;
 	

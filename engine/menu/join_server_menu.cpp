@@ -50,20 +50,20 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 
 	int bw, bh, xp = 48;
 
-	_add->getSize(bw, bh);
+	_add->get_size(bw, bh);
 	add(16, h - 80 - bh, _add);
 
-	_del->getSize(bw, bh);
+	_del->get_size(bw, bh);
 	add(xp + host_list_w - 32 - bw, h - 80 - bh, _del);
 
-	_back->getSize(bw, bh);
+	_back->get_size(bw, bh);
 	add(xp, h - 16 - bh, _back);
 	xp += 16 + bw;
 	
-	_scan->getSize(bw, bh);
+	_scan->get_size(bw, bh);
 	add(xp, h - 16 - bh, _scan);
 	
-	_join->getSize(bw, bh);
+	_join->get_size(bw, bh);
 	add(w - 64 - bw, h - 16 - bh, _join);
 
 	sdlx::Rect list_pos(16, 128, host_list_w, h - 256);
@@ -71,7 +71,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 	_hosts = new HostList("multiplayer.recent-hosts", list_pos.w, list_pos.h);
 	add(list_pos.x, list_pos.y, _hosts);
 	
-	_upper_box->getSize(bw, bh);
+	_upper_box->get_size(bw, bh);
 	add((w - bw) / 2 - 8, 32, _upper_box);
 
 	sdlx::Rect map_pos(list_pos.x + list_pos.w + 16, 128, (w - 64) / 3, h - 256);
@@ -79,7 +79,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 	//_details = new MapDetails(map_pos.w, map_pos.h);
 	//add(map_pos.x, map_pos.y, _details);	
 	
-	_add_dialog->getSize(bw, bh);
+	_add_dialog->get_size(bw, bh);
 	add(w / 3, (h - bh) / 2, _add_dialog);
 	_add_dialog->hide();
 	
@@ -116,7 +116,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 		_vehicle2->set(def_v);
 	} CATCH("_vehicle->set()", {})
 
-	_vehicle->getSize(bw, bh);
+	_vehicle->get_size(bw, bh);
 		
 	add(map_pos.x + map_pos.w / 2 - bw, map_pos.y + map_pos.h - bh * 2, _vehicle);
 	add(map_pos.x + map_pos.w / 2 + bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle2);

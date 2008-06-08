@@ -30,17 +30,17 @@ using namespace mrt;
 Exception::Exception() : _error() {}
 Exception::~Exception() throw() {}
 
-const std::string Exception::getCustomMessage() { return std::string(); }
+const std::string Exception::get_custom_message() { return std::string(); }
 const char* Exception::what() const throw() { return _error.c_str(); }
 
 
-void Exception::addMessage(const char * file, const int line) {
+void Exception::add_message(const char * file, const int line) {
 	char buf[1024];
 	size_t n = snprintf(buf, sizeof(buf), "[%s:%d]", file, line);
 	_error = std::string(buf, n);
 }
 
-void Exception::addMessage(const std::string &msg) {
+void Exception::add_message(const std::string &msg) {
 	if (msg.empty()) return;
 	
 	_error += ": " + msg;

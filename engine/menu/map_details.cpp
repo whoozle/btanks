@@ -29,23 +29,23 @@
 MapDetails::MapDetails(const int w, const int h) : _w(w), _h(h), _map_desc(0), _ai_hint(NULL), has_tactics(false) {
 	mrt::Chunk data;
 	Finder->load(data, "maps/null.png");
-	_null_screenshot.loadImage(data);
-	_null_screenshot.convertAlpha();
+	_null_screenshot.load_image(data);
+	_null_screenshot.display_format_alpha();
 	_small_font = ResourceManager->loadFont("small", true);
 
 /*
 	if (hint && I18n->has("tips", "deathmatch-bots")) {
 		int mw, mh;
-		getSize(mw, mh);
+		get_size(mw, mh);
 		_ai_hint = new Tooltip("tips", "deathmatch-bots", true, w);
 		int tw, th;
-		_ai_hint->getSize(tw, th);
+		_ai_hint->get_size(tw, th);
 		add((mw - tw) / 2, mh + 2, _ai_hint);
 	}
 */
 }
 
-void MapDetails::getSize(int &w, int &h) const {
+void MapDetails::get_size(int &w, int &h) const {
 	w = _w; h = _h;
 }
 
@@ -59,8 +59,8 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 		if (Finder->exists(base, fname)) {
 			mrt::Chunk data;
 			Finder->load(data, fname);
-			_tactics.loadImage(data);
-			_tactics.convertAlpha();
+			_tactics.load_image(data);
+			_tactics.display_format_alpha();
 			has_tactics = true;
 		}
 	} CATCH("loading tactic map", {});
@@ -80,8 +80,8 @@ void MapDetails::set(const MapDesc & map_desc) {
 		if (Finder->exists(base, fname)) {
 			mrt::Chunk data;
 			Finder->load(data, fname);
-			_screenshot.loadImage(data);
-			_screenshot.convertAlpha();
+			_screenshot.load_image(data);
+			_screenshot.display_format_alpha();
 		}
 	} CATCH("loading screenshot", {});
 
@@ -108,9 +108,9 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const 
 	int yp = my * 3 / 2;
 
 	const sdlx::Surface &screenshot = _screenshot.isNull()?_null_screenshot:_screenshot;
-	int xs = (_w - screenshot.getWidth()) / 2;
-	surface.copyFrom(screenshot, x + xs, y + yp);
-	int ys = screenshot.getHeight();
+	int xs = (_w - screenshot.get_width()) / 2;
+	surface.blit(screenshot, x + xs, y + yp);
+	int ys = screenshot.get_height();
 	yp += (ys < 140)?140:ys;
 	
 	if (has_tactics) {
@@ -118,13 +118,13 @@ void MapDetails::render(sdlx::Surface &surface, const int x, const int y) const 
 		int w = _small_font->render(NULL, 0, 0, click_here);
 		_small_font->render(surface, x + (_w - w) / 2, y + yp, click_here);
 	}
-	yp += _small_font->getHeight() + 12;
+	yp += _small_font->get_height() + 12;
 
 	if (_map_desc)
 		_map_desc->render(surface, x + mx, y + yp);
 	
 	if (!_tactics.isNull()) {
-		surface.copyFrom(_tactics, x + _w / 2 - _tactics.getWidth() / 2, y + _h / 2 - _tactics.getHeight() / 2);
+		surface.blit(_tactics, x + _w / 2 - _tactics.get_width() / 2, y + _h / 2 - _tactics.get_height() / 2);
 	}
 }
 

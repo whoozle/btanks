@@ -25,17 +25,17 @@ bool Checkbox::onMouse(const int button, const bool pressed, const int x, const 
 
 
 void Checkbox::render(sdlx::Surface &surface, const int x, const int y) const {
-	int tw = _checkbox->getWidth() / 2, th = _checkbox->getHeight();
+	int tw = _checkbox->get_width() / 2, th = _checkbox->get_height();
 	if (_state) {
-		sdlx::Rect fg(tw, 0, _checkbox->getWidth() - tw, th);
-		surface.copyFrom(*_checkbox, fg, x, y);
+		sdlx::Rect fg(tw, 0, _checkbox->get_width() - tw, th);
+		surface.blit(*_checkbox, fg, x, y);
 	} else {
 		sdlx::Rect bg(0, 0, tw, th);
-		surface.copyFrom(*_checkbox, bg, x, y);
+		surface.blit(*_checkbox, bg, x, y);
 	}
 }
 
-void Checkbox::getSize(int &w, int &h) const {
-	w = _checkbox->getWidth() / 2;
-	h = _checkbox->getHeight();
+void Checkbox::get_size(int &w, int &h) const {
+	w = _checkbox->get_width() / 2;
+	h = _checkbox->get_height();
 }

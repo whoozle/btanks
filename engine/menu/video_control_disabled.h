@@ -10,7 +10,7 @@ class DisabledVideoControl : public Control {
 public: 
 	DisabledVideoControl(const std::string &base, const std::string &name);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	virtual void getSize(int &w, int &h) const;
+	virtual void get_size(int &w, int &h) const;
 
 private: 
 	const sdlx::Surface *screenshot;

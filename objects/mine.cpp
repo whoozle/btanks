@@ -76,7 +76,7 @@ void Mine::emit(const std::string &event, Object * emitter) {
 				dpos *= tile_size * i;
 				
 				v2<float>tile_pos;
-				getCenterPosition(tile_pos);
+				get_center_position(tile_pos);
 				tile_pos += dpos;
 				tile_pos /= path_tile_size;
 				//LOG_DEBUG(("get(%d, %d) = %d", (int)tile_pos.y, (int)tile_pos.x, matrix.get((int)tile_pos.y, (int)tile_pos.x)));

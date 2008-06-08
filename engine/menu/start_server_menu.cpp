@@ -38,15 +38,15 @@ StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _
 	add(0, y1, new Box("menu/background_box.png", w, y2 - y1 - 16));
 	
 	int cw, ch;
-	_map_picker->getSize(cw, ch);
+	_map_picker->get_size(cw, ch);
 
 	_back = new Button("big", I18n->get("menu", "back"));
 	int bw, bh;
-	_back->getSize(bw, bh);
+	_back->get_size(bw, bh);
 	add(64, h - (h - ch) / 2 - bh / 2, _back);
 	
 	_start = new Button("big", I18n->get("menu", "start"));
-	_start->getSize(bw, bh);
+	_start->get_size(bw, bh);
 	add(w - 64 - bw, h - (h - ch) / 2 - bh / 2, _start);
 
 	add(0, 0, _map_picker);

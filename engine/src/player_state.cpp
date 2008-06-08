@@ -58,6 +58,6 @@ void PlayerState::deserialize(const mrt::Serializator &s) {
 #define B(b) ((b)?'+':'-')
 
 const std::string PlayerState::dump() const {
-	return mrt::formatString("{ %c%c%c%c %c%c %c %c}", 
+	return mrt::format_string("{ %c%c%c%c %c%c %c %c}", 
 		B(left), B(right), B(up), B(down), B(fire), B(alt_fire), B(leave), B(hint_control));
 }

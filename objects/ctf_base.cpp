@@ -37,7 +37,7 @@ public:
 	
 	void onSpawn() {
 		play("main", true);
-		spawn("ctf-flag", mrt::formatString("ctf-flag-%s", Team::get_color(Team::get_team(this))));
+		spawn("ctf-flag", mrt::format_string("ctf-flag-%s", Team::get_color(Team::get_team(this))));
 	}
 
 private:

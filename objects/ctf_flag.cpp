@@ -38,7 +38,7 @@ public:
 			Team::ID team = Team::get_team(this);
 			assert(team != Team::None);
 				
-			PlayerSlot *slot = PlayerManager->getSlotByID(emitter->getID());
+			PlayerSlot *slot = PlayerManager->getSlotByID(emitter->get_id());
 			if (slot == NULL) {
 				return;
 			}
@@ -50,7 +50,7 @@ public:
 					v2<float> dpos = getRelativePosition(base);
 					if (dpos.quick_length() > size.x * size.y / 4) {
 						setZBox(base->getZ());
-						World->teleport(this, base->getCenterPosition());
+						World->teleport(this, base->get_center_position());
 						base->remove_effect("abandoned");
 					} else {
 						//my flag is close to the base. if i have foreign flag, frag it
@@ -61,7 +61,7 @@ public:
 							Object *base = World->getObjectByID(flag->getSummoner());
 							if (base != NULL) {
 								setZBox(base->getZ());
-								World->teleport(flag, base->getCenterPosition());
+								World->teleport(flag, base->get_center_position());
 								base->remove_effect("abandoned");
 							} else {
 								LOG_WARN(("could not find base for the flag %s", flag->animation.c_str()));

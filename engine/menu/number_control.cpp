@@ -10,8 +10,8 @@ NumberControl::NumberControl(const std::string &font, const int min, const int m
 	mouse_pressed(0), mouse_button(0), direction(false), 
 	_number(ResourceManager->loadSurface("menu/number.png")), 
 	_font(ResourceManager->loadFont(font, true)), 
-	r_up(0, 0, _number->getWidth(), _number->getHeight() / 2), 
-	r_down(0, _number->getHeight() / 2, _number->getWidth(), _number->getHeight() - _number->getHeight() / 2) {}
+	r_up(0, 0, _number->get_width(), _number->get_height() / 2), 
+	r_down(0, _number->get_height() / 2, _number->get_width(), _number->get_height() - _number->get_height() / 2) {}
 
 const int NumberControl::get() const {
 	const_cast<NumberControl *>(this)->validate();
@@ -33,13 +33,13 @@ void NumberControl::set(const int v) {
 }
 
 void NumberControl::render(sdlx::Surface &surface, const int x, const int y) const {
-	surface.copyFrom(*_number, x, y);
-	_font->render(surface, x + _number->getWidth(), y + _number->getHeight() - _font->getHeight(), mrt::formatString(min < 0?"%+d":"%d", value));
+	surface.blit(*_number, x, y);
+	_font->render(surface, x + _number->get_width(), y + _number->get_height() - _font->get_height(), mrt::format_string(min < 0?"%+d":"%d", value));
 }
 
-void NumberControl::getSize(int &w, int &h) const {
-	w =	_font->render(NULL, 0, 0, mrt::formatString(min < 0?"%+d":"%d", value)) + _number->getWidth();
-	h = math::max(_number->getHeight(), _font->getHeight());
+void NumberControl::get_size(int &w, int &h) const {
+	w =	_font->render(NULL, 0, 0, mrt::format_string(min < 0?"%+d":"%d", value)) + _number->get_width();
+	h = math::max(_number->get_height(), _font->get_height());
 }
 
 void NumberControl::up(const int v) {

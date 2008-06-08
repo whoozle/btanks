@@ -85,7 +85,7 @@ const int IPlayerManager::onConnect(Message &message) {
 	serializeSlots(s);	
 
 	s.finalize(message.data);
-	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.getSize()));
+	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.get_size()));
 
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
@@ -149,11 +149,11 @@ TRY {
 			Message m(Message::RequestPlayer);
 
 			std::string vehicle;
-			Config->get(mrt::formatString("menu.default-vehicle-%u", (unsigned)(i + 1)), vehicle, "tank");
+			Config->get(mrt::format_string("menu.default-vehicle-%u", (unsigned)(i + 1)), vehicle, "tank");
 			m.set("vehicle", vehicle);
 
 			std::string name;
-			Config->get(mrt::formatString("player.name-%u", (unsigned)(i + 1)), name, Nickname::generate());
+			Config->get(mrt::format_string("player.name-%u", (unsigned)(i + 1)), name, Nickname::generate());
 			m.set("name", name);
 			_client->send(m);
 		}	
@@ -216,7 +216,7 @@ TRY {
 			}
 			assert(idx == 1 || idx == 2);
 			std::string control_method;
-			Config->get(mrt::formatString("player.control-method-%u", (unsigned)idx), control_method, mrt::formatString("keys-%u", (unsigned)idx));	
+			Config->get(mrt::format_string("player.control-method-%u", (unsigned)idx), control_method, mrt::format_string("keys-%u", (unsigned)idx));	
 			slot.createControlMethod(control_method);
 		} else throw_ex(("cannot handle %u clients", (unsigned)_local_clients));
 		
@@ -257,7 +257,7 @@ TRY {
 		GameMonitor->serialize(s);
 			
 		Message m(Message::UpdateWorld);
-		m.set("sync", mrt::formatString("%d", first_id));
+		m.set("sync", mrt::format_string("%d", first_id));
 		s.finalize(m.data);
 		_server->send(cid, m);
 		break;
@@ -317,7 +317,7 @@ TRY {
 			break;
 		}
 
-		assert(slot.id == obj->getID());
+		assert(slot.id == obj->get_id());
 		//obj->uninterpolate();
 		obj->interpolate();
 		
@@ -374,9 +374,9 @@ TRY {
 			if (!my_state)
 				o->updatePlayerState(state); //update states for all players but me.
 
-			updated_objects.insert(ObjectMap::value_type(o->getID(), o));
+			updated_objects.insert(ObjectMap::value_type(o->get_id(), o));
 			if (!dont_interpolate)
-				interpolated_objects.insert(ObjectMap::value_type(o->getID(), o));
+				interpolated_objects.insert(ObjectMap::value_type(o->get_id(), o));
 			else o->uninterpolate();
 		}
 		World->tick(updated_objects, dt);
@@ -551,7 +551,7 @@ TRY {
 				for(int i = 0; i < n; ++i) {
 					PlayerSlot & slot = PlayerManager->getSlot(i);
 					if (slot.name == name) {
-						Game->getChat()->addMessage(slot, message.get("text"));
+						Game->getChat()->add_message(slot, message.get("text"));
 						break;
 					}
 				}
@@ -571,7 +571,7 @@ TRY {
 				throw_ex(("client in connection %d sent wrong channel id %d", cid, id));
 	
 			if (!RTConfig->server_mode)
-				Game->getChat()->addMessage(slot, message.get("text"));
+				Game->getChat()->add_message(slot, message.get("text"));
 	
 			Message msg(message);
 			msg.set("nick", slot.name);
@@ -583,7 +583,7 @@ TRY {
 	default:
 		LOG_WARN(("unhandled message: %s\n%s", message.getType(), message.data.dump().c_str()));
 	};
-} CATCH(mrt::formatString("onMessage(%d, %s)", cid, message.getType()).c_str(), { 
+} CATCH(mrt::format_string("onMessage(%d, %s)", cid, message.getType()).c_str(), { 
 	if (_server) 
 		_server->disconnect(cid);
 	if (_client) {
@@ -637,7 +637,7 @@ TRY {
 			
 			//check for Special Zones ;)
 			v2<int> p;
-			o->getPosition(p);
+			o->get_position(p);
 			v3<int> player_pos(p.x, p.y, o->getZ());
 			
 			size_t cn = _zones.size();
@@ -846,7 +846,7 @@ TRY {
 			PlayerSlot &slot = _players[j];
 			if (!slot.empty() && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync [%s]", 
-				//	j, slot.getObject()->animation.c_str(), slot.getObject()->getID(), slot.getObject()->getPlayerState().dump().c_str()));
+				//	j, slot.getObject()->animation.c_str(), slot.getObject()->get_id(), slot.getObject()->getPlayerState().dump().c_str()));
 				const Object * o = slot.getObject();
 				if (o == NULL)
 					continue;
@@ -1074,7 +1074,7 @@ TRY {
 				GameMonitor->serialize(s);
 				s.finalize(m.data);
 			}
-			//LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.getSize()));
+			//LOG_DEBUG(("sending world update... (size: %u)", (unsigned)m.data.get_size()));
 			broadcast(m, true);
 		}
 	}
@@ -1104,7 +1104,7 @@ TRY {
 			continue;
 
 		v2<float> pos, vel;
-		o->getPosition(pos); 
+		o->get_position(pos); 
 		o->get_velocity(vel);
 		
 		listener_pos += pos;
@@ -1144,9 +1144,9 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 					throw_ex(("this client cannot handle %u clients(local index: %u)", (unsigned)_local_clients, (unsigned) local_idx));
 				
 				if (_local_clients == 1) {
-					slot.viewport = window.getSize();
+					slot.viewport = window.get_size();
 				} else if (_local_clients == 2) {
-					slot.viewport = window.getSize();
+					slot.viewport = window.get_size();
 					slot.viewport.w /= 2;
 					if (local_idx == 2) {
 						slot.viewport.x += slot.viewport.w;
@@ -1163,17 +1163,17 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 					sdlx::Rect pos(_zones[i].position.x, _zones[i].position.y, _zones[i].size.x, _zones[i].size.y);
 					static sdlx::Surface zone;
 					if (zone.isNull()) {
-						//zone.createRGB(_zones[i].size.x, _zones[i].size.y, 32); 
-						zone.createRGB(32, 32, 32); 
-						zone.convertAlpha();
-						zone.fill(zone.mapRGBA(255, 0, 0, 51));
+						//zone.create_rgb(_zones[i].size.x, _zones[i].size.y, 32); 
+						zone.create_rgb(32, 32, 32); 
+						zone.display_format_alpha();
+						zone.fill(zone.map_rgba(255, 0, 0, 51));
 					}
 
 					pos.x -= (int)slot.map_pos.x;
 					pos.y -= (int)slot.map_pos.y;
-					for(int y = 0; y <= (_zones[i].size.y - 1) / zone.getHeight(); ++y) 
-						for(int x = 0; x <= (_zones[i].size.x - 1) / zone.getWidth(); ++x) 
-							window.copyFrom(zone, pos.x + x * zone.getWidth(), pos.y + y * zone.getHeight());
+					for(int y = 0; y <= (_zones[i].size.y - 1) / zone.get_height(); ++y) 
+						for(int x = 0; x <= (_zones[i].size.x - 1) / zone.get_width(); ++x) 
+							window.blit(zone, pos.x + x * zone.get_width(), pos.y + y * zone.get_height());
 				}
 			}
 		}
@@ -1275,7 +1275,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 
 	PlayerSlot *player_slot = NULL;
 	if (RTConfig->game_type != GameTypeCooperative) { //skip this check in coop mode
-		player_slot = getSlotByID(player->getID());
+		player_slot = getSlotByID(player->get_id());
 		if (player_slot == NULL)
 			return;
 	} else {
@@ -1288,7 +1288,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 
 	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
-	if (slot.id == player->getID()) { //suicide
+	if (slot.id == player->get_id()) { //suicide
 		action(slot, "suicide", killer->classname);
 		if (add_frags && slot.frags > 0)
 			--(slot.frags);
@@ -1309,7 +1309,7 @@ void IPlayerManager::gameOver(const std::string &area, const std::string &messag
 	Message m(Message::GameOver);
 	m.set("area", area);
 	m.set("message", message);
-	m.set("duration", mrt::formatString("%g", time));
+	m.set("duration", mrt::format_string("%g", time));
 	broadcast(m, true);
 }
 
@@ -1380,7 +1380,7 @@ TRY {
 	Message m(Message::TextMessage);
 	m.set("area", area);
 	m.set("message", message);
-	m.set("duration", mrt::formatString("%g", duration));
+	m.set("duration", mrt::format_string("%g", duration));
 	m.set("hint", "0");
 	broadcast(m, true);	
 } CATCH("say", {
@@ -1468,7 +1468,7 @@ TRY {
 		if (my_slot == NULL) 
 			throw_ex(("cannot get my slot."));
 		
-		Game->getChat()->addMessage(*my_slot, message);
+		Game->getChat()->add_message(*my_slot, message);
 		m.set("nick", my_slot->name);
 		broadcast(m, true);
 	}

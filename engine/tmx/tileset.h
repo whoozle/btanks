@@ -17,7 +17,7 @@ public:
 private: 
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 
 	Attrs  _attr;
 	std::string _cdata;

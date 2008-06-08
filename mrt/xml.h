@@ -49,14 +49,14 @@ public:
 		}
 	};
 
-	static void getFileStats(int &tags, const std::string &fname);
-	static void getFileStats(int &tags, const mrt::BaseFile &file);
-	virtual void parseFile(const std::string &fname);
-	virtual void parseFile(const mrt::BaseFile &file);
+	static void get_file_stats(int &tags, const std::string &fname);
+	static void get_file_stats(int &tags, const mrt::BaseFile &file);
+	virtual void parse_file(const std::string &fname);
+	virtual void parse_file(const mrt::BaseFile &file);
 	
 	virtual void start(const std::string &name, Attrs &attr) = 0;
 	virtual void end(const std::string &name) = 0;
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 	
 	void clear();
 	XMLParser();

@@ -28,8 +28,8 @@ namespace sdlx {
 	static const bool enabled();
 	static void Disable();
 	static void Enable();
-	static void setPosition(const int x, const int y);
-	static void getPosition(int &x, int &y);
+	static void set_position(const int x, const int y);
+	static void get_position(int &x, int &y);
     };
 }
 

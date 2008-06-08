@@ -30,7 +30,7 @@ public:
 		_change.set(st);
 	
 		const sdlx::Surface * s = getSurface();
-		int w = s->getWidth();
+		int w = s->get_width();
 		int n = (w - 1) / (int)size.x + 1;
 		setDirectionsNumber(n);
 		//LOG_DEBUG(("dirs = %d", n));
@@ -41,7 +41,7 @@ public:
 	virtual void tick(const float dt) {
 		Object::tick(dt);
 		if (_change.tick(dt)) {
-			Object::setDirection(mrt::random(getDirectionsNumber()));
+			Object::setDirection(mrt::random(get_directions_number()));
 		}
 	}
 	

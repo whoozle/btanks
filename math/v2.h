@@ -259,7 +259,7 @@ private:
 	}
 
 public:	
-	inline int getDirection8() const {
+	inline int get_direction8() const {
 		if (is0())
 			return 0;
 
@@ -267,7 +267,7 @@ public:
 		return (y <= 0 || xx == 1)? xx: (10 - xx);
 	}
 
-	inline int getDirection16() const {
+	inline int get_direction16() const {
 		if (is0())
 			return 0;
 
@@ -275,10 +275,10 @@ public:
 		return (y <= 0 || xx == 1)? xx: (18 - xx);
 	}
 	
-	inline int getDirection(int dirs) const {
+	inline int get_direction(int dirs) const {
 		switch(dirs) {
-			case 8: return getDirection8();
-			case 16: return getDirection16();
+			case 8: return get_direction8();
+			case 16: return get_direction16();
 			case 1: return 1;
 		}
 		return 0; //make msvc happy

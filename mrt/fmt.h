@@ -30,14 +30,14 @@
 namespace mrt {
 
 
-const std::string MRTAPI formatString(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+const std::string MRTAPI format_string(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 void MRTAPI trim(std::string &str, const std::string chars = "\t\n\r ");
 void MRTAPI split(std::vector<std::string> & result, const std::string &str, const std::string &delimiter, const size_t limit = 0);
 void MRTAPI join(std::string &result, const std::vector<std::string>& array, const std::string &delimiter, const size_t limit = 0);
 void MRTAPI replace(std::string &str, const std::string &from, const std::string &to, const size_t limit = 0);
 
-void MRTAPI toUpper(std::string &str);
-void MRTAPI toLower(std::string &str);
+void MRTAPI to_upper(std::string &str);
+void MRTAPI to_lower(std::string &str);
 
 }
 

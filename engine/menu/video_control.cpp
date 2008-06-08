@@ -29,20 +29,20 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		{
 			mrt::Chunk video_data;
 			Finder->load(video_data, fname);
-			LOG_DEBUG(("video file loaded (%u bytes)", (unsigned)video_data.getSize()));
+			LOG_DEBUG(("video file loaded (%u bytes)", (unsigned)video_data.get_size()));
 
-			mpeg = SMPEG_new_data(video_data.getPtr(), video_data.getSize(), &mpeg_info, 0);
+			mpeg = SMPEG_new_data(video_data.get_ptr(), video_data.get_size(), &mpeg_info, 0);
 			if (mpeg == NULL)
 				throw_sdl(("SMPEG_new_data: %s", SDL_GetError()));
 		}
 
-		shadow.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
-		shadow.fill(shadow.mapRGBA(0, 0, 255, 0));
-		shadow.setAlpha(255, 0);
+		shadow.create_rgb(screenshot->get_width(), screenshot->get_height(), 24, SDL_SWSURFACE);
+		shadow.fill(shadow.map_rgba(0, 0, 255, 0));
+		shadow.set_alpha(255, 0);
 
-		frame.createRGB(screenshot->getWidth(), screenshot->getHeight(), 24, SDL_SWSURFACE);
-		frame.fill(frame.mapRGBA(255, 255, 255, 255));
-		frame.convertAlpha();
+		frame.create_rgb(screenshot->get_width(), screenshot->get_height(), 24, SDL_SWSURFACE);
+		frame.fill(frame.map_rgba(255, 255, 255, 255));
+		frame.display_format_alpha();
 
 		LOG_DEBUG(("video file info: %dx%d, %.02g seconds", mpeg_info.width, mpeg_info.height, mpeg_info.total_time));
 
@@ -51,10 +51,10 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		SMPEG_enablevideo(mpeg, 1);
 		SMPEG_CHECK("SMPEG_enablevideo");
 		
-		SMPEG_setdisplay(mpeg, shadow.getSDLSurface(), lock, NULL); //update);
+		SMPEG_setdisplay(mpeg, shadow.get_sdl_surface(), lock, NULL); //update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
-		SMPEG_scaleXY(mpeg, screenshot->getWidth(), screenshot->getHeight());
+		SMPEG_scaleXY(mpeg, screenshot->get_width(), screenshot->get_height());
 		SMPEG_CHECK("SMPEG_scaleXY");
 
 		checkStatus();
@@ -115,12 +115,12 @@ void VideoControl::tick(const float dt) {
 		try {
 			frame.lock();
 			shadow.lock();
-			for(int y = 0; y  < frame.getHeight(); ++y) {
-				for(int x = 0; x < frame.getWidth(); ++x) {
+			for(int y = 0; y  < frame.get_height(); ++y) {
+				for(int x = 0; x < frame.get_width(); ++x) {
 					Uint8 r, g, b, a;
-					shadow.getRGBA(shadow.getPixel(x, y), r, g, b, a);
+					shadow.get_rgba(shadow.get_pixel(x, y), r, g, b, a);
 					if (a == 0) 
-					frame.putPixel(x, y, frame.mapRGBA(r, g, b, 255));
+					frame.put_pixel(x, y, frame.map_rgba(r, g, b, 255));
 				}
 			}
 			shadow.unlock();
@@ -136,20 +136,20 @@ void VideoControl::tick(const float dt) {
 
 void VideoControl::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (mpeg == NULL || !active) {
-		surface.copyFrom(*screenshot, x, y);
+		surface.blit(*screenshot, x, y);
 		return;
 	}
-	//int dx = (screenshot->getWidth() - mpeg_info.width) / 2;
-	//int dy = (screenshot->getHeight() - mpeg_info.height) / 2;
+	//int dx = (screenshot->get_width() - mpeg_info.width) / 2;
+	//int dy = (screenshot->get_height() - mpeg_info.height) / 2;
 	int dx = 0, dy = 0;
 	//LOG_DEBUG(("render %d %d", dx, dy));
 	
-	surface.copyFrom(frame, x + dx, y + dy);
+	surface.blit(frame, x + dx, y + dy);
 }
 
-void VideoControl::getSize(int &w, int &h) const {
-	w = screenshot->getWidth();
-	h = screenshot->getHeight();
+void VideoControl::get_size(int &w, int &h) const {
+	w = screenshot->get_width();
+	h = screenshot->get_height();
 }
 
 VideoControl::~VideoControl() {

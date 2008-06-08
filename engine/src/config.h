@@ -70,7 +70,7 @@ private:
 	
 	virtual void start(const std::string &name, Attrs &attr);
 	virtual void end(const std::string &name);
-	virtual void charData(const std::string &data);
+	virtual void cdata(const std::string &data);
 	
 	sl08::slot2<const std::string, const std::string &, const std::string &, IConfig> on_console_slot;
 	const std::string onConsole(const std::string &cmd, const std::string &param);

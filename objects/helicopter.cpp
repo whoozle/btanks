@@ -86,7 +86,7 @@ void Helicopter::tick(const float dt) {
 		const Matrix<int> & matrix  = Map->getImpassabilityMatrix(0);
 
 		v2<int> pos, pos2;
-		getCenterPosition(pos); 
+		get_center_position(pos); 
 		v2<int> para_size = ResourceManager->getClass(_paratrooper)->size.convert<int>();
 		pos -= para_size / 2;
 		
@@ -120,11 +120,11 @@ void Helicopter::tick(const float dt) {
 
 void Helicopter::calculate(const float dt) {
 	GET_CONFIG_VALUE("objects.helicopter-with-kamikazes.delay-before-next-target", float, delay, 1.0);
-	v2<float> pos = getPosition();
+	v2<float> pos = get_position();
 
 	if (!_active && _idle_time > delay) { 
 
-		v2<int> size = Map->getSize();
+		v2<int> size = Map->get_size();
 		_next_target.x = mrt::random(size.x);
 		_next_target.y = mrt::random(size.y);
 		_next_target_rel = _next_target - pos;

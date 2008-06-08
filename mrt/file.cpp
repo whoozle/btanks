@@ -40,7 +40,7 @@ const bool File::opened() const {
 	return _f != NULL;
 }
 
-const off_t File::getSize() const {
+const off_t File::get_size() const {
 	struct stat s;
 	int fno = fileno(_f);
 	if (fstat(fno, &s) != 0)
@@ -49,19 +49,19 @@ const off_t File::getSize() const {
 }
 
 void File::write(const Chunk &ch) const {
-	if (fwrite(ch.getPtr(), 1, ch.getSize(), _f) != ch.getSize())
+	if (fwrite(ch.get_ptr(), 1, ch.get_size(), _f) != ch.get_size())
 		throw_io(("fwrite"));
 }
 
-const bool File::readLine(std::string &str, const size_t bufsize) const {
+const bool File::readline(std::string &str, const size_t bufsize) const {
 	if (_f == NULL)
-		throw_ex(("readLine on closed file"));
+		throw_ex(("readline on closed file"));
 	mrt::Chunk buf;
-	buf.setSize(bufsize);
+	buf.set_size(bufsize);
 	
-	if (fgets((char *)buf.getPtr(), buf.getSize(), _f) == NULL)
+	if (fgets((char *)buf.get_ptr(), buf.get_size(), _f) == NULL)
 		return false;
-	str.assign((const char *)buf.getPtr());
+	str.assign((const char *)buf.get_ptr());
 	return true;
 }
 

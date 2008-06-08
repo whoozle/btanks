@@ -36,7 +36,7 @@ void Trooper::getImpassabilityPenalty(const float impassability, float &base, fl
 }
 
 void Trooper::tick(const float dt) {
-	setDirection(_velocity.getDirection8() - 1);
+	setDirection(_velocity.get_direction8() - 1);
 	Object::tick(dt);
 	
 	if (!_state.fire) {

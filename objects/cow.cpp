@@ -106,8 +106,8 @@ void Cow::emit(const std::string &event, Object * emitter) {
 	} else if (emitter != NULL && emitter->piercing && event == "collision") {
 		v2<float> v; 
 		emitter->get_velocity(v);
-		int dirs = getDirectionsNumber();
-		int dir = v.getDirection(dirs);
+		int dirs = get_directions_number();
+		int dir = v.get_direction(dirs);
 		dir = (dirs + dir + dirs / (mrt::random(2)?4:-4)) % dirs;
 		setDirection(dir);
 		_velocity.fromDirection(dir, dirs);

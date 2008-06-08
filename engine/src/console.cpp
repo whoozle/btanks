@@ -90,7 +90,7 @@ bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
 			//LOG_DEBUG(("emit %s('%s')", cmd[0].c_str(), cmd[1].c_str()));
 			std::string r = on_command.emit(cmd[0], cmd[1]);
 			if (r.empty())
-				r = mrt::formatString("unknown command '%s'", cmd[0].c_str());
+				r = mrt::format_string("unknown command '%s'", cmd[0].c_str());
 			print(r);
 			_pos = _buffer.size() - 1;
 		}
@@ -132,7 +132,7 @@ void IConsole::init() {
 	LOG_DEBUG(("loading background..."));
 	_background.init("menu/background_box.png", 600, 240);
 	
-	_buffer.push_back(Buffer::value_type(mrt::formatString("Battle Tanks engine. version: %s", getVersion().c_str()), NULL));
+	_buffer.push_back(Buffer::value_type(mrt::format_string("Battle Tanks engine. version: %s", getVersion().c_str()), NULL));
 	_buffer.push_back(Buffer::value_type(std::string(">"), NULL));
 	LOG_DEBUG(("connecting signal..."));
 	on_key_slot.assign(this, &IConsole::onKey, Window->key_signal);
@@ -142,29 +142,29 @@ void IConsole::render(sdlx::Surface &window) {
 	if (!_active)
 		return;
 	int w = _background.w, h =  _background.h;
-	int x = window.getWidth() - w, y = window.getHeight() - h;
+	int x = window.get_width() - w, y = window.get_height() - h;
 
 	const int y_margin = 8;
 	const int x_margin = 8;
 	
 	_background.render(window, x, y);
-	window.setClipRect(sdlx::Rect(x, y + y_margin, w, h - 2 * y_margin));
+	window.set_clip_rect(sdlx::Rect(x, y + y_margin, w, h - 2 * y_margin));
 	int ch = 0;
 	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
 		if (i->second == NULL) {
 			i->second = new sdlx::Surface;
 			_font->render(*i->second, i->first);
-			i->second->convertAlpha();
+			i->second->display_format_alpha();
 		}
-		ch += i->second->getHeight();
+		ch += i->second->get_height();
 	}
 
-	y = window.getHeight() - ch - y_margin;
+	y = window.get_height() - ch - y_margin;
 	x += x_margin; 
 	
 	for(Buffer::iterator i = _buffer.begin(); i != _buffer.end(); ++i) {
-		window.copyFrom(*i->second, x, y);
-		y += i->second->getHeight();
+		window.blit(*i->second, x, y);
+		y += i->second->get_height();
 	}
-	window.resetClipRect();
+	window.reset_clip_rect();
 }

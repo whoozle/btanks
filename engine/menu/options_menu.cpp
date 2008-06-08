@@ -46,12 +46,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	int base_x = _bx + 3 * _background.w / 4;
 
 	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
-	_b_back->getSize(bw, bh);
+	_b_back->get_size(bw, bh);
 
 	add(_bx + mx + _background.w / 4 - bw / 2, h -  my - bh - _by, _b_back);
 	
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
-	_b_ok->getSize(bw, bh);
+	_b_ok->get_size(bw, bh);
 	add(_by + my + 3 * _background.w / 4 - bw / 2, h -  my - bh - _by, _b_ok);
 	
 	int width = _background.w - 2 * mx;
@@ -69,29 +69,29 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	}
 
 	_lang = new Chooser("medium", langs);
-	_lang->getSize(sw, sh);
+	_lang->get_size(sw, sh);
 	add(_bx + mx, yp, new Label("medium", I18n->get("menu/language", "language")));
 	add(_bx + base_x - sw / 2, yp, _lang);
 	yp += sh + 10;
 
 	sp = new ControlPicker(width, "medium", I18n->get("menu", "single-player"), "player.control-method", "keys", std::string());
-	sp->getSize(sw, sh);
+	sp->get_size(sw, sh);
 	add(_bx + mx, yp, sp);
 	yp += sh;
 
 	sp1 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-1"), "player.control-method-1", "keys-1", "split");
-	sp1->getSize(sw, sh);
+	sp1->get_size(sw, sh);
 	add(_bx + mx, yp, sp1);
 	yp += sh;
 
 	sp2 = new ControlPicker(width, "medium", I18n->get("menu", "split-player-2"), "player.control-method-2", "keys-2", "split");
-	sp2->getSize(sw, sh);
+	sp2->get_size(sw, sh);
 	add(_bx + mx, yp, sp2);
 	yp += sh;
 	
 	
 	_b_redefine = new Button("medium_dark", I18n->get("menu", "redefine-keys"));
-	_b_redefine->getSize(sw, sh);
+	_b_redefine->get_size(sw, sh);
 	add((w - sw) / 2, yp + 6, _b_redefine);
 
 	yp += sh + 20;
@@ -104,10 +104,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	Slider *s = _music = new Slider(volume);
 
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	{
 		int w, h;
-		s->getSize(w, h);
+		s->get_size(w, h);
 		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
 		if (h > sh) 
 			sh = h;
@@ -122,10 +122,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	l = new Label("medium", I18n->get("menu", "fx-volume"));
 	s = _fx = new Slider(volume);
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	{
 		int w, h;
-		s->getSize(w, h);
+		s->get_size(w, h);
 		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
 		if (h > sh) 
 			sh = h;
@@ -140,10 +140,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	l = new Label("medium", I18n->get("menu", "ambience-volume"));
 	s = _ambient = new Slider(volume);
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	{
 		int w, h;
-		s->getSize(w, h);
+		s->get_size(w, h);
 		add(_bx + base_x - w / 2, yp + (sh - h) / 2, s);
 		if (h > sh) 
 			sh = h;
@@ -162,10 +162,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 		for(unsigned i = 0; i < Window->resolutions.size(); ++i) {
 			if (screen_w == Window->resolutions[i].w && screen_h == Window->resolutions[i].h) 
 				standard = true;
-			res.push_back(mrt::formatString("%ux%u", Window->resolutions[i].w, Window->resolutions[i].h));
+			res.push_back(mrt::format_string("%ux%u", Window->resolutions[i].w, Window->resolutions[i].h));
 		}
 		if (!standard) 
-			res.push_back(mrt::formatString("%ux%u", screen_w, screen_h));
+			res.push_back(mrt::format_string("%ux%u", screen_w, screen_h));
 
 		_c_res = new Chooser("medium", res);
 	}
@@ -173,10 +173,10 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	l = new Label("medium", I18n->get("menu", "screen-resolution"));
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	{
 		int w, h;
-		_c_res->getSize(w, h);
+		_c_res->get_size(w, h);
 		add(_bx + base_x - w / 2, yp + (sh - h) / 2, _c_res);
 		if (h > sh) 
 			sh = h;
@@ -184,17 +184,17 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	yp += sh + 10;
 
 	TRY {
-		_c_res->set(mrt::formatString("%dx%d", screen_w, screen_h));
+		_c_res->set(mrt::format_string("%dx%d", screen_w, screen_h));
 	} CATCH("default resolution setup", );
 
 	l = new Label("medium", I18n->get("menu", "fullscreen-mode"));
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	
 	_fsmode = new Checkbox();
 	{
 		int w, h;
-		_fsmode->getSize(w, h);
+		_fsmode->get_size(w, h);
 		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _fsmode);
 		if (h > sh) 
 			sh = h;
@@ -203,12 +203,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	l = new Label("medium", I18n->get("menu", "do-not-show-donation-screen"));
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	
 	_donate = new Checkbox();
 	{
 		int w, h;
-		_donate->getSize(w, h);
+		_donate->get_size(w, h);
 		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _donate);
 		if (h > sh) 
 			sh = h;
@@ -217,12 +217,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 
 	l = new Label("medium", I18n->get("menu", "enable-fog-of-war"));
 	add(_bx + mx, yp, l);
-	l->getSize(sw, sh);
+	l->get_size(sw, sh);
 	
 	_fog_of_war = new Checkbox();
 	{
 		int w, h;
-		_fog_of_war->getSize(w, h);
+		_fog_of_war->get_size(w, h);
 		add(_bx + base_x - w / 2 + 48, yp + (sh - h) / 2, _fog_of_war);
 		if (h > sh) 
 			sh = h;
@@ -233,12 +233,12 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	//dialogs
 
 	_keys = new RedefineKeys;
-	_keys->getSize(sw, sh);
+	_keys->get_size(sw, sh);
 	add((w - sw) / 2, (h - sh) / 2, _keys);
 	_keys->hide();
 	
 	_gamepad = new GamepadSetup(w, h);
-	_gamepad->getSize(sw, sh);
+	_gamepad->get_size(sw, sh);
 	add((w - sw) / 2, (h - sh) / 2, _gamepad);
 	_gamepad->hide();
 	
@@ -247,7 +247,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	reload();
 }
 
-void OptionsMenu::getSize(int &w, int &h) const {
+void OptionsMenu::get_size(int &w, int &h) const {
 	w = _background.w;
 	h = _background.h;
 }
@@ -291,7 +291,7 @@ void OptionsMenu::reload() {
 		int w, h;
 		Config->get("engine.window.width", w, 800);
 		Config->get("engine.window.height", h, 600);
-		_c_res->set(mrt::formatString("%dx%d", w, h));
+		_c_res->set(mrt::format_string("%dx%d", w, h));
 	} CATCH("default resolution setup", );
 
 	bool fs;

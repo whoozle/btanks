@@ -113,7 +113,7 @@ const int UDPSocket::recv(Socket::addr &addr, void *data, const int len) const {
 	return r;
 }
 
-void UDPSocket::setBroadcastMode(int val) {
+void UDPSocket::set_broadcast_mode(int val) {
 	if (_sock == -1)
 		throw_ex(("setBroadcast called on uninitialized socket"));
 	TRY { 
@@ -126,8 +126,8 @@ void UDPSocket::setBroadcastMode(int val) {
 #ifdef _WINDOWS
 void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 	TRY {
-		LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.getSize()));
-		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.getPtr(), data.getSize()) == -1)
+		LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.get_size()));
+		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.get_ptr(), data.get_size()) == -1)
 			throw_net(("sendto"));
 	} CATCH("broadcast", );
 }
@@ -136,7 +136,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 #	include <ifaddrs.h>
 
 void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
-	LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.getSize()));
+	LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.get_size()));
 	struct ifaddrs * ifs = NULL;
 	TRY {
 		if (getifaddrs(&ifs) == -1)
@@ -153,7 +153,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 			sockaddr_in *addr = (sockaddr_in *)i->ifa_ifu.ifu_broadaddr;
 			LOG_DEBUG(("interface: %s, ifu_broadaddr: %s", i->ifa_name, inet_ntoa(addr->sin_addr)));
 			TRY {
-				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.getPtr(), data.getSize()) == -1)
+				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.get_ptr(), data.get_size()) == -1)
 					throw_net(("sendto"));
 			} CATCH("sendto", );
 #		else

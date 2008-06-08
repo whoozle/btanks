@@ -36,7 +36,7 @@ public:
 	void start();
 
 
-	Uint32 getID() const;
+	Uint32 get_id() const;
 	
 	const int wait();
 	void kill();

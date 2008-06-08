@@ -185,7 +185,7 @@ void IWindow::initSDL() {
 #endif
 	}
 
-	sdlx::Surface::setDefaultFlags(default_flags);
+	sdlx::Surface::set_default_flags(default_flags);
 
 	//LOG_DEBUG(("initializing SDL_ttf..."));
 	//sdlx::TTF::init();
@@ -303,11 +303,11 @@ SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 		Finder->load(data, "tiles/icon.png");
 
 		sdlx::Surface icon;
-		icon.loadImage(data);
-		SDL_WM_SetIcon(icon.getSDLSurface(), NULL);
+		icon.load_image(data);
+		SDL_WM_SetIcon(icon.get_sdl_surface(), NULL);
 	} CATCH("setting icon", {});
 
-	if (_opengl && !force_gl && !sdlx::System::acceleratedGL(!_fullscreen)) {
+	if (_opengl && !force_gl && !sdlx::System::accelerated_gl(!_fullscreen)) {
 		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
 		_opengl = false;
 	}
@@ -414,12 +414,12 @@ void IWindow::createMainWindow() {
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, _fsaa);
 		}
 	
-		//_window.setVideoMode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
+		//_window.set_video_mode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
 #ifdef USE_GLSDL
 		flags |= SDL_GLSDL;
 #endif
 
-		_window.setVideoMode(_w, _h, 0, flags );
+		_window.set_video_mode(_w, _h, 0, flags );
 
 #if SDL_VERSION_ATLEAST(1,2,10)
 
@@ -442,7 +442,7 @@ void IWindow::createMainWindow() {
 		LOG_DEBUG(("renderer: %s", getGLString(GL_RENDERER).c_str()));
 
 	} else {
-		_window.setVideoMode(_w, _h, 0, flags);
+		_window.set_video_mode(_w, _h, 0, flags);
 	}
 
 #else //_WINDOWS
@@ -450,13 +450,13 @@ void IWindow::createMainWindow() {
 #ifdef USE_GLSDL
 		flags |= _dx?SDL_GLSDL : 0;
 #endif
-		_window.setVideoMode(_w, _h, 0, flags);
+		_window.set_video_mode(_w, _h, 0, flags);
 	
 #endif
 
 	LOG_DEBUG(("created main surface. (%dx%dx%d, %s)", _w, _h, _window.getBPP(), ((_window.getFlags() & SDL_HWSURFACE) == SDL_HWSURFACE)?"hardware":"software"));
 
-	sdlx::System::probeVideoMode();	
+	sdlx::System::probe_video_mode();	
 
 	_running = true;
 }

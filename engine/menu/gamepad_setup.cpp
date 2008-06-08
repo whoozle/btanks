@@ -108,13 +108,13 @@ void GamepadSetup::setupNextControl() {
 	_axes.clear();
 	_axis_value = 0;
 
-	int hats = joy.getNumHats();
-	int axes = joy.getNumAxes();
+	int hats = joy.get_hats_num();
+	int axes = joy.get_axis_num();
 	
 	++_control_id;
 	switch(_wait_control) {
 	case tButton:
-		if (_control_id >= 10 || _control_id >= joy.getNumButtons()) {
+		if (_control_id >= 10 || _control_id >= joy.get_buttons_num()) {
 			if (axes) {
 				_wait_control = tAxis;
 				_control_id = 0;
@@ -204,7 +204,7 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	//LOG_DEBUG(("%d joystick(s) found", n));
 	std::vector<std::string> names;
 	for(int i = 0; i < n; ++i) {
-		std::string name = mrt::formatString("%s %d %s %d: %s", 
+		std::string name = mrt::format_string("%s %d %s %d: %s", 
 			I18n->get("menu", "joystick").c_str(), i + 1, 
 			I18n->get("menu", "of").c_str(), n, sdlx::Joystick::getName(i).c_str());
 		if (i == 0)
@@ -214,22 +214,22 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 	
 	int sw, sh;
 	_current_pad = new Chooser("small", names);
-	_current_pad->getSize(sw, sh);
+	_current_pad->get_size(sw, sh);
 	_gamepad_bg_pos = v2<int>(mx, my + sh + 10);
 	add((w - sw - mx * 2) / 2, my, _current_pad);
-	Tooltip * t = new Tooltip("menu", "test-gamepad", false, w - 2 * mx - _gamepad_bg->getHeight() - 60);
-	t->getSize(sw, sh);
+	Tooltip * t = new Tooltip("menu", "test-gamepad", false, w - 2 * mx - _gamepad_bg->get_height() - 60);
+	t->get_size(sw, sh);
 	add(w - mx - sw, _gamepad_bg_pos.y, t);
 	
 	_setup = new Button("medium_dark", I18n->get("menu", "setup-gamepad"));
 	int bw, bh;
 	int yp =  _gamepad_bg_pos.y + sh + 16;
-	_setup->getSize(bw, bh);
+	_setup->get_size(bw, bh);
 	add(w - mx - sw / 2 - bw / 2, yp, _setup);
 	yp += bh + 16;
 
 	_back = new Button("medium_dark", I18n->get("menu", "back"));
-	_back->getSize(bw, bh);
+	_back->get_size(bw, bh);
 	add(w - mx - sw / 2 - bw / 2, yp, _back);
 	yp += bh;
 
@@ -237,12 +237,12 @@ GamepadSetup::GamepadSetup(const int w, const int h) : _current_pad(NULL), _wait
 }
 
 void GamepadSetup::renderIcon(sdlx::Surface &surface, const int idx, const int x, const int y) const {
-	const int w = _gamepad_buttons->getWidth() / 7;
-	const int h = _gamepad_buttons->getHeight();
+	const int w = _gamepad_buttons->get_width() / 7;
+	const int h = _gamepad_buttons->get_height();
 
 	const sdlx::Rect src(w * idx, 0, w, h);
 	
-	surface.copyFrom(*_gamepad_buttons, src, _gamepad_bg_pos.x + x, _gamepad_bg_pos.y + y);
+	surface.blit(*_gamepad_buttons, src, _gamepad_bg_pos.x + x, _gamepad_bg_pos.y + y);
 }
 
 void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x, const int y) const {
@@ -254,8 +254,8 @@ void GamepadSetup::renderButton(sdlx::Surface &surface, const int b, const int x
 	static int yp[10] = {226, 194, 193, 162,  43, 69,  43,   69,  198, 198,  };
 	
 	renderIcon(surface, idx, 
-		x + (xp[b] >= 0?xp[b]:_gamepad_bg->getWidth() + xp[b]), 
-		y + (yp[b] >= 0?yp[b]:_gamepad_bg->getHeight() + yp[b]));
+		x + (xp[b] >= 0?xp[b]:_gamepad_bg->get_width() + xp[b]), 
+		y + (yp[b] >= 0?yp[b]:_gamepad_bg->get_height() + yp[b]));
 }
 
 
@@ -283,7 +283,7 @@ void GamepadSetup::load(const std::string &profile) {
 	LOG_DEBUG(("loading profile '%s'", profile.c_str()));
 	_profile = profile;	
 	reload();
-	_bindings.load(profile, joy.getNumButtons(), joy.getNumAxes(), joy.getNumHats());
+	_bindings.load(profile, joy.get_buttons_num(), joy.get_axis_num(), joy.get_hats_num());
 }
 
 void GamepadSetup::reload() {
@@ -316,14 +316,14 @@ void GamepadSetup::renderMinistick(sdlx::Surface &surface, const int ai, const i
 	int xp[] = { 95, 220};
 	int yp[] = {203, 203};
 	
-	surface.copyFrom(*_gamepad_ministick, _gamepad_bg_pos.x + xp[idx] + xa + _gamepad_ministick->getWidth() / 2, _gamepad_bg_pos.y + yp[idx] + ya + _gamepad_ministick->getHeight() / 2);
+	surface.blit(*_gamepad_ministick, _gamepad_bg_pos.x + xp[idx] + xa + _gamepad_ministick->get_width() / 2, _gamepad_bg_pos.y + yp[idx] + ya + _gamepad_ministick->get_height() / 2);
 }
 
 void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) const {
 	_background.render(surface, x, y);
 	int mx, my;
 	_background.getMargins(mx, my);
-	surface.copyFrom(*_gamepad_bg, x + _gamepad_bg_pos.x, y + _gamepad_bg_pos.y);
+	surface.blit(*_gamepad_bg, x + _gamepad_bg_pos.x, y + _gamepad_bg_pos.y);
 	Container::render(surface, x, y);
 	
 	if (_wait) {
@@ -333,12 +333,12 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) cons
 
 	SDL_JoystickUpdate();
 	
-	int hats = joy.getNumHats();
-	int axes = joy.getNumAxes();
+	int hats = joy.get_hats_num();
+	int axes = joy.get_axis_num();
 	
 	if (hats) {
 		//assume first hat as D-PAD
-		int hat = joy.getHat(_bindings.get(tHat, 0));
+		int hat = joy.get_hat(_bindings.get(tHat, 0));
 		renderDPad(surface, 
 			(hat & SDL_HAT_LEFT) == SDL_HAT_LEFT, (hat & SDL_HAT_RIGHT) == SDL_HAT_RIGHT, 
 			(hat & SDL_HAT_UP) == SDL_HAT_UP, (hat & SDL_HAT_DOWN) == SDL_HAT_DOWN, 
@@ -347,26 +347,26 @@ void GamepadSetup::render(sdlx::Surface &surface, const int x, const int y) cons
 		if (axes >= 6 || axes == 2) {
 			//no hats. axe 4,5 - DPAD
 			int base = (axes == 2)?0:4;
-			int xa = joy.getAxis(_bindings.get(tAxis, base)), ya = joy.getAxis(_bindings.get(tAxis, base + 1));
+			int xa = joy.get_axis(_bindings.get(tAxis, base)), ya = joy.get_axis(_bindings.get(tAxis, base + 1));
 			static const int threshold = 3276;
 			renderDPad(surface, xa < -threshold, xa > threshold, ya < -threshold, ya > threshold, x, y);
 		}
 	}
 
 	if (axes >= ((hats)?4:6)) {
-		renderMinistick(surface, 0, joy.getAxis(_bindings.get(tAxis, 0)), joy.getAxis(_bindings.get(tAxis, 1)));
-		renderMinistick(surface, 2, joy.getAxis(_bindings.get(tAxis, 2)), joy.getAxis(_bindings.get(tAxis, 3)));
+		renderMinistick(surface, 0, joy.get_axis(_bindings.get(tAxis, 0)), joy.get_axis(_bindings.get(tAxis, 1)));
+		renderMinistick(surface, 2, joy.get_axis(_bindings.get(tAxis, 2)), joy.get_axis(_bindings.get(tAxis, 3)));
 	}
 
-	int n = math::min(joy.getNumButtons(), 10);
+	int n = math::min(joy.get_buttons_num(), 10);
 	for(int i = 0; i < n; ++i)  {
-		if (joy.getButton(_bindings.get(tButton, i)))
+		if (joy.get_button(_bindings.get(tButton, i)))
 			renderButton(surface, i, x, y);
 	}
 }
 
-void GamepadSetup::getSize(int &w, int &h) const {
-	Container::getSize(w, h);
+void GamepadSetup::get_size(int &w, int &h) const {
+	Container::get_size(w, h);
 	
 	if (_background.w > w)
 		w = _background.w;

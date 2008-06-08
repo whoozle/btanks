@@ -53,7 +53,7 @@ bool Source::playing() const {
 	if (fadeout_total > 0 && fadeout <= 0)
 		return false;
 	
-	return loop?true: position < (int)(sample->data.getSize() / sample->spec.channels / 2);
+	return loop?true: position < (int)(sample->data.get_size() / sample->spec.channels / 2);
 }
 	
 void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
@@ -100,9 +100,9 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 		ffti_state = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
 	
 	int n = (dst_n - 1) / CLUNK_ACTUAL_WINDOW + 1;
-	result.setSize(2 * dst_n);
+	result.set_size(2 * dst_n);
 
-	Sint16 *dst = (Sint16 *)result.getPtr();
+	Sint16 *dst = (Sint16 *)result.get_ptr();
 	
 	for(int i = 0; i < n; ++i) {
 		kiss_fft_scalar src_data[CLUNK_WINDOW_SIZE];
@@ -195,7 +195,7 @@ void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, 
 }
 
 void Source::update_position(const int dp) {
-	int src_n = sample->data.getSize() / sample->spec.channels / 2;
+	int src_n = sample->data.get_size() / sample->spec.channels / 2;
 	position += dp;
 	if (loop) {
 		position %= src_n;
@@ -214,16 +214,16 @@ void Source::update_position(const int dp) {
 
 
 float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
-	Sint16 * dst = (Sint16*) buffer.getPtr();
-	unsigned dst_n = buffer.getSize() / dst_ch / 2;
-	const Sint16 * src = (Sint16*) sample->data.getPtr();
+	Sint16 * dst = (Sint16*) buffer.get_ptr();
+	unsigned dst_n = buffer.get_size() / dst_ch / 2;
+	const Sint16 * src = (Sint16*) sample->data.get_ptr();
 	if (src == NULL)
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));
 	if (pitch < 0)
 		throw_ex(("pitch %g could not be negative", pitch));
 		
 	unsigned src_ch = sample->spec.channels; 
-	unsigned src_n = sample->data.getSize() / src_ch / 2;
+	unsigned src_n = sample->data.get_size() / src_ch / 2;
 
 	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
 	float r2 = delta_position.length();
@@ -289,9 +289,9 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
-	Sint16 * src_3d[2] = { (Sint16 *)sample3d_left.getPtr(), (Sint16 *)sample3d_right.getPtr() };
+	Sint16 * src_3d[2] = { (Sint16 *)sample3d_left.get_ptr(), (Sint16 *)sample3d_right.get_ptr() };
 	
-	//LOG_DEBUG(("size: %u", (unsigned)sample3d_left.getSize()));
+	//LOG_DEBUG(("size: %u", (unsigned)sample3d_left.get_size()));
 	
 	for(unsigned i = 0; i < dst_n; ++i) {
 		for(unsigned c = 0; c < dst_ch; ++c) {
@@ -305,7 +305,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 				} else if (left && idt_offset < 0) {
 					p += idt_offset;
 				}
-				if (p >= 0 && p * 2 < (int)sample3d_left.getSize())
+				if (p >= 0 && p * 2 < (int)sample3d_left.get_size())
 					v = src_3d[c][p];
 			}
 			dst[i * dst_ch + c] = v;

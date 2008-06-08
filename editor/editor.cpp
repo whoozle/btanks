@@ -97,7 +97,7 @@ TRY {
 	
 	GameMonitor->loadMap(NULL, map);
 
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->get_size();
 	_tile_size = Map->getTileSize();
 	map_pos.w = map_size.x;
 	map_pos.h = map_size.y;
@@ -214,14 +214,14 @@ void Editor::onTick(const float dt) {
 
 
 void Editor::render(sdlx::Surface &surface, const float dt) {
-	sdlx::Rect window_size = surface.getSize();
-	surface.fill(surface.mapRGB(255, 255, 255));
+	sdlx::Rect window_size = surface.get_size();
+	surface.fill(surface.map_rgb(255, 255, 255));
 
 	const bool highlight_layer = !_layer_invisible.tick(dt);
 	const bool show_layer_name = !_layer_name_invisible.tick(dt);
 	if (Map->loaded()) {
-		const sdlx::Rect window_size = Window->getSize();
-		const v2<int> map_size = Map->getSize();
+		const sdlx::Rect window_size = Window->get_size();
+		const v2<int> map_size = Map->get_size();
 		
 		if (map_pos.x < 0) 
 			map_pos.x = 0;
@@ -274,9 +274,9 @@ void Editor::render(sdlx::Surface &surface, const float dt) {
 		if (_selecting || _selection1.quick_distance(_selection2) >= 1024) {
 			static sdlx::Surface selection;
 			if (selection.isNull()) {
-				selection.createRGB(_tile_size.x, _tile_size.y, 32);
-				selection.convertAlpha();
-				selection.fill(selection.mapRGBA(0x11, 0xdd, 0x11, 0x80));
+				selection.create_rgb(_tile_size.x, _tile_size.y, 32);
+				selection.display_format_alpha();
+				selection.fill(selection.map_rgba(0x11, 0xdd, 0x11, 0x80));
 			}
 			v2<int> base(map_pos.x, map_pos.y);
 			v2<int> sel1 = _selection1, sel2 = _selection2;
@@ -290,7 +290,7 @@ void Editor::render(sdlx::Surface &surface, const float dt) {
 			//LOG_DEBUG(("%d,%d -> %d,%d", t1.x, t1.y, t2.x, t2.y));
 			for(int y = t1.y; y <= t2.y; y += _tile_size.y) 
 				for(int x = t1.x; x <= t2.x; x += _tile_size.x) {
-					surface.copyFrom(selection, x, y);
+					surface.blit(selection, x, y);
 				}
 		}
 	}
@@ -306,10 +306,10 @@ void Editor::render(sdlx::Surface &surface, const float dt) {
 			hl = ResourceManager->loadSurface("object.png");
 		
 		v2<float> pos;
-		_highlight_object->getCenterPosition(pos);
-		surface.copyFrom(*hl, 
-			(int)(pos.x - map_pos.x - hl->getWidth() / 2), 
-			(int)(pos.y - map_pos.y - hl->getHeight() / 2) 
+		_highlight_object->get_center_position(pos);
+		surface.blit(*hl, 
+			(int)(pos.x - map_pos.x - hl->get_width() / 2), 
+			(int)(pos.y - map_pos.y - hl->get_height() / 2) 
 		);
 	}
 	
@@ -319,7 +319,7 @@ void Editor::render(sdlx::Surface &surface, const float dt) {
 #include "mrt/lang.h"
 
 void Editor::init(int argc, char *argv[]) {
-	std::string config_path = mrt::Directory::getAppDir("Battle Tanks", "btanks") + "/";
+	std::string config_path = mrt::Directory::get_app_dir("Battle Tanks", "btanks") + "/";
 	Config->load(config_path + "bt.xml");
 	
 	std::string lang; //default
@@ -334,12 +334,12 @@ void Editor::init(int argc, char *argv[]) {
 		}
 
 		if (lang.empty())
-			lang = mrt::getLanguageCode();
+			lang = mrt::get_lang_code();
 	}
 	
 	I18n->load(lang);
 	Window->init(argc, argv);
-	sdlx::Rect window_size = Window->getSize();
+	sdlx::Rect window_size = Window->get_size();
 
 	LOG_DEBUG(("initializing hud..."));
 	_hud = new Hud(window_size.w, window_size.h);
@@ -366,7 +366,7 @@ void Editor::init(int argc, char *argv[]) {
 	
 	Control * c = _map_picker = new OpenMapDialog;
 	int cw, ch;
-	c->getSize(cw, ch);
+	c->get_size(cw, ch);
 	add((window_size.w - cw) / 2, (window_size.h - ch) / 2, c);
 
 	c = _tileset_dialog = new TilesetDialog(window_size.w, window_size.h);
@@ -374,17 +374,17 @@ void Editor::init(int argc, char *argv[]) {
 	c->hide();
 	
 	c = _layers_dialog = new LayerListDialog(window_size.w, window_size.h);
-	c->getSize(cw, ch);
+	c->get_size(cw, ch);
 	add((window_size.w - cw), 0, c);
 	c->hide();
 	
 	c = _add_object = new AddObjectDialog(512, 384);
-	c->getSize(cw, ch);
+	c->get_size(cw, ch);
 	add((window_size.w - cw) / 2, (window_size.h - ch) / 2, c);
 	c->hide();
 
 	c = _morph_dialog = new MorphDialog(512, 384);
-	c->getSize(cw, ch);
+	c->get_size(cw, ch);
 	add((window_size.w - cw) / 2, (window_size.h - ch) / 2, c);
 	c->hide();
 	
@@ -397,7 +397,7 @@ void Editor::init(int argc, char *argv[]) {
 	_object_properties->hide();
 	
 	_resize_map = new ResizeDialog();
-	_resize_map->getSize(cw, ch);
+	_resize_map->get_size(cw, ch);
 	add((window_size.w - cw) / 2, (window_size.h - ch) / 2, _resize_map);
 	_resize_map->hide();
 }
@@ -544,8 +544,8 @@ bool Editor::onKey(const SDL_keysym sym) {
 		v2<int> base(map_pos.x, map_pos.y);
 		v2<int> pixel_pos = base + window_pos;
 		v2<int> tile_pos = pixel_pos / _tile_size;
-		//mrt::formatString("%d,%d", tile_pos.x, tile_pos.y).c_str());
-		_layer_name = mrt::formatString("grid_position: %d,%d, pixel position: %d,%d", tile_pos.x, tile_pos.y, pixel_pos.x, pixel_pos.y);
+		//mrt::format_string("%d,%d", tile_pos.x, tile_pos.y).c_str());
+		_layer_name = mrt::format_string("grid_position: %d,%d, pixel position: %d,%d", tile_pos.x, tile_pos.y, pixel_pos.x, pixel_pos.y);
 		_layer_name_invisible.reset();
 
 		return true;
@@ -571,7 +571,7 @@ bool Editor::onKey(const SDL_keysym sym) {
 				Command cmd(l);
 				addCommand(cmd);
 			}
-			FillerBrush brush(*p_brush, Map->getSize() / Map->getTileSize());
+			FillerBrush brush(*p_brush, Map->get_size() / Map->getTileSize());
 			brush.exec(currentCommand(), pos.x, pos.y );
 			currentCommand().exec();
 		} else 
@@ -612,7 +612,7 @@ bool Editor::onKey(const SDL_keysym sym) {
 			std::string fname = _map_base + "/maps/" + _map_file + ".tmx";
 			f.open(fname, "wb");
 			LOG_DEBUG(("saving map to %s...", fname.c_str()));
-			f.writeAll(result);
+			f.write_all(result);
 			f.close();
 			return true;
 		} break;
@@ -646,7 +646,7 @@ bool Editor::onKey(const SDL_keysym sym) {
 		if (_highlight_object == NULL)
 			return false;
 		{
-			int dirs = _highlight_object->getDirectionsNumber();
+			int dirs = _highlight_object->get_directions_number();
 			if (dirs != 8 && dirs != 16)
 				return false;
 			
@@ -684,8 +684,8 @@ void Editor::displayStatusMessage(const Object *object) {
 		GameItem &item = GameMonitor->find(_highlight_object);
 		prop = " (" + item.property + ")";
 	} catch(...) {}
-	_layer_name = mrt::formatString("%s:%s%s, z: %d, dir: %d%s", 
-		object->registered_name.c_str(), object->animation.c_str(), object->getVariants().dump().c_str(), object->getZ(), object->getDirection(), prop.c_str());
+	_layer_name = mrt::format_string("%s:%s%s, z: %d, dir: %d%s", 
+		object->registered_name.c_str(), object->animation.c_str(), object->getVariants().dump().c_str(), object->getZ(), object->get_direction(), prop.c_str());
 	_layer_name_invisible.reset();
 }
 
@@ -714,7 +714,7 @@ bool Editor::onMouse(const int button, const bool pressed, const int x, const in
 			if (!pressed)
 				return true;
 		
-			const sdlx::Rect window_size = Window->getSize();
+			const sdlx::Rect window_size = Window->get_size();
 	
 			map_pos.x += x - window_size.w / 2;
 			map_pos.y += y - window_size.h / 2;
@@ -770,7 +770,7 @@ bool Editor::onMouse(const int button, const bool pressed, const int x, const in
 		Object *object = currentCommand().getObject();
 		assert(object != NULL);
 		v2<int> pos;
-		object->getPosition(pos);
+		object->get_position(pos);
 		currentCommand().save(pos.x, pos.y);
 		return true;
 	}
@@ -779,7 +779,7 @@ bool Editor::onMouse(const int button, const bool pressed, const int x, const in
 		_dragging = false;
 		LOG_DEBUG(("dropping object..."));
 		v2<int> pos;
-		currentCommand().getObject()->getPosition(pos);
+		currentCommand().getObject()->get_position(pos);
 		currentCommand().move(pos.x, pos.y);
 		currentCommand().exec();
 		return true;
@@ -853,7 +853,7 @@ bool Editor::onMouseMotion(const int state, const int x, const int y, const int 
 	}
 	if (_dragging) {
 		v2<int> pos;
-		currentCommand().getObject()->getPosition(pos);
+		currentCommand().getObject()->get_position(pos);
 		pos.x += xrel; pos.y += yrel;
 
 		World->move(currentCommand().getObject(), pos.x, pos.y);
@@ -886,7 +886,7 @@ void Editor::notifyLoadingBar(const int progress, const char *what) {
 	
 	if (_hud->renderLoadingBar(Window->getSurface(), old_progress, 1.0 * _loading_bar_now / _loading_bar_total, NULL, false)) {
 		Window->flip();
-		Window->getSurface().fill(Window->getSurface().mapRGB(255, 255, 255));
+		Window->getSurface().fill(Window->getSurface().map_rgb(255, 255, 255));
 	}
 }
 
@@ -973,7 +973,7 @@ int WINAPI SDLWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw)
 #endif
 {
-	std::string logpath = mrt::formatString("SDL_LOG_PATH=%s", mrt::Directory::getAppDir("Battle Tanks", "btanks").c_str());
+	std::string logpath = mrt::format_string("SDL_LOG_PATH=%s", mrt::Directory::get_app_dir("Battle Tanks", "btanks").c_str());
 	_putenv(_strdup(logpath.c_str()));
 	return SDLWinMain(hInst, hPrev, szCmdLine, sw);
 }

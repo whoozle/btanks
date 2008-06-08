@@ -33,18 +33,18 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip
 	memset(&z, 0, sizeof(z));
 	try {
 		int ret;
-		z.avail_in = src.getSize();
-		z.next_in = (Bytef*) src.getPtr();
+		z.avail_in = src.get_size();
+		z.next_in = (Bytef*) src.get_ptr();
 
 		if ((ret = inflateInit2(&z, gzip_header?0x1f:0x0f)) != Z_OK)
 			throw_z("inflateInit", ret);
 		
-		dst.setSize(BUF);
+		dst.set_size(BUF);
 		do { 
 			if (z.avail_in == 0)
 				break;
-			z.avail_out = dst.getSize() - z.total_out;
-			z.next_out = (Bytef*)dst.getPtr() + z.total_out;
+			z.avail_out = dst.get_size() - z.total_out;
+			z.next_out = (Bytef*)dst.get_ptr() + z.total_out;
 		
 			ret = inflate(&z, Z_FINISH);
 			
@@ -54,7 +54,7 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip
 			if (ret == Z_BUF_ERROR || z.avail_out == 0) {
 				if (z.avail_out == 0) {
 					LOG_DEBUG(("ran out of out buf"));
-					dst.setSize(dst.getSize() + BUF);					
+					dst.set_size(dst.get_size() + BUF);					
 					continue;
 				} else if (z.avail_in == 0) {
 					throw_ex(("stream was truncated. unable to proceed."));
@@ -69,7 +69,7 @@ void ZStream::decompress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip
 		if ((ret = inflateEnd(&z)) != Z_OK) 
 			throw_z("inflateEnd", ret);
 		
-		dst.setSize(z.total_out);
+		dst.set_size(z.total_out);
 	} CATCH("decompress", {inflateEnd(&z); throw;});
 }
 
@@ -78,17 +78,17 @@ void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_h
 	memset(&z, 0, sizeof(z));
 	try {
 		int ret;
-		z.avail_in = src.getSize();
-		z.next_in = (Bytef*) src.getPtr();
+		z.avail_in = src.get_size();
+		z.next_in = (Bytef*) src.get_ptr();
 
 		if ((ret = deflateInit2(&z, level, Z_DEFLATED, gzip_header?0x1f:0x0f, 8, Z_DEFAULT_STRATEGY)) != Z_OK)
 			throw_z("DeflateInit", ret);
 		
-		dst.setSize(BUF);
+		dst.set_size(BUF);
 
 		do {
-			z.avail_out = dst.getSize() - z.total_out;
-			z.next_out = (Bytef*)dst.getPtr() + z.total_out;
+			z.avail_out = dst.get_size() - z.total_out;
+			z.next_out = (Bytef*)dst.get_ptr() + z.total_out;
 		
 			ret = deflate(&z, Z_FINISH);
 			
@@ -98,7 +98,7 @@ void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_h
 			if (ret == Z_BUF_ERROR || z.avail_out == 0) {
 				if (z.avail_out == 0) {
 					LOG_DEBUG(("ran out of out buf"));
-					dst.setSize(dst.getSize() + BUF);					
+					dst.set_size(dst.get_size() + BUF);					
 					continue;
 				} else if (z.avail_in == 0) {
 					throw_ex(("stream was truncated. unable to proceed."));
@@ -112,7 +112,7 @@ void ZStream::compress(mrt::Chunk &dst, const mrt::Chunk &src, const bool gzip_h
 		if ((ret = deflateEnd(&z)) != Z_OK) 
 			throw_z("deflateEnd", ret);
 		
-		dst.setSize(z.total_out);
+		dst.set_size(z.total_out);
 	} CATCH("compress", {deflateEnd(&z); throw;});
 
 }

@@ -9,14 +9,14 @@ void NetworkStatusControl::render(sdlx::Surface &surface, const int x, const int
 	Tooltip::render(surface, x, y);
 	int mx, my, w, h;
 	_background.getMargins(mx, my);
-	_background.getSize(w, h);
+	_background.get_size(w, h);
 
-	_close_area.w = _bclose->getWidth();
-	_close_area.h = _bclose->getHeight();
+	_close_area.w = _bclose->get_width();
+	_close_area.h = _bclose->get_height();
 	_close_area.x = w - mx - _close_area.w;
 	_close_area.y = h - my - _close_area.h;
 
-	surface.copyFrom(*_bclose, _close_area.x, _close_area.y);
+	surface.blit(*_bclose, _close_area.x, _close_area.y);
 }
 
 bool NetworkStatusControl::onMouse(const int button, const bool pressed, const int x, const int y) {

@@ -16,7 +16,7 @@ void Bindings::load(const std::string &profile, const int buttons, const int axe
 
 	for(int c = 0; c < 3; ++c) {
 		for(int i = 0; i < nums[c]; ++i) {
-			std::string name = mrt::formatString("player.controls.joystick.%s.%s.%d", profile.c_str(), names[c], i);
+			std::string name = mrt::format_string("player.controls.joystick.%s.%s.%d", profile.c_str(), names[c], i);
 			int hard_id;
 			if (Config->has(name)) {
 				Config->get(name, hard_id, i);
@@ -43,7 +43,7 @@ void Bindings::save() {
 		}
 		int hard_id = i->first.second;
 		int virt_id = i->second;
-		Config->set(mrt::formatString("player.controls.joystick.%s.%s.%d", _profile.c_str(), name.c_str(), virt_id), hard_id);
+		Config->set(mrt::format_string("player.controls.joystick.%s.%s.%d", _profile.c_str(), name.c_str(), virt_id), hard_id);
 	}
 }
 

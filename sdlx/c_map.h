@@ -40,8 +40,8 @@ public:
 	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src, const int x, const int y, const bool hidden_by_other) const;
 	void save(const std::string &fname) const;
 	
-	inline const bool isEmpty() const { return _empty; }
-	inline const bool isFull() const { return _full; }
+	inline const bool is_empty() const { return _empty; }
+	inline const bool is_full() const { return _full; }
 	inline const std::string dump() const { return _data.dump();}
 private: 
 	bool _empty, _full;

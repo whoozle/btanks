@@ -19,7 +19,7 @@ public:
 	Notepad(const int w, const std::string &font);
 	void add(const std::string &area, const std::string &label);
 	void render(sdlx::Surface &surface, const int x, const int y) const;
-	void getSize(int &w, int &h) const;
+	void get_size(int &w, int &h) const;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	bool onKey(const SDL_keysym sym);
 	void set(const int idx);

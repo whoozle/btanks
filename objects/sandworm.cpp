@@ -44,7 +44,7 @@ public:
 		GET_CONFIG_VALUE("objects.sandworm.initial-length", int, il, 3);
 		int i;
 		for(i = 0; i < il; ++i) {
-			if (_variants.has(mrt::formatString("%d", i))) {
+			if (_variants.has(mrt::format_string("%d", i))) {
 				//LOG_DEBUG(("this is tail #%d", i));
 				break;
 			}
@@ -53,14 +53,14 @@ public:
 			speed = speed * 1.5;
 		//LOG_DEBUG(("spawning tail #%d", i - 1));
 		if (i > 0)
-			spawn(mrt::formatString("sandworm(%d)", i - 1), "sandworm");
+			spawn(mrt::format_string("sandworm(%d)", i - 1), "sandworm");
 	}
 	
 	virtual void tick(const float dt) {
 		if (_fire.tick(dt) && _state.fire && _head_id == 0) {
 			GET_CONFIG_VALUE("objects.sandworm.minimum-snatch-distance", float, msd, 100.0f);
 			v2<float> cpos; 
-			getCenterPosition(cpos);
+			get_center_position(cpos);
 			
 			if (!_variants.has("hunting")) {
 				const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
@@ -86,7 +86,7 @@ public:
 				}
 				if (snatch) {
 					Object *head = spawn("sandworm-head", "sandworm-head");
-					_head_id = head->getID();
+					_head_id = head->get_id();
 					_last_snatch = cpos;
 				}
 			}
@@ -151,7 +151,7 @@ public:
 		const Matrix<int> &hint = Map->getAreaMatrix("sandworm"); 
 		const v2<int> tile_size = Map->getPathTileSize();
 
-		int w = hint.getWidth(), h = hint.getHeight();
+		int w = hint.get_width(), h = hint.get_height();
 		std::set<std::pair<int, int> > coords;
 		for(int y = 0; y < h; ++y) 
 			for(int x = 0; x < w; ++x) {

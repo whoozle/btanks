@@ -11,7 +11,7 @@ LayerListDialog::LayerListDialog(const int w, const int h) : ScrollList("menu/ba
 
 	_new_layer = new Prompt(320, 100, new TextControl("small"));
 	int sw, sh;
-	_new_layer->getSize(sw, sh);
+	_new_layer->get_size(sw, sh);
 	add(w / 3 - sw, (h - sh) / 2, _new_layer);
 	_new_layer->hide();
 }

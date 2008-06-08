@@ -80,7 +80,7 @@ void Machinegunner::calculate(const float dt) {
 	_direction = pos;
 	_state.fire = true;
 	_direction.quantize16();
-	setDirection(_direction.getDirection16() - 1);
+	setDirection(_direction.get_direction16() - 1);
 	//LOG_DEBUG(("found! %g %g dir= %d", _direction.x, _direction.y, dir));
 }
 

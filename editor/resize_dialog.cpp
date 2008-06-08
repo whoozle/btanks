@@ -10,10 +10,10 @@ ResizeDialog::ResizeDialog() : done(false) {
 	c_d = new NumberControl("small", -99, 99);
 
 	int cw, ch, w, h;
-	c_l->getSize(cw, ch);
+	c_l->get_size(cw, ch);
 
 	Box * box = new Box("menu/background_box.png", cw * 4, ch * 4);
-	box->getSize(w, h);
+	box->get_size(w, h);
 	int x = (w - 3 * cw) / 2, y = (h - 3 * ch) / 2;
 
 	add(0, 0, box);
@@ -25,7 +25,7 @@ ResizeDialog::ResizeDialog() : done(false) {
 }
 
 void ResizeDialog::show() {
-	const v2<int> map_size = Map->getSize() / Map->getTileSize();
+	const v2<int> map_size = Map->get_size() / Map->getTileSize();
 	c_l->setMinMax(-map_size.x, 99);
 	c_r->setMinMax(-map_size.x, 99);
 	c_u->setMinMax(-map_size.y, 99);

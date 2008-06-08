@@ -69,17 +69,17 @@ void Bullet::tick(const float dt) {
 		//LOG_DEBUG(("baaaaaaah!"));
 		if (_clone.tick(dt)) {
 			_clone.set(3600);
-			//LOG_DEBUG(("%d clones...", getID()));
+			//LOG_DEBUG(("%d clones...", get_id()));
 			
 			GET_CONFIG_VALUE("objects.dispersion-bullet.ttl-multiplier", float, ttl_m, 0.8);
-			const int dirs = getDirectionsNumber();
-			int d = (getDirection() + 1) % dirs;
+			const int dirs = get_directions_number();
+			int d = (get_direction() + 1) % dirs;
 			v2<float> vel;
 			vel.fromDirection(d, dirs);
 			Object * b = spawn(registered_name + "(no-sound)", animation, v2<float>(), vel);
 			b->ttl = ttl * ttl_m;
 			
-			d = (dirs + getDirection() - 1) % dirs;
+			d = (dirs + get_direction() - 1) % dirs;
 			vel.fromDirection(d, dirs);
 			b = spawn(registered_name + "(no-sound)", animation, v2<float>(), vel);
 			b->ttl = ttl * ttl_m;
@@ -155,9 +155,9 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 		return;
 
 	v2<float> dpos;
-	int dirs = getDirectionsNumber();
+	int dirs = get_directions_number();
 	if (dirs == 4 || dirs == 8 || dirs == 16) {
-		dpos.fromDirection(getDirection(), dirs);
+		dpos.fromDirection(get_direction(), dirs);
 		dpos *= size.length() / 2;
 	}
 	if (event == "collision" || event == "death") {
@@ -187,14 +187,14 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			_guard_state = false;
 			_guard_interval.reset();
 
-			const int dirs = getDirectionsNumber();
+			const int dirs = get_directions_number();
 			if (dirs != 16) 
 				throw_ex(("%d-directional ricochet not supported yet.", dirs));
 			//LOG_DEBUG(("ricocheting..."));
 			
 			//disown(); //BWAHAHHAHA!!!! 
 			
-			int dir = getDirection();
+			int dir = get_direction();
 
 			int sign = (mrt::random(103) % 3) - 1;
 			int d = sign * (mrt::random(dirs/4 - 1) + 1) ;

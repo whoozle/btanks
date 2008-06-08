@@ -75,8 +75,8 @@ public:
 	virtual ~Layer();
 
 
-	const int getWidth() const {return _w; } 
-	const int getHeight() const {return _h; } 
+	const int get_width() const {return _w; } 
+	const int get_height() const {return _h; } 
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

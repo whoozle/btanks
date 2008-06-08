@@ -33,7 +33,7 @@ Credits::Credits() : _w(0), _h(0) {
 	_font = ResourceManager->loadFont("big", false);
 	_medium_font = ResourceManager->loadFont("medium", false);
 	
-	int fh = _font->getHeight(), mfh = _medium_font->getHeight();
+	int fh = _font->get_height(), mfh = _medium_font->get_height();
 	
 	std::vector<std::string> lines, lines2; 
 
@@ -91,8 +91,8 @@ Credits::Credits() : _w(0), _h(0) {
 		if (w > _w)
 			_w = w;
 	}
-	_surface.createRGB(_w, _h, 24);
-	_surface.convertAlpha();
+	_surface.create_rgb(_w, _h, 24);
+	_surface.display_format_alpha();
 	
 	LOG_DEBUG(("credits %dx%d", _w, _h));
 	
@@ -114,20 +114,20 @@ Credits::Credits() : _w(0), _h(0) {
 
 void Credits::render(const float dt, sdlx::Surface &surface) {
 	_position += _velocity * dt * 150;
-	int xmargin = math::max((int)_w - surface.getWidth(), 96);
-	int ymargin = math::max((int)_h - surface.getHeight(), 96);
+	int xmargin = math::max((int)_w - surface.get_width(), 96);
+	int ymargin = math::max((int)_h - surface.get_height(), 96);
 	
 	if (_position.x < -xmargin)
 		_velocity.x = math::abs(_velocity.x);
-	if (_position.x + _w > surface.getWidth() + xmargin)
+	if (_position.x + _w > surface.get_width() + xmargin)
 		_velocity.x = - math::abs(_velocity.x);
 
 	if (_position.y < -ymargin)
 		_velocity.y = math::abs(_velocity.y);
-	if (_position.y + _h > surface.getHeight() + ymargin)
+	if (_position.y + _h > surface.get_height() + ymargin)
 		_velocity.y = -math::abs(_velocity.y);
 	
-	surface.copyFrom(_surface, (int)_position.x, (int)_position.y);
+	surface.blit(_surface, (int)_position.x, (int)_position.y);
 }
 
 Credits::~Credits() {

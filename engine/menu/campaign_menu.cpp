@@ -58,14 +58,14 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 
 	Box *b = new Box("menu/background_box.png", w - 32, h - 32);
 	int bw, bh;
-	b->getSize(bw, bh);
+	b->get_size(bw, bh);
 	add((w - bw) / 2, (h - bh) / 2, b);
 	int mx, my;
 	b->getMargins(mx, my);
 
 	int cw, ch;
 	_active_campaign = new Chooser("medium", titles);
-	_active_campaign->getSize(cw, ch);
+	_active_campaign->get_size(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
 	int panel_w = 256, panel_h = 96;
@@ -78,23 +78,23 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_maps->setAlign(ScrollList::AlignCenter);
 	_maps->setHLColor(255, 0, 0, 0x66);
 	int sw, sh;
-	_maps->getSize(sw, sh);
+	_maps->get_size(sw, sh);
 	add(w - sw - 2 * mx - mx / 2, map_base + my, _maps);
 
 	int xbase, ybase;
 	add(xbase = (w - sw - 2 * mx - mx / 2), ybase = (h - panel_h - 3 * my - my / 2), b = new Box("menu/background_box_dark.png", panel_w, panel_h));
-	b->getSize(bw, bh);
+	b->get_size(bw, bh);
 	b->getMargins(mx, my);
 	
 	Label *label = new Label("medium", I18n->get("menu", "score"));
 	add(xbase + mx, ybase + my, label);
-	label->getSize(cw, ch);
+	label->get_size(cw, ch);
 
 	_score = new Label("medium", "0");
 	add(xbase + mx + cw, ybase + my, _score);
 
 	_b_shop = new Button("medium", I18n->get("menu", "shop"));
-	_b_shop->getSize(bw, bh);
+	_b_shop->get_size(bw, bh);
 
 	add(2 * mx, h - bh - 2 * my, _b_shop);
 	
@@ -109,7 +109,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
 	
 	_c_difficulty = new Chooser("medium", levels);
-	_c_difficulty->getSize(bw, bh);
+	_c_difficulty->get_size(bw, bh);
 	
 	add(xbase + mx, ybase + my + bh * 3 / 2, _c_difficulty);
 	
@@ -154,7 +154,7 @@ void CampaignMenu::init() {
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(_maps->size() - 1);
-			_map_view->setPosition(map.position.convert<float>());
+			_map_view->set_position(map.position.convert<float>());
 		}
 	}
 	if (map_id.empty())
@@ -173,7 +173,7 @@ void CampaignMenu::tick(const float dt) {
 		throw_ex(("no compaigns defined"));
 	
 	const Campaign &campaign = _campaigns[ci];
-	_score->set(mrt::formatString("%d", campaign.getCash()));
+	_score->set(mrt::format_string("%d", campaign.getCash()));
 
 	if (_active_campaign->changed()) {
 		_active_campaign->reset();

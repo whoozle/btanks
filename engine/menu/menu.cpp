@@ -98,7 +98,7 @@ void MainMenu::recalculateSizes() {
 	_menu_size.x = _menu_size.y = 0;
 	for(ItemList::const_iterator i = _items[_active_menu].begin(); i != _items[_active_menu].end(); ++i) {
 		int w, h;
-		(*i)->getSize(w, h);
+		(*i)->get_size(w, h);
 		if (w > _menu_size.x) 
 			_menu_size.x = w;
 		_menu_size.y += h + ITEM_SPACING;
@@ -279,11 +279,11 @@ void MainMenu::render(sdlx::Surface &dst) const {
 		if (PlayerManager->isServerActive())
 			_netstat->render(dst, 0, 0);
 	} else {
-		int base_x = (dst.getWidth() - _background.w) / 2, base_y = (dst.getHeight() - _background.h) / 2;
+		int base_x = (dst.get_width() - _background.w) / 2, base_y = (dst.get_height() - _background.h) / 2;
 		_background.render(dst, base_x, base_y);
 	
-		int x = (dst.getWidth() - _menu_size.x) /2;
-		int y = (dst.getHeight() - _menu_size.y) / 2;
+		int x = (dst.get_width() - _menu_size.x) /2;
+		int y = (dst.get_height() - _menu_size.y) / 2;
 
 		_background_area.x = x;
 		_background_area.y = y;
@@ -294,7 +294,7 @@ void MainMenu::render(sdlx::Surface &dst) const {
 			size_t n = items.size();
 			for(size_t i = 0; i < n ;++i) {
 				int w,h;
-				items[i]->getSize(w, h);
+				items[i]->get_size(w, h);
 
 				if (_active_item == i) {
 					_background.renderHL(dst, base_x, y + h / 2);
@@ -397,7 +397,7 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 		const ItemList & items = _items[_active_menu];
 		for(size_t i = 0; i < items.size() ;++i) {
 			int w, h;
-			items[i]->getSize(w, h);
+			items[i]->get_size(w, h);
 			item_area.h = h;
 			
 			if (item_area.in(x, y)) {

@@ -24,7 +24,7 @@
 #include <string>
 
 namespace mrt {
-	const std::string MRTAPI getLanguageCode();
+	const std::string MRTAPI get_lang_code();
 }
 
 #endif

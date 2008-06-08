@@ -23,7 +23,7 @@ using namespace sdlx;
 
 NetException::NetException() {}
 
-const std::string NetException::getCustomMessage() {
+const std::string NetException::get_custom_message() {
 	return SDLNet_GetError();
 }
 

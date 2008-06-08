@@ -41,8 +41,8 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 		trottle = 0;
 	}
 
-	//LOG_DEBUG(("[%d: %s]old school calculate", object->getID(), object->animation.c_str()));
-	int dirs = object->getDirectionsNumber();
+	//LOG_DEBUG(("[%d: %s]old school calculate", object->get_id(), object->animation.c_str()));
+	int dirs = object->get_directions_number();
 	int dirs0 = dirs;
 
 	int action = mrt::random(3);
@@ -56,7 +56,7 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 	} else if (action == 1) {
 		int dir = mrt::random(dirs);
 		v2<int> pos;
-		object->getCenterPosition(pos);
+		object->get_center_position(pos);
 		v2<int> tile_size = Map->getPathTileSize();
 	
 		const Matrix<int> &matrix = Map->getImpassabilityMatrix(object->getZ());

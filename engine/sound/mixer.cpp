@@ -131,7 +131,7 @@ void IMixer::loadPlaylist(const std::string &file) {
 	TRY {
 		scoped_ptr<mrt::BaseFile> f(Finder->get_file(file, "rt"));
 		std::string line;
-		while(f->readLine(line)) {
+		while(f->readline(line)) {
 			mrt::trim(line);
 			_playlist[line] = false;
 		}
@@ -256,7 +256,7 @@ TRY {
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 
 	if (o) {
-		const int id = o->getID();
+		const int id = o->get_id();
 		
 		clunk::Object *clunk_object = _objects[id];
 		if (clunk_object == NULL) {
@@ -273,7 +273,7 @@ TRY {
 
 		
 		v2<float> pos, vel;
-		o->getPosition(pos);
+		o->get_position(pos);
 		o->get_velocity(vel);
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 		clunk_object->update(clunk_pos, clunk_vel);
@@ -329,13 +329,13 @@ void IMixer::updateObject(const Object *o) {
 	if (_nosound)
 		return;
 
-	const int id = o->getID();
+	const int id = o->get_id();
 	Objects::iterator i = _objects.find(id);
 	if (i == _objects.end())
 		return;
 	
 	v2<float> pos, vel;
-	o->getPosition(pos);
+	o->get_position(pos);
 	o->get_velocity(vel);
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
@@ -348,7 +348,7 @@ TRY {
 	if (_nosound)
 		return;
 
-	Objects::iterator i = _objects.find(o->getID());
+	Objects::iterator i = _objects.find(o->get_id());
 	if (i == _objects.end())
 		return;
 
@@ -394,9 +394,9 @@ void IMixer::cancelSample(const Object *o, const std::string &name) {
 		return;
 	
 	if (_debug)
-		LOG_DEBUG(("object %d cancels %s", o->getID(), name.c_str()));
+		LOG_DEBUG(("object %d cancels %s", o->get_id(), name.c_str()));
 
-	const int id = o->getID();
+	const int id = o->get_id();
 	Objects::iterator i = _objects.find(id);
 	if (i == _objects.end())
 		return;
@@ -409,9 +409,9 @@ void IMixer::fadeoutSample(const Object *o, const std::string &name) {
 		return;
 	
 	if (_debug)
-		LOG_DEBUG(("object %d fadeouts %s", o->getID(), name.c_str()));
+		LOG_DEBUG(("object %d fadeouts %s", o->get_id(), name.c_str()));
 
-	const int id = o->getID();
+	const int id = o->get_id();
 	Objects::iterator i = _objects.find(id);
 	if (i == _objects.end())
 		return;
@@ -424,7 +424,7 @@ void IMixer::cancelAll(const Object *o) {
 	if (_nosound)
 		return;
 	
-	const int id = o->getID();
+	const int id = o->get_id();
 
 	Objects::iterator i = _objects.find(id);
 	if (i == _objects.end())

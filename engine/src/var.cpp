@@ -72,13 +72,13 @@ void Var::check(const std::string &t) const {
 const std::string Var::toString() const {
 		assert(!type.empty());
 		if (type == "int")
-			return mrt::formatString("%d", i);
+			return mrt::format_string("%d", i);
 		else if (type == "bool") 
 			return b?"true":"false";
 		else if (type == "float") 
-			return mrt::formatString("%g", f);
+			return mrt::format_string("%g", f);
 		else if (type == "string") 
-			return mrt::formatString("%s", s.c_str());
+			return mrt::format_string("%s", s.c_str());
 		throw_ex(("cannot convert %s to string", type.c_str()));
 		return "";//stub
 	}

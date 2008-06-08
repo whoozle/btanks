@@ -64,7 +64,7 @@ void IWorld::initMap() {
 		_hp_bar = ResourceManager->loadSurface("hud/hp.png");
 
 	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 128);
-	_grid.setSize(Map->getSize(), gfs, Map->torus());
+	_grid.set_size(Map->get_size(), gfs, Map->torus());
 }
 
 void IWorld::clear() {
@@ -217,7 +217,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	if (fog) {
 		GET_CONFIG_VALUE("engine.fog-of-war.width", int, fog_w, 800);
 		GET_CONFIG_VALUE("engine.fog-of-war.height", int, fog_h, 600);
-		player->getCenterPosition(player_pos);
+		player->get_center_position(player_pos);
 		
 		fog_rect.x = player_pos.x - dst.w / 2;
 		fog_rect.y = player_pos.y - dst.h / 2;
@@ -247,7 +247,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		special_ids.insert(specials[i].z);
 	}
 	
-	surface.setClipRect(dst);
+	surface.set_clip_rect(dst);
 	typedef std::priority_queue<Object *, std::deque<Object *>, ObjectZCompare> LayerMap;
 	LayerMap layers;
 	const IMap &map = *Map.get_const();
@@ -275,7 +275,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 				continue;
 			
 			v2<float> position;
-			o->getPosition(position);
+			o->get_position(position);
 			sdlx::Rect r((int)position.x, (int)position.y, (int)o->size.x, (int)o->size.y);
 			bool fogged = fog;// && o->speed != 0;
 			//LOG_DEBUG(("%d,%d:%d,%d vs %d,%d:%d,%d result: %s", 
@@ -286,7 +286,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	}
 
 	//LOG_DEBUG(("rendering %u objects", (unsigned)layers.size()));
-	v2<int> map_size = Map->getSize(), map_tile_size = map_size / Map->getTileSize();
+	v2<int> map_size = Map->get_size(), map_tile_size = map_size / Map->getTileSize();
 	int z1 = _z1;
 	while(!layers.empty()) {
 		Object *o = layers.top();
@@ -310,7 +310,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		z1 = z2;
 		//LOG_DEBUG(("rendering %s with %d,%d", o.animation.c_str(), (int)o._position.x - src.x + dst.x, (int)o._position.y - src.y + dst.y));
 		v2<float> position;
-		o->getPosition(position);
+		o->get_position(position);
 		v2<int> screen_pos((int)position.x - src.x, (int)position.y - src.y);
 		if (Map->torus()) {
 			screen_pos %= map_size;
@@ -333,16 +333,16 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v2<int> &wp = *wi;
-				surface.copyFrom(*wp_surface, 
+				surface.blit(*wp_surface, 
 					wp.x - src.x + dst.x - 8, wp.y - src.y + dst.y - 8);
 			}
 		}
-		if (o->hp >= 20 && o->_parent == NULL && (special_ids.find(o->getID()) != special_ids.end() || (rhb && (o->impassability == 1.0f && !o->piercing)))) {
-			int h = _hp_bar->getHeight() / 16;
+		if (o->hp >= 20 && o->_parent == NULL && (special_ids.find(o->get_id()) != special_ids.end() || (rhb && (o->impassability == 1.0f && !o->piercing)))) {
+			int h = _hp_bar->get_height() / 16;
 			int y = (o->hp >= 0)?15 * (o->max_hp - o->hp) / o->max_hp: 0;
-			sdlx::Rect hp_src(0, y * h, _hp_bar->getWidth(), h);
-			surface.copyFrom(*_hp_bar, hp_src, 
-					(int)o->_position.x - src.x + dst.x + (int)(o->size.x) - _hp_bar->getWidth() - 4, 
+			sdlx::Rect hp_src(0, y * h, _hp_bar->get_width(), h);
+			surface.blit(*_hp_bar, hp_src, 
+					(int)o->_position.x - src.x + dst.x + (int)(o->size.x) - _hp_bar->get_width() - 4, 
 					(int)o->_position.y - src.y + dst.y + 4);
 		}
 	}
@@ -351,7 +351,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		GameMonitor->renderWaypoints(surface, src, dst);
 	if (fog) {
 		static const sdlx::Surface * fog_surface = ResourceManager->loadSurface("fog_of_war.png");
-		int tw = fog_surface->getWidth() / 3, th = fog_surface->getHeight() / 3;
+		int tw = fog_surface->get_width() / 3, th = fog_surface->get_height() / 3;
 		
 		int fog_tw = (fog_rect.w - 1) / tw + 1, fog_th = (fog_rect.h - 1) / th + 1;
 		//LOG_DEBUG(("fog_rect: %d %d %d %d @%d,%d", fog_rect.x, fog_rect.y, fog_rect.w, fog_rect.h, fog_tw, fog_th));
@@ -394,11 +394,11 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 				if (ry == cy && rx <= cx) {
 					fog_src.y = (y < py)?0:2 * th;
 				}
-				surface.copyFrom(*fog_surface, fog_src, dst.x + x * tw + dx - tw / 2, dst.y + y * th + dy - th / 2);
+				surface.blit(*fog_surface, fog_src, dst.x + x * tw + dx - tw / 2, dst.y + y * th + dy - th / 2);
 			}
 		}
 	}	
-	surface.resetClipRect();
+	surface.reset_clip_rect();
 }
 
 const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2, const bool probe) const {
@@ -476,7 +476,7 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 		
 		return collides;
 	} CATCH(
-		mrt::formatString("World::collides(%p, (%d:%d), %p, %s)", (void *)obj1, position.x, position.y, (void *)obj2, probe?"true":"false").c_str(), 
+		mrt::format_string("World::collides(%p, (%d:%d), %p, %s)", (void *)obj1, position.x, position.y, (void *)obj2, probe?"true":"false").c_str(), 
 		throw; )
 	return 0;
 }
@@ -531,7 +531,7 @@ TRY {
 		*collided_with = result;
 	
 	return obj->getEffectiveImpassability(im);
-} CATCH(mrt::formatString("World::getImpassability(%p, (%d, %d), %p, %s, %s)", 
+} CATCH(mrt::format_string("World::getImpassability(%p, (%d, %d), %p, %s, %s)", 
 	(void *)obj, position.x, position.y, (void *)collided_with, probe?"true":"false", skip_moving?"true":"false").c_str(), 
 	throw;);	
 	return 0;
@@ -595,11 +595,11 @@ void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
 	if (o.isDead()) 
 		return;
 
-	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.getID(), o.animation.c_str()));
+	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.get_id(), o.animation.c_str()));
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 
 	const IMap &map = *IMap::get_instance();
-	v2<int> map_size = map.getSize();
+	v2<int> map_size = map.get_size();
 
 TRY {
 
@@ -671,8 +671,8 @@ TRY {
 				}
 			} CATCH("calling o.calculate", throw;)
 		}
-		if (o._velocity.is0() && o.getDirectionsNumber() > 1) 
-			o._velocity.fromDirection(o._direction_idx, o.getDirectionsNumber());
+		if (o._velocity.is0() && o.get_directions_number() > 1) 
+			o._velocity.fromDirection(o._direction_idx, o.get_directions_number());
 				
 	} else if (do_calculate) {
 		//regular calculate
@@ -700,7 +700,7 @@ TRY {
 			}
 			if (old_state != o.getPlayerState() && dynamic_cast<ai::Synchronizable *>(&o) != NULL) {
 				//LOG_DEBUG(("buratino %s changed state", o.animation.c_str()));
-				PlayerManager->sendObjectState(o.getID(), o.getPlayerState());
+				PlayerManager->sendObjectState(o.get_id(), o.getPlayerState());
 			}
 		} CATCH("calling o.calculate", throw;)
 	}
@@ -846,8 +846,8 @@ TRY {
 
 TRY {	
 	
-	int save_dir = o.getDirection();
-	int dirs = o.getDirectionsNumber();
+	int save_dir = o.get_direction();
+	int dirs = o.get_directions_number();
 	bool hidden_attempt[5] = { false, false, false, false, false };
 	
 	v2<float> new_velocity;
@@ -941,7 +941,7 @@ TRY {
 	dpos = e_speed * obj_speed * (1.0f - result_im) * o._velocity * dt;
 
 } CATCH(
-	mrt::formatString("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
+	mrt::format_string("tick.impassability check (attempt: %d, stuck_in: %p)", attempt, (void *)stuck_in).c_str(), 
 	throw;);
 
 	o.update_outline(hidden);
@@ -949,11 +949,11 @@ TRY {
 TRY {
 	if (o.piercing) {
 		//if (obj_im_now > 0 && obj_im_now < 1.0)
-		int dirs = o.getDirectionsNumber();
+		int dirs = o.get_directions_number();
 		if (map_im >= 1.0f) {
 			v2<float> dpos;
 			if (dirs == 4 || dirs == 8 || dirs == 16) {
-				dpos.fromDirection(o.getDirection(), o.getDirectionsNumber());
+				dpos.fromDirection(o.get_direction(), o.get_directions_number());
 				dpos *= o.size.length() / 2;
 			}
 
@@ -978,23 +978,23 @@ TRY {
 			//static const int directions[8] = {4, 3, 5, 0,  2, 6, 1, 7};
 			static const int directions[8] = {0, 1, 7, 2, 6, 4, 5, 3};
 			
-			int dir = o.getDirection();
-			int dirs = o.getDirectionsNumber();
+			int dir = o.get_direction();
+			int dirs = o.get_directions_number();
 			if (dirs == 1) //this is temp hack to do not allow trains and other stupid objects to be corrected (and moved by player)
 				goto skip_collision; 
 			
 			v2<int> pos;
 			v2<float> dp;
 			
-			v2<int> size = Map->getSize();
+			v2<int> size = Map->get_size();
 			sdlx::Rect map_rect(0, 0, size.x, size.y);
 			
 			for(a = 0; a < steps; ++a) {
 				for(int d = 0; d < 8; ++d) {
 					dp.fromDirection((dir + directions[d] + 8) % 8, 8);
 					dp *= (a + 1) * step_size;
-					pos = (o.getPosition() + dp).convert<int>();
-					v2<int> c_pos = (o.getCenterPosition() + dp).convert<int>();
+					pos = (o.get_position() + dp).convert<int>();
+					v2<int> c_pos = (o.get_center_position() + dp).convert<int>();
 					if (!Map->torus() && !map_rect.in(c_pos.x, c_pos.y))
 						continue;
 					Map->validate(c_pos);
@@ -1123,7 +1123,7 @@ void IWorld::_tick(ObjectMap &objects, const float dt, const bool do_calculate) 
 		assert(o != NULL);
 		TRY {
 			_tick(*o, dt, do_calculate);
-		} CATCH(mrt::formatString("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->getID(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
+		} CATCH(mrt::format_string("tick for object[%p] id:%d %s:%s:%s", (void *)o, o->get_id(), o->registered_name.c_str(), o->classname.c_str(), o->animation.c_str()).c_str(), throw;);
 	}
 }
 
@@ -1182,7 +1182,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		assert(o != NULL);
 
 		if (!_safe_mode && o->_dead) { //not dead/dead and server mode
-			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->getID(), o->classname.c_str(), &objects == &_objects?"true":"false"));
+			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->get_id(), o->classname.c_str(), &objects == &_objects?"true":"false"));
 			int id = i->first;
 			deleteObject(o);
 			o = NULL;
@@ -1232,7 +1232,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	
 	//LOG_DEBUG(("spawning %s, position = %g %g dPosition = %g:%g, velocity: %g %g", 
 	//	classname.c_str(), src->_position.x, src->_position.y, dpos.x, dpos.y, vel.x, vel.y));
-	v2<float> pos = src->getPosition() + (src->size / 2)+ dpos - (obj->size / 2);
+	v2<float> pos = src->get_position() + (src->size / 2)+ dpos - (obj->size / 2);
 
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
@@ -1422,7 +1422,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 
 			//LOG_DEBUG(("deserialized %d: %s", ao->_id, ao->classname.c_str()));
 		}
-	} CATCH(mrt::formatString("deserializeObject('%d:%s')", id, rn.c_str()).c_str(), { 
+	} CATCH(mrt::format_string("deserializeObject('%d:%s')", id, rn.c_str()).c_str(), { 
 			delete ao; throw; 
 		})
 	assert(result != NULL);
@@ -1442,10 +1442,10 @@ void IWorld::cropObjects(const std::set<int> &ids) {
 		} else {
 			if (o->_dead && (_out_of_sync == -1 || o->_id < _out_of_sync) ) {
 				if (o->animation.empty()) {
-					LOG_WARN(("BUG: object %d is out of sync, double check out-of-sync code.", o->getID()));
-					sync(o->getID());
+					LOG_WARN(("BUG: object %d is out of sync, double check out-of-sync code.", o->get_id()));
+					sync(o->get_id());
 				} else {
-					LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->getID(), o->animation.c_str()));
+					LOG_DEBUG(("resurrecting object %d(%s) from the dead", o->get_id(), o->animation.c_str()));
 					o->_dead = false;
 				}
 			}
@@ -1654,7 +1654,7 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 	float distance = std::numeric_limits<float>::infinity();
 	float range2 = range * range;
 
-	v2<float> position = obj->getCenterPosition();
+	v2<float> position = obj->get_center_position();
 	std::set<Object *> objects;
 	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
@@ -1666,10 +1666,10 @@ const Object* IWorld::getNearestObject(const Object *obj, const std::set<std::st
 			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
 			continue;
 
-		if (check_shooting_range && !Object::checkDistance(position, o->getCenterPosition(), o->getZ(), true))	
+		if (check_shooting_range && !Object::checkDistance(position, o->get_center_position(), o->getZ(), true))	
 			continue;
 
-		v2<float> dpos = Map->distance(o->getCenterPosition(), position);
+		v2<float> dpos = Map->distance(o->get_center_position(), position);
 		
 		float d = dpos.quick_length();
 		if (d < range2 && d < distance) {
@@ -1686,9 +1686,9 @@ const bool IWorld::getNearest(const Object *obj, const std::set<std::string> &cl
 	if (target == NULL) 
 		return false;
 
-	v2<float> pos = obj->getCenterPosition();
+	v2<float> pos = obj->get_center_position();
 
-	position = Map->distance(pos, target->getCenterPosition());
+	position = Map->distance(pos, target->get_center_position());
 	velocity = target->_velocity;
 	velocity.normalize();
 	velocity *= target->speed;
@@ -1717,14 +1717,14 @@ void IWorld::enumerateObjects(std::set<const Object *> &id_set, const Object *sr
 	float r2 = range * range;
 	
 	std::set<Object *> objects;
-	v2<float> position = src->getPosition(), center_position = src->getCenterPosition();
+	v2<float> position = src->get_position(), center_position = src->get_center_position();
 	_grid.collide(objects, (position - range).convert<int>(), v2<int>((int)(range * 2), (int)(range * 2)));
 	//consult grid
 
 	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		
-		v2<float> dpos = Map->distance(center_position, o->getCenterPosition());
+		v2<float> dpos = Map->distance(center_position, o->get_center_position());
 		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()) || dpos.quick_length() > r2)
 			continue;
 
@@ -1756,7 +1756,7 @@ void IWorld::move(const Object *object, const int x, const int y) {
 
 void IWorld::onMapResize(int left, int right, int up, int down) {
 	LOG_DEBUG(("reacting to the map resize event"));
-	v2<int> map_size = Map->getSize();
+	v2<int> map_size = Map->get_size();
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
@@ -1790,7 +1790,7 @@ void IWorld::teleport(Object *object, const v2<float> &position) {
 void IWorld::push(Object *parent, Object *object, const v2<float> &dpos) {
 	LOG_DEBUG(("push (%s, %s, (%+g, %+g))", parent->animation.c_str(), object->animation.c_str(), dpos.x, dpos.y));
 	Command cmd(Command::Push);
-	cmd.id = object->getID();
+	cmd.id = object->get_id();
 
 	object->_position = parent->_position + dpos;
 	object->_parent = NULL;
@@ -1818,7 +1818,7 @@ void IWorld::push(const int id, Object *object, const v2<float> &pos) {
 Object * IWorld::pop(Object *object) {
 	LOG_DEBUG(("pop %d:%s:%s", object->_id, object->animation.c_str(), object->_dead?"true":"false"));
 	Command cmd(Command::Pop);
-	cmd.id = object->getID();
+	cmd.id = object->get_id();
 
 	Object *r = NULL;
 	for(Commands::reverse_iterator i = _commands.rbegin(); i != _commands.rend(); ++i) {
