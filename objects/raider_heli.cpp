@@ -25,7 +25,7 @@
 class RaiderHeli : public Heli {
 public:
 	virtual Object * clone() const { return new RaiderHeli(*this); }
-	RaiderHeli() : Heli("helicopter"), _player(-1), _leaving(false), _toggle(true) {}
+	RaiderHeli() : Heli("helicopter"), _player(-1), _leaving(false), _toggle(true), _moving_time(0) {}
 	
 	virtual void on_spawn();
 	void calculate(const float dt);
@@ -34,17 +34,20 @@ public:
 		s.add(_player);
 		s.add(_leaving);
 		s.add(_toggle);
+		s.add(_moving_time);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Heli::deserialize(s);
 		s.get(_player);
 		s.get(_leaving);
 		s.get(_toggle);
+		s.get(_moving_time);
 	}
 
 private: 
 	int _player;
 	Alarm _leaving, _toggle;
+	float _moving_time;
 };
 
 
@@ -128,6 +131,11 @@ void RaiderHeli::calculate(const float dt) {
 done: 
 	//common part
 	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0f);
+	if (!_velocity.is0()) {
+		_moving_time += dt;
+	} else {
+		_moving_time = 0;
+	}
 
 	const float ac_t = mass / ac_div * 0.8;
 	_state.alt_fire = _moving_time >= ac_t;

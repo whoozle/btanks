@@ -758,7 +758,6 @@ TRY {
 
 	if (o.speed == 0) {
 		TRY {
-			o._idle_time += dt * e_speed;
 			v2<int> pos = o._position.convert<int>();
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
 				if (has_outline) {
@@ -776,8 +775,6 @@ TRY {
 	float len = o._velocity.normalize();
 		
 	if (len == 0) {
-		o._moving_time = 0;
-		o._idle_time += dt * e_speed;
 		if (o.impassability < 0 || o.impassability >= 1.0f) {
 			getImpassability(&o, o._position.convert<int>());
 		}
@@ -1027,8 +1024,6 @@ TRY {
 	result_im = math::max(map_im, obj_im);
 	dpos = e_speed * obj_speed * o._velocity * dt * (1.0f - result_im);
 	if (!dpos.is0()) {
-		o._idle_time = 0;
-		o._moving_time += dt * e_speed;
 		o._direction = o._velocity;
 	}
 
@@ -1264,8 +1259,6 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 	s.add(o->get_z());
 	s.add(o->_direction);
 	s.add(o->_direction_idx);
-	s.add(o->_moving_time);
-	s.add(o->_idle_time);
 }
 
 void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
@@ -1279,9 +1272,6 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 		s.get(x); //direction
 		s.get(z);
 
-		s.get(x.x); //moving time 
-		s.get(x.y); //idle time
-		
 		LOG_WARN(("skipped deserializeObjectPV for NULL object"));
 		return;
 	}
@@ -1296,8 +1286,6 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 
 	s.get(o->_direction);
 	s.get(o->_direction_idx);
-	s.get(o->_moving_time);
-	s.get(o->_idle_time);
 }
 
 

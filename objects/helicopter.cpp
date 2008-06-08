@@ -31,7 +31,7 @@ public:
 	Helicopter(const std::string &para) :
 		 Object("helicopter"), 
 		 _next_target(), _next_target_rel(),
-		 _active(false), _spawn(true), _paratrooper(para) {}
+		 _active(false), _spawn(true), _paratrooper(para), _idle_time(0) {}
 	virtual void calculate(const float dt);
 	virtual void tick(const float dt);
 	virtual Object * clone() const;
@@ -45,6 +45,7 @@ public:
 		s.add(_active);
 		s.add(_spawn);
 		s.add(_paratrooper);
+		s.add(_idle_time);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
@@ -53,6 +54,7 @@ public:
 		s.get(_active);
 		s.get(_spawn);
 		s.get(_paratrooper);
+		s.get(_idle_time);
 	}
 
 private: 
@@ -60,6 +62,7 @@ private:
 	bool _active;
 	Alarm _spawn;
 	std::string _paratrooper;
+	float _idle_time;
 };
 
 void Helicopter::on_spawn() {
@@ -141,6 +144,11 @@ void Helicopter::calculate(const float dt) {
 		} 
 	} else _velocity.clear();
 	//LOG_DEBUG(("vel: %g %g", _velocity.x, _velocity.y));
+	if (_velocity.is0()) {
+		_idle_time += dt;
+	} else {
+		_idle_time = 0;
+	}
 	
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2);
 	limit_rotation(dt, rt, true, false);

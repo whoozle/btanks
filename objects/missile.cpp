@@ -44,16 +44,19 @@ public:
 		s.add(type);
 		s.add(_reaction);
 		s.add(_target);
+		s.add(_moving_time);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(type);
 		s.get(_reaction);
 		s.get(_target);
+		s.get(_moving_time);
 	}
 private: 
 	Alarm _reaction;
 	v2<float> _target;
+	float _moving_time;
 };
 
 void Missile::on_spawn() {
@@ -120,6 +123,10 @@ void Missile::calculate(const float dt) {
 			_velocity += lpos * ts;
 		}
 	}
+	if (!_velocity.is0())
+		_moving_time += dt;
+	else 
+		_moving_time = 0;
 }
 
 void Missile::emit(const std::string &event, Object * emitter) {

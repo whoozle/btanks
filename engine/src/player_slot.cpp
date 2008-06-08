@@ -38,7 +38,7 @@
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), dead_time(0), score(0), spectator(false), team(Team::None), 
-last_tooltip(NULL), last_tooltip_used(false), join_team(NULL) 
+last_tooltip(NULL), last_tooltip_used(false), join_team(NULL) , moving(0)
 {}
 
 void PlayerSlot::serialize(mrt::Serializator &s) const {
@@ -108,6 +108,7 @@ void PlayerSlot::clear() {
 	last_tooltip_used = false;
 	delete join_team;
 	join_team = NULL;
+	moving = 0;
 }
 
 void PlayerSlot::displayLast() {
@@ -186,22 +187,22 @@ void PlayerSlot::tick(const float dt) {
 	}
 		
 	const Object * p = getObject();
-	if (p == NULL)
+	if (p == NULL) {
+		moving = 0;
 		return;
+	}
 					
 	v2<float> pos, vel;
 	p->get_position(pos);
 	p->get_velocity(vel);
 	vel.normalize();
 		
-	float moving, idle;
-	p->get_times(moving, idle);
 	//vel.fromDirection(p->get_direction(), p->get_directions_number());
-
+	if (!vel.is0())
+		moving += dt;
 	
-	moving /= 2;
-	if (moving >= 1)
-		moving = 1;
+	if (moving >= 2)
+		moving = 2;
 	
 	GET_CONFIG_VALUE("player.controls.immediate-camera-sliding", bool, ics, false);
 	
@@ -211,7 +212,7 @@ void PlayerSlot::tick(const float dt) {
 	validatePosition(map_dst);
 		
 	//float look_forward = v2<float>(slot.viewport.w, slot.viewport.h, 0).length() / 4;
-	//slot.map_dst += vel * moving * look_forward; 
+	//slot.map_dst += vel * moving / 2 * look_forward; 
 
 	map_dst_vel = Map->distance(map_dst_pos, map_dst);
 

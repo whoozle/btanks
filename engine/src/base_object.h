@@ -93,8 +93,6 @@ public:
 	
 	inline const int get_summoner() const { return _spawned_by; }
 	
-	void get_times(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
-	
 	void interpolate();
 	void uninterpolate();
 	
@@ -108,7 +106,6 @@ protected:
 	int _id;
 	PlayerState _state;
 	v2<float> _velocity, _direction;
-	float _moving_time, _idle_time;
 	
 	virtual void calculate(const float dt) = 0;
 

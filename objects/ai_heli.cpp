@@ -26,19 +26,21 @@
 
 class AIHeli : public Heli, public ai::Base {
 public:
-	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1) {
-	}
+	AIHeli() : Heli("helicopter"), _reaction(true), _target_dir(-1), _moving_time(0) {}
+	
 	virtual void on_spawn();
 	void calculate(const float dt);
 	virtual void serialize(mrt::Serializator &s) const {
 		Heli::serialize(s);
 		ai::Base::serialize(s);
 		s.add(_reaction);
+		s.add(_moving_time);
 	}
 	virtual void deserialize(const mrt::Serializator &s) {
 		Heli::deserialize(s);
 		ai::Base::deserialize(s);
 		s.get(_reaction);
+		s.get(_moving_time);
 	}
 	
 	virtual const bool validateFire(const int idx) {
@@ -51,6 +53,7 @@ public:
 private: 
 	Alarm _reaction;
 	int _target_dir;
+	float _moving_time;
 };
 
 void AIHeli::onIdle(const float dt) {
@@ -121,6 +124,11 @@ done:
 	_state.alt_fire = _moving_time >= ac_t;
 
 	calculate_way_velocity();
+	
+	if (!_velocity.is0()) {
+		_moving_time += dt;
+	} else 
+		_moving_time = 0;
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
 	limit_rotation(dt, rt, true, true);	

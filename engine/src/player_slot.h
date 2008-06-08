@@ -113,6 +113,8 @@ private:
 	bool last_tooltip_used;
 	
 	JoinTeamControl * join_team;
+
+	float moving;
 };
 
 #endif

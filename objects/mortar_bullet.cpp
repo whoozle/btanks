@@ -39,9 +39,8 @@ public:
 	}
 	
 	void calculate(const float dt) {
-		float idle, moving;
-		get_times(moving, idle);
-		float real_ttl = ttl + moving + idle;
+		age += dt;
+		float real_ttl = ttl + age;
 		GET_CONFIG_VALUE("objects.mortar-bullet.g", float, g, 2.0f);
 		float v0 = real_ttl * g / 2;
 		float t = real_ttl - ttl;
@@ -64,9 +63,7 @@ public:
 		bool mortar = registered_name == "mortar-bullet";
 
 		if (collision) {
-			float idle, moving;
-			get_times(moving, idle);
-			float progress = ttl / (ttl + moving + idle);
+			float progress = ttl / (ttl + age);
 			bool fly = (progress >= 0.3f && progress < 0.7f);
 			//LOG_DEBUG(("fly: %c, emitter: %s", fly?'+':'-', emitter != NULL?emitter->animation.c_str(): "-"));
 			if (fly && (emitter == NULL || (emitter->speed == 0 && emitter->registered_name != "sandworm-head")))
@@ -93,16 +90,19 @@ public:
 	virtual void serialize(mrt::Serializator &s) const {
 		Object::serialize(s);
 		s.add(_vel_backup);
+		s.add(age);
 	}
 
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_vel_backup);
+		s.get(age);
 	}
 
 
 private: 
 	v2<float> _vel_backup;
+	float age;
 };
 
 REGISTER_OBJECT("mortar-bullet", MortarBullet, ());
