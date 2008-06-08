@@ -137,7 +137,7 @@ TRY {
 	
 	GET_CONFIG_VALUE("engine.debug-map-collision-code", bool, debug, false);
 	
-	const int obj_z = obj->getZ();
+	const int obj_z = obj->get_z();
 	int w = (int)obj->size.x, h = (int)obj->size.y;
 	int dx1, dx2, dy1, dy2;
 	int xt1, xt2, yt1, yt2;
@@ -202,7 +202,7 @@ TRY {
 
 		if (layer_im == -1 || 
 			(layer->pierceable && obj->piercing) || 
-			!ZBox::sameBox(l->first, obj->getZ()))
+			!ZBox::sameBox(l->first, obj->get_z()))
 			continue;
 		
 		if (!(empty_mask & 1) && im[0] == 101) {
@@ -346,7 +346,7 @@ TRY {
 		return 100;
 	
 	//LOG_DEBUG(("<<IMap::getImpassability"));
-	return (int)(100 * obj->getEffectiveImpassability(result_im / 100.0f));
+	return (int)(100 * obj->get_effective_impassability(result_im / 100.0f));
 } CATCH(mrt::format_string("Map::getImpassability(%p, (%d:%d), %p, %p)", 
 	(void *)obj, pos.x, pos.y, (void *)tile_pos, (void *)hidden ).c_str(), throw;);
 	return 0;
@@ -572,7 +572,7 @@ void IMap::generateMatrixes() {
 	load_map_final_signal.emit();
 }
 
-void IMap::getZBoxes(std::set<int> &layers) {
+void IMap::get_zBoxes(std::set<int> &layers) {
 	layers.clear();
 	for(MatrixMap::const_iterator i = _imp_map.begin(); i != _imp_map.end(); ++i) {
 		layers.insert(i->first.first);
@@ -583,7 +583,7 @@ void IMap::getSurroundings(Matrix<int> &matrix, const Object *obj, const int fil
 	if (matrix.get_width() % 2 == 0 || matrix.get_height() % 2 == 0)
 		throw_ex(("use only odd values for surrond matrix. (used: %d, %d)", matrix.get_height(), matrix.get_width()));
 
-	const int box = ZBox::getBox(obj->getZ());
+	const int box = ZBox::getBox(obj->get_z());
 	MatrixMap::const_iterator map = _imp_map.find(MatrixMap::key_type(box, false));
 	if (map == _imp_map.end()) {
 		matrix.fill(filler);

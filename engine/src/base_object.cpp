@@ -38,7 +38,7 @@ BaseObject::BaseObject(const std::string &classname):
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 
-void BaseObject::inheritParameters(const BaseObject *other) {
+void BaseObject::inherit_parameters(const BaseObject *other) {
 	mass = other->mass;
 	speed = other->speed;
 	ttl = other->ttl;
@@ -166,7 +166,7 @@ const std::string BaseObject::dump() const {
 
 BaseObject::~BaseObject() { _dead = true; }
 
-void BaseObject::setZ(const int z0, const bool absolute) {
+void BaseObject::set_z(const int z0, const bool absolute) {
 	if (absolute) {
 		_z = z0;
 		return;
@@ -175,7 +175,7 @@ void BaseObject::setZ(const int z0, const bool absolute) {
 	int z = z0;
 	
 	if (z < -1000 || z >= 1000) {
-		LOG_WARN(("setZ(%d, !absolute) called. call setZBox to change z-box instead", z));
+		LOG_WARN(("set_z(%d, !absolute) called. call set_zbox to change z-box instead", z));
 		z -= ZBox::getBoxBase(z);
 	}
 	_z = ZBox::getBoxBase(_z) + z; //do not change box;
@@ -206,7 +206,7 @@ void BaseObject::disown() {
 	_owner_set.clear();
 }
 
-void BaseObject::copyOwners(const BaseObject *from) {
+void BaseObject::copy_owners(const BaseObject *from) {
 	if (this == from)
 		return;
 	
@@ -219,26 +219,26 @@ void BaseObject::copy_special_owners(const BaseObject *from) {
 	_owners.clear();
 	_owner_set.clear();
 
-	if (from->hasOwner(OWNER_MAP))
-		addOwner(OWNER_MAP);
-	if (from->hasOwner(OWNER_COOPERATIVE))
-		addOwner(OWNER_COOPERATIVE);
+	if (from->has_owner(OWNER_MAP))
+		add_owner(OWNER_MAP);
+	if (from->has_owner(OWNER_COOPERATIVE))
+		add_owner(OWNER_COOPERATIVE);
 
-	if (from->hasOwner(OWNER_TEAM_RED))
-		addOwner(OWNER_TEAM_RED);
-	if (from->hasOwner(OWNER_TEAM_GREEN))
-		addOwner(OWNER_TEAM_GREEN);
-	if (from->hasOwner(OWNER_TEAM_YELLOW))
-		addOwner(OWNER_TEAM_YELLOW);
-	if (from->hasOwner(OWNER_TEAM_BLUE))
-		addOwner(OWNER_TEAM_BLUE);
+	if (from->has_owner(OWNER_TEAM_RED))
+		add_owner(OWNER_TEAM_RED);
+	if (from->has_owner(OWNER_TEAM_GREEN))
+		add_owner(OWNER_TEAM_GREEN);
+	if (from->has_owner(OWNER_TEAM_YELLOW))
+		add_owner(OWNER_TEAM_YELLOW);
+	if (from->has_owner(OWNER_TEAM_BLUE))
+		add_owner(OWNER_TEAM_BLUE);
 	
 	assert(_owners.size() == _owner_set.size());
 }
 
 
-void BaseObject::addOwner(const int oid) {
-	if (hasOwner(oid))
+void BaseObject::add_owner(const int oid) {
+	if (has_owner(oid))
 		return;
 	
 	_owners.push_front(oid);
@@ -246,8 +246,8 @@ void BaseObject::addOwner(const int oid) {
 	assert(_owners.size() == _owner_set.size());
 }
 
-void BaseObject::prependOwner(const int oid) {
-	if (hasOwner(oid))
+void BaseObject::prepend_owner(const int oid) {
+	if (has_owner(oid))
 		return;
 	
 	_owners.push_back(oid);
@@ -256,14 +256,9 @@ void BaseObject::prependOwner(const int oid) {
 	assert(_owners.size() == _owner_set.size());
 }
 
-const int BaseObject::_getOwner() const {
-	assert(!_owners.empty());
-	return *_owners.begin();
-}
-
-const bool BaseObject::hasSameOwner(const BaseObject *other, const bool skip_cooperative) const {
+const bool BaseObject::has_same_owner(const BaseObject *other, const bool skip_cooperative) const {
 	assert(this != other);
-	if (hasOwner(other->_id) || other->hasOwner(_id))
+	if (has_owner(other->_id) || other->has_owner(_id))
 		return true;
 	
 	std::set<int>::const_iterator i = _owner_set.begin(), j = other->_owner_set.begin();
@@ -297,11 +292,11 @@ const bool BaseObject::hasSameOwner(const BaseObject *other, const bool skip_coo
 	return false;
 }
 
-const bool BaseObject::hasOwner(const int oid) const {
+const bool BaseObject::has_owner(const int oid) const {
 	return _owner_set.find(oid) != _owner_set.end();
 }
 
-void BaseObject::removeOwner(const int oid) {
+void BaseObject::remove_owner(const int oid) {
 	_owner_set.erase(oid);
 	for(std::deque<int>::iterator i = _owners.begin(); i != _owners.end(); ) {
 		if (*i == oid) {
@@ -311,14 +306,14 @@ void BaseObject::removeOwner(const int oid) {
 	assert(_owners.size() == _owner_set.size());
 }
 
-void BaseObject::truncateOwners(const int n) {
+void BaseObject::truncate_owners(const int n) {
 	assert(0); /*implement me*/
 	if ((int)_owners.size() > n) 
 		_owners.resize(n);
 }
 
 
-const bool BaseObject::updatePlayerState(const PlayerState &state) {
+const bool BaseObject::update_player_state(const PlayerState &state) {
 	bool updated = _state != state;
 	if (updated) {
 		//LOG_DEBUG(("player %d:%s updated state: %s -> %s", _id, classname.c_str(), _state.dump().c_str(), state.dump().c_str()));
@@ -327,7 +322,7 @@ const bool BaseObject::updatePlayerState(const PlayerState &state) {
 	return updated;
 }
 
-void BaseObject::updateStateFromVelocity() {
+void BaseObject::update_state_from_velocity() {
 	PlayerState state = _state;
 	state.left = (_velocity.x < 0);
 	state.right = (_velocity.x > 0);
@@ -348,18 +343,18 @@ void BaseObject::uninterpolate() {
 	_interpolation_position_backup.clear();
 }
 
-void BaseObject::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void BaseObject::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	base = 0;
 	base_value = 0;
 	penalty = 1;
 }
 
-const float BaseObject::getEffectiveImpassability(const float impassability) const {
+const float BaseObject::get_effective_impassability(const float impassability) const {
 	if (impassability >= 1.0f)
 		return 1.0f;
 	
 	float base = 0, base_value = 0, penalty = 1.0f;
-	getImpassabilityPenalty(impassability, base, base_value, penalty);
+	get_impassability_penalty(impassability, base, base_value, penalty);
 	if (base > impassability)
 		throw_ex(("invalid impassability penalty returned for %g: base: %g, penalty: %g (base is out of range)", impassability, base, penalty));
 	float eim = base_value + (impassability - base) * penalty;
@@ -370,11 +365,11 @@ const float BaseObject::getEffectiveImpassability(const float impassability) con
 	return eim;
 }
 
-void BaseObject::updateVariants(const Variants &vars, const bool remove_old) {
+void BaseObject::update_variants(const Variants &vars, const bool remove_old) {
 	_variants.update(vars, remove_old);
 }
 
-const float BaseObject::getCollisionTime(const v2<float> &dpos, const v2<float> &vel, const float range) {
+const float BaseObject::get_collision_time(const v2<float> &dpos, const v2<float> &vel, const float range) {
 	if (vel.is0())
 		return -1;
 

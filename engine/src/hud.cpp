@@ -81,7 +81,7 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	assert(Map->loaded());
 
 	std::set<int> layers;
-	Map->getZBoxes(layers);
+	Map->get_zBoxes(layers);
 
 	GET_CONFIG_VALUE("hud.radar.zoom", int, zoom, 2);
 	GET_CONFIG_VALUE("hud.radar.inverse", bool, hri, false);

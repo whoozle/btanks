@@ -63,7 +63,7 @@ void Corpse::tick(const float dt) {
 	}
 	if (_variants.has("with-fire") && !has("fire") && (get_state() == "burn" || get_state() == "fade-out")) {
 		Object *o = add("fire", "fire", "fire", v2<float>(), Centered);
-		o->setZ(getZ() + 1, true);
+		o->set_z(get_z() + 1, true);
 	}
 }
 

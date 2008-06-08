@@ -26,7 +26,7 @@
 #include "rt_config.h"
 #include "special_owners.h"
 
-void Shilka::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void Shilka::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	base = 0;
 	base_value = 0;
 	penalty = 0.8;
@@ -47,7 +47,7 @@ FakeMod *Shilka::getMod(const std::string &name) {
 
 void Shilka::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		removeOwner(OWNER_MAP);
+		remove_owner(OWNER_MAP);
 		disable_ai = true;
 	}
 	
@@ -103,7 +103,7 @@ void Shilka::tick(const float dt) {
 		state.right = 0;
 		state.up = 0;
 		state.down = 0;
-		get("mod")->updatePlayerState(state);
+		get("mod")->update_player_state(state);
 	}
 		
 

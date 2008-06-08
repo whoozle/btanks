@@ -20,7 +20,7 @@ public:
 	void reset();
 
 	void get(std::set<std::string> &labels) const;
-	const int getZ() const;
+	const int get_z() const;
 
 	virtual void tick(const float dt);
 private: 

@@ -42,24 +42,24 @@ public:
 	}
 
 private: 
-	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+	virtual void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
 
 void Buggy::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		removeOwner(OWNER_MAP);
+		remove_owner(OWNER_MAP);
 		disable_ai = true;
 	}
 
 	play("hold", true);
-	bool ai = registered_name == "buggy" && hasOwner(OWNER_MAP);
+	bool ai = registered_name == "buggy" && has_owner(OWNER_MAP);
 	Object *turrel = add("mod", ai?"turrel-on-buggy(ground-aim)":"turrel-on-buggy", "buggy-gun", v2<float>(), Centered);
-	turrel->setZ(getZ() + 5, true);
+	turrel->set_z(get_z() + 5, true);
 
 	play_sound("vehicle-sound", true, 0.4f);
 }
 
-void Buggy::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void Buggy::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability >= 0.2) {
 		base = 0.2;
 		base_value = 0.6;
@@ -145,7 +145,7 @@ void AIBuggy::calculate(const float dt) {
 	float rt;
 	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();
+	update_state_from_velocity();
 }
 
 REGISTER_OBJECT("static-buggy", Buggy, ("vehicle"));

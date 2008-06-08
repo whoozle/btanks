@@ -48,7 +48,7 @@ void Paratrooper::tick(const float dt) {
 	if (get_state().empty()) {	
 		//LOG_DEBUG(("over"));
 		Object *kamikaze = spawn(_spawn_object, _spawn_animation);
-		kamikaze->setZBox(0);
+		kamikaze->set_zbox(0);
 		emit("death", this);
 	}
 }

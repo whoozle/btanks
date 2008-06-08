@@ -31,7 +31,7 @@ public:
 	void emit(const std::string &event, Object * emitter) {
 		if (event == "collision") {
 			//add flag handling here.
-			if (emitter == NULL || !emitter->getVariants().has("player")) {
+			if (emitter == NULL || !emitter->get_variants().has("player")) {
 				return;
 			}
 			
@@ -43,13 +43,13 @@ public:
 				return;
 			}
 
-			int base_id = getSummoner(); 
+			int base_id = get_summoner(); 
 			Object *base = World->getObjectByID(base_id);
 			if (slot->team == team) {
 				if (base != NULL) {
 					v2<float> dpos = get_relative_position(base);
 					if (dpos.quick_length() > size.x * size.y / 4) {
-						setZBox(base->getZ());
+						set_zbox(base->get_z());
 						World->teleport(this, base->get_center_position());
 						base->remove_effect("abandoned");
 					} else {
@@ -58,9 +58,9 @@ public:
 							Object *flag = emitter->drop("#ctf-flag");
 							++slot->frags;
 							PlayerManager->action(*slot, "ctf");
-							Object *base = World->getObjectByID(flag->getSummoner());
+							Object *base = World->getObjectByID(flag->get_summoner());
 							if (base != NULL) {
-								setZBox(base->getZ());
+								set_zbox(base->get_z());
 								World->teleport(flag, base->get_center_position());
 								base->remove_effect("abandoned");
 							} else {

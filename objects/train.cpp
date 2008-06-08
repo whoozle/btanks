@@ -31,16 +31,16 @@ public:
 		play("move", true); 
 		disown(); 
 	
-		Object *o = World->getObjectByID(getSummoner());
+		Object *o = World->getObjectByID(get_summoner());
 		if (o == NULL) {
 			emit("death", NULL);
 			return;
 		}
-		addOwner(o->get_id());	
+		add_owner(o->get_id());	
 	}	
 	virtual Object * clone() const { return new Wagon(*this); }
 	virtual void calculate(const float dt) {
-		Object *o = World->getObjectByID(getSummoner());
+		Object *o = World->getObjectByID(get_summoner());
 		if (o == NULL) {
 			emit("death", NULL);
 			return;
@@ -59,7 +59,7 @@ public:
 	}
 	
 
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 		base = base_value = penalty = 0;
 	}
 };
@@ -73,7 +73,7 @@ public:
 	virtual void tick(const float dt);
 	virtual void emit(const std::string &event, Object * emitter = NULL);
 
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 		base = base_value = penalty = 0;
 	}
 

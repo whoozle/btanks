@@ -327,7 +327,7 @@ TRY {
 			dt = 0;
 		World->tick(*obj, -dt, false);
 		
-		obj->updatePlayerState(state);
+		obj->update_player_state(state);
 		slot.need_sync = true;
 		
 		World->tick(*obj, dt);
@@ -368,11 +368,11 @@ TRY {
 			}
 /*
 			LOG_DEBUG(("id: %d, state: %s %s (my state: %s) %s", 
-				id, state.dump().c_str(), my_state?"[skipped]":"", o->getPlayerState().dump().c_str(), 
-				(my_state && state != o->getPlayerState())?"**DIFFERS**":""));
+				id, state.dump().c_str(), my_state?"[skipped]":"", o->get_player_state().dump().c_str(), 
+				(my_state && state != o->get_player_state())?"**DIFFERS**":""));
 */
 			if (!my_state)
-				o->updatePlayerState(state); //update states for all players but me.
+				o->update_player_state(state); //update states for all players but me.
 
 			updated_objects.insert(ObjectMap::value_type(o->get_id(), o));
 			if (!dont_interpolate)
@@ -633,12 +633,12 @@ TRY {
 			continue;
 		
 		Object *o = slot.getObject();
-		if (o != NULL /* && !o->isDead() */) {
+		if (o != NULL /* && !o->is_dead() */) {
 			
 			//check for Special Zones ;)
 			v2<int> p;
 			o->get_position(p);
-			v3<int> player_pos(p.x, p.y, o->getZ());
+			v3<int> player_pos(p.x, p.y, o->get_z());
 			
 			size_t cn = _zones.size();
 			for(size_t c = 0; c < cn; ++c) {
@@ -786,18 +786,18 @@ TRY {
 		Object *obj = slot.getObject();
 		if (obj != NULL) {
 			if (slot.control_method != NULL) {
-				PlayerState state = obj->getPlayerState();
+				PlayerState state = obj->get_player_state();
 				bool hint = state.hint_control;
 				slot.updateState(state, dt);
 				
-				obj->updatePlayerState(state);
+				obj->update_player_state(state);
 				if (state.hint_control && !hint) {
 					slot.displayLast();
 				}
 			}
 		
-			if (obj->getPlayerState() != slot.old_state) {
-				slot.old_state = obj->getPlayerState();
+			if (obj->get_player_state() != slot.old_state) {
+				slot.old_state = obj->get_player_state();
 				slot.need_sync = true;
 			}
 		}
@@ -822,7 +822,7 @@ TRY {
 				if (o == NULL)
 					continue;
 				
-				o->getPlayerState().serialize(s);
+				o->get_player_state().serialize(s);
 			} else {
 				slot.old_state.serialize(s);
 			}
@@ -846,13 +846,13 @@ TRY {
 			PlayerSlot &slot = _players[j];
 			if (!slot.empty() && slot.need_sync) {
 				//LOG_DEBUG(("object in slot %d: %s (%d) need sync [%s]", 
-				//	j, slot.getObject()->animation.c_str(), slot.getObject()->get_id(), slot.getObject()->getPlayerState().dump().c_str()));
+				//	j, slot.getObject()->animation.c_str(), slot.getObject()->get_id(), slot.getObject()->get_player_state().dump().c_str()));
 				const Object * o = slot.getObject();
 				if (o == NULL)
 					continue;
 				
 				s.add(slot.id);
-				s.add(o->getPlayerState());
+				s.add(o->get_player_state());
 				World->serializeObjectPV(s, o);
 				s.add(slot.dont_interpolate);
 				
@@ -869,7 +869,7 @@ TRY {
 					continue;
 			
 				s.add(id);
-				s.add(o->getPlayerState());
+				s.add(o->get_player_state());
 				World->serializeObjectPV(s, o);
 				s.add(false);
 				
@@ -1279,7 +1279,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 		if (player_slot == NULL)
 			return;
 	} else {
-		if (player->hasOwner(OWNER_COOPERATIVE) || player->get_slot() >= 0) {
+		if (player->has_owner(OWNER_COOPERATIVE) || player->get_slot() >= 0) {
 			return;
 		}
 	}

@@ -53,7 +53,7 @@ void Item::emit(const std::string &event, Object * emitter) {
 
 		hp = 0;
 		impassability = 0;
-		setZ(999); //fly up on the vehicle
+		set_z(999); //fly up on the vehicle
 		cancel_all();
 		play("take", false);
 	} else Object::emit(event, emitter);

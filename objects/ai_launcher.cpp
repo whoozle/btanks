@@ -94,7 +94,7 @@ void AILauncher::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.launcher.rotation-time", float, rt, 0.07);
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();	
+	update_state_from_velocity();	
 }
 
 REGISTER_OBJECT("launcher", AILauncher, ("fighting-vehicle"));

@@ -47,7 +47,7 @@ private:
 
 void Bomb::on_spawn() {
 	play("main", false);
-	z1 = getZ();
+	z1 = get_z();
 	GET_CONFIG_VALUE("objects.bomb.lowest-z", int, z, 610);
 	z2 = z;
 }
@@ -63,7 +63,7 @@ void Bomb::tick(const float dt) {
 		emit("death", this);
 	int z = (int)(get_state_progress() * (z2 - z1)  + z1);
 	//LOG_DEBUG(("setting z = %d [%d-%d]", z, z1, z2));
-	setZ(z, true);
+	set_z(z, true);
 }
 
 void Bomb::emit(const std::string &event, Object * emitter) {
@@ -73,7 +73,7 @@ void Bomb::emit(const std::string &event, Object * emitter) {
 		return; //do not emit addDamage
 	} else if (event == "death") {
 		Object *o = spawn("cannon-explosion", "cannon-explosion");
-		o->setZ(getZ() + 1, true);
+		o->set_z(get_z() + 1, true);
 	}
 	Object::emit(event, emitter);
 }

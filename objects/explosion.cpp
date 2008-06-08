@@ -156,10 +156,10 @@ void Explosion::emit(const std::string &event, Object * emitter) {
 			emitter->add_damage(this, max_hp);
 		}
 		
-		if (!emitter->isDead()) 
+		if (!emitter->is_dead()) 
 			_damaged_objects.insert(id);
 		
-		if (emitter->isDead() && emitter->classname == "player") {
+		if (emitter->is_dead() && emitter->classname == "player") {
 			++_players_killed;
 			if (_players_killed == 2) {
 				Mixer->playRandomSample(NULL, "laugh", false);

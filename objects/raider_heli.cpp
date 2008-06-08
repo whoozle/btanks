@@ -136,7 +136,7 @@ done:
 
 	GET_CONFIG_VALUE("objects.helicopter.rotation-time", float, rt, 0.2f);
 	limit_rotation(dt, rt, false, false);	
-	updateStateFromVelocity();
+	update_state_from_velocity();
 }
 
 REGISTER_OBJECT("raider-helicopter", RaiderHeli, ());

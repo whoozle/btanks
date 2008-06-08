@@ -17,7 +17,7 @@ public:
 	
 	const bool get(std::string &classname, std::string &animation, int &z);
 	
-	void getVariants(std::set<std::string> &variants, const std::string &classname) const;
+	void get_variants(std::set<std::string> &variants, const std::string &classname) const;
 
 private: 
 	virtual void start(const std::string &name, Attrs &attr);

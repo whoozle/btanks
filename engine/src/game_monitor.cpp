@@ -72,8 +72,8 @@ void GameItem::respawn() {
 	LOG_DEBUG(("respawning item: %s:%s, z: %d, dir: %d", classname.c_str(), animation.c_str(), z, dir));
 	Object *o = ResourceManager->createObject(classname, animation);
 	if (z) 
-		o->setZ(z, true);
-	o->addOwner(OWNER_MAP);
+		o->set_z(z, true);
+	o->add_owner(OWNER_MAP);
 
 	if (dir) 
 		o->set_direction(dir);
@@ -203,8 +203,8 @@ void IGameMonitor::addObject(const Object *o) {
 	const int id = o->get_id();
 	if (
 		_present_objects.find(id) != _present_objects.end() || //already here. int is faster than classname check and alwaysupdate
-		!o->hasOwner(OWNER_MAP) || 
-		o->getVariants().has("ally") || 
+		!o->has_owner(OWNER_MAP) || 
+		o->get_variants().has("ally") || 
 		_destroy_classes.find(o->classname) == _destroy_classes.end()
 	)
 		return;

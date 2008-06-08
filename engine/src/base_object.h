@@ -53,57 +53,56 @@ public:
 	BaseObject(const std::string &classname);
 	virtual ~BaseObject();
 	
-	void updateVariants(const Variants &vars, const bool remove_old = false);
+	void update_variants(const Variants &vars, const bool remove_old = false);
 	
 	virtual void tick(const float dt) = 0;
 	virtual void render(sdlx::Surface &surf, const int x, const int y) = 0;
 	void get_velocity(v2<float> &vel) const { vel = _velocity; vel.normalize(); vel *= speed; }
-	static const float getCollisionTime(const v2<float> &pos, const v2<float> &vel, const float r);
+	static const float get_collision_time(const v2<float> &pos, const v2<float> &vel, const float r);
 	
-	inline const bool isDead() const { return _dead; }
+	inline const bool is_dead() const { return _dead; }
 	inline const int get_id() const { return _id; }
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
 	
 	const std::string dump() const;
-	void inheritParameters(const BaseObject *other);
+	void inherit_parameters(const BaseObject *other);
 
-	inline const PlayerState & getPlayerState() const { return _state; }
-	const bool updatePlayerState(const PlayerState &state);
+	inline const PlayerState & get_player_state() const { return _state; }
+	const bool update_player_state(const PlayerState &state);
 
 	void heal(const int hp);
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 	
-	void updateStateFromVelocity();
-	void setZ(const int z, const bool absolute = false); 
-	inline const int getZ() const { return _z; }
+	void update_state_from_velocity();
+	void set_z(const int z, const bool absolute = false); 
+	inline const int get_z() const { return _z; }
 	
 	void disown();
-	inline const bool hasOwners() const { return !_owner_set.empty(); }
-	void addOwner(const int oid);
-	void prependOwner(const int oid); //to avoid truncation of this owner. 
-	const int _getOwner() const;
-	const bool hasOwner(const int oid) const;
-	const bool hasSameOwner(const BaseObject *other, const bool skip_cooperative = false) const;
-	void removeOwner(const int oid);
-	void truncateOwners(const int n);
-	inline void getOwners(std::deque<int> &owners) const { owners = _owners; }
-	void copyOwners(const BaseObject *from);
+	inline const bool has_owners() const { return !_owner_set.empty(); }
+	void add_owner(const int oid);
+	void prepend_owner(const int oid); //to avoid truncation of this owner. 
+	const bool has_owner(const int oid) const;
+	const bool has_same_owner(const BaseObject *other, const bool skip_cooperative = false) const;
+	void remove_owner(const int oid);
+	void truncate_owners(const int n);
+	inline void get_owners(std::deque<int> &owners) const { owners = _owners; }
+	void copy_owners(const BaseObject *from);
 	void copy_special_owners(const BaseObject *from);
 	
-	inline const int getSummoner() const { return _spawned_by; }
+	inline const int get_summoner() const { return _spawned_by; }
 	
-	void getTimes(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
+	void get_times(float &moving, float &idle) const { moving = _moving_time; idle = _idle_time; }
 	
 	void interpolate();
 	void uninterpolate();
 	
-	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+	virtual void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const;
 
-	const float getEffectiveImpassability(const float impassability) const;
+	const float get_effective_impassability(const float impassability) const;
 	
-	const Variants & getVariants() const { return _variants; }
+	const Variants & get_variants() const { return _variants; }
 	
 protected:
 	int _id;

@@ -59,7 +59,7 @@ void ai::OldSchool::calculateV(v2<float> &velocity, Object *object) {
 		object->get_center_position(pos);
 		v2<int> tile_size = Map->getPathTileSize();
 	
-		const Matrix<int> &matrix = Map->get_impassability_matrix(object->getZ());
+		const Matrix<int> &matrix = Map->get_impassability_matrix(object->get_z());
 	
 		v2<float> delta;
 		delta.fromDirection(dir, dirs);

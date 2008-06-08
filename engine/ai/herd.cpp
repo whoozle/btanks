@@ -34,7 +34,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 	int n = 0;
 	for(std::set<const Object *>::iterator i = o_set.begin(); i != o_set.end(); ++i) {
 		const Object *o = *i;
-		if (o->impassability == 0 || (leader && o->getSummoner() != leader)) 
+		if (o->impassability == 0 || (leader && o->get_summoner() != leader)) 
 			continue;
 		int cd = getComfortDistance(o);
 		if (cd == -1)
@@ -68,7 +68,7 @@ void ai::Herd::calculateV(v2<float> &velocity, Object *sheep, const int leader, 
 		}
 		
 	const Object * o = leader?World->getObjectByID(leader): NULL;
-	if (o != NULL && !ZBox::sameBox(o->getZ(), sheep->getZ())) 
+	if (o != NULL && !ZBox::sameBox(o->get_z(), sheep->get_z())) 
 		o = NULL;
 	
 	if (o != NULL) {

@@ -244,7 +244,7 @@ void Object::tick(const float dt) {
 	}
 	
 	if (pose->z > -10000) {
-		setZ(pose->z);
+		set_z(pose->z);
 	}
 	
 	if (!event.played) {
@@ -295,7 +295,7 @@ void Object::group_tick(const float dt) {
 		assert(o != NULL);
 		assert(o->_parent == this);
 		
-		if (o->isDead()) {
+		if (o->is_dead()) {
 			LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", get_id(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			if (!safe_mode) {
 				delete o;
@@ -318,7 +318,7 @@ void Object::group_tick(const float dt) {
 			o->tick(dt);
 		}
 
-		if (o->isDead()) {
+		if (o->is_dead()) {
 			//LOG_DEBUG(("%d:%s, grouped '%s':%s is dead.", get_id(), animation.c_str(), i->first.c_str(), o->animation.c_str()));
 			if (!safe_mode) {
 				delete o;
@@ -360,7 +360,7 @@ void Object::play_random_sound(const std::string &classname, const bool loop, co
 
 const bool Object::get_render_rect(sdlx::Rect &src) const {
 	if (_events.empty()) {
-		if (!isDead() && _parent == NULL)
+		if (!is_dead() && _parent == NULL)
 			LOG_WARN(("%s: no animation played. latest position: %g", registered_name.c_str(), _pos));
 		return false;
 	}
@@ -929,8 +929,8 @@ Object* Object::add(const std::string &name, const std::string &classname, const
 	assert(obj->_owners.empty());
 
 	obj->_parent = this;
-	obj->copyOwners(this);
-	obj->addOwner(_id);
+	obj->copy_owners(this);
+	obj->add_owner(_id);
 	obj->_id = _id;
 	obj->_spawned_by = _id;
 	obj->set_slot(get_slot());
@@ -1129,7 +1129,7 @@ const int Object::get_target_position(v2<float> &relative_position, const std::s
 		dir.fromDirection(d, dirs);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (hasSameOwner(o) || o->ai_disabled() || o->impassability == 0 || o->has_effect("invulnerability"))
+			if (has_same_owner(o) || o->ai_disabled() || o->impassability == 0 || o->has_effect("invulnerability"))
 				continue;
 			
 			v2<float> pos, tp = get_relative_position(o);
@@ -1158,11 +1158,11 @@ const int Object::get_target_position(v2<float> &relative_position, const std::s
 				//checking map projection
 				v2<float> map1 = pos + get_center_position();
 				v2<float> map2 = o->get_center_position();
-				if (!check_distance(map1, map2, getZ(), true))
+				if (!check_distance(map1, map2, get_z(), true))
 					continue;
 				map1 = get_center_position();
 				map2 = pos + get_center_position();
-				if (!check_distance(map1, map2, getZ(), false))
+				if (!check_distance(map1, map2, get_z(), false))
 					continue;
 			} 
 				
@@ -1211,12 +1211,12 @@ const int Object::get_target_position(v2<float> &relative_position, const v2<flo
 			
 			v2<float> map1 = pos + get_center_position();
 			v2<float> map2 = target + get_center_position();
-			if (!check_distance(map1, map2, getZ(), true))
+			if (!check_distance(map1, map2, get_z(), true))
 				continue;
 			
 			map1 = get_center_position();
 			map2 = pos + get_center_position();
-			if (!check_distance(map1, map2, getZ(), false))
+			if (!check_distance(map1, map2, get_z(), false))
 				continue;
 			
 		} 
@@ -1374,7 +1374,7 @@ const bool Object::find_path_done(Way &way) {
 				close(id);
 				continue;			
 			}
-			map_im = getEffectiveImpassability(map_im);
+			map_im = get_effective_impassability(map_im);
 			if (map_im >= 1.0f) {
 				close(id);
 				continue;			
@@ -1387,7 +1387,7 @@ const bool Object::find_path_done(Way &way) {
 				close(id);
 				continue;
 			}
-			im = getEffectiveImpassability(im);
+			im = get_effective_impassability(im);
 			if (im >= 1.0f) {
 				close(id);
 				continue;
@@ -1481,7 +1481,7 @@ const std::string Object::get_nearest_waypoint(const std::string &name) const {
 void Object::add_damage(Object *from, const bool emitDeath) {
 	if (from == NULL || !from->piercing)
 		return;
-	if (hasSameOwner(from)) //friendly fire
+	if (has_same_owner(from)) //friendly fire
 		return;
 	add_damage(from, from->max_hp, emitDeath);
 }
@@ -1517,11 +1517,11 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 		o->hp += hp;
 
 	{
-		PlayerSlot *slot = PlayerManager->get_slot_by_id(from->getSummoner());
+		PlayerSlot *slot = PlayerManager->get_slot_by_id(from->get_summoner());
 
 		if (slot == NULL) {
 			std::deque<int> owners;
-			from->getOwners(owners);
+			from->get_owners(owners);
 			for(std::deque<int>::const_iterator i = owners.begin(); i != owners.end(); ++i) {
 				slot = PlayerManager->get_slot_by_id(*i);
 				if (slot != NULL) 
@@ -1545,7 +1545,7 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 	get_position(pos);
 	pos.x += size.x * 0.66f;
 	World->addObject(o, pos);
-	o->setZ(getZ() + 1, true);
+	o->set_z(get_z() + 1, true);
 }
 
 const sdlx::Surface * Object::get_surface() const {
@@ -1576,22 +1576,22 @@ const float Object::get_state_progress() const {
 
 #include "zbox.h"
 
-void Object::setZBox(const int zb) {
-	//LOG_DEBUG(("%s::setZBox(%d)", registered_name.c_str(), zb));
-	int z = getZ();
+void Object::set_zbox(const int zb) {
+	//LOG_DEBUG(("%s::set_zbox(%d)", registered_name.c_str(), zb));
+	int z = get_z();
 	z -= ZBox::getBoxBase(z); //removing current box
 	z += ZBox::getBoxBase(zb);
-	setZ(z, true);
+	set_z(z, true);
 	
 	for(Group::const_iterator i = _group.begin(); i != _group.end(); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
-		o->setZBox(zb);
+		o->set_zbox(zb);
 	}
 }
 
 const Matrix<int> &Object::get_impassability_matrix() const {
-	return Map->get_impassability_matrix(getZ());
+	return Map->get_impassability_matrix(get_z());
 }
 
 void Object::enumerate_objects(std::set<const Object *> &o_set, const float range, const std::set<std::string> *classfilter) const {
@@ -1634,7 +1634,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (slot == NULL)
 		return false;
 	
-	updatePlayerState(PlayerState());
+	update_player_state(PlayerState());
 
 	if (has("#ctf-flag")) {
 		Object *o = drop("#ctf-flag");
@@ -1651,7 +1651,7 @@ const bool Object::attachVehicle(Object *vehicle) {
 	if (_variants.has("player"))
 		vehicle->_variants.add("player");
 	
-	vehicle->copyOwners(this);
+	vehicle->copy_owners(this);
 	vehicle->disable_ai = disable_ai;
 	vehicle->set_slot(get_slot());
 
@@ -1675,13 +1675,13 @@ const bool Object::detachVehicle() {
 	) 
 		return false;
 		
-	bool dead = isDead();
+	bool dead = is_dead();
 	LOG_DEBUG(("leaving %s vehicle...", dead? "dead": ""));
 	
 	slot->need_sync = true;
 	
 	_velocity.clear();
-	updatePlayerState(PlayerState());
+	update_player_state(PlayerState());
 
 	bool has_me = has(".me");
 	Object *man;
@@ -1698,14 +1698,14 @@ const bool Object::detachVehicle() {
 	}
 	
 	if (classname == "helicopter")
-		man->setZBox(ResourceManager->getClass("machinegunner")->getZ());
+		man->set_zbox(ResourceManager->getClass("machinegunner")->get_z());
 
 	man->disable_ai = disable_ai;
 	classname = "vehicle";
 	if (_variants.has("player"))
 		_variants.remove("player");
 
-	man->copyOwners(this);
+	man->copy_owners(this);
 
 	disown();
 	
@@ -1752,7 +1752,7 @@ TRY {
 		if (!has("_outline")) {
 			//LOG_DEBUG(("%d:%s:%s: adding outline", o._id, o.classname.c_str(), o.animation.c_str()));
 			Object *outline = add("_outline", "outline", outline_animation, v2<float>(), Centered);
-			outline->setZ(9999, true);
+			outline->set_z(9999, true);
 		}
 		//LOG_DEBUG(("%d:%s:%s: whoaaa!!! i'm in domik", o._id, o.classname.c_str(), o.animation.c_str()));
 	} else {

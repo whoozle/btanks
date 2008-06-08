@@ -180,7 +180,7 @@ void Editor::onTick(const float dt) {
 	if (_object_properties->changed()) {
 		std::set<std::string> vars;
 		_object_properties->get(vars);
-		Command cmd(Command::ChangeObjectProperties, _object_properties->object, _object_properties->getZ(), Variants(vars));
+		Command cmd(Command::ChangeObjectProperties, _object_properties->object, _object_properties->get_z(), Variants(vars));
 		addCommand(cmd);
 		currentCommand().exec();
 		displayStatusMessage(_object_properties->object);
@@ -665,7 +665,7 @@ bool Editor::onKey(const SDL_keysym sym) {
 		if (_highlight_object == NULL)
 			return false;
 		{
-			Command cmd(Command::ChangeObjectProperties, _highlight_object, _highlight_object->getZ() + dir, Variants(_highlight_object->getVariants()));
+			Command cmd(Command::ChangeObjectProperties, _highlight_object, _highlight_object->get_z() + dir, Variants(_highlight_object->get_variants()));
 			addCommand(cmd);
 			currentCommand().exec();
 			displayStatusMessage(_highlight_object);
@@ -685,7 +685,7 @@ void Editor::displayStatusMessage(const Object *object) {
 		prop = " (" + item.property + ")";
 	} catch(...) {}
 	_layer_name = mrt::format_string("%s:%s%s, z: %d, dir: %d%s", 
-		object->registered_name.c_str(), object->animation.c_str(), object->getVariants().dump().c_str(), object->getZ(), object->get_direction(), prop.c_str());
+		object->registered_name.c_str(), object->animation.c_str(), object->get_variants().dump().c_str(), object->get_z(), object->get_direction(), prop.c_str());
 	_layer_name_invisible.reset();
 }
 
@@ -788,7 +788,7 @@ bool Editor::onMouse(const int button, const bool pressed, const int x, const in
 	if (button == SDL_BUTTON_RIGHT && !pressed && _highlight_object) {
 		setBase(_object_properties, x, y);
 		std::set<std::string> variants;
-		_add_object->getVariants(variants, _highlight_object->registered_name);
+		_add_object->get_variants(variants, _highlight_object->registered_name);
 		_object_properties->show(_highlight_object, variants);
 		return true;
 	}

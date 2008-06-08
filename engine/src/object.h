@@ -141,7 +141,7 @@ public:
 	
 	const std::string get_nearest_waypoint(const std::string &classname) const;
 
-	void setZBox(const int z);
+	void set_zbox(const int z);
 
 	virtual const bool detachVehicle();
 	virtual const bool attachVehicle(Object *vehicle);

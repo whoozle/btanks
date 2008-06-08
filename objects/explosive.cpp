@@ -73,7 +73,7 @@ void Explosive::onBreak() {
 			vars.add("100%");
 		
 		Object *o = spawn("mutagen-explosion", "mutagen-explosion");
-		o->updateVariants(vars);
+		o->update_variants(vars);
 		explosion = false;
 	}
 	if (_variants.has("spawn-nuke")) {

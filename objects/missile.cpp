@@ -95,12 +95,12 @@ void Missile::calculate(const float dt) {
 		int dir = ((int)(_moving_time * rs)) % 8;
 		set_direction(dir);
 
-		const Object *leader = World->getObjectByID(getSummoner());
+		const Object *leader = World->getObjectByID(get_summoner());
 		if (leader == NULL) {
 			return;
 		}
-		if (!ZBox::sameBox(leader->getZ(), getZ())) {
-			setZBox(leader->getZ());
+		if (!ZBox::sameBox(leader->get_z(), get_z())) {
+			set_zbox(leader->get_z());
 		}
 		
 		_direction.normalize();
@@ -149,7 +149,7 @@ void Missile::emit(const std::string &event, Object * emitter) {
 			//LOG_DEBUG(("edzo = %d", edzo));
 			spawn("smoke-cloud", "smoke-cloud", v2<float>(), v2<float>(), z);
 		} else if (type == "nuke" || type == "mutagen") {
-			Object *o = World->getObjectByID(getSummoner()); //player
+			Object *o = World->getObjectByID(get_summoner()); //player
 			v2<float> dpos;
 			if (o != NULL) {
 				dpos = o->get_relative_position(this);

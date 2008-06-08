@@ -81,7 +81,7 @@ void PoisonCloud::emit(const std::string &event, Object * emitter) {
 			return; //damage was already added for this object.
 		
 		_damaged_objects.insert(id);
-		if (emitter->getVariants().has("poison-resistant")) {
+		if (emitter->get_variants().has("poison-resistant")) {
 			return;
 		}
 		emitter->add_damage(this, max_hp);

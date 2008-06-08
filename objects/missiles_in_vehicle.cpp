@@ -102,7 +102,7 @@ public:
 
 		updatePose();
 		//LOG_DEBUG(("update. max: %d, max visible: %d, quantity: %d", max_n, max_v, n));
-		//LOG_DEBUG(("z = %d", getZ()));
+		//LOG_DEBUG(("z = %d", get_z()));
 	}
 	
 private:
@@ -146,7 +146,7 @@ void MissilesInVehicle::updatePose() {
 }
 
 void MissilesInVehicle::on_spawn() {
-	setZ(registered_name != "alt-missiles-on-launcher"?5:3);
+	set_z(registered_name != "alt-missiles-on-launcher"?5:3);
 	update();
 	updatePose();
 }

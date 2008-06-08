@@ -985,7 +985,7 @@ try {
 				pos *= ts;
 			}
 			Object *o = ResourceManager->createObject(par[0], par[1]);
-			o->addOwner(OWNER_MAP);
+			o->add_owner(OWNER_MAP);
 			World->addObject(o, pos.convert<float>());
 			return "ok";
 	} else if (cmd == "kill") {
@@ -1008,7 +1008,7 @@ try {
 		if (o == NULL)
 			throw_ex(("no object in slot %d", idx));
 		int z = atoi(p[1].c_str());
-		o->setZ(z, true);
+		o->set_z(z, true);
 		return mrt::format_string("setting z %d for object %d", z, o->get_id());
 	} else if (cmd == "position") {
 		if (param.empty())

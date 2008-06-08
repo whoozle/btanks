@@ -29,7 +29,7 @@ public:
 	virtual Object * clone() const { return new BaseZombie(*this); }
 	BaseZombie(const std::string &classname): Object(classname), _can_punch(true) {}
 	
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 		if (impassability > 0.2f) {
 			base_value = 0.2f;
 			base = 0;
@@ -192,7 +192,7 @@ drive:
 
 	calculate_way_velocity();
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();
+	update_state_from_velocity();
 }
 
 void Zombie::on_spawn() {

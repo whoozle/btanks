@@ -23,7 +23,7 @@
 class Civilian : public Trooper {
 public: 
 	Civilian(const std::string &classname) : Trooper(classname, std::string()) {} 
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 		if (impassability > 0.2f) {
 			base_value = 0.2f;
 			base = 0;
@@ -86,7 +86,7 @@ public:
 				}
 			}
 		}
-		updateStateFromVelocity();
+		update_state_from_velocity();
 	}
 
 	virtual void onObstacle(const Object *o) {

@@ -45,7 +45,7 @@ public:
 protected:
 	Alarm _alt_fire;
 private: 
-	virtual void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+	virtual void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const;
 };
 
 void Car::on_spawn() {
@@ -57,7 +57,7 @@ void Car::on_spawn() {
 	play("hold", true);
 }
 
-void Car::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void Car::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability >= 0.2) {
 		base = 0.2;
 		base_value = 0.5;
@@ -74,7 +74,7 @@ void Car::emit(const std::string &event, Object * emitter) {
 		return;
 	} else if (emitter != NULL && !_velocity.is0() && event == "collision" && animation == "harvester") {
 		const std::string &classname = emitter->classname;
-		if (!emitter->getVariants().has("player") && (classname == "trooper" || classname == "civilian" || classname == "kamikaze" || classname == "monster")) {
+		if (!emitter->get_variants().has("player") && (classname == "trooper" || classname == "civilian" || classname == "kamikaze" || classname == "monster")) {
 			//LOG_DEBUG(("bloody harvest"));
 			emitter->emit("death", NULL);
 			if (classname != "monster")
@@ -171,7 +171,7 @@ void AICar::calculate(const float dt) {
 	float rt;
 	Config->get("objects." + registered_name + ".rotation-time", rt, 0.05f);
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();
+	update_state_from_velocity();
 }
 
 REGISTER_OBJECT("static-car", AICar, ("vehicle"));

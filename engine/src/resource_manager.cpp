@@ -228,7 +228,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			if ((parent = _objects.find(attr["parent"])) == _objects.end()) {
 				throw_ex(("class '%s' declared as parent of '%s' was not registered. skipped.", attr["parent"].c_str(), classname.c_str()));
 			}
-			object->second->inheritParameters(parent->second);
+			object->second->inherit_parameters(parent->second);
 		}
 	
 		for (Attrs::iterator i = attr.begin(); i != attr.end(); ++i) {
@@ -251,7 +251,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			} else if (name == "fadeout_time") {
 				object->second->fadeout_time = atof(value.c_str());
 			} else if (name == "z") {
-				object->second->setZ(atoi(value.c_str()));
+				object->second->set_z(atoi(value.c_str()));
 			} else if (name != "class" && name != "parent") 
 				LOG_WARN(("attr '%s' is not supported", name.c_str()));
 		}
@@ -522,7 +522,7 @@ void IResourceManager::createAlias(const std::string &name, const std::string &_
 
 	*const_cast<std::string *>(&r->registered_name) = name;
 
-	r->updateVariants(vars);
+	r->update_variants(vars);
 	_objects[name] = r;
 }
 
@@ -542,7 +542,7 @@ Object *IResourceManager::createObject(const std::string &_classname) const {
 	if (r->registered_name.empty())
 		throw_ex(("%s::clone() did not use copy ctor. (you must write \" return new Class(*this)\" or smth.)", classname.c_str()));
 
-	r->updateVariants(vars);
+	r->update_variants(vars);
 	
 	return r;
 }

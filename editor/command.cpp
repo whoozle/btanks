@@ -10,8 +10,8 @@
 Command::Command(Layer *layer) : layer(layer) {}
 Command::Command(const ObjectCommandType type, const Object *object, const int arg, const Variants &vars) : 
 	layer(NULL), type(type), z(arg), vars(vars)  {
-		z_backup = object->getZ();
-		vars_backup = object->getVariants();
+		z_backup = object->get_z();
+		vars_backup = object->get_variants();
 		
 		assert(object != NULL);
 		property_backup = GameMonitor->find(object).property;
@@ -121,8 +121,8 @@ void Command::exec() {
 		LOG_DEBUG(("setting object z to %d", z));
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
-		object->setZ(z, true);
-		object->updateVariants(vars, true);
+		object->set_z(z, true);
+		object->update_variants(vars, true);
 		item.z = z;
 		item.renameProperty("object:" + item.classname + vars.dump() + ":" + item.animation);
 	} break;
@@ -186,8 +186,8 @@ void Command::undo() {
 		Object *object = getObject();
 		GameItem &item = GameMonitor->find(object);
 
-		object->setZ(z_backup, true);
-		object->updateVariants(vars_backup, true);
+		object->set_z(z_backup, true);
+		object->update_variants(vars_backup, true);
 		item.z = z_backup;
 		item.renameProperty("object:" + item.classname + vars_backup.dump() + ":" + item.animation);
 	} break;

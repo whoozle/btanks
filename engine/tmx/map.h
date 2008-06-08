@@ -109,7 +109,7 @@ public:
 	void invalidateTile(const int xp, const int yp);
 
 	void generateMatrixes();
-	void getZBoxes(std::set<int> &layers);
+	void get_zBoxes(std::set<int> &layers);
 	
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);

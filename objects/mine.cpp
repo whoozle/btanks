@@ -48,7 +48,7 @@ void Mine::on_spawn() {
 
 void Mine::tick(const float dt) {
 	Object::tick(dt);
-	if (hasOwners() && get_state() == "armed") 
+	if (has_owners() && get_state() == "armed") 
 		disown();
 	if (get_state() == "armed" && _variants.has("bomberman")) {
 		emit("death", NULL);

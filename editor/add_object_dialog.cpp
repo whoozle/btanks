@@ -104,7 +104,7 @@ bool AddObjectDialog::onKey(const SDL_keysym sym) {
 				return true;
 			selected_classname = i->first;
 			selected_animation = i->second;
-			selected_z = _z->getZ();
+			selected_z = _z->get_z();
 		}
 		invalidate();
 		hide();
@@ -126,7 +126,7 @@ void AddObjectDialog::end(const std::string &name) {
 	}
 }
 
-void AddObjectDialog::getVariants(std::set<std::string> &variants, const std::string &classname) const {
+void AddObjectDialog::get_variants(std::set<std::string> &variants, const std::string &classname) const {
 	variants.clear();
 	Variants::const_iterator b = _variants.lower_bound(classname);
 	Variants::const_iterator e = _variants.upper_bound(classname);

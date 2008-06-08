@@ -65,14 +65,14 @@ void Turrel::tick(const float dt) {
 	bool ai = (_parent != NULL)? !_parent->disable_ai:true;
 	//LOG_DEBUG(("ai: %s, _parent: %s, parent->disable_ai : %s", ai?"true":"false", _parent?_parent->animation.c_str():"-", _parent?(_parent->disable_ai?"true":"false"):"-"));
 	if (_fire.tick(dt) && _state.fire && (!ai || canFire())) {
-		bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
+		bool air_mode = (_parent != NULL)?_parent->get_player_state().alt_fire:true;
 		cancel_all();
 		play(_left? "fire-left": "fire-right", false);
 		play("hold", true);
 		std::string animation = mrt::format_string("buggy-%s-%s", air_mode?"air-bullet":"bullet", _left?"left":"right");
 		Object *bullet = (_parent == NULL? this: _parent)->spawn("buggy-bullet", animation, v2<float>(), _direction);
 		
-		bullet->setZ(air_mode? bullet->getZ() + 2000:getZ() - 1, true);
+		bullet->set_z(air_mode? bullet->get_z() + 2000:get_z() - 1, true);
 		_left = !_left;
 	}
 }
@@ -95,13 +95,13 @@ void Turrel::calculate(const float dt) {
 		targets.insert("paratrooper");
 	}
 	
-	bool air_mode = (_parent != NULL)?_parent->getPlayerState().alt_fire:true;
+	bool air_mode = (_parent != NULL)?_parent->get_player_state().alt_fire:true;
 	if (air_mode || _variants.has("ground-aim")) {
 		v2<float> pos, vel;
-		int z0 = getZ();
+		int z0 = get_z();
 
 		if (air_mode) {
-			setZ(z0 + 2000, true); //temporary move up turrel %) hack for air mode :)
+			set_z(z0 + 2000, true); //temporary move up turrel %) hack for air mode :)
 		}
 
 		if (get_nearest(targets, getWeaponRange("buggy-bullet"), pos, vel, true)) {
@@ -114,11 +114,11 @@ void Turrel::calculate(const float dt) {
 		}
 
 		if (air_mode) {
-			setZ(z0, true);
+			set_z(z0, true);
 		}
 	} else {
 		if (_parent != NULL) {
-			_state.fire = _parent->getPlayerState().fire;
+			_state.fire = _parent->get_player_state().fire;
 
 			int idx = _parent->get_direction();
 			set_direction(idx);

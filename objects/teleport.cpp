@@ -114,8 +114,8 @@ void Teleport::emit(const std::string &event, Object * emitter) {
 		Teleport *dst = teleports[(teleports.size() == 1)?0: mrt::random(teleports.size())];
 		World->teleport(emitter, dst->get_center_position());
 
-		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->getZ(), ZBox::getBoxBase(dst->getZ())));
-		emitter->setZBox(ZBox::getBoxBase(dst->getZ()));
+		//LOG_DEBUG(("dst z = %d, dst box base = %d", dst->get_z(), ZBox::getBoxBase(dst->get_z())));
+		emitter->set_zbox(ZBox::getBoxBase(dst->get_z()));
 		if (dst->track > 0 && dst->track != emitter->get_id()) {
 			//telefrag detection
 			PlayerSlot *slot = PlayerManager->get_slot_by_id(dst->track);

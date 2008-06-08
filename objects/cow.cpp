@@ -97,7 +97,7 @@ void Cow::on_spawn() {
 	_reaction.set(rt);
 	play("hold", true);
 	
-	removeOwner(OWNER_MAP);
+	remove_owner(OWNER_MAP);
 }
 
 void Cow::emit(const std::string &event, Object * emitter) {

@@ -41,9 +41,9 @@ public:
 
 		DestructableObject::on_spawn();
 		Object *o = add("machinegunner", _object, _animation, v2<float>(0, -12), Centered);
-		o->setZ(getZ() + 1);
+		o->set_z(get_z() + 1);
 		o = add("top", "watchtower-top", "watchtower", v2<float>(0, 0), Centered);
-		o->setZ(getZ() + 2);
+		o->set_z(get_z() + 2);
 	}
 
 	virtual void tick(const float dt) {

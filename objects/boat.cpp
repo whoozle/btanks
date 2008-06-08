@@ -131,7 +131,7 @@ void Boat::on_spawn() {
 	_reaction.set(rt);
 	
 	Object *o = add("mod", "missiles-on-boat", "guided-missiles-on-launcher", v2<float>(), Centered);
-	o->setZ(getZ() + 1, true);
+	o->set_z(get_z() + 1, true);
 }
 
 Boat::Boat(const std::string &object) : Object("boat"), 

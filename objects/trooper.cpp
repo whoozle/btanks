@@ -27,7 +27,7 @@
 #include "rt_config.h"
 #include <string.h>
 
-void Trooper::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void Trooper::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.2f) {
 		base_value = 0.2f;
 		base = 0;
@@ -114,7 +114,7 @@ void Trooper::on_spawn() {
 		hp = max_hp *= 2;
 	}
 
-	int sid = getSummoner();
+	int sid = get_summoner();
 	const Object *summoner = World->getObjectByID(sid);
 	if (summoner != NULL) {
 		const std::string &a = summoner->animation;

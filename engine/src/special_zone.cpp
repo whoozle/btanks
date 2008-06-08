@@ -226,18 +226,18 @@ void SpecialZone::onTick(const int slot_id) {
 	v2<int> c_pos(position.x, position.y);
 	c_pos += size / 2;
 
-	int o_z = getBox(o->getZ());
+	int o_z = getBox(o->get_z());
 	//LOG_DEBUG(("zone zbox: %d, object zbox: %d", position.z, o_z));
 	if (name == "right") {
 		if (right_pos.x >= c_pos.x && o_z != (position.z + 1) && vel.x > 0)
-			o->setZBox((position.z + 1) * 2000);
+			o->set_zbox((position.z + 1) * 2000);
 		if (right_pos.x < c_pos.x && o_z != position.z && vel.x < 0) 
-			o->setZBox(position.z * 2000);
+			o->set_zbox(position.z * 2000);
 	} else if (name == "left") {
 		if (left_pos.x < c_pos.x && o_z != (position.z + 1) && vel.x < 0)
-			o->setZBox((position.z + 1) * 2000);
+			o->set_zbox((position.z + 1) * 2000);
 		if (left_pos.x >= c_pos.x && o_z != position.z && vel.x > 0) 
-			o->setZBox(position.z * 2000);
+			o->set_zbox(position.z * 2000);
 	}
 
 	//LOG_DEBUG(("delta left: %d, %d, delta right: %d, %d", left_pos.x - c_pos.x, left_pos.y - c_pos.y, right_pos.x - c_pos.x, right_pos.y - c_pos.y));

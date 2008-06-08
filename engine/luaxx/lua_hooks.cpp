@@ -146,7 +146,7 @@ LUA_TRY {
 
 	bool strict = (n >= 2)? lua_toboolean(L, 2) != 0: false;
 		
-	bool exists = o?!o->isDead():false;
+	bool exists = o?!o->is_dead():false;
 	if (exists && !strict && o->get_state() == "broken")
 		exists = false;
 		
@@ -422,7 +422,7 @@ static int lua_hooks_kill_item(lua_State *L) {
 		}
 		GameItem &item = GameMonitor->find(prop);
 		Object *o = World->getObjectByID(item.id);
-		if (o != NULL && !o->isDead())
+		if (o != NULL && !o->is_dead())
 			o->emit("death", NULL); 
 		return 0;
 	} LUA_CATCH("kill_item")
@@ -500,7 +500,7 @@ static int lua_hooks_item_exists(lua_State *L) {
 		GameItem &item = GameMonitor->find(prop);
 		const Object *o = World->getObjectByID(item.id);
 		
-		bool exists = o?!o->isDead():false;
+		bool exists = o?!o->is_dead():false;
 		if (exists && !strict && o->get_state() == "broken")
 			exists = false;
 		
@@ -536,8 +536,8 @@ static int lua_hooks_spawn(lua_State *L) {
 		
 		Object *o = ResourceManager->createObject(classname, animation);
 	//	if (z) 
-	//		o->setZ(z, true);
-		o->addOwner(OWNER_MAP);
+	//		o->set_z(z, true);
+		o->add_owner(OWNER_MAP);
 
 	//	if (dir) 
 	//		o->set_direction(dir);

@@ -10,7 +10,7 @@ void ObjectPropertiesDialog::reset() {
 	Container::reset();
 }
 
-const int ObjectPropertiesDialog::getZ() const {
+const int ObjectPropertiesDialog::get_z() const {
 	return _z->get();
 }
 
@@ -52,9 +52,9 @@ void ObjectPropertiesDialog::show(const Object *o, const std::set<std::string> &
 	
 	_menu->clear();
 	for(std::set<std::string>::const_iterator i = variants.begin(); i != variants.end(); ++i) {
-		_menu->append(*i, o->getVariants().has(*i));
+		_menu->append(*i, o->get_variants().has(*i));
 	}
-	_z->set(o->getZ());
+	_z->set(o->get_z());
 	hide(false);
 }
 

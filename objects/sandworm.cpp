@@ -106,7 +106,7 @@ public:
 			}
 		}
 		
-		int sid = getSummoner();
+		int sid = get_summoner();
 		_state.fire = false;
 
 		if (active && sid <= 0) {
@@ -116,7 +116,7 @@ public:
 		if (!active || is_driven()) {
 			if (is_driven()) {
 				calculate_way_velocity();
-				updateStateFromVelocity();
+				update_state_from_velocity();
 			} 
 			//else LOG_DEBUG(("tail <-> parent: velocity: %g %g", _velocity.x, _velocity.y));
 			return;
@@ -253,7 +253,7 @@ void SandWormHead::emit(const std::string &event, Object * emitter) {
 		emitter->Object::emit("death", this);
 	} else if (event == "death") {
 		//worm killed.
-		int sid = getSummoner();
+		int sid = get_summoner();
 		Object * summoner = World->getObjectByID(sid);
 		if (summoner)
 			summoner->emit("death", this);

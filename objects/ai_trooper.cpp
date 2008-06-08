@@ -74,7 +74,7 @@ const int AITrooper::getComfortDistance(const Object *other) const {
 #include "world.h"
 
 void AITrooper::onIdle(const float dt) {
-	int summoner = getSummoner();
+	int summoner = get_summoner();
 	if (_variants.has("old-school")) {
 		ai::OldSchool::calculateV(_velocity, this);
 	} else if ((summoner != 0 && summoner != OWNER_MAP) || _variants.has("herd")) {
@@ -105,7 +105,7 @@ void AITrooper::onIdle(const float dt) {
 	GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05);
 	calculate_way_velocity();
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();	
+	update_state_from_velocity();	
 }
 
 void AITrooper::on_spawn() {
@@ -132,7 +132,7 @@ void AITrooper::calculate(const float dt) {
 	
 		GET_CONFIG_VALUE("objects.ai-trooper.rotation-time", float, rt, 0.05f);
 		limit_rotation(dt, rt, true, false);
-		updateStateFromVelocity();
+		update_state_from_velocity();
 		return;
 	}
 	
@@ -152,7 +152,7 @@ void AITrooper::calculate(const float dt) {
 		float r = speed * 5.0f; 
 
 		if (get_nearest(bullets, r, pos, vel, false)) {
-			float ct = getCollisionTime(pos, vel, 16);
+			float ct = get_collision_time(pos, vel, 16);
 			//LOG_DEBUG(("bullet at %g %g, est: %g", pos.x, pos.y, ct));
 			if (ct > 0 && ct > 0.15f) {
 				v2<float> dpos = -(pos + vel * ct);
@@ -254,11 +254,11 @@ public:
 		);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->ai_disabled() || target->impassability == 0 || target->pierceable)
+			if (has_same_owner(target) || target->ai_disabled() || target->impassability == 0 || target->pierceable)
 				continue;
 			
 			v2<float> dpos = get_relative_position(target);
-			if (check_distance(get_center_position(), target->get_center_position(), getZ(), true)) {
+			if (check_distance(get_center_position(), target->get_center_position(), get_z(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();

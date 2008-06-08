@@ -230,11 +230,11 @@ void Buratino::calculate(Object *object, const float dt) {
 			object->calculate_way_velocity();
 		else 
 			object->Object::calculate(dt);
-		object->updateStateFromVelocity();
+		object->update_state_from_velocity();
 		return;
 	}
 
-	const bool racing = object->getVariants().has("racing");
+	const bool racing = object->get_variants().has("racing");
 	const bool refresh_path = !racing && _refresh_path.tick(dt) && object->is_driven();
 	const bool dumb = !_reaction_time.tick(dt);
 	const Object *target = NULL;
@@ -310,7 +310,7 @@ void Buratino::calculate(Object *object, const float dt) {
 		
 	target = findTarget(object, 
 		(amount1 > 0 || amount2 > 0)?_enemies:std::set<std::string>(), 
-		object->getVariants().has("no-bonuses")?std::set<std::string>():_bonuses, 
+		object->get_variants().has("no-bonuses")?std::set<std::string>():_bonuses, 
 		_traits, _skip_objects);
 	
 	if (target != NULL) {
@@ -364,11 +364,11 @@ skip_calculations:
 		if (!weapon2.empty() && !object->_state.alt_fire)
 			object->_state.alt_fire = checkTarget(object, target, weapon2);
 	}
-	object->updateStateFromVelocity();
+	object->update_state_from_velocity();
 }
 
 const Object * Buratino::findTarget(const Object *src, const std::set<std::string> &enemies, const std::set<std::string> &bonuses, ai::Traits &traits, const std::set<int> &skip_objects) const {
-	if (src->getVariants().has("racing"))
+	if (src->get_variants().has("racing"))
 		return NULL;
 
 	if (src->has("#ctf-flag")) {
@@ -397,8 +397,8 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		const Object *o = *i;
 		if (o->impassability == 0 || o->_id == src->_id ||
-			!ZBox::sameBox(src->getZ(), o->getZ()) || 
-			o->hasSameOwner(src) || 
+			!ZBox::sameBox(src->get_z(), o->get_z()) || 
+			o->has_same_owner(src) || 
 			o->has_effect("invulnerability") || 
 			skip_objects.find(o->get_id()) != skip_objects.end()
 			)
@@ -460,9 +460,9 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 				continue;
 			Team::ID flag_team = Team::get_team(o);
 			if (flag_team == slot->team) {
-				const Object *base = World->getObjectByID(o->getSummoner());
+				const Object *base = World->getObjectByID(o->get_summoner());
 				if (base == NULL) {
-					LOG_WARN(("could not find base #%d for %s", o->getSummoner(), o->animation.c_str()));
+					LOG_WARN(("could not find base #%d for %s", o->get_summoner(), o->animation.c_str()));
 					continue;
 				}
 

@@ -71,7 +71,7 @@ void Helicopter::on_spawn() {
 void Helicopter::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		Object * o = spawn("helicorpse", "dead-" + animation);
-		o->setZBox(0);
+		o->set_zbox(0);
 	}
 	Object::emit(event, emitter);
 }

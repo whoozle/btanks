@@ -40,7 +40,7 @@ public:
 	
 	void calculate(const float dt) {
 		float idle, moving;
-		getTimes(moving, idle);
+		get_times(moving, idle);
 		float real_ttl = ttl + moving + idle;
 		GET_CONFIG_VALUE("objects.mortar-bullet.g", float, g, 2.0f);
 		float v0 = real_ttl * g / 2;
@@ -49,10 +49,10 @@ public:
 
 		float progress = ttl / real_ttl;
 		bool fly = (progress >= 0.3f && progress < 0.7f);
-		if (fly && getZ() != 999) {
-			setZ(999);
-		} else if (!fly && getZ() != 201) {
-			setZ(201);
+		if (fly && get_z() != 999) {
+			set_z(999);
+		} else if (!fly && get_z() != 201) {
+			set_z(201);
 		}
 	}
 	
@@ -65,7 +65,7 @@ public:
 
 		if (collision) {
 			float idle, moving;
-			getTimes(moving, idle);
+			get_times(moving, idle);
 			float progress = ttl / (ttl + moving + idle);
 			bool fly = (progress >= 0.3f && progress < 0.7f);
 			//LOG_DEBUG(("fly: %c, emitter: %s", fly?'+':'-', emitter != NULL?emitter->animation.c_str(): "-"));

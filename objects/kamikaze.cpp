@@ -31,7 +31,7 @@ public:
 	Kamikaze() : 
 		Object("kamikaze"), _reaction(true) {}
 
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 		if (impassability > 0.2f) {
 			base_value = 0.2f;
 			base = 0;
@@ -86,7 +86,7 @@ void Kamikaze::calculate(const float dt) {
 
 	GET_CONFIG_VALUE("objects.kamikaze.rotation-time", float, rt, 0.05);
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();	
+	update_state_from_velocity();	
 }
 
 void Kamikaze::tick(const float dt) {

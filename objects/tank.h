@@ -39,7 +39,7 @@ public:
 	
 	virtual const std::string getType() const { return "tank"; }
 
-	void getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const;
+	void get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const;
 	
 private:
 	Alarm _fire;

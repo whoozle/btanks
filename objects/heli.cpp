@@ -87,30 +87,30 @@ void Heli::tick(const float dt) {
 			} else {
 				o = spawn("bomb", "bomb");
 			}
-			o->setZ(getZ() - 1, true);
+			o->set_z(get_z() - 1, true);
 		}
 	}
 	if (classname == "fighting-vehicle" || classname == "helicopter") {
-		int z = getZ();
+		int z = get_z();
 		int box = ZBox::getBox(z);
 		if (box < 1) {
 			z += (1 - box) * 2000;
-			setZBox(z);
+			set_zbox(z);
 		}
 		//LOG_DEBUG(("box: %d", box));
 	} else if (classname == "vehicle") {
-		int z = getZ();
+		int z = get_z();
 		int box = ZBox::getBox(z);
 		if (box != 0) {
 			z += -box * 2000;
-			setZBox(z);
+			set_zbox(z);
 		}
 	}
 }
 
 void Heli::on_spawn() {
 	if (registered_name.compare(0, 6, "static") == 0)
-		removeOwner(OWNER_MAP);
+		remove_owner(OWNER_MAP);
 
 	GET_CONFIG_VALUE("objects.helicopter.fire-rate", float, fr, 0.1f);
 	_fire.set(fr);
@@ -129,7 +129,7 @@ void Heli::on_spawn() {
 void Heli::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		Object * o = spawn("helicorpse", "dead-" + animation);
-		o->setZBox(getZ() - 2000);
+		o->set_zbox(get_z() - 2000);
 	} else if (event == "collision") {
 	}
 	

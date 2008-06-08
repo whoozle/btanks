@@ -103,11 +103,11 @@ public:
 		enumerate_objects(objects, range, &ai::Targets->troops );
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *target = *i;
-			if (hasSameOwner(target) || target->ai_disabled() || target->pierceable || target->impassability == 0)
+			if (has_same_owner(target) || target->ai_disabled() || target->pierceable || target->impassability == 0)
 				continue;
 			
 			v2<float> dpos = get_relative_position(target);
-			if (check_distance(get_center_position(), target->get_center_position(), getZ(), true)) {
+			if (check_distance(get_center_position(), target->get_center_position(), get_z(), true)) {
 				if (result == NULL || dpos.quick_length() < dist) {
 					result = target;
 					dist = dpos.quick_length();
@@ -125,7 +125,7 @@ public:
 	
 	virtual void onBreak() {
 		Object *o = spawn("explosion", "cannon-explosion");
-		o->setZ(getZ() + 1, true);
+		o->set_z(get_z() + 1, true);
 		for(int i = 0; i < 2; ++i) {
 			o = spawn("machinegunner", "machinegunner", size / 2);
 			o->copy_special_owners(this);

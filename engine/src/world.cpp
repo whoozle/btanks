@@ -178,8 +178,8 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	o->_position = pos;
 	
 	if (o->_variants.has("ally")) {
-		o->removeOwner(OWNER_MAP);
-		o->prependOwner(OWNER_COOPERATIVE);
+		o->remove_owner(OWNER_MAP);
+		o->prepend_owner(OWNER_COOPERATIVE);
 	}
 
 	assert(o->_group.empty());
@@ -202,7 +202,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 
 struct ObjectZCompare {
 	inline bool operator()(const Object * a, const Object * b) const {
-		return a->getZ() != b->getZ()? a->getZ() > b->getZ(): a > b; //hack to maintain object order with equal range
+		return a->get_z() != b->get_z()? a->get_z() > b->get_z(): a > b; //hack to maintain object order with equal range
 	}
 };
 
@@ -259,7 +259,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	for(std::set<Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		assert(o != NULL);
-		if (o->isDead() || o->skip_rendering()) {
+		if (o->is_dead() || o->skip_rendering()) {
 			//LOG_DEBUG(("render: skipped dead object: %s", o->registered_name.c_str()));
 			continue;
 		}
@@ -293,10 +293,10 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 		layers.pop();
 		
 		assert(o != NULL);
-		if (o->isDead())
+		if (o->is_dead())
 			continue;
 		
-		int z2 = o->getZ();
+		int z2 = o->get_z();
 		if (z2 < z1) 
 			continue;
 
@@ -411,9 +411,9 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 			(obj1->impassability < 1.0 && obj1->impassability >= 0) || 
 			(obj2->impassability < 1.0 && obj2->impassability >= 0) || 
 			(obj1->piercing && obj2->pierceable) || (obj1->pierceable && obj2->piercing) ||
-			obj1->isDead() || obj2->isDead() ||
+			obj1->is_dead() || obj2->is_dead() ||
 			//owner stuff
-			obj1->hasSameOwner(obj2, true) 
+			obj1->has_same_owner(obj2, true) 
 		) {
 			return false;
 		}
@@ -466,7 +466,7 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 				obj2->emit("collision", obj1);
 				obj1->emit("collision", obj2);
 			
-				if (obj1->isDead() || obj2->isDead() || obj1->impassability == 0 || obj2->impassability == 0) {
+				if (obj1->is_dead() || obj2->is_dead() || obj1->impassability == 0 || obj2->impassability == 0) {
 					return false; //the most common case is the bullet which collides with object.
 				}
 			
@@ -530,7 +530,7 @@ TRY {
 	if (collided_with != NULL)
 		*collided_with = result;
 	
-	return obj->getEffectiveImpassability(im);
+	return obj->get_effective_impassability(im);
 } CATCH(mrt::format_string("World::getImpassability(%p, (%d, %d), %p, %s, %s)", 
 	(void *)obj, position.x, position.y, (void *)collided_with, probe?"true":"false", skip_moving?"true":"false").c_str(), 
 	throw;);	
@@ -542,7 +542,7 @@ void IWorld::get_impassability_matrix(Matrix<int> &matrix, const Object *src, co
 	const v2<int> tile_size = Map->getTileSize();
 	int z = 0;
 	if (src)
-		z = src->getZ();
+		z = src->get_z();
 
 	GET_CONFIG_VALUE("map.pathfinding-step", int, ps, 32);
 	const int split = 2 * ((tile_size.x - 1) / 2 + 1) / ps;
@@ -592,7 +592,7 @@ void IWorld::get_impassability_matrix(Matrix<int> &matrix, const Object *src, co
 #include "ai/synchronizable.h"
 
 void IWorld::_tick(Object &o, const float dt, const bool do_calculate) {
-	if (o.isDead()) 
+	if (o.is_dead()) 
 		return;
 
 	//LOG_DEBUG(("tick object %p: %d: %s", (void *)&o, o.get_id(), o.animation.c_str()));
@@ -611,7 +611,7 @@ TRY {
 			o.ttl = 0;
 		}
 	}
-	if (o.isDead()) 
+	if (o.is_dead()) 
 		return;
 
 } CATCH("ttl decrementing", throw;);		
@@ -625,7 +625,7 @@ TRY {
 			o.add("atatat-tooltip", "random-tooltip", "skotobaza", v2<float>(48, -48), Centered);
 		}
 
-		PlayerState state = o.getPlayerState();
+		PlayerState state = o.get_player_state();
 		state.fire = true;
 		state.alt_fire = true;
 		
@@ -651,7 +651,7 @@ TRY {
 			}
 		}
 		
-		o.updatePlayerState(state);
+		o.update_player_state(state);
 		o.Object::calculate(dt);
 	} else if (o.has_effect("drifting")) {
 		//drifting
@@ -678,7 +678,7 @@ TRY {
 		//regular calculate
 		GET_CONFIG_VALUE("engine.enable-profiler", bool, ep, false);
 		TRY { 
-			PlayerState old_state = o.getPlayerState();
+			PlayerState old_state = o.get_player_state();
 			if (o.has_effect("obey")) {
 				//LOG_DEBUG(("obey!!!"));
 				if (o.is_driven()) {
@@ -698,17 +698,17 @@ TRY {
 					o.calculate(dt);
 				}
 			}
-			if (old_state != o.getPlayerState() && dynamic_cast<ai::Synchronizable *>(&o) != NULL) {
+			if (old_state != o.get_player_state() && dynamic_cast<ai::Synchronizable *>(&o) != NULL) {
 				//LOG_DEBUG(("buratino %s changed state", o.animation.c_str()));
-				PlayerManager->send_object_state(o.get_id(), o.getPlayerState());
+				PlayerManager->send_object_state(o.get_id(), o.get_player_state());
 			}
 		} CATCH("calling o.calculate", throw;)
 	}
 
 TRY {
-	if(o.getPlayerState().leave) {
+	if(o.get_player_state().leave) {
 		//if (!detachVehicle(&o))
-		//	o.getPlayerState().leave = false; //do not trigger MP stuff. :)
+		//	o.get_player_state().leave = false; //do not trigger MP stuff. :)
 		o.detachVehicle();
 	}
 } CATCH("detaching from vehicle", throw;)
@@ -733,7 +733,7 @@ TRY {
 	TRY { 
 		bool tap = o.has_effect("tap");
 		bool cork = o.has_effect("cork");
-		PlayerState state_backup = o.getPlayerState();
+		PlayerState state_backup = o.get_player_state();
 		if (tap) 
 			o._state.fire = false;
 		if (cork)
@@ -1021,7 +1021,7 @@ TRY {
 	
 } CATCH("tick(`stuck` case)", throw;);
 
-	if (o.isDead())
+	if (o.is_dead())
 		return;
 
 	result_im = math::max(map_im, obj_im);
@@ -1203,7 +1203,7 @@ const bool IWorld::exists(const int id) const {
 
 const Object *IWorld::getObjectByID(const int id) const {
 	ObjectMap::const_iterator i = _objects.find(id);
-	if (i != _objects.end() && !i->second->isDead())
+	if (i != _objects.end() && !i->second->is_dead())
 		return i->second;
 	return NULL;
 }
@@ -1221,10 +1221,10 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	
 	assert(obj->_owners.empty());
 	
-	obj->copyOwners(src);
+	obj->copy_owners(src);
 	obj->set_slot(src->get_slot());
 		
-	obj->addOwner(src->_id);
+	obj->add_owner(src->_id);
 	//LOG_DEBUG(("%s spawns %s", src->classname.c_str(), obj->classname.c_str()));
 	obj->_spawned_by = src->_id;
 	
@@ -1240,7 +1240,7 @@ Object* IWorld::spawn(const Object *src, const std::string &classname, const std
 	addObject(obj, pos);
 
 	if (z) 
-		obj->setZ(z);
+		obj->set_z(z);
 
 	obj->_z -= ZBox::getBoxBase(obj->_z);
 	obj->_z += ZBox::getBoxBase(src->_z);
@@ -1261,7 +1261,7 @@ void IWorld::serializeObjectPV(mrt::Serializator &s, const Object *o) const {
 	}
 
 	s.add(o->_velocity);
-	s.add(o->getZ());
+	s.add(o->get_z());
 	s.add(o->_direction);
 	s.add(o->_direction_idx);
 	s.add(o->_moving_time);
@@ -1291,8 +1291,8 @@ void IWorld::deserializeObjectPV(const mrt::Serializator &s, Object *o) {
 	s.get(o->_position);
 	s.get(o->_velocity);
 	s.get(z);
-	if (!ZBox::sameBox(o->getZ(), z))
-		o->setZBox(z);
+	if (!ZBox::sameBox(o->get_z(), z))
+		o->set_zbox(z);
 
 	s.get(o->_direction);
 	s.get(o->_direction_idx);
@@ -1662,11 +1662,11 @@ const Object* IWorld::get_nearest_object(const Object *obj, const std::set<std::
 	for(std::set<Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		Object *o = *i;
 		//LOG_DEBUG(("%s is looking for %s. found: %s", obj->classname.c_str(), classname.c_str(), o->classname.c_str()));
-		if (o->_id == obj->_id || o->impassability == 0 || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->getZ(), o->getZ()) ||
-			classnames.find(o->classname) == classnames.end() || o->hasSameOwner(obj))
+		if (o->_id == obj->_id || o->impassability == 0 || PIERCEABLE_PAIR(obj, o) || !ZBox::sameBox(obj->get_z(), o->get_z()) ||
+			classnames.find(o->classname) == classnames.end() || o->has_same_owner(obj))
 			continue;
 
-		if (check_shooting_range && !Object::check_distance(position, o->get_center_position(), o->getZ(), true))	
+		if (check_shooting_range && !Object::check_distance(position, o->get_center_position(), o->get_z(), true))	
 			continue;
 
 		v2<float> dpos = Map->distance(o->get_center_position(), position);
@@ -1700,7 +1700,7 @@ const int IWorld::get_children(const int id, const std::string &classname) const
 	int c = 0;
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		if (i->first != id && 
-			(i->second->_spawned_by == id || i->second->hasOwner(id)) &&
+			(i->second->_spawned_by == id || i->second->has_owner(id)) &&
 		   	(classname.empty() || (classname == i->second->classname))
 		  ) 
 			++c;
@@ -1725,7 +1725,7 @@ void IWorld::enumerate_objects(std::set<const Object *> &id_set, const Object *s
 		Object *o = *i;
 		
 		v2<float> dpos = Map->distance(center_position, o->get_center_position());
-		if (o->_id == src->_id || !ZBox::sameBox(src->getZ(), o->getZ()) || dpos.quick_length() > r2)
+		if (o->_id == src->_id || !ZBox::sameBox(src->get_z(), o->get_z()) || dpos.quick_length() > r2)
 			continue;
 
 		if (classfilter != NULL && classfilter->find(o->classname) == classfilter->end())

@@ -275,7 +275,7 @@ TRY {
 		v2<float> pos, vel;
 		o->get_position(pos);
 		o->get_velocity(vel);
-		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
+		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 		clunk_object->update(clunk_pos, clunk_vel);
 	
 		double pitch = 1;
@@ -339,7 +339,7 @@ void IMixer::updateObject(const Object *o) {
 	o->get_velocity(vel);
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
-	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->getZ() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
+	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 	i->second->update(clunk_pos, clunk_vel);
 }
 

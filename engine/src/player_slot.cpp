@@ -195,7 +195,7 @@ void PlayerSlot::tick(const float dt) {
 	vel.normalize();
 		
 	float moving, idle;
-	p->getTimes(moving, idle);
+	p->get_times(moving, idle);
 	//vel.fromDirection(p->get_direction(), p->get_directions_number());
 
 	
@@ -381,7 +381,7 @@ void PlayerSlot::spawn_player(const int slot_id, const std::string &classname_, 
 	if (control_method != NULL || remote != -1)
 		obj->disable_ai = true;
 
-	obj->setZBox(position.z);
+	obj->set_zbox(position.z);
 	
 	bool random_respawn = false;
 	GameType game_type = RTConfig->game_type;
@@ -442,18 +442,18 @@ void PlayerSlot::spawn_player(const int slot_id, const std::string &classname_, 
 		case GameTypeTeamDeathMatch: 
 		case GameTypeCTF: 
 			if (team != Team::None)
-				obj->prependOwner(Team::get_owner(team));
+				obj->prepend_owner(Team::get_owner(team));
 			break;
 
 		case GameTypeRacing: {
 			Variants v; 
 			v.add("racing");
-			obj->updateVariants(v);
+			obj->update_variants(v);
 			break;
 		}
 
 		case GameTypeCooperative: 
-			obj->prependOwner(OWNER_COOPERATIVE);
+			obj->prepend_owner(OWNER_COOPERATIVE);
 			break;
 
 		default:

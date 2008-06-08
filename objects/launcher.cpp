@@ -23,7 +23,7 @@
 #include "config.h"
 #include "special_owners.h"
 
-void Launcher::getImpassabilityPenalty(const float impassability, float &base, float &base_value, float &penalty) const {
+void Launcher::get_impassability_penalty(const float impassability, float &base, float &base_value, float &penalty) const {
 	if (impassability > 0.2) {
 		base_value = 0.2;
 		base = 0.2;
@@ -42,7 +42,7 @@ Object * Launcher::clone() const {
 
 void Launcher::on_spawn() {
 	if (registered_name.substr(0, 6) == "static") {
-		removeOwner(OWNER_MAP);
+		remove_owner(OWNER_MAP);
 		disable_ai = true;
 	}
 

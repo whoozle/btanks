@@ -86,7 +86,7 @@ void AIMortar::calculate(const float dt) {
 	
 	GET_CONFIG_VALUE("objects.mortar.rotation-time", float, rt, 0.1);
 	limit_rotation(dt, rt, true, false);
-	updateStateFromVelocity();	
+	update_state_from_velocity();	
 }
 
 REGISTER_OBJECT("mortar", AIMortar, ("fighting-vehicle"));
