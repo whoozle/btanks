@@ -224,7 +224,7 @@ Export('version')
 Export('revision')
 Export('lib_dir')
 
-version = '0.7.%s' %version
+version = '0.8.%s' %version
 print "version: %s" %version
 
 bt_sublibs = ['mrt', 'sdlx', 'objects', 'clunk']
