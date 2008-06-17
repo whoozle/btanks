@@ -101,7 +101,10 @@ TRY {
 				while(!s.end()) {
 					mrt::Socket::addr addr;
 					s.get(addr);
-					LOG_DEBUG(("got %s:%d", addr.getAddr().c_str(), addr.ip));
+					LOG_DEBUG(("got %s:%u from master server", addr.getAddr().c_str(), addr.ip));
+				
+					sdlx::AutoMutex m(_hosts_lock);
+					check_queue.push(CheckQueue::value_type(mrt::format_string("%s:%u", addr.getAddr().c_str(), addr.ip), std::string()));
 				}
 			} CATCH("scanning", );
 
