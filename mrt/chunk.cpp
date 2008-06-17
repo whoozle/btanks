@@ -108,8 +108,10 @@ void Chunk::append(const Chunk &other) {
 void Chunk::append(const void *data, const size_t data_size) {
 	if (data_size == 0)
 		return;
-	set_size(size + data_size);
-	memcpy((char *) ptr + size, data, data_size);
+
+	size_t s = size;
+	set_size(s + data_size);
+	memcpy((char *) ptr + s, data, data_size);
 }
 
 
