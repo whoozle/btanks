@@ -8,6 +8,7 @@
 #include "mrt/udp_socket.h"
 #include "mrt/serializator.h"
 #include "mrt/net_exception.h"
+#include "mrt/tcp_socket.h"
 
 #ifdef _WINDOWS
 #	include <Winsock2.h>
@@ -80,6 +81,30 @@ TRY {
 		set.add(udp_sock, mrt::SocketSet::Exception | mrt::SocketSet::Read);
 		if (_scan) {
 			mrt::Chunk data;
+			TRY {
+				GET_CONFIG_VALUE("multiplayer.client.master-server", std::string, mname, "btanks.media.netive.ru");
+				GET_CONFIG_VALUE("multiplayer.client.master-server-port", int, mport, 27254);
+				LOG_DEBUG(("connecting to the master server %s:%d...", mname.c_str(), mport));
+				mrt::TCPSocket sock;
+				sock.connect(mname, mport);
+				char req = 'c';
+				sock.send(&req, 1);
+
+				mrt::Chunk data;
+				char buf[1500];
+				int r;
+				while((r = sock.recv(buf, sizeof(buf))) > 0) {
+					data.append(buf, r);
+				}
+				LOG_DEBUG(("got %u bytes.", (unsigned)data.get_size()));
+				mrt::Serializator s(&data);
+				while(!s.end()) {
+					mrt::Socket::addr addr;
+					s.get(addr);
+					LOG_DEBUG(("got %s:%d", addr.getAddr().c_str(), addr.ip));
+				}
+			} CATCH("scanning", );
+
 			createMessage(data);
 	
 			udp_sock.broadcast(data, _port);	
