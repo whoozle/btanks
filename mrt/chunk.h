@@ -49,6 +49,7 @@ public:
 	void fill(const int b);
 	
 	void append(const Chunk &other);
+	void append(const void *data, const size_t size);
 	void *reserve(const int more);
 
 	const std::string dump() const;

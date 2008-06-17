@@ -105,6 +105,14 @@ void Chunk::append(const Chunk &other) {
 	memcpy((char *) ptr + s1, other.ptr, s2);
 }
 
+void Chunk::append(const void *data, const size_t data_size) {
+	if (data_size == 0)
+		return;
+	set_size(size + data_size);
+	memcpy((char *) ptr + size, data, data_size);
+}
+
+
 void* Chunk::reserve(const int more) {
 	set_size(size + more);
 	return ptr;
