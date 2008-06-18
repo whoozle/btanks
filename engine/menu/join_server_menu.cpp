@@ -246,21 +246,7 @@ void JoinServerMenu::tick(const float dt) {
 				host->map = src.map;
 				host->update();
 				hosts.erase(h);
-			} else {
-				for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
-					const Scanner::Host &src = h->second;
-					if (host->name == src.name) {
-						host->addr = h->first;
-						host->ping = src.ping;
-						host->players = src.players;
-						host->slots = src.slots;
-						host->map = src.map;
-						host->update();
-						hosts.erase(h);
-						break;
-					}
-				}
-			}
+			} 
 		}
 		for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
 			const Scanner::Host &src = h->second;
@@ -274,18 +260,18 @@ void JoinServerMenu::tick(const float dt) {
 			_hosts->append(item);
 		}
 	
-		std::set<std::string> dup_ips;
+		std::set<mrt::Socket::addr> dup_ips;
 		for(int i = 0; i < _hosts->size(); ) {
 			HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
 			if (host == NULL) 
 				continue;
 
-			if (dup_ips.find(host->addr.getAddr(false)) != dup_ips.end()) {
+			if (dup_ips.find(host->addr) != dup_ips.end()) {
 				_hosts->remove(i);
 				continue;
 			}			
 			
-			dup_ips.insert(host->addr.getAddr(false));
+			dup_ips.insert(host->addr);
 			++i;
 		}
 		update();
