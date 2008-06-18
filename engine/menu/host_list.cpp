@@ -70,9 +70,8 @@ void HostList::append(const std::string &_item) {
 		new_item->name = item.substr(sp + 1);
 		new_item->addr.parse(item.substr(0, sp));
 	} else {
-		if (has_ip) {
-			new_item->addr.parse(item);
-		} else {
+		new_item->addr.parse(item);
+		if (!has_ip) {
 			new_item->name = item;
 		}
 	}
