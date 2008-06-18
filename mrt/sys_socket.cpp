@@ -20,6 +20,7 @@
 #include "net_exception.h"
 #include "serializator.h"
 #include <string.h>
+#include "fmt.h"
 
 #ifdef _WINDOWS
 #	include "Winsock2.h"
@@ -31,6 +32,8 @@
 #	include <netdb.h>
 #endif
 
+#include <assert.h>
+#include <stdlib.h>
 
 using namespace mrt;
 
@@ -51,13 +54,19 @@ void Socket::addr::getAddr(const std::string &name) {
 }
 
 void Socket::addr::parse(const std::string &ip) {
+	std::vector<std::string> ipport;
+	mrt::split(ipport, ip, ":");
+	assert(!ipport.empty());
+	if (ipport.size() > 1) {
+		port = atoi(ipport[1].c_str());
+	}
 #ifdef _WINDOWS
-	this->ip = inet_addr(ip.c_str());
+	this->ip = inet_addr(ipport[0].c_str());
 	if (this->ip == INADDR_NONE)
 		this->ip = 0;
 #else	
 	struct in_addr a;
-	if (inet_aton(ip.c_str(), &a) == -1)
+	if (inet_aton(ipport[0].c_str(), &a) == -1)
 		return;
 	this->ip = a.s_addr;
 #endif
