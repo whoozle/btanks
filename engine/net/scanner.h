@@ -36,7 +36,7 @@ public:
 
 private: 
 	void createMessage(mrt::Chunk & data);
-	void ping(mrt::UDPSocket &udp_sock, unsigned int port);
+	void ping(mrt::UDPSocket &udp_sock);
 
 	virtual const int run();
 	volatile bool _running, _scan, _changed;

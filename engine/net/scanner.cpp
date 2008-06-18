@@ -115,7 +115,7 @@ TRY {
 			_scan = false;
 		}
 
-		ping(udp_sock, _port);
+		ping(udp_sock);
 	
 		if (set.check(100) == 0) {
 			continue;
@@ -193,7 +193,7 @@ TRY {
 	return 0;
 }
 
-void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
+void Scanner::ping(mrt::UDPSocket &udp_sock) {
 		mrt::Socket::addr addr;
 		std::string host;
 		{
@@ -209,7 +209,6 @@ void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 		
 		LOG_DEBUG(("pinging %s/%s", addr.getAddr().c_str(), host.c_str()));
 		TRY {
-			addr.port = port;
 			if (!host.empty()) {
 				addr.getAddrByName(host);
 				if (!addr.empty()) {
