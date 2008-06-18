@@ -1141,7 +1141,7 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 				assert(local_idx > 0);
 				
 				if (local_idx > _local_clients || _local_clients > 2)
-					throw_ex(("this client cannot handle %u clients(local index: %u)", (unsigned)_local_clients, (unsigned) local_idx));
+					throw_ex(("this client cannot handle client #%u (local clients: %u)", (unsigned) local_idx, (unsigned)_local_clients));
 				
 				if (_local_clients == 1) {
 					slot.viewport = window.get_size();
