@@ -195,8 +195,9 @@ void JoinServerMenu::tick(const float dt) {
 	if (_add_dialog->changed()) {
 		_add_dialog->reset();
 		_add_dialog->hide();
-		if (!_add_dialog->get().empty()) {
-			_hosts->append(_add_dialog->get());
+		std::string host = _add_dialog->get();
+		if (!host.empty()) {
+			_hosts->append(host);
 			ping();
 		}
 		
