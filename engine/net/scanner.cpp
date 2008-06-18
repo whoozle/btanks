@@ -16,6 +16,7 @@
 #	include <sys/socket.h>
 #	include <netinet/in.h>
 #	include <netinet/ip.h> /* superset of previous */
+#	include <arpa/inet.h>
 #endif
 
 Scanner::Scanner() : _running(true), _scan(false), _changed(false) {
@@ -169,7 +170,12 @@ TRY {
 								
 				std::string ip = addr.getAddr();
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
-				std::string name = addr.getName();
+				std::string name;
+				if (ip != "81.1.223.7") {
+					name = addr.getName();
+				} else {
+					name = "btanks.media.netive.ru";
+				}
 				LOG_DEBUG(("found name: %s", name.c_str()));
 				
 				sdlx::AutoMutex m(_hosts_lock);
@@ -213,7 +219,13 @@ void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
 			} else {
 			check_ip: 
 				addr.parse(ip);
-				std::string new_host = addr.getName();
+
+				std::string new_host;
+				if (addr.ip != inet_addr("81.1.223.7")) {
+					new_host = addr.getName();
+				} else {
+					new_host = "btanks.media.netive.ru";
+				}
 				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), ip.c_str()));
 				if (!new_host.empty()) {
 					host = new_host;
