@@ -34,6 +34,7 @@
 #include "special_zone.h"
 #include "player_slot.h"
 #include "sl08/sl08.h"
+#include "mrt/sys_socket.h"
 
 namespace mrt {
 class Chunk;
@@ -57,7 +58,7 @@ public:
 	~IPlayerManager();
 		
 	void start_server();
-	void start_client(const std::string &address, const size_t n);
+	void start_client(const mrt::Socket::addr &address, const size_t n);
 	void clear();
 	
 	inline const bool is_client() const { return _client != NULL; }
@@ -148,7 +149,7 @@ private:
 	bool _ping;
 	Alarm _next_sync;
 	bool _game_joined;
-	std::string _recent_address;
+	mrt::Socket::addr _recent_address;
 	
 	typedef std::set<int> ObjectStates;
 	ObjectStates _object_states;

@@ -31,7 +31,7 @@ class Client {
 public:
 	Client();
 	~Client();
-	void init(const std::string &host);
+	void init(const mrt::Socket::addr &host);
 	void send(const Message &m);
 	void tick(const float dt);
 	void disconnect();

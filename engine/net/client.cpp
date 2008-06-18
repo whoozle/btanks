@@ -38,16 +38,15 @@ Client::~Client() {
 	_monitor = NULL;
 }
 
-void Client::init(const std::string &host) {
+void Client::init(const mrt::Socket::addr &host) {
 	delete _monitor;
 
-	GET_CONFIG_VALUE("multiplayer.port", int, port, 27255);
 	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
 	
-	LOG_DEBUG(("client::init('%s':%u)", host.c_str(), port));	
+	LOG_DEBUG(("client::init('%s')", host.getAddr().c_str()));
 	//_udp_sock.create();
 	//_udp_sock.listen(bindaddr, port);
-	_monitor = new Monitor(port, cl);
+	_monitor = new Monitor(cl);
 	_monitor->add(&_udp_sock);
 	_monitor->connect(host);
 	_monitor->start();

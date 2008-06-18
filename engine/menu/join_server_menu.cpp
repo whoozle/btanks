@@ -133,13 +133,13 @@ void JoinServerMenu::join() {
 	if (item == NULL)
 		return;
 		
-	std::string host = item->addr.getAddr();
-	if (host.empty())
-		host = item->name;
-
-	if (host.empty()) {
-		LOG_ERROR(("no ip or address in item %d", _hosts->get()));
-		return;
+	mrt::Socket::addr addr = item->addr;
+	if (addr.ip == 0) {
+		addr.getAddrByName(item->name);
+		if (addr.ip == 0) {
+			LOG_WARN(("ip undefined even after resolving :("));
+			return;
+		}
 	}
 		
 	_hosts->promote();
@@ -150,7 +150,7 @@ void JoinServerMenu::join() {
 	Config->get("multiplayer.split-screen-mode", split, false);
 		
 	Game->clear();
-	PlayerManager->start_client(host, split?2:1);
+	PlayerManager->start_client(addr, split?2:1);
 	onHide();
 }
 

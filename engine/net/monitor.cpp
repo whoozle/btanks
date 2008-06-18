@@ -48,26 +48,29 @@
 #endif
 
 
-void Monitor::connect(const std::string &host) {
+void Monitor::connect(const mrt::Socket::addr &host) {
 	sdlx::AutoMutex m(_connections_mutex);
+	if (_connect_host.ip != 0)
+		return;
 	_connect_host = host;
 }
 
 void Monitor::_connect() {
-	std::string host;
+	mrt::Socket::addr host;
 	{
 		sdlx::AutoMutex m(_connections_mutex);
 		host = _connect_host;
-		_connect_host.clear();
+		_connect_host.ip = 0;
+		_connect_host.port = 0;
 	}
-	LOG_DEBUG(("[monitor thread] connecting to %s:%d", host.c_str(), _port));
+	LOG_DEBUG(("[monitor thread] connecting to %s", host.getAddr().c_str()));
 	
-	_dgram_sock->connect(host, _port);
+	_dgram_sock->connect(host);
 
 	Connection *conn = NULL;
 	TRY { 
 		conn = new Connection(new mrt::TCPSocket);
-		conn->sock->connect(host, _port, true);
+		conn->sock->connect(host, true);
 		conn->sock->noDelay();
 		add(0, conn);
 		conn = NULL;
@@ -129,8 +132,8 @@ Monitor::Task::Task(const int id, const int size) :
 
 void Monitor::Task::clear() { delete data; pos = len = 0; }
 
-Monitor::Monitor(const int port, const int cl) : 
-	_port(port), _running(false), 
+Monitor::Monitor(const int cl) : 
+	_running(false), 
 	_send_q(), _recv_q(), _result_q(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex(), 

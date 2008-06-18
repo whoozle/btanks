@@ -53,7 +53,7 @@ void Server::init() {
 	_sock.listen(bindaddr, port, true);
 	_sock.noDelay();
 
-	_monitor = new Monitor(port, cl);
+	_monitor = new Monitor(cl);
 	_monitor->add(&_udp_sock);
 	_monitor->add(&_sock);
 	_monitor->start();

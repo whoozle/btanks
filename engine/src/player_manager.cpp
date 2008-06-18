@@ -920,7 +920,7 @@ void IPlayerManager::start_server() {
 	});
 }
 
-void IPlayerManager::start_client(const std::string &address, const size_t n) {
+void IPlayerManager::start_client(const mrt::Socket::addr &address, const size_t n) {
 	clear();
 	if (_server != NULL) {
 		delete _server;

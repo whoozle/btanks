@@ -475,7 +475,9 @@ if (!RTConfig->server_mode) {
 		_net_talk->hide();
 
 		if (_autojoin) {
-			PlayerManager->start_client(address, 1);
+			mrt::Socket::addr addr;
+			addr.parse(address);
+			PlayerManager->start_client(addr, 1);
 			if (_main_menu)
 				_main_menu->setActive(false);
 		}

@@ -25,6 +25,7 @@
 #include <string>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
+#include "mrt/sys_socket.h"
 
 namespace mrt {
 	class Chunk;
@@ -35,12 +36,12 @@ namespace mrt {
 class Connection;
 class Monitor : public sdlx::Thread {
 public:
-	Monitor(const int port, const int cl);
+	Monitor(const int cl);
 	void setCompressionLevel(const int level = 3);
 	void add(const int id, Connection *);
 	const bool active() const;
 	
-	void connect(const std::string &host);
+	void connect(const mrt::Socket::addr &host);
 	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
 	void broadcast(const mrt::Chunk &data, const bool dgram = false);
 	void accept();
@@ -61,7 +62,6 @@ public:
 private:
 	void _accept();
 	void _connect();
-	int _port;
 	volatile bool _running;
 	
 	virtual const int run();
@@ -98,7 +98,7 @@ private:
 	int _comp_level;
 	mrt::UDPSocket *_dgram_sock;
 	mrt::TCPSocket *_server_sock;
-	std::string _connect_host;
+	mrt::Socket::addr _connect_host;
 };
 
 #endif
