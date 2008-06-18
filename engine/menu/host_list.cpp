@@ -54,15 +54,6 @@ void HostList::append(const std::string &_item) {
 	int a;
 	bool has_ip = (sscanf(item.c_str(), "%d.%d.%d.%d", &a, &a, &a, &a) == 4);
 	
-	for(List::iterator i = _list.begin(); i != _list.end(); ++i) {
-		HostItem *l = dynamic_cast<HostItem *>(*i);
-		if (l == NULL) 
-			continue;
-		
-		if (item == l->addr.getAddr() || item == l->name)
-			return;
-	}
-
 	HostItem *new_item = new HostItem();
 	size_t sp = item.find('/');
 
