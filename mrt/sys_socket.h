@@ -66,6 +66,7 @@ namespace mrt {
 
 			void serialize(Serializator &s) const;
 			void deserialize(const Serializator &s);
+			void clear() { ip = 0; port = 0; }
 		};
 
 		Socket();
