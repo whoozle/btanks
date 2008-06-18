@@ -61,7 +61,7 @@ const bool HostTextControl::validate(const int idx, const int c) const {
 	if (c >= '0' && c <= '9')
 		return true;
 
-	if (idx != 0 && (c == '.' || c == '-')) 
+	if (idx != 0 && (c == '.' || c == '-' || c == ':')) 
 		return true;
 
 	return false;
