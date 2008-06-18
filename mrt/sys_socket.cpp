@@ -66,9 +66,7 @@ void Socket::addr::parse(const std::string &ip) {
 		this->ip = 0;
 #else	
 	struct in_addr a;
-	if (inet_aton(ipport[0].c_str(), &a) == -1)
-		return;
-	this->ip = a.s_addr;
+	this->ip = (inet_aton(ipport[0].c_str(), &a) != -1)? a.s_addr: 0;
 #endif
 }
 
