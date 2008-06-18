@@ -132,5 +132,5 @@ void Socket::addr::deserialize(const Serializator &s) {
 	ip = n;
 	s.get(n);
 	port = n;
-	LOG_DEBUG(("deserialized %08x:%u", ip, port));
+//	LOG_DEBUG(("deserialized %08x:%u", ip, port));
 }
