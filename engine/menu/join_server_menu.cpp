@@ -133,7 +133,7 @@ void JoinServerMenu::join() {
 	if (item == NULL)
 		return;
 		
-	std::string host = item->ip;
+	std::string host = item->addr.getAddr();
 	if (host.empty())
 		host = item->name;
 
@@ -236,7 +236,7 @@ void JoinServerMenu::tick(const float dt) {
 			if (host == NULL) 
 				continue;
 			
-			Scanner::HostMap::iterator h = hosts.find(host->ip);
+			Scanner::HostMap::iterator h = hosts.find(host->addr);
 			if (h != hosts.end()) {
 				const Scanner::Host &src = h->second;
 				host->name = src.name;
@@ -250,7 +250,7 @@ void JoinServerMenu::tick(const float dt) {
 				for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
 					const Scanner::Host &src = h->second;
 					if (host->name == src.name) {
-						host->ip = h->first;
+						host->addr = h->first;
 						host->ping = src.ping;
 						host->players = src.players;
 						host->slots = src.slots;
@@ -265,7 +265,7 @@ void JoinServerMenu::tick(const float dt) {
 		for(Scanner::HostMap::iterator h = hosts.begin(); h != hosts.end(); ++h) {
 			const Scanner::Host &src = h->second;
 			HostItem *item = new HostItem;
-			item->ip = h->first;
+			item->addr = h->first;
 			item->name = src.name;
 			item->map = src.map;
 			item->ping = src.ping;
@@ -280,12 +280,12 @@ void JoinServerMenu::tick(const float dt) {
 			if (host == NULL) 
 				continue;
 
-			if (dup_ips.find(host->ip) != dup_ips.end()) {
+			if (dup_ips.find(host->addr.getAddr(false)) != dup_ips.end()) {
 				_hosts->remove(i);
 				continue;
 			}			
 			
-			dup_ips.insert(host->ip);
+			dup_ips.insert(host->addr.getAddr(false));
 			++i;
 		}
 		update();
@@ -314,7 +314,7 @@ void JoinServerMenu::ping() {
 		HostItem * host = dynamic_cast<HostItem*>(_hosts->getItem(i));
 		if (host == NULL) 
 			continue;
-		_scanner->add(host->ip, host->name);
+		_scanner->add(host->addr, host->name);
 	}	
 }
 

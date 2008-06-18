@@ -59,7 +59,7 @@ void HostList::append(const std::string &_item) {
 		if (l == NULL) 
 			continue;
 		
-		if (item == l->ip || item == l->name)
+		if (item == l->addr.getAddr() || item == l->name)
 			return;
 	}
 
@@ -68,10 +68,10 @@ void HostList::append(const std::string &_item) {
 
 	if (sp != std::string::npos) {
 		new_item->name = item.substr(sp + 1);
-		new_item->ip = item.substr(0, sp);
+		new_item->addr.parse(item.substr(0, sp));
 	} else {
 		if (has_ip) {
-			new_item->ip = item;
+			new_item->addr.parse(item);
 		} else {
 			new_item->name = item;
 		}
@@ -92,7 +92,7 @@ HostList::~HostList() {
 		if (l == NULL) 
 			continue;
 		//LOG_DEBUG(("host: %s", l->get().c_str()));
-		str += l->ip + "/" + l->name + " ";
+		str += l->addr.getAddr() + "/" + l->name + " ";
 	}
 	if (!str.empty())
 		str.resize(str.size() - 1);

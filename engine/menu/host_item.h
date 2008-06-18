@@ -2,12 +2,14 @@
 #define BTANKS_MENU_HOSTITEM_H__
 
 #include "container.h"
+#include "mrt/sys_socket.h"
 
 class Label;
 
 class HostItem : public Container {
 public:
-	std::string name, map, ip;
+	mrt::Socket::addr addr;
+	std::string name, map;
 	int ping, players, slots;
 	
 	HostItem();

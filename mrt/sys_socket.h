@@ -59,8 +59,8 @@ namespace mrt {
 				return !(*this == other);
 			}
 
-			void getAddr(const std::string &name);
-			const std::string getAddr() const;
+			const std::string getAddr(bool with_port = true) const;
+			void getAddrByName(const std::string &name);
 			const std::string getName() const; //gethostbyaddr
 			void parse(const std::string &ip); 
 

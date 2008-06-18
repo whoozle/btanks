@@ -46,7 +46,7 @@ const std::string Socket::addr::getName() const {
 	return he->h_name;
 }
 
-void Socket::addr::getAddr(const std::string &name) {
+void Socket::addr::getAddrByName(const std::string &name) {
 	struct hostent *he = gethostbyname(name.c_str());
 	if (he == NULL || he->h_addrtype != AF_INET) //sorry, no ipv6 now
 		return;
@@ -72,11 +72,15 @@ void Socket::addr::parse(const std::string &ip) {
 #endif
 }
 
-const std::string Socket::addr::getAddr() const {
+const std::string Socket::addr::getAddr(bool with_port) const {
 	in_addr a;
 	memset(&a, 0, sizeof(a));
 	a.s_addr = ip;
-	return inet_ntoa(a);
+	std::string r = inet_ntoa(a);
+	if (with_port && port != 0) {
+		r += mrt::format_string(":%u", port);
+	}
+	return r;
 }
 
 void Socket::init() {

@@ -18,7 +18,7 @@ void HostItem::update() {
 		mapstr += mrt::format_string("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
 	}
 	
-	std::string hoststr = name;
+	std::string hoststr = name, ip = addr.getAddr();
 	if (hoststr.empty()) {
 		hoststr = ip;
 	} else if (!ip.empty()) {

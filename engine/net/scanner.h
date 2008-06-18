@@ -7,6 +7,7 @@
 #include <queue>
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
+#include "mrt/sys_socket.h"
 
 namespace mrt {
 	class Chunk;
@@ -21,7 +22,7 @@ public:
 		
 		Host() : name(), map(), ping(0), players(0), slots(0) {}
 	};
-	typedef std::map<const std::string, Host> HostMap;
+	typedef std::map<const mrt::Socket::addr, Host> HostMap;
 	
 	Scanner(); 
 	~Scanner();
@@ -31,7 +32,7 @@ public:
 
 	void get(HostMap &hosts) const;
 
-	void add(const std::string &ip, const std::string &name);
+	void add(const mrt::Socket::addr &ip, const std::string &name);
 
 private: 
 	void createMessage(mrt::Chunk & data);
@@ -41,7 +42,7 @@ private:
 	volatile bool _running, _scan, _changed;
 	sdlx::Mutex _hosts_lock;
 	HostMap _hosts;
-	typedef std::queue<std::pair<std::string, std::string> > CheckQueue;
+	typedef std::queue<std::pair<mrt::Socket::addr, std::string> > CheckQueue;
 	CheckQueue check_queue;
 	
 	std::string _bindaddr;

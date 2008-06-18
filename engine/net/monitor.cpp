@@ -447,7 +447,7 @@ TRY {
 						LOG_DEBUG(("send(%u) returned %d", (unsigned)result.get_size(), r));
 					} CATCH("discovery message", );
 					if (!ok) {
-						LOG_WARN(("incoming datagram from unknown client(%s:%d)", addr.getAddr().c_str(), addr.port));
+						LOG_WARN(("incoming datagram from unknown client (%s)", addr.getAddr().c_str()));
 					}
 				}
 			} CATCH("datagram", )

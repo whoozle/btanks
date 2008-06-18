@@ -102,10 +102,10 @@ TRY {
 				while(!s.end()) {
 					mrt::Socket::addr addr;
 					s.get(addr);
-					LOG_DEBUG(("got %s:%u from master server", addr.getAddr().c_str(), addr.port));
+					LOG_DEBUG(("got %s from master server", addr.getAddr().c_str()));
 				
 					sdlx::AutoMutex m(_hosts_lock);
-					check_queue.push(CheckQueue::value_type(mrt::format_string("%s:%u", addr.getAddr().c_str(), addr.port), std::string()));
+					check_queue.push(CheckQueue::value_type(addr, std::string()));
 				}
 			} CATCH("scanning", );
 
@@ -168,7 +168,7 @@ TRY {
 					continue;
 				}
 								
-				std::string ip = addr.getAddr();
+				std::string ip = addr.getAddr(false);
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
 				std::string name;
 				if (ip != "81.1.223.7") {
@@ -179,7 +179,7 @@ TRY {
 				LOG_DEBUG(("found name: %s", name.c_str()));
 				
 				sdlx::AutoMutex m(_hosts_lock);
-				Host &host = _hosts[ip];
+				Host &host = _hosts[addr];
 				host.ping = 1 + delta / 2;
 				host.name = name;
 				host.slots = slots;
@@ -194,49 +194,48 @@ TRY {
 }
 
 void Scanner::ping(mrt::UDPSocket &udp_sock, unsigned int port) {
-		std::string ip, host;
+		mrt::Socket::addr addr;
+		std::string host;
 		{
 			sdlx::AutoMutex l(_hosts_lock);
 			if (check_queue.empty())
 				return;
-			ip = check_queue.front().first;
+			addr = check_queue.front().first;
 			host = check_queue.front().second;
 			check_queue.pop();
 		}
-		if (ip.empty() && host.empty())
+		if (addr.ip == 0 && host.empty())
 			return;
 		
-		LOG_DEBUG(("pinging %s/%s", ip.c_str(), host.c_str()));
+		LOG_DEBUG(("pinging %s/%s", addr.getAddr().c_str(), host.c_str()));
 		TRY {
-			mrt::Socket::addr addr;
 			addr.port = port;
 			if (!host.empty()) {
-				addr.getAddr(host);
+				addr.getAddrByName(host);
 				if (!addr.empty()) {
 					std::string ip = addr.getAddr();
 					LOG_DEBUG(("found address %s for %s", ip.c_str(), host.c_str()));
 				} else goto check_ip;
 			} else {
 			check_ip: 
-				addr.parse(ip);
-
 				std::string new_host;
 				if (addr.ip != inet_addr("81.1.223.7")) {
 					new_host = addr.getName();
 				} else {
 					new_host = "btanks.media.netive.ru";
 				}
-				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), ip.c_str()));
+				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), addr.getAddr().c_str()));
 				if (!new_host.empty()) {
 					host = new_host;
 					_changed = true;
 
 					sdlx::AutoMutex l(_hosts_lock);
-					_hosts[ip].name = host;
-					_hosts[ip].ping = 0;
-					_hosts[ip].map.clear();
-					_hosts[ip].players = 0;
-					_hosts[ip].slots = 0;
+					Host &h = _hosts[addr];
+					h.name = host;
+					h.ping = 0;
+					h.map.clear();
+					h.players = 0;
+					h.slots = 0;
 				}
 			}
 			mrt::Chunk data;
@@ -250,7 +249,7 @@ void Scanner::get(HostMap &hosts) const {
 	hosts = _hosts;
 }
 
-void Scanner::add(const std::string &ip, const std::string &name) {
+void Scanner::add(const mrt::Socket::addr &ip, const std::string &name) {
 	sdlx::AutoMutex m(_hosts_lock);
 	check_queue.push(CheckQueue::value_type(ip, name));
 }
