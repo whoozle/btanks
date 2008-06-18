@@ -30,6 +30,7 @@ class Chunk;
 class MRTAPI UDPSocket : public Socket {
 public:
 	void create();
+	void connect(const mrt::Socket::addr &addr);
 	void connect(const std::string &host, const int port);
 	void listen(const std::string &addr, const unsigned port, const bool reuse = false);
 	void set_broadcast_mode(int val = 1);

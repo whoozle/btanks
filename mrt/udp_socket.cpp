@@ -62,6 +62,20 @@ void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 //		throw_net(("listen"));	
 }
 
+void UDPSocket::connect(const mrt::Socket::addr &addr_) {
+	create();
+
+	struct sockaddr_in addr;
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(addr_.port);
+	addr.sin_addr.s_addr = addr_.ip;
+	
+	LOG_DEBUG(("connect %s:%u", inet_ntoa(addr.sin_addr), addr_.port));
+	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
+		throw_net(("connect"));
+}
+
 void UDPSocket::connect(const std::string &host, const int port) {
 	create();
 	
@@ -79,7 +93,7 @@ void UDPSocket::connect(const std::string &host, const int port) {
 		addr.sin_addr = *(struct in_addr*)(he->h_addr_list[0]);
 	}
 	
-	LOG_DEBUG(("connect %s:%d", inet_ntoa(addr.sin_addr), port));
+	LOG_DEBUG(("connect %s:%u", inet_ntoa(addr.sin_addr), port));
 	if (::connect(_sock, (const struct sockaddr*)&addr, sizeof(addr))	 == -1)
 		throw_net(("connect"));
 }
