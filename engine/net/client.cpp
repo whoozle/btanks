@@ -41,7 +41,7 @@ Client::~Client() {
 void Client::init(const mrt::Socket::addr &host) {
 	delete _monitor;
 
-	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 1);
+	GET_CONFIG_VALUE("multiplayer.compression-level", int, cl, 3);
 	
 	LOG_DEBUG(("client::init('%s')", host.getAddr().c_str()));
 	//_udp_sock.create();

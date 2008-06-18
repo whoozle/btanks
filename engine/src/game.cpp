@@ -220,12 +220,6 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 4009) {
 			Config->set("engine.sound.maximum-sources", 16);
 		}
-		if (revision < 4317) {
-			int cl;
-			Config->get("multiplayer.compression-level", cl, 1);
-			if (cl < 1) 
-				Config->set("multiplayer.compression-level", 1);
-		}
 		if (revision < 4975) {
 			int ds;
 			Config->get("multiplayer.deltas-samples", ds, 30);
@@ -300,6 +294,12 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 7292) {
 			Config->remove("menu.state");
 			Config->remove("menu.default-mp-map");
+		}
+		if (revision < 7391) {
+			int cl;
+			Config->get("multiplayer.compression-level", cl, 3);
+			if (cl < 3) 
+				Config->set("multiplayer.compression-level", 3);
 		}
 		
 		Config->set("engine.revision", getRevision());
