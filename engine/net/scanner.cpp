@@ -248,8 +248,11 @@ void Scanner::get(HostMap &hosts) const {
 	hosts = _hosts;
 }
 
-void Scanner::add(const mrt::Socket::addr &ip, const std::string &name) {
+void Scanner::add(const mrt::Socket::addr &addr_, const std::string &name) {
 	sdlx::AutoMutex m(_hosts_lock);
-	check_queue.push(CheckQueue::value_type(ip, name));
+	mrt::Socket::addr addr = addr_;
+	if (addr.port == 0)
+		addr.port = _port;
+	check_queue.push(CheckQueue::value_type(addr, name));
 }
 
