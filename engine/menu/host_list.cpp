@@ -66,6 +66,11 @@ void HostList::append(const std::string &_item) {
 			new_item->name = item;
 		}
 	}
+	if (new_item->addr.port == 0) {
+		int port;
+		Config->get("multiplayer.port", port, 27255);
+		new_item->addr.port = port;
+	}
 	new_item->update();
 	_list.push_front(new_item);
 }
