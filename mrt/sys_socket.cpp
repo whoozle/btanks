@@ -56,7 +56,11 @@ void Socket::addr::getAddrByName(const std::string &name) {
 void Socket::addr::parse(const std::string &ip) {
 	std::vector<std::string> ipport;
 	mrt::split(ipport, ip, ":");
-	assert(!ipport.empty());
+	if (ipport.empty()) {
+		ip = 0;
+		port = 0;
+		return;
+	}
 	if (ipport.size() > 1) {
 		port = atoi(ipport[1].c_str());
 	}
