@@ -57,8 +57,8 @@ void Socket::addr::parse(const std::string &ip) {
 	std::vector<std::string> ipport;
 	mrt::split(ipport, ip, ":");
 	if (ipport.empty()) {
-		ip = 0;
-		port = 0;
+		this->ip = 0;
+		this->port = 0;
 		return;
 	}
 	if (ipport.size() > 1) {
