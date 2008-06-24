@@ -481,7 +481,6 @@ const bool IWorld::collides(Object *obj1, const v2<int> &position, Object *obj2,
 	return 0;
 }
 
-
 const float IWorld::getImpassability(Object *obj, const v2<int> &position, const Object **collided_with, const bool probe, const bool skip_moving) const {
 TRY {
 	assert(obj != NULL);
@@ -491,6 +490,12 @@ TRY {
 			*collided_with = NULL;
 		return 0;
 	}
+
+/*	LOG_DEBUG(("%d:%s->getImpassability((%d, %d)%s%s)", 
+		obj->get_id(), obj->animation.c_str(), 
+		position.x, position.y, 
+		(probe?" [probe]":""), (skip_moving?" [skip_moving]":"")));
+*/
 
 	float im = 0;
 	const Object *result = NULL;
@@ -765,7 +770,7 @@ TRY {
 					//LOG_DEBUG(("o: %s, hidden: %s", o.animation.c_str(), hidden?"yes":"no"));
 					o.update_outline(hidden);
 				}
-				getImpassability(&o, pos);
+				//getImpassability(&o, pos);
 			}
 		} CATCH("tick(speed==0)", throw;);
 
@@ -775,9 +780,9 @@ TRY {
 	float len = o._velocity.normalize();
 		
 	if (len == 0) {
-		if (o.impassability < 0 || o.impassability >= 1.0f) {
-			getImpassability(&o, o._position.convert<int>());
-		}
+//		if (o.impassability < 0 || o.impassability >= 1.0f) {
+//			getImpassability(&o, o._position.convert<int>());
+//		}
 		return;
 	} 
 	
