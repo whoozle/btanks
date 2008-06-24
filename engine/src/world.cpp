@@ -780,9 +780,9 @@ TRY {
 	float len = o._velocity.normalize();
 		
 	if (len == 0) {
-//		if (o.impassability < 0 || o.impassability >= 1.0f) {
-//			getImpassability(&o, o._position.convert<int>());
-//		}
+		if (o.impassability < 0 || o.impassability >= 1.0f) {
+			getImpassability(&o, o._position.convert<int>());
+		}
 		return;
 	} 
 	
