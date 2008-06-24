@@ -25,7 +25,7 @@ class MortarBullet : public Object {
 public:
 	Object *clone() const { return new MortarBullet(*this); }
 	
-	MortarBullet() : Object("bullet") {
+	MortarBullet() : Object("bullet"), age(0) {
 		impassability = -1;
 		piercing = true;
 		set_directions_number(1);
