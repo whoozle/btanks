@@ -18,6 +18,7 @@ consult your distro's documentation for details):
 	e) zlib
 	f) lua 5.1 (maybe 5.0, not tested)
 	g) smpeg - SDL mpeg1 library (for campaign preview movies)
+	h) OpenGL headers file (usually from the Mesa project)
 
 4) you could add something like this in 'options.cache' file 
 (located in trunk/ directory): 
@@ -27,5 +28,4 @@ CXXFLAGS = ['-O', '-march=YOUR_CPU', '-mtune=YOUR_CPU']
 
 //for debian-based systems(i.e. ubuntu) you could use the following command 
 to install all dependencies: 
-sudo apt-get install gcc g++ libsdl-image1.2-dev libsdl1.2-dev libvorbis-dev libexpat1-dev zlib1g-dev liblua5.1-0-dev libsmpeg-dev
-
+sudo apt-get install gcc g++ libsdl-image1.2-dev libsdl1.2-dev libvorbis-dev libexpat1-dev zlib1g-dev liblua5.1-0-dev libsmpeg-dev mesa-common-dev
