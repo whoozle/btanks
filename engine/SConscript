@@ -6,7 +6,7 @@ Import('revision')
 Import('debug')
 Import('sdl_cflags')
 Import('sdl_libs')
-
+Import('lib_dir')
 Import('smpeg_lib')
 
 venv = env.Clone()
@@ -104,6 +104,12 @@ if sys.platform == "win32":
 #else: 
 #	bt_libs.append('GL')
 
+if sys.platform != 'win32':
+	env.Append(LINKFLAGS=['-Wl,-rpath,'+ lib_dir])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/sdlx'])
+	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/clunk'])
+
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs)
 Install('#', bt[0])
@@ -117,8 +123,6 @@ if sys.platform == "win32":
 	bt_main_libs.append('user32')
 	bt_main_libs.append('sdlx_main')
 
-
-Import('lib_dir')
 if sys.platform != 'win32':
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath,'+ lib_dir])
 	bt_env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/mrt'])
