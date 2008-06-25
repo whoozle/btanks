@@ -168,7 +168,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 				_cmaps[tile] = cmap;
 				cmap = NULL;
 			
-			} CATCH("animation", { delete s; s = NULL; delete cmap; cmap = NULL; throw; });
+			} CATCH(mrt::format_string("loading animation \"%s\"", tile.c_str()).c_str(), { delete s; s = NULL; delete cmap; cmap = NULL; throw; });
 		//	
 		} else { 
 			LOG_DEBUG(("tile '%s' was already loaded, skipped.", tile.c_str()));
