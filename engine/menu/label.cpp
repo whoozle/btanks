@@ -70,21 +70,28 @@ void Label::set_size(const int w, const int h) {
 	_max_height = h;
 }
 
+#define MARGIN 10
+#define OVERLAP 4
+
 void Label::tick(const float dt) {
 	TextualControl::tick(dt);
 	if (_max_width <= 0)
 		return;
-	if (_label_size < _max_width) {
+	if (_label_size <= _max_width) {
 		x_pos = 0;
 		return;
 	}
-	x_pos += x_vel * dt;
-	if (x_pos + _max_width > _label_size) {
-		x_pos = _label_size - _max_width;
+	int delta =  _label_size - _max_width;
+	//LOG_DEBUG(("%d",delta));
+	float m = delta >= MARGIN? 1.0f: 1.0f * (delta + MARGIN / 2) / (MARGIN + MARGIN / 2);
+	
+	x_pos += x_vel * dt * m;
+	if (x_pos + _max_width - OVERLAP > _label_size) {
+		x_pos = _label_size - _max_width + OVERLAP;
 		x_vel = -LABEL_SPEED;
 	}
-	if (x_pos < 0) {
-		x_pos = 0;
+	if (x_pos < - OVERLAP) {
+		x_pos = -OVERLAP;
 		x_vel = LABEL_SPEED;
 	}
 }
