@@ -43,8 +43,6 @@ public:
 private: 
 	std::string value;
 
-	void layout();
-
 	bool _server;
 	const sdlx::Surface *_checkbox;
 	const sdlx::Font *_big, *_medium;

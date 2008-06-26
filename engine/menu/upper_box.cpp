@@ -53,16 +53,18 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 	int w, h;
 	get_size(w, h);
 	
+	int players_w = w / 5;
+	
 	int cw1, ch1, cw2, ch2;
-	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "player.name-1");
+	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "player.name-1", players_w);
 	_player1_name->get_size(cw1, ch1);
 
-	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "player.name-2");
+	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "player.name-2", players_w);
 	_player2_name->get_size(cw2, ch2);
 
 	const int dh = 8;
-	add(w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
-	add(w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
+	add(w - players_w - mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1, _player1_name);
+	add(w - players_w - mx, my + (h - (ch1 + ch2) + dh) / 2, _player2_name);
 
 	_name_prompt = new Prompt(320, 80, new TextControl("small", 32));
 	int nw, nh;
@@ -70,22 +72,6 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 	_name_prompt->get_size(nw, nh);
 	add(w - nw, (h - nh) / 2, _name_prompt);
 	_name_prompt->hide();
-}
-
-void UpperBox::layout() {
-	int mx, my;
-	_box->getMargins(mx, my);
-
-	int w, h;
-	get_size(w, h);
-	
-	int cw1, ch1, cw2, ch2;
-	_player1_name->get_size(cw1, ch1);
-	_player2_name->get_size(cw2, ch2);
-
-	const int dh = 8;
-	setBase(_player1_name, w - cw1 - 2 * mx, my + (h - (ch1 + ch2) - dh) / 2 - ch1);
-	setBase(_player2_name, w - cw2 - 2 * mx, my + (h - (ch1 + ch2) + dh) / 2);
 }
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
@@ -157,7 +143,6 @@ bool UpperBox::onMouse(const int button, const bool pressed, const int x, const 
 
 void UpperBox::tick(const float dt) {
 	Container::tick(dt);
-	bool layout = false;
 	bool split;
 	
 	Config->get("multiplayer.split-screen-mode", split, false);
@@ -176,8 +161,7 @@ void UpperBox::tick(const float dt) {
 			_name_prompt->hide(false);
 			_name_prompt->set(_player1_name->get());
 			_name_prompt->reset();
-		} else 
-			layout = true;
+		} 
 	}
 	
 	//copypasteninja was here.
@@ -188,8 +172,7 @@ void UpperBox::tick(const float dt) {
 			_name_prompt->hide(false);
 			_name_prompt->set(_player2_name->get());
 			_name_prompt->reset();
-		} else 
-			layout = true;
+		} 
 	}
 	
 	if (_name_prompt->changed()) {
@@ -199,10 +182,6 @@ void UpperBox::tick(const float dt) {
 		if (!name.empty()) {
 			LOG_DEBUG(("setting name to %s", name.c_str()));
 			(_edit_player1?_player1_name:_player2_name)->set(name);
-			layout = true;
 		}
 	}
-	
-	if (layout)
-		this->layout();
 }

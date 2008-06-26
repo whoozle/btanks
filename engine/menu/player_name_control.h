@@ -14,7 +14,7 @@ class Label;
 
 class PlayerNameControl : public Container {
 public: 
-	PlayerNameControl(const std::string &label, const std::string &config_key);
+	PlayerNameControl(const std::string &label, const std::string &config_key, const int w);
 	void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void get_size(int &w, int &h) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
@@ -30,6 +30,7 @@ private:
 	sdlx::Rect _dice_area, _edit_area;
 	const sdlx::Surface * _dice, *_edit;
 	bool _edit_flag;
+	int width;
 };
 
 #endif

@@ -6,8 +6,11 @@
 #include "sdlx/surface.h"
 #include "mrt/utf8_utils.h"
 
-PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key) : 
-	_font(ResourceManager->loadFont("small", true)), _config_key(config_key), _edit_flag(false) {
+PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key, const int w) : 
+	_font(ResourceManager->loadFont("small", true)), _config_key(config_key), _edit_flag(false), width(w) {
+	_dice = ResourceManager->loadSurface("menu/dice.png");
+	_edit = ResourceManager->loadSurface("menu/edit.png");
+
 	std::string name;
 	Config->get(config_key, name, Nickname::generate());
 	mrt::utf8_resize(name, 32);
@@ -15,14 +18,20 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	_label = new Label(_font, label);
 	_name = new Label(_font, name);
 
-	add(0, 0, _label);
 	int sw, sh;
 	_label->get_size(sw, sh);
-	add(sw, 0, _name);
+	add(-sw, 0, _label);
+
+	int label_w = width - ( _dice->get_width() + _edit->get_width() + 10);
+	if (label_w < 0)
+		label_w = 4; //lol :)
+	_name->set_size(label_w, sh);
+	add(0, 0, _name);
 
 	Container::get_size(sw, sh);
-	_dice = ResourceManager->loadSurface("menu/dice.png");
-	_edit = ResourceManager->loadSurface("menu/edit.png");
+	if (w > 0) {
+		sw = w - _edit->get_width() - _dice->get_width() - 10;
+	}
 
 	_dice_area.x = sw + 4;
 	_dice_area.y = (sh - _edit->get_height()) / 2;
@@ -40,20 +49,14 @@ const std::string PlayerNameControl::get() const {
 }
 
 void PlayerNameControl::set(const std::string &name) {
-		Config->set(_config_key, name);
-		_name->set(name);
-
-		int bw, bh;
-		Container::get_size(bw, bh);
-	
-		_dice_area.x = bw + 4;
-		_edit_area.x = _dice_area.x + _dice_area.w + 6;
-
-		_edit_flag = false;
-		invalidate(true);
+	Config->set(_config_key, name);
+	_name->set(name);
+	_edit_flag = false;
+	invalidate(true);
 }
 
 bool PlayerNameControl::onMouse(const int button, const bool pressed, const int x, const int y) {
+	//LOG_DEBUG(("%d,%d -> %d,%d,%d,%d", x, y, _dice_area.x, _dice_area.y, _dice_area.w, _dice_area.h));
 	if (_dice_area.in(x, y)) {
 		if (pressed) 
 			return true;
@@ -71,9 +74,7 @@ bool PlayerNameControl::onMouse(const int button, const bool pressed, const int 
 		//LOG_DEBUG(("edit name!"));
 		return true;
 	}
-	if (Container::onMouse(button, pressed, x, y))
-		return true;
-	return false;
+	return Container::onMouse(button, pressed, x, y);
 }
 
 void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y) const {
@@ -84,5 +85,5 @@ void PlayerNameControl::render(sdlx::Surface &surface, const int x, const int y)
 
 void PlayerNameControl::get_size(int &w, int &h) const {
 	Container::get_size(w, h);
-	w += _dice_area.w + _edit_area.w + 10;
+	w = width > 0? width: w + _dice_area.w + _edit_area.w + 10;
 }
