@@ -18,16 +18,22 @@
  */
 #include "label.h"
 #include "sdlx/font.h"
+#include "sdlx/surface.h"
+#include "sdlx/rect.h"
 #include "resource_manager.h"
 
+#define LABEL_SPEED (30)
+
 Label::Label(const sdlx::Font *font, const std::string &label) : 
-	_font(font), _label(label), _label_size(_font->render(0, 0, 0, _label)) {}
+	_font(font), _label(label), _label_size(_font->render(0, 0, 0, _label)), 
+	_max_width(0), _max_height(0),  x_pos(0), x_vel(LABEL_SPEED) {}
 
 Label::Label(const std::string &font, const std::string &label) : 
-	_font(ResourceManager->loadFont(font, true)), _label(label), _label_size(_font->render(0, 0, 0, _label)) {}
+	_font(ResourceManager->loadFont(font, true)), _label(label), _label_size(_font->render(0, 0, 0, _label)), 
+	_max_width(0), _max_height(0), x_pos(0), x_vel(LABEL_SPEED) {}
 
 void Label::get_size(int &w, int &h) const {
-	w = _label_size;
+	w = _max_width <= 0? _label_size: (_label_size < _max_width? _label_size: _max_width);
 	h = _font->get_height();
 }
 
@@ -46,5 +52,39 @@ const std::string Label::get() const {
 }
 
 void Label::render(sdlx::Surface& surface, int x, int y) const {
-	_font->render(surface, x, y, _label);
+	if (_max_width <= 0) {
+		_font->render(surface, x, y, _label);
+		return;
+	} 
+	//smooth scrolling
+	sdlx::Rect clip;
+	surface.get_clip_rect(clip);
+	surface.set_clip_rect(sdlx::Rect(x, y, _max_width, _max_height));
+	_font->render(surface, x - (int)x_pos, y, _label);
+	surface.set_clip_rect(clip);
+}
+
+void Label::set_size(const int w, const int h) {
+	LOG_DEBUG(("setting maximum size %dx%d", w, h));
+	_max_width= w;
+	_max_height = h;
+}
+
+void Label::tick(const float dt) {
+	TextualControl::tick(dt);
+	if (_max_width <= 0)
+		return;
+	if (_label_size < _max_width) {
+		x_pos = 0;
+		return;
+	}
+	x_pos += x_vel * dt;
+	if (x_pos + _max_width > _label_size) {
+		x_pos = _label_size - _max_width;
+		x_vel = -LABEL_SPEED;
+	}
+	if (x_pos < 0) {
+		x_pos = 0;
+		x_vel = LABEL_SPEED;
+	}
 }

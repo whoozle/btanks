@@ -34,16 +34,20 @@ public:
 	Label(const std::string &font, const std::string &label);
 	virtual void render(sdlx::Surface& surface, const int x, const int y) const;
 	virtual void get_size(int &w, int &h) const;
+	virtual void tick(const float dt);
 
 	void set(const std::string &label);
 	const std::string get() const;
 	
 	void setFont(const std::string &font);
+	
+	void set_size(const int w, const int h);
 
 private: 
 	const sdlx::Font * _font;
 	std::string _label;
-	int _label_size;
+	int _label_size, _max_width, _max_height;
+	float x_pos, x_vel;
 };
 
 #endif
