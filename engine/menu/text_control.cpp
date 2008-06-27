@@ -158,7 +158,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 	}
 	changing();
