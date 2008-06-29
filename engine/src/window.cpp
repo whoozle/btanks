@@ -146,7 +146,7 @@ void IWindow::initSDL() {
 		if (compiled.major != linked->major || 
 			compiled.minor != linked->minor || 
 			compiled.patch != linked->patch) {
-			LOG_WARN(("Engine was compiled with different version of SDL library. Do not report any bugs(especially crashes) then!"));
+			LOG_WARN(("Engine was compiled with different version of SDL library. Do not report any bugs then!"));
 		}
 	}
 	
@@ -313,8 +313,8 @@ SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 	}
 #endif
 
-
 	createMainWindow();
+
 #ifdef _WINDOWS
 	SystemParametersInfo(SPI_GETSTICKYKEYS, sizeof(STICKYKEYS), &g_StartupStickyKeys, 0);
 	SystemParametersInfo(SPI_GETTOGGLEKEYS, sizeof(TOGGLEKEYS), &g_StartupToggleKeys, 0);
@@ -522,6 +522,14 @@ void IWindow::run() {
 	if (_running)
 		throw_sdl(("SDL_WaitEvent"));
 
+}
+
+void IWindow::init_dummy() {
+    LOG_DEBUG(("initializing dummy video driver..."));
+	SDL_putenv(strdup("SDL_VIDEODRIVER=dummy"));
+    sdlx::System::init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+	sdlx::Surface::set_default_flags(SDL_SRCALPHA);
+    _window.set_video_mode(640, 480, 0, SDL_ANYFORMAT);
 }
 
 void IWindow::deinit() {

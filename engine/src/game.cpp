@@ -365,8 +365,7 @@ void IGame::init(const int argc, char *argv[]) {
 	if (!RTConfig->server_mode) {
 		Window->init(argc, argv);
 	} else {
-		sdlx::System::init(SDL_INIT_TIMER);
-		sdlx::Surface::set_default_flags(SDL_SRCALPHA);
+		Window->init_dummy();
 	}
 
 	IFinder::FindResult playlists;

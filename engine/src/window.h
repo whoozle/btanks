@@ -57,6 +57,8 @@ public:
 	sdlx::Surface &get_surface() { return _window; }
 	
 	void flip();
+	
+	void init_dummy();
 
 private:
 	sdlx::Surface _window;
