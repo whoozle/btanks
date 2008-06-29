@@ -322,7 +322,7 @@ TRY {
 		obj->interpolate();
 		
 		float dt = (now + slot.net_stats.getDelta() - timestamp ) / 1000.0f; 
-		LOG_DEBUG(("player state, now: %u, timestamp: %u, delta: %+d, dt: %g", now, timestamp, slot.net_stats.getDelta(), dt));
+		LOG_DEBUG(("player state %s, now: %u, timestamp: %u, delta: %+d, dt: %g", state.dump().c_str(), now, timestamp, slot.net_stats.getDelta(), dt));
 		if (dt < 0) 
 			dt = 0;
 		World->tick(*obj, -dt, false);
