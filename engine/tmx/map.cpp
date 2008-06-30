@@ -747,8 +747,7 @@ void IMap::end(const std::string &name) {
 			_image->load_image(_data);
 			_image_is_tileset = false;
 		}
-		if (!RTConfig->server_mode)
-			_image->display_format_alpha();
+		_image->display_format_alpha();
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->get_width(), _image->get_height()));
 	} else if (name == "layer") {
@@ -1237,8 +1236,7 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			
 			image = new sdlx::Surface;
 			image->load_image(data);
-			if (!RTConfig->server_mode)
-				image->display_format_alpha();
+			image->display_format_alpha();
 			
 			n = addTiles(image, gid);
 			
@@ -1323,8 +1321,7 @@ TRY {
 		for(int x = 0; x < w; x += _tw) {
 			sdlx::Surface *s = new sdlx::Surface;
 			s->create_rgb(_tw, _th, 24);
-			if (!RTConfig->server_mode)
-				s->display_format_alpha();
+			s->display_format_alpha();
 
 			sdlx::Rect from(x, y, _tw, _th);
 			s->blit(*image, from);

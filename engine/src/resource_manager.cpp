@@ -153,8 +153,7 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					
 					s = new sdlx::Surface;
 					s->load_image(data);
-					if (!RTConfig->server_mode)
-						s->display_format_alpha();
+					s->display_format_alpha();
 			
 					cmap = new sdlx::CollisionMap;
 					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
@@ -359,8 +358,7 @@ const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
 
 			s = new sdlx::Surface;
 			s->load_image(data);
-			if (!RTConfig->server_mode)
-				s->display_format_alpha();
+			s->display_format_alpha();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
@@ -595,8 +593,7 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 			Finder->load(data, "tiles/" + a->surface);
 			s = new sdlx::Surface;
 			s->load_image(data);
-			if (!RTConfig->server_mode)
-				s->display_format_alpha();
+			s->display_format_alpha();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
 				s->lock();
