@@ -121,6 +121,9 @@ void IGame::run() {
 		float dt = limit / 1000000;
 		while(server_running) {
 			_timer.reset();
+			if (!Map->loaded()) {
+				start_random_map();
+			}
 			if (PlayerManager->is_server_active())
 				tick(dt);
 			else 
