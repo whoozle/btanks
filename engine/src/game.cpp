@@ -121,7 +121,11 @@ void IGame::run() {
 		float dt = limit / 1000000;
 		while(server_running) {
 			_timer.reset();
-			tick(dt);
+			if (PlayerManager->is_server_active())
+				tick(dt);
+			else 
+				PlayerManager->tick(dt);
+			
 			int t = _timer.microdelta();
 			if (t < limit) {
 				_timer.microsleep("server fps limit", limit - t);
