@@ -320,13 +320,11 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	std::string address, lang, bind;
 	bool xmas = mrt::xmas();
-	std::string preload_map;
-	
 	for(int i = 1; i < argc; ++i) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
-		else if (strncmp(argv[i], "--map=", 6) == 0) { preload_map = argv[i] + 6; }
+		else if (strncmp(argv[i], "--map=", 6) == 0) { mrt::split(preload_map, argv[i] + 6, ","); }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
 		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
@@ -487,19 +485,29 @@ if (!RTConfig->server_mode) {
 	} else {
 		_net_talk = NULL;
 	}
-	if (!preload_map.empty()) {
-		GameMonitor->startGame(NULL, preload_map);
-		for(int i = 0; i < spawn_ai; ++i) {
-			const char *c_vehicle[] = {"tank", "shilka", "launcher", };
-			std::string vehicle = c_vehicle[mrt::random(3)], animation;
-			const int slot_id = PlayerManager->find_empty_slot();
-			PlayerSlot &slot = PlayerManager->get_slot(slot_id);
-			
-			slot.getDefaultVehicle(vehicle, animation);
-			slot.name = Nickname::generate();
-			LOG_DEBUG(("player%d: %s:%s, name: %s", slot_id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
-			slot.spawn_player(slot_id, vehicle, animation);
-		}
+	
+	start_random_map();
+}
+
+void IGame::start_random_map() {
+	if (preload_map.empty()) 
+		return;
+	
+	int idx = mrt::random(preload_map.size());
+	std::string map = preload_map[idx];
+	mrt::trim(map);
+	
+	GameMonitor->startGame(NULL, map);
+	for(int i = 0; i < spawn_ai; ++i) {
+		const char *c_vehicle[] = {"tank", "shilka", "launcher", };
+		std::string vehicle = c_vehicle[mrt::random(3)], animation;
+		const int slot_id = PlayerManager->find_empty_slot();
+		PlayerSlot &slot = PlayerManager->get_slot(slot_id);
+		
+		slot.getDefaultVehicle(vehicle, animation);
+		slot.name = Nickname::generate();
+		LOG_DEBUG(("player%d: %s:%s, name: %s", slot_id, vehicle.c_str(), animation.c_str(), slot.name.c_str()));
+		slot.spawn_player(slot_id, vehicle, animation);
 	}
 }
 

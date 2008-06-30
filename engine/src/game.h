@@ -138,6 +138,9 @@ private:
 	Chat *_net_talk;
 	bool server_running;
 	int spawn_ai;
+
+	std::vector<std::string> preload_map;
+	void start_random_map();
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);
