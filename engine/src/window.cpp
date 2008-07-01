@@ -270,9 +270,9 @@ void IWindow::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--no-joystick") == 0) { _init_joystick = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
-					"\t--no-gl\t\t\tdisable GL renderer\n"
-					"\t--dx\t\t\tenable directX(tm) renderer (win32 only)\n"
-					"\t-2 -3\t\t\tenlarge video mode to 1024x768 or 1280x1024\n"
+					"\t--no-gl\t\t\tdisable GL renderer (linux only/custom non-d3d builds)\n"
+					"\t--no-dx\t\t\tdisable D3D renderer (windows only)\n"
+					"\t-2 -3 -4\t\t\tenlarge video mode to 1024x768, 1152x864 or 1280x1024\n"
 				  );
 			return;
 		}
