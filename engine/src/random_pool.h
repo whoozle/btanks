@@ -11,7 +11,6 @@ public:
 	RandomPool() : min(0), max(0), step(0) {}
 	void init(T min_, T max_, T step_ = 1) {
 		min = min_; max = max_; step = step_;
-		hash();
 	}
 	
 	T get() {
