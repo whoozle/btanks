@@ -78,7 +78,9 @@
 IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
- _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), spawn_ai(0) {
+ _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), 
+ _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), 
+ spawn_ai(0), preload_game_type(GameTypeDeathMatch) {
 
 	std::string path;
 	path = mrt::Directory::get_app_dir("Battle Tanks", "btanks") + "/";
@@ -334,6 +336,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--sound") == 0) { no_sound = false; no_music = false; }
 		else if (strcmp(argv[i], "--server") == 0) { RTConfig->server_mode = true; }
 		else if (strncmp(argv[i], "--ai=", 5) == 0) { spawn_ai = atoi(argv[i] + 5); }
+		else if (strncmp(argv[i], "--game-type=", 12) == 0) { preload_game_type = IRTConfig::parse_game_type(argv[i] + 12); }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			printf(
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
