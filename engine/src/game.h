@@ -23,6 +23,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <set>
 
 #include "math/v2.h"
 #include "player_state.h"
@@ -31,6 +32,8 @@
 #include "export_btanks.h"
 #include "sdlx/sdlx.h"
 #include "sl08/sl08.h"
+
+#include "random_pool.h"
 
 class BaseObject;
 class Object;
@@ -140,6 +143,7 @@ private:
 	int spawn_ai;
 
 	std::vector<std::string> preload_map;
+	RandomPool<size_t> preload_map_pool;
 	void start_random_map();
 	
 	IGame(const IGame &);

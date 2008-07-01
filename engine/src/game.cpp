@@ -329,7 +329,7 @@ void IGame::init(const int argc, char *argv[]) {
 		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
 		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
-		else if (strncmp(argv[i], "--map=", 6) == 0) { mrt::split(preload_map, argv[i] + 6, ","); }
+		else if (strncmp(argv[i], "--map=", 6) == 0) { mrt::split(preload_map, argv[i] + 6, ","); preload_map_pool.init(0, preload_map.size()); }
 		else if (strcmp(argv[i], "--no-sound") == 0) { no_sound = true; no_music = true; }
 		else if (strcmp(argv[i], "--xmas") == 0) { xmas = true; }
 		else if (strcmp(argv[i], "--no-xmas") == 0) { xmas = false; }
@@ -509,8 +509,7 @@ void IGame::start_random_map() {
 	if (preload_map.empty()) 
 		return;
 	
-	int idx = mrt::random(preload_map.size());
-	std::string map = preload_map[idx];
+	std::string map = preload_map[preload_map_pool.get()];
 	mrt::trim(map);
 	
 	GameMonitor->startGame(NULL, map);
