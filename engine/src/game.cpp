@@ -338,11 +338,19 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strncmp(argv[i], "--ai=", 5) == 0) { spawn_ai = atoi(argv[i] + 5); }
 		else if (strncmp(argv[i], "--game-type=", 12) == 0) { preload_game_type = IRTConfig::parse_game_type(argv[i] + 12); }
 		else if (strcmp(argv[i], "--help") == 0) { 
-			printf(
+			Window->init(argc, argv);
+			printf( 
 					"\t--connect=ip/host\tconnect to given host as mp-client\n" 
 					"\t--no-sound\t\tdisable sound.\n" 
+					"\t--lang\t\t\tswitch language (2-letter iso code: en, ru, de...)\n"
+					"\t--xmas\t\t\tswitch xmas mode on\n"
+					"\t--no-xmas\t\tswitch xmas mode off\n"
+					"\n\tWARNING: options below are for advanced users and will not affect gameplay\n"
+					"\t--server\t\tswitch to server mode [no gui]\n"
+					"\t--map\t\t\tcomma separated map list\n"
+					"\t--ai\t\t\tadd prespawned ai players\n"
+					"\t--game-type\t\tforce game type for server mode. [deathmatch, team-deathmatch, ctf]\n"
 				);
-			Window->init(argc, argv);
 			exit(0);
 		}
 	}

@@ -274,7 +274,7 @@ void IWindow::init(const int argc, char *argv[]) {
 					"\t--dx\t\t\tenable directX(tm) renderer (win32 only)\n"
 					"\t-2 -3\t\t\tenlarge video mode to 1024x768 or 1280x1024\n"
 				  );
-			exit(0);
+			return;
 		}
 	}
 	
