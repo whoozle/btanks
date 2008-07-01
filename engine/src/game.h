@@ -32,8 +32,6 @@
 #include "sdlx/sdlx.h"
 #include "sl08/sl08.h"
 
-#include "game_type.h"
-
 class BaseObject;
 class Object;
 class Message;
@@ -142,7 +140,6 @@ private:
 	int spawn_ai;
 
 	std::vector<std::string> preload_map;
-	GameType preload_game_type;
 	void start_random_map();
 	
 	IGame(const IGame &);
