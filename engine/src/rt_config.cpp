@@ -29,6 +29,7 @@ void IRTConfig::serialize(mrt::Serializator &s) const {
 }
 
 #include "mrt/logger.h"
+#include "mrt/exception.h"
 
 void IRTConfig::deserialize(const mrt::Serializator &s) {
 	int t;
@@ -37,4 +38,19 @@ void IRTConfig::deserialize(const mrt::Serializator &s) {
 	game_type = (GameType)t;
 	s.get(teams);
 	LOG_DEBUG(("deserialized teams %d", teams));
+}
+
+GameType IRTConfig::parse_game_type(const std::string &type) {
+	if (type == "deathmatch") {
+		return GameTypeDeathMatch;
+	} else if (type == "team-deathmatch") {
+		return GameTypeTeamDeathMatch;
+	} else if (type == "cooperative") {
+		return GameTypeCooperative;
+	} else if (type == "racing") {
+		return GameTypeRacing;
+	} else if (type == "ctf") {
+		return GameTypeCTF;
+	} else 
+		throw_ex(("unsupported game type '%s'", type.c_str()));	
 }

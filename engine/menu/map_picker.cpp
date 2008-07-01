@@ -71,15 +71,7 @@ private:
 			} else if (pname == "config:multiplayer.restrict-start-vehicle" && pvalue.compare(0, 7, "string:") == 0) {
 				object_restriction = pvalue.substr(7);
 			} else if (pname == "config:multiplayer.game-type" && pvalue.compare(0, 7, "string:") == 0) {
-				std::string type = pvalue.substr(7);
-				if (type == "deathmatch") {
-					game_type = GameTypeDeathMatch;
-				} else if (type == "cooperative") {
-					game_type = GameTypeCooperative;
-				} else if (type == "racing") {
-					game_type = GameTypeRacing;
-				} else 
-					throw_ex(("unsupported game type '%s'", type.c_str()));
+				game_type = IRTConfig::parse_game_type(pvalue.substr(7));
 			} else if (pname.compare(0, 11, "object:ctf-") == 0) {
 				supports_ctf = true;
 			}
