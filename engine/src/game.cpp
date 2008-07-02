@@ -341,6 +341,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strncmp(argv[i], "--game-type=", 12) == 0) { RTConfig->game_type = IRTConfig::parse_game_type(argv[i] + 12); RTConfig->teams = 2; }
 		else if (strncmp(argv[i], "--time-limit=", 13) == 0) { RTConfig->time_limit = atof(argv[i] + 13); }
 		else if (strncmp(argv[i], "--port=", 7) == 0) { RTConfig->port = atoi(argv[i] + 7); if (RTConfig->port <= 0) throw_ex(("invalid port specified: %d", RTConfig->port)); }
+		else if (strncmp(argv[i], "--log=", 6) == 0) { mrt::Logger->assign(argv[i] + 6); }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			Window->init(argc, argv);
 			printf( 
