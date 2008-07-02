@@ -162,7 +162,8 @@ void TilesetDialog::tick(const float dt) {
 	Container::tick(dt);
 	if (_sl_tilesets->changed()) {
 		_sl_tilesets->reset();
-		set(_sl_tilesets->get());
+		if (!_sl_tilesets->empty())
+			set(_sl_tilesets->get());
 	}
 
 	std::string tileset = _add_tileset->getTileset();
