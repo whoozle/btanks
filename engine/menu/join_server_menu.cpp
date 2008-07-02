@@ -286,9 +286,12 @@ void JoinServerMenu::tick(const float dt) {
 }
 
 void JoinServerMenu::update() {
-	const HostItem * host = dynamic_cast<const HostItem*>(_hosts->getItem(_hosts->get()));
-	if (host == NULL) 
+	if (_hosts->empty())
 		return;
+	
+	//const HostItem * host = dynamic_cast<const HostItem*>(_hosts->getItem(_hosts->get()));
+	//if (host == NULL) 
+	//	return;
 	//const std::string & map = host->map;
 	//LOG_DEBUG(("showing map: %s", map.c_str()));
 }
