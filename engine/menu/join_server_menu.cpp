@@ -46,7 +46,7 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 	_upper_box = new UpperBox(w - 48, 80, false);
 	_add_dialog = new Prompt(w / 2, 96, new HostTextControl("medium"));
 
-	const int host_list_w = 2 * (w - 64)/3;
+	const int host_list_w = w - 128;
 
 	int bw, bh, xp = 48;
 
@@ -118,8 +118,8 @@ JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : pin
 
 	_vehicle->get_size(bw, bh);
 		
-	add(map_pos.x + map_pos.w / 2 - bw, map_pos.y + map_pos.h - bh * 2, _vehicle);
-	add(map_pos.x + map_pos.w / 2 + bw / 2, map_pos.y + map_pos.h - bh * 2, _vehicle2);
+	add(list_pos.w + 32, list_pos.y + 16, _vehicle);
+	add(list_pos.w + 32, list_pos.y + bh + 32, _vehicle2);
 }
 
 void JoinServerMenu::join() {
