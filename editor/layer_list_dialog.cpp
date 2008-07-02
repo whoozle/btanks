@@ -17,7 +17,6 @@ LayerListDialog::LayerListDialog(const int w, const int h) : ScrollList("menu/ba
 }
 
 void LayerListDialog::initMap() {
-	int idx = get();
 	clear();
 	std::set<int> layers; 
 	Map->getLayers(layers);
@@ -26,11 +25,6 @@ void LayerListDialog::initMap() {
 		Layer * layer = Map->getLayer(z);
 		append(new LayerItem(z, layer));
 	}
-	if (idx >= size()) {
-		idx = size() - 1;
-	}
-	if (!empty())
-		set(idx); 
 }
 
 const LayerItem * LayerListDialog::getItem(const int idx) const {
