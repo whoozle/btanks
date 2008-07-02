@@ -467,3 +467,23 @@ void ScrollList::hide(const bool hide) {
 	}
 	Control::hide(hide);
 }
+
+Control * ScrollList::getItem(const int idx) { 
+	if (idx < 0 || idx >= _list.size())
+		throw_ex(("invalid index %d", idx));
+	
+	return _list[idx]; 
+}
+
+const Control * ScrollList::getItem(const int idx) const { 
+	if (idx < 0 || idx >= _list.size())
+		throw_ex(("invalid index %d", idx));
+
+	return _list[idx]; 
+}
+
+const int ScrollList::get() const {
+	if (_current_item >= (int)_list.size())
+		throw_ex(("get(): invalid internal index %d/%d", _current_item, (int)_list.size()));
+	return _current_item; 
+}
