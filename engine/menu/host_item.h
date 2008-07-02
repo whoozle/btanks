@@ -16,7 +16,6 @@ public:
 	void update();
 private: 
 	Label * _line;
-	int _default_port;
 };
 
 #endif

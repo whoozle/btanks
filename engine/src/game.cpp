@@ -314,6 +314,8 @@ void IGame::init(const int argc, char *argv[]) {
 		Config->set("engine.revision", getRevision());
 	}
 
+	Config->get("multiplayer.port", RTConfig->port, 27255);
+	
 	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, false);
 	GET_CONFIG_VALUE("engine.show-log-lines", bool, show_log_lines, false);
 	
@@ -338,6 +340,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strncmp(argv[i], "--ai=", 5) == 0) { spawn_ai = atoi(argv[i] + 5); }
 		else if (strncmp(argv[i], "--game-type=", 12) == 0) { RTConfig->game_type = IRTConfig::parse_game_type(argv[i] + 12); RTConfig->teams = 2; }
 		else if (strncmp(argv[i], "--time-limit=", 13) == 0) { RTConfig->time_limit = atof(argv[i] + 13); }
+		else if (strncmp(argv[i], "--port=", 7) == 0) { RTConfig->port = atoi(argv[i] + 7); if (RTConfig->port <= 0) throw_ex(("invalid port specified: %d", RTConfig->port)); }
 		else if (strcmp(argv[i], "--help") == 0) { 
 			Window->init(argc, argv);
 			printf( 
@@ -348,6 +351,7 @@ void IGame::init(const int argc, char *argv[]) {
 					"\t--no-xmas\t\tswitch xmas mode off\n"
 					"\n\tWARNING: options below are for advanced users and will not affect gameplay\n"
 					"\t--server\t\tswitch to server mode [no gui]\n"
+					"\t--port\t\t\tuse specified port, default: 27255\n"
 					"\t--map\t\t\tcomma separated map list\n"
 					"\t--ai\t\t\tadd prespawned ai players\n"
 					"\t--game-type\t\tforce game type for server mode. [deathmatch, team-deathmatch, ctf]\n"

@@ -19,6 +19,7 @@
 #include "host_list.h"
 #include "config.h"
 #include "host_item.h"
+#include "rt_config.h"
 
 HostList::HostList(const std::string &config_key, const int w, const int h) : 
 ScrollList("menu/background_box.png", "medium_dark", w, h), _config_key(config_key) {
@@ -67,9 +68,7 @@ void HostList::append(const std::string &_item) {
 		}
 	}
 	if (new_item->addr.port == 0) {
-		int port;
-		Config->get("multiplayer.port", port, 27255);
-		new_item->addr.port = port;
+		new_item->addr.port = RTConfig->port;
 	}
 	new_item->update();
 	_list.push_front(new_item);

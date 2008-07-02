@@ -38,6 +38,7 @@ public:
 	int teams; //for team games, usually 2 for CTF
 
 	float time_limit;
+	int port;
 
 	void serialize(mrt::Serializator &s) const;
 	void deserialize(const mrt::Serializator &s);

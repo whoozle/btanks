@@ -2,11 +2,10 @@
 #include "label.h"
 #include "resource_manager.h"
 #include "i18n.h"
-#include "config.h"
+#include "rt_config.h"
 
 HostItem::HostItem() : ping(0), players(0), slots(0) , _line(new Label("small", "")) {
 	add(0, 0, _line);
-	Config->get("multiplayer.port", _default_port, 27255);
 }
 
 void HostItem::update() {
@@ -20,7 +19,7 @@ void HostItem::update() {
 		mapstr += mrt::format_string("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
 	}
 	
-	std::string hoststr = name, ip = addr.getAddr(addr.port != _default_port);
+	std::string hoststr = name, ip = addr.getAddr(addr.port != RTConfig->port);
 	if (hoststr.empty()) {
 		hoststr = ip;
 	} else if (!ip.empty()) {
