@@ -123,6 +123,7 @@
 		<object id="ricochet-bullets-item"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="slime"/>
 		<object id="slime-acid"/>
@@ -144,6 +145,7 @@
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
 		<object id="turrel"/>
+		<object id="turrel-on-buggy"/>
 		<object id="vehicle-machinegunner-bullet"/>
 		<object id="watchtower-top"/>
 		<object id="watchtower-with-machinegunner"/>
