@@ -215,7 +215,7 @@ void Serializator::get(float &f) const {
 	int size;
 	get(size);
 	if (size != sizeof(f))
-		throw_ex(("failed to deserialize IEEE 754 float"));	
+		throw_ex(("failed to deserialize IEEE 754 float(size %d, need %lu)", size, sizeof(float)));	
 	get((void *)&f, size);
 #else
 	std::string str;
