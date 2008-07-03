@@ -171,6 +171,9 @@ TRY {
 				std::string ip = addr.getAddr(false);
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
 				std::string name = addr.getName();
+				if (name == "netive.ru") {
+					name = "btanks.media.netive.ru";
+				}
 				LOG_DEBUG(("found name: %s", name.c_str()));
 				
 				sdlx::AutoMutex m(_hosts_lock);
@@ -213,6 +216,9 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 			} else {
 			check_ip: 
 				std::string new_host = addr.getName();
+				if (new_host == "netive.ru") {
+					new_host = "btanks.media.netive.ru";
+				}
 				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), addr.getAddr().c_str()));
 				if (!new_host.empty()) {
 					host = new_host;
