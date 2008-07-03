@@ -295,7 +295,11 @@ void Monitor::disconnect(const int cid) {
 	LOG_DEBUG(("disconnecting client %d.", cid));
 	{ 
 		sdlx::AutoMutex m(_connections_mutex); 
-		_connections.erase(cid);
+		ConnectionMap::iterator i = _connections.find(cid);
+		if (i != _connections.end()) {
+			delete i->second;
+			_connections.erase(i);
+		}
 	}
 	
 	{ 
