@@ -114,6 +114,10 @@ void IPlayerManager::on_disconnect(const int cid) {
 #include "var.h"
 
 void IPlayerManager::on_message(const int cid, const Message &message) {
+	if (_client == NULL && _server == NULL) {
+		LOG_DEBUG(("dropping late message %d:%s", cid, message.getType()));
+		return;
+	}
 TRY {
 	int now = SDL_GetTicks();
 	const int timestamp = (int)message.get_timestamp();
