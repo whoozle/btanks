@@ -562,6 +562,7 @@
 		<object id="ricochet-bullets-item"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="stack"/>
 		<object id="static-dirt"/>
