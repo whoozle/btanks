@@ -530,6 +530,8 @@
 		<object id="alt-missiles-on-launcher"/>
 		<object id="cannon-explosion"/>
 		<object id="corpse"/>
+		<object id="ctf-base"/>
+		<object id="ctf-flag"/>
 		<object id="damage-digits"/>
 		<object id="destructable-object"/>
 		<object id="dumb-missile"/>
