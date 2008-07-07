@@ -906,6 +906,7 @@ IPlayerManager::~IPlayerManager() {}
 
 void IPlayerManager::start_server() {
 	clear();
+	_local_clients = 0;
 	TRY {
 		if (_client != NULL) {
 			delete _client;
