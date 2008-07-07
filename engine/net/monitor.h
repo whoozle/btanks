@@ -50,6 +50,8 @@ public:
 	
 	void disconnect(const int id);
 	
+	bool connected(int id) const;
+	
 	void add(mrt::UDPSocket *socket);
 	void add(mrt::TCPSocket *server_socket);
 	

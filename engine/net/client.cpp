@@ -100,3 +100,7 @@ void Client::disconnect() {
 	_monitor->disconnect(0);
 	PlayerManager->on_disconnect(0);
 }
+
+bool Client::connected() const {
+	return _monitor->connected(0);
+}

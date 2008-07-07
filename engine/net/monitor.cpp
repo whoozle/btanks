@@ -644,3 +644,8 @@ Connection *Monitor::pop() {
 	
 	return r;
 }
+
+bool Monitor::connected(int id) const {
+	sdlx::AutoMutex m(_connections_mutex);
+	return _connections.find(id) != _connections.end();
+}

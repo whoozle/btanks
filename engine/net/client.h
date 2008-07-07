@@ -35,6 +35,7 @@ public:
 	void send(const Message &m);
 	void tick(const float dt);
 	void disconnect();
+	bool connected() const;
 
 protected:
 	Monitor *_monitor;
