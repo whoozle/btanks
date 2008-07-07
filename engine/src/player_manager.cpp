@@ -65,27 +65,6 @@ const int IPlayerManager::on_connect(Message &message) {
 	LOG_DEBUG(("client #%d", client_id));
 	*/
 	const int client_id = find_empty_slot();
-	
-	LOG_DEBUG(("sending server status message..."));
-	message.type = Message::ServerStatus;
-	message.set("version", getVersion());
-	bool fog;
-	Config->get("engine.fog-of-war.enabled", fog, false);
-	if (fog)
-		message.set("fog", "o'war");
-
-	mrt::Serializator s;
-	RTConfig->serialize(s);
-
-	Map->serialize(s);
-	
-	//s.add(client_id);
-	//_players[client_id].position.serialize(s);
-	
-	serialize_slots(s);	
-
-	s.finalize(message.data);
-	LOG_DEBUG(("server status message size = %u", (unsigned) message.data.get_size()));
 
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
 	return client_id;
@@ -124,8 +103,35 @@ void IPlayerManager::on_message(const int cid, const Message &message) {
 TRY {
 	int now = SDL_GetTicks();
 	const int timestamp = (int)message.get_timestamp();
-	//LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
+	LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
+
 	switch(message.type) {
+	case Message::RequestServerStatus: {
+		LOG_DEBUG(("sending server status message..."));
+		Message m;
+		m.type = Message::ServerStatus;
+		m.set("version", getVersion());
+		
+		bool fog;
+		Config->get("engine.fog-of-war.enabled", fog, false);
+		if (fog)
+			m.set("fog", "o'war");
+
+		mrt::Serializator s;
+		RTConfig->serialize(s);
+
+		Map->serialize(s);
+		
+		//s.add(client_id);
+		//_players[client_id].position.serialize(s);
+	
+		serialize_slots(s);	
+
+		s.finalize(m.data);
+		LOG_DEBUG(("server status message size = %u", (unsigned) m.data.get_size()));
+		_server->send(cid, m);
+	} break;
+	
 	case Message::ServerStatus: {
 		LOG_DEBUG(("server version: %s", message.get("version").c_str()));
 		LOG_DEBUG(("loading map..."));
