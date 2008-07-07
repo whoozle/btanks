@@ -64,10 +64,10 @@ const int IPlayerManager::on_connect() {
 	const int client_id = spawn_player("tank", an, "network");
 	LOG_DEBUG(("client #%d", client_id));
 	*/
-	const int client_id = find_empty_slot();
+	//const int client_id = find_empty_slot();
 
 	//LOG_DEBUG(("world: %s", message.data.dump().c_str()));
-	return client_id;
+	return _connection_id++;
 }
 
 void IPlayerManager::on_disconnect(const int cid) {
@@ -903,7 +903,7 @@ TRY {
 }
 
 IPlayerManager::IPlayerManager() : 
-	_server(NULL), _client(NULL), _players(), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false)
+	_server(NULL), _client(NULL), _players(), _next_ping(0), _ping(false), _next_sync(true), _game_joined(false), _connection_id(0) 
 {
 	on_destroy_map_slot.assign(this, &IPlayerManager::on_destroy_map, Map->destroyed_cells_signal);
 	on_load_map_slot.assign(this, &IPlayerManager::onMap, Map->load_map_final_signal);
@@ -980,6 +980,7 @@ void IPlayerManager::clear(bool disconnect) {
 	_players.clear();	
 	_zones.clear();
 	_object_states.clear();
+	_connection_id = 0;
 }
 
 void IPlayerManager::add_slot(const v3<int> &position) {

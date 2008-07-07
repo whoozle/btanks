@@ -153,6 +153,8 @@ private:
 	
 	typedef std::set<int> ObjectStates;
 	ObjectStates _object_states;
+	
+	int _connection_id;
 };
 
 SINGLETON(BTANKSAPI, PlayerManager, IPlayerManager);
