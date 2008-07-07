@@ -30,7 +30,7 @@
 #include "connection.h"
 #include "config.h"
 
-Client::Client(): _monitor(NULL) {
+Client::Client(): _monitor(NULL), sent_req(false) {
 }
 
 Client::~Client() {
@@ -50,6 +50,7 @@ void Client::init(const mrt::Socket::addr &host) {
 	_monitor->add(&_udp_sock);
 	_monitor->connect(host);
 	_monitor->start();
+	sent_req = false;
 }
 
 void Client::send(const Message &m) {
@@ -65,6 +66,12 @@ void Client::send(const Message &m) {
 void Client::tick(const float dt) {	
 	if (_monitor == NULL) 
 		return;
+		
+	if (!sent_req && connected()) {
+		Message msg(Message::RequestServerStatus);
+		send(msg);
+		sent_req = true;
+	}
 
 	int id;
 	mrt::Chunk data;
@@ -99,6 +106,7 @@ void Client::tick(const float dt) {
 void Client::disconnect() {
 	_monitor->disconnect(0);
 	PlayerManager->on_disconnect(0);
+	sent_req = false;
 }
 
 bool Client::connected() const {
