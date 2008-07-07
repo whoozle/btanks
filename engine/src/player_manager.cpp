@@ -952,13 +952,15 @@ void IPlayerManager::start_client(const mrt::Socket::addr &address, const size_t
 	});
 	_recent_address = address;
 }
-void IPlayerManager::clear() {
+void IPlayerManager::clear(bool disconnect) {
 	LOG_DEBUG(("deleting server/client if exists."));
 	_ping = false;
 	_game_joined = false;
-	//delete _server; _server = NULL;
-	//delete _client; _client = NULL;
-	//_local_clients = 0;
+	if (disconnect) {
+		delete _server; _server = NULL;
+		delete _client; _client = NULL;
+		_local_clients = 0;
+	}
 	_net_stats.clear();
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);

@@ -59,7 +59,7 @@ public:
 		
 	void start_server();
 	void start_client(const mrt::Socket::addr &address, const size_t n);
-	void clear();
+	void clear(bool disconnect = false);
 	
 	inline const bool is_client() const { return _client != NULL; }
 	inline const bool is_server() const { return _server != NULL; }	
