@@ -89,6 +89,7 @@ void Monitor::accept() {
 	int id = -1;
 	try {
 	int id = PlayerManager->on_connect();
+	LOG_DEBUG(("assigning id %d to client...", id));
 
 	{
 		sdlx::AutoMutex m(_connections_mutex);
