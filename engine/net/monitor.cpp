@@ -122,15 +122,15 @@ void Monitor::_accept() {
 }
 
 Monitor::Task::Task(const int id) : 
-	id(id), data(new mrt::Chunk), pos(0), len(0), size_task(false), flags(0){}
+	id(id), data(), pos(0), len(0), size_task(false), flags(0){}
 
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : 
-	id(id), data(new mrt::Chunk(d)), pos(0), len(data->get_size()), size_task(false), flags(0) {}
+	id(id), data(d), pos(0), len(data.get_size()), size_task(false), flags(0) {}
 
 Monitor::Task::Task(const int id, const int size) : 
-	id(id), data(new mrt::Chunk(size)), pos(0), len(data->get_size()), size_task(false), flags(0) {}
+	id(id), data(size), pos(0), len(data.get_size()), size_task(false), flags(0) {}
 
-void Monitor::Task::clear() { delete data; pos = len = 0; }
+void Monitor::Task::clear() { data.free(); pos = len = 0; }
 
 Monitor::Monitor(const int cl) : 
 	_running(false), 
@@ -175,13 +175,13 @@ Monitor::Task * Monitor::createTask(const int id, const mrt::Chunk &rawdata) {
 
 	Task *t = new Task(id, size + 5);
 
-	char * ptr = (char *) t->data->get_ptr();
+	char * ptr = (char *) t->data.get_ptr();
 
 	uint32_t nsize = htonl((long)size);
 	memcpy(ptr, &nsize, 4);
 
-	*((unsigned char *)t->data->get_ptr() + 4) = flags;
-	memcpy((unsigned char *)t->data->get_ptr() + 5, data.get_ptr(), size);
+	*((unsigned char *)t->data.get_ptr() + 4) = flags;
+	memcpy((unsigned char *)t->data.get_ptr() + 5, data.get_ptr(), size);
 	
 	return t;
 }
@@ -257,7 +257,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	m.unlock();
 	TRY { 
 		id = task->id;
-		data = *(task->data);
+		data = task->data;
 		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.get_size()));
 		task->clear();
 	} CATCH("recv", { task->clear(); delete task; throw; });
@@ -408,13 +408,13 @@ TRY {
 					TRY {
 						t = new Task(i->first);
 					
-						parse(*t->data, buf, r);
+						parse(t->data, buf, r);
 					} CATCH("processing datagram", {
 						delete t;
 						t = NULL;
 						throw;
 					});
-					t->len = t->data->get_size();
+					t->len = t->data.get_size();
 					
 					//LOG_DEBUG(("recv(%d, %u)", t->id, (unsigned)t->data->get_size()));
 
@@ -477,9 +477,9 @@ TRY {
 				ConnectionMap::const_iterator i = _connections.find(task->id);
 				if (i != _connections.end()) {
 					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
-					int r = _dgram_sock->send(addr, task->data->get_ptr(), task->data->get_size());
-					if (r != (int)task->data->get_size()) {
-						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data->get_size(), r));
+					int r = _dgram_sock->send(addr, task->data.get_ptr(), task->data.get_size());
+					if (r != (int)task->data.get_size()) {
+						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
 					}
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				task->clear();
@@ -521,7 +521,7 @@ TRY {
 				int estimate = t->len - t->pos;
 				assert(estimate > 0);
 			
-				int r = sock->recv((char *)(t->data->get_ptr()) + t->pos, estimate);
+				int r = sock->recv((char *)(t->data.get_ptr()) + t->pos, estimate);
 				if (r == -1 || r == 0) {
 					LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
 					goto disconnect;
@@ -532,11 +532,11 @@ TRY {
 			
 				if (t->pos == t->len) {
 					if (t->size_task) {
-						const char * ptr = (char *)t->data->get_ptr();
+						const char * ptr = (char *)t->data.get_ptr();
 						unsigned long len = ntohl(*((uint32_t *)ptr));
 						if (len > 1048576)
 							throw_ex(("recv'ed packet length of %u. it seems to be far too long for regular packet (probably broken/obsoleted client)", (unsigned int)len));
-						unsigned char flags = *((unsigned char *)(t->data->get_ptr()) + 4);
+						unsigned char flags = *((unsigned char *)(t->data.get_ptr()) + 4);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
 						
@@ -546,9 +546,9 @@ TRY {
 					} else {
 						if (t->flags & 1) {
 							mrt::Chunk data;
-							mrt::ZStream::decompress(data, *t->data, false);
+							mrt::ZStream::decompress(data, t->data, false);
 							//LOG_DEBUG(("recv(%d, %d) (decompressed: %d)", t->id, t->data->get_size(), data.get_size()));
-							*t->data = data;
+							t->data = data;
 						}
 						_recv_q.erase(ti);
 
@@ -569,7 +569,7 @@ TRY {
 					int estimate = t->len - t->pos;
 					assert(estimate > 0);
 					m.unlock();
-					int r = sock->send((char *)(t->data->get_ptr()) + t->pos, estimate);
+					int r = sock->send((char *)(t->data.get_ptr()) + t->pos, estimate);
 					if (r == -1 || r == 0) {
 						LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
 						goto disconnect;
