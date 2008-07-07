@@ -80,6 +80,7 @@ void Server::init() {
 }
 
 void Server::restart() {
+	LOG_DEBUG(("Server::restart() called..."));
 	std::queue<Connection *> conns;
 	Connection *c;
 	while((c = _monitor->pop()) != NULL)
@@ -91,6 +92,7 @@ void Server::restart() {
 		TRY {
 			Message msg(Message::ServerStatus);
 			int id = PlayerManager->on_connect(msg);
+			LOG_DEBUG(("reassigning connection: %d", id));
 			_monitor->add(id, c);
 			c = NULL;
 			send(id, msg);
