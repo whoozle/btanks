@@ -108,8 +108,7 @@ TRY {
 	switch(message.type) {
 	case Message::RequestServerStatus: {
 		LOG_DEBUG(("sending server status message..."));
-		Message m;
-		m.type = Message::ServerStatus;
+		Message m(Message::ServerStatus);
 		m.set("version", getVersion());
 		
 		bool fog;
