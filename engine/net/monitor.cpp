@@ -88,8 +88,7 @@ void Monitor::accept() {
 	LOG_DEBUG(("client(s) connected... [main thread context]"));
 	int id = -1;
 	try {
-	Message msg(Message::ServerStatus);
-	int id = PlayerManager->on_connect(msg);
+	int id = PlayerManager->on_connect();
 
 	{
 		sdlx::AutoMutex m(_connections_mutex);
@@ -98,11 +97,6 @@ void Monitor::accept() {
 		_new_connections.pop_front();
 	}
 
-	mrt::Chunk data;
-	msg.serialize2(data);
-
-	LOG_DEBUG(("sending message '%s' to %d", msg.getType(), id));
-	send(id, data, msg.realtime());
 	} CATCH("accept", {
 		if (id >= 0)
 			disconnect(id);

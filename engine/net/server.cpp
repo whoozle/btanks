@@ -90,9 +90,10 @@ void Server::restart() {
 		Connection *c = conns.front();
 		conns.pop();
 		TRY {
-			Message msg(Message::ServerStatus);
-			int id = PlayerManager->on_connect(msg);
+			Message msg(Message::RequestServerStatus);
+			int id = PlayerManager->on_connect();
 			LOG_DEBUG(("reassigning connection: %d", id));
+			PlayerManager->on_message(id, msg);
 			_monitor->add(id, c);
 			c = NULL;
 			send(id, msg);

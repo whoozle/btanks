@@ -57,7 +57,7 @@
 IMPLEMENT_SINGLETON(PlayerManager, IPlayerManager);
 
 
-const int IPlayerManager::on_connect(Message &message) {
+const int IPlayerManager::on_connect() {
 	/*
 	const std::string an = "red-tank";
 	LOG_DEBUG(("new client! spawning player:%s", an.c_str()));

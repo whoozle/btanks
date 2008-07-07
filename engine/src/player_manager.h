@@ -92,7 +92,7 @@ public:
 	void tick(const float dt);
 	void render(sdlx::Surface &window, const int x, const int y);
 	
-	const int on_connect(Message &message);
+	const int on_connect();
 	void on_message(const int id, const Message &message);
 	void on_disconnect(const int id);	
 	void onMap();
