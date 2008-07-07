@@ -23,7 +23,6 @@
 #include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
 #include "mrt/udp_socket.h"
-#include "mrt/net_exception.h"
 #include "mrt/gzip.h"
 
 #include "sdlx/timer.h"
@@ -524,10 +523,7 @@ TRY {
 			
 				int r = sock->recv((char *)(t->data->get_ptr()) + t->pos, estimate);
 				if (r == -1 || r == 0) {
-					try {
-						LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
-						throw_net(("recv"));
-					} CATCH("tcp", );
+					LOG_ERROR(("error while reading %u bytes (r = %d)", estimate, r));
 					goto disconnect;
 				}
 					
