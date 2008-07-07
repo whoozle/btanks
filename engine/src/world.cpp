@@ -1310,11 +1310,11 @@ void IWorld::serializeObject(mrt::Serializator &s, const Object *o, const bool f
 
 void IWorld::serialize(mrt::Serializator &s) const {
 	s.add(_last_id);
-	s.add((unsigned int)_objects.size());
 	for(ObjectMap::const_iterator i = _objects.begin(); i != _objects.end(); ++i) {
 		const Object *o = i->second;
 		serializeObject(s, o, true);
 	}
+	s.add(-1);
 
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
@@ -1421,7 +1421,7 @@ Object * IWorld::deserializeObject(const mrt::Serializator &s) {
 	assert(result != NULL);
 	assert(!result->animation.empty() || result->_dead);
 	updateObject(result);
-	//LOG_DEBUG(("deserialized object: %d:%s:%s", id, result->registered_name.c_str(), result->animation.c_str()));
+	LOG_DEBUG(("deserialized object: %d:%s:%s", id, result->registered_name.c_str(), result->animation.c_str()));
 	return result;
 }
 
@@ -1454,17 +1454,13 @@ TRY {
 	s.get(_last_id);
 	//_last_id += 10000;
 	
-	unsigned int size;
-	s.get(size);
-	
 	std::set<int> recv_ids;
-	
-	while(size--) {
-		Object *obj = deserializeObject(s);
-		if (obj != NULL)
-			recv_ids.insert(obj->_id);
+
+	Object *obj;
+	while((obj = deserializeObject(s)) != NULL) {
+		recv_ids.insert(obj->_id);
 	}
-	cropObjects(recv_ids);	
+	cropObjects(recv_ids);
 	float speed;
 	s.get(speed);
 	setSpeed(speed);
