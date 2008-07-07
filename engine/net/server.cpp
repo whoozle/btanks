@@ -122,6 +122,7 @@ void Server::tick(const float dt) {
 			m.deserialize2(data);
 
 			switch(m.type) {
+			case Message::RequestServerStatus:
 			case Message::PlayerState:
 			case Message::Ping:
 			case Message::Pong:
