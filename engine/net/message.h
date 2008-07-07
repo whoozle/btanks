@@ -35,6 +35,7 @@ class Message : public mrt::Serializable {
 public: 
 	enum Type {
 		None, Ping, Pang, Pong,
+		RequestServerStatus, 
 		ServerStatus,
 		RequestPlayer,
 		GameJoined,

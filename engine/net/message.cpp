@@ -44,6 +44,7 @@ const char * Message::getType() const {
 	case Ping: return "Ping";
 	case Pang: return "Pang";
 	case Pong: return "Pong";
+	case RequestServerStatus: return "RequestServerStatus";
 	case ServerStatus: return "ServerStatus";
 	case RequestPlayer: return "RequestPlayer";
 	case GameJoined: return "GameJoined";
