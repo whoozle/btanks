@@ -130,7 +130,7 @@ Monitor::Task::Task(const int id, const mrt::Chunk &d) :
 Monitor::Task::Task(const int id, const int size) : 
 	id(id), data(size), pos(0), len(data.get_size()), size_task(false), flags(0) {}
 
-void Monitor::Task::clear() { data.free(); pos = len = 0; }
+Monitor::Task::~Task() { data.free(); pos = len = 0; }
 
 Monitor::Monitor(const int cl) : 
 	_running(false), 
@@ -259,8 +259,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 		id = task->id;
 		data = task->data;
 		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.get_size()));
-		task->clear();
-	} CATCH("recv", { task->clear(); delete task; throw; });
+	} CATCH("recv", { delete task; throw; });
 	delete task;
 	return true;
 }
@@ -276,7 +275,6 @@ const bool Monitor::disconnected(int &id) {
 
 
 void Monitor::eraseTask(TaskQueue &q, const TaskQueue::iterator &i) {
-	(*i)->clear();
 	delete *i;
 	q.erase(i);
 }
@@ -482,7 +480,6 @@ TRY {
 						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
 					}
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
-				task->clear();
 				delete task;
 			}
 		}
@@ -602,15 +599,12 @@ Monitor::~Monitor() {
 	}
 
 	for(TaskQueue::iterator i = _send_q.begin(); i != _send_q.end(); ++i) {
-		(*i)->clear();
 		delete *i;
 	}
 	for(TaskQueue::iterator i = _recv_q.begin(); i != _recv_q.end(); ++i) {
-		(*i)->clear();
 		delete *i;
 	}
 	for(TaskQueue::iterator i = _result_q.begin(); i != _result_q.end(); ++i) {
-		(*i)->clear();
 		delete *i;
 	}
 }

@@ -74,8 +74,7 @@ private:
 		Task(const int id);
 		Task(const int id, const mrt::Chunk &);
 		Task(const int id, const int size);
-		~Task() {clear();}
-		void clear();
+		~Task();
 		
 		int id;
 		mrt::Chunk data;
