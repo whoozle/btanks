@@ -118,7 +118,7 @@ void Monitor::_accept() {
 		s->noDelay();
 		sdlx::AutoMutex m(_connections_mutex);
 		_new_connections.push_back(s);
-	} CATCH("accept", { delete s; s = NULL; })
+	} CATCH("accept", { delete s; s = NULL; throw; })
 }
 
 Monitor::Task::Task(const int id) : 
