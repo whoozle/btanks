@@ -103,7 +103,7 @@ void IPlayerManager::on_message(const int cid, const Message &message) {
 TRY {
 	int now = SDL_GetTicks();
 	const int timestamp = (int)message.get_timestamp();
-	LOG_DEBUG(("incoming message %s, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), timestamp, now, timestamp - now));
+	LOG_DEBUG(("incoming message %s from connection %d, incoming timestamp: %d, my timestamp: %d, delta + ping: %+d", message.getType(), cid, timestamp, now, timestamp - now));
 
 	switch(message.type) {
 	case Message::RequestServerStatus: {
