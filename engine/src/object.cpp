@@ -1699,6 +1699,8 @@ const bool Object::detachVehicle() {
 	
 	if (classname == "helicopter")
 		man->set_zbox(ResourceManager->getClass("machinegunner")->get_z());
+	else 
+		man->set_zbox(get_z());
 
 	man->disable_ai = disable_ai;
 	classname = "vehicle";
