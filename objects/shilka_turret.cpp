@@ -118,7 +118,7 @@ public:
 		v2<float> target_pos;
 		for(std::set<const Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (o->get_id() == _parent->get_id() || o->impassability == 0 || 
+			if (o->get_id() == _parent->get_id() || o->impassability == 0 || o->hp <= 0 ||
 				PIERCEABLE_PAIR(_parent, o) || !ZBox::sameBox(_parent->get_z(), o->get_z()) || _parent->has_same_owner(o) ||
 				o->has_effect("invulnerability")
 				)

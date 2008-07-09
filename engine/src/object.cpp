@@ -1129,7 +1129,7 @@ const int Object::get_target_position(v2<float> &relative_position, const std::s
 		dir.fromDirection(d, dirs);
 		for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
-			if (has_same_owner(o) || o->ai_disabled() || o->impassability == 0 || o->has_effect("invulnerability"))
+			if (has_same_owner(o) || o->ai_disabled() || o->impassability == 0 || o->has_effect("invulnerability") || o->hp <= 0)
 				continue;
 			
 			v2<float> pos, tp = get_relative_position(o);

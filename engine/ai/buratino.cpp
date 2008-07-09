@@ -396,7 +396,7 @@ const Object * Buratino::findTarget(const Object *src, const std::set<std::strin
 	
 	for(std::set<const Object *>::const_iterator i = objects.begin(); i != objects.end(); ++i) {
 		const Object *o = *i;
-		if (o->impassability == 0 || o->_id == src->_id ||
+		if (o->impassability == 0 || o->_id == src->_id || o->hp <= 0 ||
 			!ZBox::sameBox(src->get_z(), o->get_z()) || 
 			o->has_same_owner(src) || 
 			o->has_effect("invulnerability") || 
