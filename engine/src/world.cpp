@@ -1314,7 +1314,7 @@ void IWorld::serialize(mrt::Serializator &s) const {
 		const Object *o = i->second;
 		serializeObject(s, o, true);
 	}
-	s.add(-1);
+	s.add(0);
 
 	GET_CONFIG_VALUE("engine.speed", float, e_speed, 1.0f);
 	s.add(e_speed);
