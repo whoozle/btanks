@@ -752,6 +752,9 @@ TRY {
 			o._state.alt_fire = state_backup.alt_fire;
 	} CATCH("calling o.tick", throw;)
 
+	if (o._dead)
+		return;
+
 	TRY {
 		o.group_tick(dt);
 	} CATCH("calling group_tick", throw);
@@ -761,7 +764,7 @@ TRY {
 	bool hidden = false;
 	//LOG_DEBUG(("outline: %s", outline_animation.c_str()));
 
-	if (o.speed == 0) {
+	if (o.speed == 0 && o.impassability != -1) {
 		TRY {
 			v2<int> pos = o._position.convert<int>();
 			if (o.impassability < 0 || o.impassability >= 1.0f) {
