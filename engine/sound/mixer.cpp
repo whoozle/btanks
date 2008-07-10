@@ -52,6 +52,7 @@ IMixer::IMixer() : _nosound(true), _nomusic(true),
 	_context(NULL) {
 		update_object_slot.assign(this, &IMixer::updateObject, World->on_object_update);
 		delete_object_slot.assign(this, &IMixer::deleteObject, World->on_object_delete);
+		replace_id_object_slot.assign(this, &IMixer::replace_id, World->on_object_replace_id);
 	}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -342,6 +343,28 @@ void IMixer::updateObject(const Object *o) {
 	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 	i->second->update(clunk_pos, clunk_vel);
 }
+
+void IMixer::replace_id(const Object *o, const int new_id) {
+	if (_nosound) 
+		return;
+	
+	int old_id = o->get_id();
+	Objects::iterator i = _objects.find(old_id);
+	if (i == _objects.end())
+		return;
+	
+	clunk::Object *clunk_object = i->second;
+	_objects.erase(i);
+
+	i = _objects.find(new_id);
+	if (i == _objects.end()) {
+		_objects.insert(Objects::value_type(new_id, clunk_object));
+	} else {
+		delete i->second;
+		i->second = clunk_object;
+	}
+}
+
 
 void IMixer::deleteObject(const Object *o) {
 TRY {

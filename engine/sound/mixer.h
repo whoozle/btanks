@@ -60,6 +60,7 @@ public:
 	void fadeoutSample(const Object *o, const std::string &name);
 	void cancel_all(const Object *o);
 	void cancel_all();
+	void replace_id(const Object *o, const int new_id);
 	
 	void tick(const float dt);
 	
@@ -79,6 +80,7 @@ public:
 private:
 	sl08::slot1<void, const Object *, IMixer> update_object_slot;
 	sl08::slot1<void, const Object *, IMixer> delete_object_slot;
+	sl08::slot2<void, const Object *, const int, IMixer> replace_id_object_slot;
 
 	bool _nosound, _nomusic;
 
