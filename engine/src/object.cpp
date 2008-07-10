@@ -313,7 +313,7 @@ void Object::group_tick(const float dt) {
 			}
 			continue;
 		}
-		if (dt > 0) {
+		if (dt > 0 && i->first[0] != '.') {
 			o->calculate(dt);
 			o->tick(dt);
 		}
@@ -1504,8 +1504,10 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 	
 	hp -= damage;	
 	//LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", registered_name.c_str(), damage, from->classname.c_str(), hp));
-	if (emitDeath && hp <= 0) 
+	if (emitDeath && hp <= 0) {
+		_dead = true;
 		emit("death", from);
+	}
 		
 	//look for a better place for that.
 	if (piercing)
