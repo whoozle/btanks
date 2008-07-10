@@ -1505,7 +1505,6 @@ void Object::add_damage(Object *from, const int d, const bool emitDeath) {
 	hp -= damage;	
 	//LOG_DEBUG(("%s: received %d hp of damage from %s. hp = %d", registered_name.c_str(), damage, from->classname.c_str(), hp));
 	if (emitDeath && hp <= 0) {
-		_dead = true;
 		emit("death", from);
 	}
 		
