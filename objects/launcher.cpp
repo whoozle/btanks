@@ -159,5 +159,7 @@ void Launcher::serialize(mrt::Serializator &s) const {
 void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_fire);
+	if (!playing_sound("vehicle-sound"))
+		play_sound("vehicle-sound", true, 0.4f);
 }
 

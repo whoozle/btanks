@@ -212,4 +212,6 @@ void Shilka::serialize(mrt::Serializator &s) const {
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_special_fire);
+	if (!playing_sound("vehicle-sound"))
+		play_sound("vehicle-sound", true, 0.4f);
 }

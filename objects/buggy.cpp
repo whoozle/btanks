@@ -111,6 +111,8 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Buggy::deserialize(s);
 		ai::Waypoints::deserialize(s);
+		if (!playing_sound("vehicle-sound"))
+			play_sound("vehicle-sound", true, 0.4f);
 	}
 
 private:
