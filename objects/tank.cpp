@@ -64,8 +64,9 @@ void Tank::emit(const std::string &event, Object * emitter) {
 		cancel_all();
 		spawn("corpse", "dead-" + animation);
 		_velocity.clear();
-		Object::emit(event, emitter);
+		_dead = true;
 		detachVehicle();
+		Object::emit(event, emitter);
 	} else 
 		Object::emit(event, emitter);
 }

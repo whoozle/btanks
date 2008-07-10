@@ -71,8 +71,9 @@ void Launcher::on_spawn() {
 void Launcher::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse", "dead-" + animation);
-		Object::emit(event, emitter);
+		_dead = true;
 		detachVehicle();
+		Object::emit(event, emitter);
 	} else 
 		Object::emit(event, emitter);
 }

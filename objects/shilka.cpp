@@ -75,8 +75,9 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 		cancel_all();
 		//play("dead", true);
 		spawn("corpse", "dead-" + animation);
-		Object::emit(event, emitter);
+		_dead = true;
 		detachVehicle();
+		Object::emit(event, emitter);
 	} else 
 		Object::emit(event, emitter);
 }
