@@ -27,8 +27,7 @@ void HostItem::update() {
 	if (ping > 0) {
 		mapstr = "[";
 		if (!map.empty())
-			mapstr += mrt::format_string("%s: %s, ", I18n->get("menu", "map").c_str(), map.c_str());
-		mapstr += mrt::format_string("%s: %s, ", I18n->get("menu", "game-type").c_str(), get_type(game_type));
+			mapstr += mrt::format_string("%s: %s (%s), ", I18n->get("menu", "map").c_str(), map.c_str(), get_type(game_type));
 		mapstr += mrt::format_string("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
 	}
 	
