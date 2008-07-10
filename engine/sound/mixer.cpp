@@ -360,7 +360,7 @@ void IMixer::replace_id(const Object *o, const int new_id) {
 		return;
 	
 	int old_id = o->get_id();
-	Objects::iterator i = _objects.find(old_id);
+	Objects::iterator i = old_id > 0? _objects.find(old_id): _objects.end();
 	if (i == _objects.end())
 		return;
 	
