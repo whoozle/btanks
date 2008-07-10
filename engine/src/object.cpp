@@ -349,6 +349,11 @@ void Object::play_sound(const std::string &name, const bool loop, const float ga
 	Mixer->playSample(this, name + ".ogg", loop, gain);
 }
 
+bool Object::playing_sound(const std::string &name) const {
+	return Mixer->playingSample(this, name + ".ogg");
+}
+
+
 void Object::fadeout_sound(const std::string &name) {
 	Mixer->fadeoutSample(this, name + ".ogg");
 }
