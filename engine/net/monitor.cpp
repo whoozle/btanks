@@ -28,7 +28,10 @@
 #include "sdlx/timer.h"
 #include "connection.h"
 #include "message.h"
+
+
 #include "player_manager.h"
+#include "rt_config.h"
 
 #ifdef _WINDOWS
 #	include "Winsock2.h"
@@ -437,6 +440,7 @@ TRY {
 						out.add(t0);
 						out.add((unsigned)PlayerManager->get_free_slots_count());
 						out.add((unsigned)PlayerManager->get_slots_count());
+						out.add((int)RTConfig->game_type);
 						out.finalize(msg.data);
 						msg.set("map", Map->getName());
 							

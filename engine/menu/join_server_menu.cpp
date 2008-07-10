@@ -246,6 +246,7 @@ void JoinServerMenu::tick(const float dt) {
 				host->players = src.players;
 				host->slots = src.slots;
 				host->map = src.map;
+				host->game_type = src.game_type;
 				host->update();
 				hosts.erase(h);
 			} 

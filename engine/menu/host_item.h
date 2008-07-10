@@ -3,6 +3,7 @@
 
 #include "container.h"
 #include "mrt/sys_socket.h"
+#include "game_type.h"
 
 class Label;
 
@@ -11,6 +12,7 @@ public:
 	mrt::Socket::addr addr;
 	std::string name, map;
 	int ping, players, slots;
+	GameType game_type;
 	
 	HostItem();
 	void update();

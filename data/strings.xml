@@ -22,6 +22,9 @@
 		<string id="ping">ping</string>
 		<string id="ping" lang="ru">звон</string>
 		
+		<string id="game-type">type</string>
+		<string id="game-type" lang="ru">тип</string>
+		
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
 		<string id="back" lang="fr">RETOUR</string>

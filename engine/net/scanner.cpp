@@ -152,6 +152,10 @@ TRY {
 				s.get(t0);
 				s.get(players);
 				s.get(slots);
+				int game_type;
+				s.get(game_type);
+				if (game_type < GameTypeDeathMatch || game_type > GameTypeTeamDeathMatch) 
+					throw_ex(("got invalid game_type: %d", game_type));
 				
 				if (players > slots)
 					throw_ex(("server returned bogus free slots counter(%u)", players));
@@ -183,6 +187,7 @@ TRY {
 				host.slots = slots;
 				host.players = players;
 				host.map = msg.has("map")?msg.get("map"): std::string();
+				host.game_type = (GameType) game_type;
 				_changed = true;
 			}CATCH("reading message", )
 		}

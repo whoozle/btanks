@@ -8,6 +8,7 @@
 #include "sdlx/thread.h"
 #include "sdlx/mutex.h"
 #include "mrt/sys_socket.h"
+#include "game_type.h"
 
 namespace mrt {
 	class Chunk;
@@ -19,8 +20,9 @@ public:
 	struct Host {
 		std::string name, map;
 		unsigned ping, players, slots;
+		GameType game_type;
 		
-		Host() : name(), map(), ping(0), players(0), slots(0) {}
+		Host() : name(), map(), ping(0), players(0), slots(0), game_type(GameTypeDeathMatch) {}
 	};
 	typedef std::map<const mrt::Socket::addr, Host> HostMap;
 	

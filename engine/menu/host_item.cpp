@@ -4,8 +4,20 @@
 #include "i18n.h"
 #include "rt_config.h"
 
-HostItem::HostItem() : ping(0), players(0), slots(0) , _line(new Label("small", "")) {
+HostItem::HostItem() : ping(0), players(0), slots(0), game_type(GameTypeDeathMatch), _line(new Label("small", "")) {
 	add(0, 0, _line);
+}
+
+static const char * get_type(const GameType game_type) {
+	switch(game_type) {
+	case GameTypeDeathMatch: return "deathmatch"; 
+	case GameTypeCooperative: return "cooperative";
+	case GameTypeRacing: return "racing";
+	case GameTypeCTF: return "ctf"; 
+	case GameTypeTeamDeathMatch: return "team-deathmatch";
+	default: 
+		return "**invalid**";
+	}
 }
 
 void HostItem::update() {
@@ -16,6 +28,7 @@ void HostItem::update() {
 		mapstr = "[";
 		if (!map.empty())
 			mapstr += mrt::format_string("%s: %s, ", I18n->get("menu", "map").c_str(), map.c_str());
+		mapstr += mrt::format_string("%s: %s, ", I18n->get("menu", "game-type").c_str(), get_type(game_type));
 		mapstr += mrt::format_string("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
 	}
 	
