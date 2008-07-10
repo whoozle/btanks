@@ -96,7 +96,6 @@ void Server::restart() {
 			PlayerManager->on_message(id, msg);
 			_monitor->add(id, c);
 			c = NULL;
-			send(id, msg);
 		} CATCH("restart", { delete c;})
 	}
 }
