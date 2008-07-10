@@ -241,6 +241,17 @@ void IMixer::playRandomSample(const Object *o, const std::string &classname, con
 	playSample(o, *s, loop, gain);
 }
 
+bool IMixer::playingSample(const Object *o, const std::string &name) const {
+	if (_nosound || _context == NULL || name.empty())
+		return false;
+
+	Objects::const_iterator i = _objects.find(o->get_id());
+	if (i == _objects.end())
+		return false;
+	
+	return i->second->playing(name);
+}
+
 void IMixer::playSample(const Object *o, const std::string &name, const bool loop, const float gain) {
 	if (_nosound || _context == NULL || name.empty())
 		return;

@@ -55,6 +55,7 @@ public:
 	
 	void loadSample(const std::string &filename, const std::string &classname = std::string());
 	void playSample(const Object *o, const std::string &name, const bool loop, const float gain = 1.0);
+	bool playingSample(const Object *o, const std::string &name) const;
 	void playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
 	void cancelSample(const Object *o, const std::string &name);
 	void fadeoutSample(const Object *o, const std::string &name);
