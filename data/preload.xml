@@ -352,6 +352,7 @@
 		<object id="sandworm-head"/>
 		<object id="shilka"/>
 		<object id="shilka-bullet"/>
+		<object id="shilka-turret"/>
 		<object id="single-pose"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
