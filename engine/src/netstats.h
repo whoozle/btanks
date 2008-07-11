@@ -4,6 +4,10 @@
 #include <vector>
 #include "export_btanks.h"
 
+#ifndef _WINDOWS
+#	include <stdint.h>
+#endif
+
 class BTANKSAPI NetStats {
 public:
 	NetStats();
@@ -21,7 +25,11 @@ private:
 	
 	std::vector<int> deltas;
 	unsigned deltas_idx, deltas_n;
-	int delta;
+#ifdef _WINDOWS
+	__int64 delta;
+#else
+	int64_t delta;
+#endif
 };
 
 #endif
