@@ -41,7 +41,9 @@ void ScrollList::set(const int idx) {
 	if (idx < 0 || idx >= (int)_list.size())
 		throw_ex(("invalid index %d was set", idx));
 	if (_current_item != idx) {
-		_list[_current_item]->activate(false);
+		if (_current_item >= 0 && _current_item < (int)_list.size())
+			_list[_current_item]->activate(false);
+		
 		_list[idx]->activate(true);
 		_current_item = idx;
 		invalidate(true);
@@ -469,14 +471,14 @@ void ScrollList::hide(const bool hide) {
 }
 
 Control * ScrollList::getItem(const int idx) { 
-	if (idx < 0 || idx >= _list.size())
+	if (idx < 0 || idx >= (int)_list.size())
 		throw_ex(("invalid index %d", idx));
 	
 	return _list[idx]; 
 }
 
 const Control * ScrollList::getItem(const int idx) const { 
-	if (idx < 0 || idx >= _list.size())
+	if (idx < 0 || idx >= (int)_list.size())
 		throw_ex(("invalid index %d", idx));
 
 	return _list[idx]; 
