@@ -337,6 +337,8 @@ TRY {
 		LOG_DEBUG(("player state %s, now: %u, timestamp: %u, delta: %+d, dt: %g", state.dump().c_str(), now, timestamp, slot.net_stats.getDelta(), dt));
 		if (dt < 0) 
 			dt = 0;
+		if (dt > 10)
+			throw_ex(("bogus dt calculated: %g", dt));
 		World->tick(*obj, -dt, false);
 		
 		obj->update_player_state(state);
