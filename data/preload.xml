@@ -356,6 +356,8 @@
 		<object id="shilka-bullet"/>
 		<object id="shilka-turret"/>
 		<object id="single-pose"/>
+		<object id="slime"/>
+		<object id="slime-acid"/>
 		<object id="smoke-cloud"/>
 		<object id="smoke-missile"/>
 		<object id="smoke-missiles-item"/>
