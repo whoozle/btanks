@@ -102,14 +102,14 @@ void IFinder::scan(std::vector<std::string> &path) {
 					//LOG_DEBUG(("data_dir = %s", dname.c_str()));
 					path.push_back(dname.c_str());
 #ifdef PLUGINS_DIR
-					path.push_back(PLUGINS_DIR + "/" + dname); //plugins loaded from path ../bt_objects.
+					path.push_back(std::string(PLUGINS_DIR "/") + dname); //plugins loaded from path ../bt_objects.
 #endif
 			}
 		} CATCH("scan", )
 	}
 #ifdef RESOURCES_DIR
 	std::string dname = RESOURCES_DIR "/data";
-	std::string rname = RESOURCES_DIR + "/resources.dat";
+	std::string rname = RESOURCES_DIR "/resources.dat";
 #else
 	std::string dname = "data";
 	std::string rname = "resources.dat";
