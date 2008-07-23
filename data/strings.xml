@@ -641,6 +641,9 @@
 	</area>
 	
 	<area id="maps/descriptions">
+		<string id="four_rooms">На оживленном городском перекрестке встретились представители четырех районов. Сотни убитых, покалеченных нет.</string>
+		<string id="four_rooms" lang="ru">На оживленном городском перекрестке встретились представители четырех районов. Сотни убитых, покалеченных нет.</string>
+		
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
 		<string id="arena" lang="uk">Танкова Арена: Перевір свої вміння вбивати. (Нова мапа!)</string>
@@ -682,7 +685,7 @@
 		<string id="lenin_square" lang="it">Piazza Lenin con elicotteri, kamikaze e un traffico terribile!</string>
 	          
 		<string id="wastes">Wastes. Nuclear desert.</string>
-		<string id="wastes" lang="ru">Выжженый ядерный полигон и мерзкий песчаный червяк.</string>
+		<string id="wastes" lang="ru">Выжженый ядерный полигон и мерзкий песчаный червяк. Карта для игры в захват флага. </string>
 		<string id="wastes" lang="uk">Випалений ядерний полігон та мерзотний піщаний хробак.</string>
 		<string id="wastes" lang="fr">Dévastations. Désert nucléaire.</string>
 		<string id="wastes" lang="de">Ausgebranntes Kernwaffenversuchsgelände mit einem aufdringlichen Sandwurm.</string>
