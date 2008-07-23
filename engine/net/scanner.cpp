@@ -87,6 +87,7 @@ TRY {
 				GET_CONFIG_VALUE("multiplayer.client.master-server-port", int, mport, 27254);
 				LOG_DEBUG(("connecting to the master server %s:%d...", mname.c_str(), mport));
 				mrt::TCPSocket sock;
+				sock.set_timeout(3000, 3000);
 				sock.connect(mname, mport);
 				char req = 'c';
 				sock.send(&req, 1);
