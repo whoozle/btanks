@@ -28,7 +28,7 @@ Scanner::Scanner() : _running(true), _scan(false), _changed(false) {
 Scanner::~Scanner() {
 	LOG_DEBUG(("stopping scanner..."));
 	_running = false;
-	wait();
+	sdlx::Thread::kill();
 }
 
 #include "monitor.h" //hack me, move all packet related code to message! 
@@ -97,6 +97,8 @@ TRY {
 				while((r = sock.recv(buf, sizeof(buf))) > 0) {
 					data.append(buf, r);
 				}
+				if (!_running)
+					break;
 				LOG_DEBUG(("got %u bytes.", (unsigned)data.get_size()));
 				mrt::Serializator s(&data);
 				while(!s.end()) {
