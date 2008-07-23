@@ -34,7 +34,7 @@ float NetStats::updatePing(const float p) {
 	return ping;
 }
 
-int NetStats::updateDelta(const int d) {
+NetStats::public_delta_t NetStats::updateDelta(const int d) {
 	//LOG_DEBUG(("updateDelta(%d)", d));
 	size_t n = deltas.size();
 	if (deltas_n < n)
@@ -49,7 +49,7 @@ int NetStats::updateDelta(const int d) {
 		//LOG_DEBUG(("+%d %d", deltas[i], delta));
 	}
 
-	delta /= (int)deltas_n;
+	delta /= (delta_t)deltas_n;
 	//LOG_DEBUG(("delta: %d, reduced: %d", delta, math::reduce(delta, (int)ping)));
-	return delta;
+	return (public_delta_t)delta;
 }

@@ -10,16 +10,20 @@
 
 class BTANKSAPI NetStats {
 public:
+#ifdef _WINDOWS
+	typedef __int64 delta_t;
+	typedef __int32 public_delta_t;
+#else
+	typedef int64_t delta_t;
+	typedef int32_t public_delta_t;
+#endif
+
 	NetStats();
 	float updatePing(const float ping);
-	int updateDelta(const int delta);
+	public_delta_t updateDelta(const public_delta_t delta);
 
 	inline float getPing() const { return ping;}
-#ifdef _WINDOWS
-	inline __int32 getDelta() const { return (__int32)delta; } 
-#else
-	inline int32_t getDelta() const { return (int32_t)delta; } 
-#endif
+	inline public_delta_t getDelta() const { return (public_delta_t)delta; } 
 	void clear();
 
 private: 
@@ -29,11 +33,8 @@ private:
 	
 	std::vector<int> deltas;
 	unsigned deltas_idx, deltas_n;
-#ifdef _WINDOWS
-	__int64 delta;
-#else
-	int64_t delta;
-#endif
+
+	delta_t delta;
 };
 
 #endif
