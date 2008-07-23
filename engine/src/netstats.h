@@ -15,7 +15,11 @@ public:
 	int updateDelta(const int delta);
 
 	inline float getPing() const { return ping;}
-	inline int getDelta() const { return delta; } 
+#ifdef _WINDOWS
+	inline __int64 getDelta() const { return delta; } 
+#else
+	inline int64_t getDelta() const { return delta; } 
+#endif
 	void clear();
 
 private: 
