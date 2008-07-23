@@ -120,7 +120,7 @@ void IGame::run() {
 		sdlx::Timer _timer;	
 		
 		int limit = 1000000 / 100;
-		float dt = limit / 1000000;
+		float dt = limit / 1000000.0f;
 		while(server_running) {
 			_timer.reset();
 			if (!Map->loaded()) {
