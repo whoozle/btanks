@@ -23,12 +23,9 @@
 #include <assert.h>
 
 int sdlx_thread_starter(void *o) {
-	TRY {
-		sdlx::Thread *t = reinterpret_cast<sdlx::Thread *>(o);
-		assert(t != NULL);
-		return t->runWrap();
-	} CATCH("thread::run", );
-	return -1;
+	sdlx::Thread *t = reinterpret_cast<sdlx::Thread *>(o);
+	assert(t != NULL);
+	return t->runWrap();
 }
 
 using namespace sdlx;
