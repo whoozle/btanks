@@ -47,11 +47,12 @@
 
 using namespace mrt;
 
-TCPSocket::TCPSocket() {}
-
-void TCPSocket::listen(const std::string &bindaddr, const unsigned port, const bool reuse) {
+TCPSocket::TCPSocket() {
 	create(PF_INET, SOCK_STREAM, 0);
 
+}
+
+void TCPSocket::listen(const std::string &bindaddr, const unsigned port, const bool reuse) {
 	int on = 1;
 	if (reuse)
 		setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(on));
@@ -72,7 +73,6 @@ void TCPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 }
 
 void TCPSocket::connect(const addr &addr, const bool no_delay) {
-	create(PF_INET, SOCK_STREAM, 0);
 	if (no_delay)
 		noDelay();
 
@@ -91,7 +91,6 @@ void TCPSocket::connect(const addr &addr, const bool no_delay) {
 
 
 void TCPSocket::connect(const std::string &host, const int port, const bool no_delay) {
-	create(PF_INET, SOCK_STREAM, 0);
 	if (no_delay)
 		noDelay();
 
