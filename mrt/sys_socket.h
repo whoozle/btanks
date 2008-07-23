@@ -72,6 +72,7 @@ namespace mrt {
 		Socket();
 		static void init();
 		void create(const int af, int type, int protocol);
+		void set_timeout(int recv_ms, int send_ms);
 		
 		void close(); 
 		virtual ~Socket();

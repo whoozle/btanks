@@ -136,6 +136,26 @@ TRY {
 } CATCH("noLinger", {});
 }
 
+void Socket::set_timeout(int recv_ms, int send_ms) {
+	struct timeval rt, st;
+	memset(&rt, 0, sizeof(rt));
+	memset(&st, 0, sizeof(st));
+	rt.tv_sec = recv_ms / 1000;
+	rt.tv_usec = (recv_ms % 1000) * 1000;
+
+	st.tv_sec = send_ms / 1000;
+	st.tv_usec = (send_ms % 1000) * 1000;
+	
+	int r = setsockopt(_sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&rt, sizeof(rt));
+	if (r < 0) 
+		throw_net(("setsockopt(SO_RCVTIMEO)"));
+
+	r = setsockopt(_sock, SOL_SOCKET, SO_SNDTIMEO, (char *)&st, sizeof(st));
+	if (r < 0) 
+		throw_net(("setsockopt(SO_SNDTIMEO)"));
+}
+
+
 void Socket::addr::serialize(Serializator &s) const {
 	s.add((unsigned)ip);
 	s.add((unsigned)port);
@@ -149,3 +169,4 @@ void Socket::addr::deserialize(const Serializator &s) {
 	port = n;
 //	LOG_DEBUG(("deserialized %08x:%u", ip, port));
 }
+
