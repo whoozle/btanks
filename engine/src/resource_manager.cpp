@@ -390,7 +390,7 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 
 		const std::string page0080 = Finder->find("font/" + name + "_0080.png", false);
 		if (!page0080.empty()) {
-			Finder->load(data, "font/" + name + "_0400.png");
+			Finder->load(data, "font/" + name + "_0080.png");
 			f->add_page(0x00a0, data, alpha);
 		}
 	return f;
