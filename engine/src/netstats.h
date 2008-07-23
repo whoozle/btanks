@@ -16,9 +16,9 @@ public:
 
 	inline float getPing() const { return ping;}
 #ifdef _WINDOWS
-	inline __int64 getDelta() const { return delta; } 
+	inline __int32 getDelta() const { return (__int32)delta; } 
 #else
-	inline int64_t getDelta() const { return delta; } 
+	inline int32_t getDelta() const { return (int32_t)delta; } 
 #endif
 	void clear();
 
