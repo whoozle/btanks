@@ -1,11 +1,13 @@
 0.8.*: 
-	*) CaptureTheFlag AND TEAMDEATHMATCH!
-		*) Spectator mode and life loans. 
-		*) Rewrote frags handling in a accurate and clean way.
-		*) Added team colors to the chat.
-		*) Automatic join/leave and insulting messages.
-
-	*) Gameplay fixes: 
+	*) Gameplay 
+		*) New gameCaptureTheFlag AND TEAMDEATHMATCH!
+			*) Spectator mode and life loans. 
+			*) Rewrote frags handling in a accurate and clean way.
+			*) Added team colors to the chat.
+			*) Automatic join/leave and insulting messages.
+			*) New tabbed UI for map picker.
+		*) Increased shilka's power allowing its turret to work in automatic mode. 
+		*) New map: "Four Rooms"
 		*) Removed acceleration code for all objects. This added annoying effect of slowness.
 			 (especially while playing on gamepad). Adjusted speed for the most of the objects.
 		*) Help player with diagonal aiming (small delay between releasing buttons to allow stay in diagonal position)
@@ -18,14 +20,20 @@
 	*) Multiplayer fixes: 
 		*) Added 'scan' feature - scanning/querying servers in the local network. 
 		*) Keep clients connected between games. 
-		*) reuse UDP address. Added broadcast mode support.
+		*) Reuse UDP address. Added broadcast mode support.
 		*) New on-demand serialization model: 2-3-10 times smaller packets send thru network.
 		*) Improved client dialog: show map/slots info and hostname/ip. 
 		*) Removed unnesessary memory allocation in serializator.
 		*) Added dictionary-based serializator for the better compression.
-		*) Server mode with registration on the master server. 
+		*) Server mode with registration on the master server 
+			(+lotta command-line switches controlling time limit, ais, game type and initial map, map rotation)
 		*) Round-robin updates broken in smaller pieces - better consistancy, less glitches.
 		*) Moved timestamp code into engine level to avoid timing errors.
+		*) Removed idle/moving timers from the core object (used only in a few objects, -10 bytes per object in MP :)
+		*) Removed blinking timer, use effect timer instead (-10 bytes per object)
+		*) Removed _delta_position from the core objects, rewrite group handling. (-10 bytes again)
+		*) Removed useless allocations from the network monitor thread.
+		*) Fixed cid race condition causing errors on map join
 
 	*) Scripting improvements: 
 		*) Added `trainophobic' variant for the troops (attacking train)
@@ -37,6 +45,7 @@
 		*) Unlimited music streams with simple api. 
 		*) HRTF and family
 		*) Fadeout sample cancellation
+		*) Added first version of the documentation
 	
 	*) Massive performance optimizations: 
 		*) Inner object loops ported to the grid-based approach. 
@@ -58,6 +67,11 @@
 	*) Fixed possible thread-safety problems in network threads. 
 	*) Added various messages while loading game.
 	*) Fixed torus modes once again: pathfinding and position validation.
+	*) Renamed binary to btanks instead of bt to avoid confusion
+	*) Reimplement attaching/detaching vehicle allowing to put object into vehicle and vise versa. 
+	*) [rc2] Added Ukrainian translation and almost all diacritical chars. 
+	*) [rc2] Removed default exception handling to allow thread cancelation for the scanner thread. 
+		Now join menu does not hang because of connection issues or something.
 	*) Billions bugfixes. 
 	
 0.7.5800: 
