@@ -47,7 +47,7 @@ private:
 	typedef std::queue<std::pair<mrt::Socket::addr, std::string> > CheckQueue;
 	CheckQueue check_queue;
 	
-	std::string _bindaddr;
+	//std::string _bindaddr;
 	int _port;
 };
 
