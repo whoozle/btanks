@@ -192,8 +192,8 @@ TRY {
 			}CATCH("reading message", )
 		}
 	}
-} CATCH("run", return 1;)
 	return 0;
+} CATCH("run", return 1)
 }
 
 void Scanner::ping(mrt::UDPSocket &udp_sock) {

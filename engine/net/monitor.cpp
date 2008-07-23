@@ -583,8 +583,7 @@ TRY {
 		}
 	}
 	return 0;
-} CATCH("net::Monitor::run", {})
-	return 1;
+} CATCH("net::Monitor::run", return 1)
 }
 
 
