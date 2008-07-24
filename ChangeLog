@@ -6,7 +6,9 @@
 			*) Added team colors to the chat.
 			*) Automatic join/leave and insulting messages.
 			*) New tabbed UI for map picker.
-		*) Increased shilka's power allowing its turret to work in automatic mode. 
+		*) Shilka's redesign
+			*) Increased shilka's power allowing its turret to work in automatic mode. 
+			*) [rc2] Shilka drops all troops after death. btw, nuke mine too ;))
 		*) New map: "Four Rooms"
 		*) Removed acceleration code for all objects. This added annoying effect of slowness.
 			 (especially while playing on gamepad). Adjusted speed for the most of the objects.
@@ -72,6 +74,9 @@
 	*) [rc2] Added Ukrainian translation and almost all diacritical chars. 
 	*) [rc2] Removed default exception handling to allow thread cancelation for the scanner thread. 
 		Now join menu does not hang because of connection issues or something.
+	*) [rc2] Fixed z boxes of teleported troops (aqua world for example)
+	*) [rc2] Fixed crash at startup if no sound card was found or it's busy
+	*) [rc2] Invalid channels value was fixed in ogg stream
 	*) Billions bugfixes. 
 	
 0.7.5800: 
