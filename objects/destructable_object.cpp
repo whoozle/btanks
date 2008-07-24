@@ -20,6 +20,7 @@
 #include "registrar.h"
 #include "config.h"
 #include "animation_model.h"
+#include "zbox.h"
 
 DestructableObject::DestructableObject(const std::string &classname) : 
 		Object(classname), 
@@ -61,7 +62,7 @@ void DestructableObject::destroy() {
 			if (model != NULL) {
 				const Pose * pose = model->getPose("broken");
 				if (pose != NULL && pose->z > -10000)
-					my_z = pose->z;
+					my_z = pose->z + ZBox::getBoxBase(my_z);
 			}
 			Object *fire = spawn("fire", "fire");
 			if (my_z > fire->get_z())
