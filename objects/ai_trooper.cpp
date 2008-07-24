@@ -91,6 +91,7 @@ void AITrooper::onIdle(const float dt) {
 				dir *= (parent->size.x + parent->size.x) / 3;
 
 				World->teleport(this, parent->get_center_position() + dir);
+				set_zbox(parent->get_z());
 				return;
 			}
 			
