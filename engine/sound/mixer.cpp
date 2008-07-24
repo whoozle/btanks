@@ -80,17 +80,9 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	LOG_DEBUG(("volumes: music: %g, ambience: %g, fx: %g", _volume_music, _volume_ambience, _volume_fx));
 	
 	_nosound = nosound;
-	_context->set_fx_volume(_volume_fx);
-	
-	TRY {
-		//if (!nomusic)
-		//	_ogg = new OggStream(_ogg_source);
-	} CATCH("music thread startup", { _nomusic = true; return; })
 
-	TRY {
-		//if (!nosound)
-		//	_ambient = new OggStream(_ambient_source);
-	} CATCH("ambient thread startup", {})
+	if (_context != NULL)
+		_context->set_fx_volume(_volume_fx);
 	
 	//TRY {
 	//	alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
