@@ -67,14 +67,37 @@ Object * Shilka::clone() const {
 	return new Shilka(*this);
 }
 
+#include "math/binary.h"
 
 void Shilka::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		LOG_DEBUG(("dead"));
-		
 		cancel_all();
 		//play("dead", true);
-		spawn("corpse", "dead-" + animation);
+		Object *corpse = spawn("corpse", "dead-" + animation);
+		
+		FakeMod *mod = getMod("alt-mod");
+		std::string mod_type = mod->getType();
+		//LOG_DEBUG(("mod: %s", mod_type.c_str()));
+		if (mod_type == "thrower" || mod_type == "machinegunner") {
+			int max;
+			Config->get("objects.shilka.units-limit", max, 10); 
+			
+			int n = mod->getCount(), now = get_children("trooper");
+			if (n + now > max) {
+				n = max - now;
+			}
+			for(int i = 0; i < n; ++i) {
+				spawn(mod_type + "(disembark)" + (RTConfig->game_type == GameTypeCooperative? "(ally)":""), 
+					mod_type, 
+					v2<float>(size.x * cos(M_PI * 2 * i / n), size.y * sin(M_PI * 2 * i / n)), 
+					v2<float>());
+			}
+		} else if (mod_type == "mines:nuke") {
+			Object *mine = spawn("nuke-mine", "nuke-mine", v2<float>(), v2<float>());
+			mine->set_z(corpse->get_z() + 1, true);
+		}
+		
 		_dead = true;
 		detachVehicle();
 		Object::emit(event, emitter);
