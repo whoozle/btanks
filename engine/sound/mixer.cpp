@@ -72,6 +72,9 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		_context->init(sample_rate, 2, period);
 	} CATCH("clunk initialization", { delete _context; _context = NULL; _nomusic = _nosound = true; });
+	
+	if (_context == NULL)
+		return;
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
 	Config->get("engine.sound.volume.ambience", _volume_ambience, 0.5f);
@@ -81,8 +84,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	
 	_nosound = nosound;
 
-	if (_context != NULL)
-		_context->set_fx_volume(_volume_fx);
+	_context->set_fx_volume(_volume_fx);
 	
 	//TRY {
 	//	alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
