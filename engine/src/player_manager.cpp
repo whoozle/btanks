@@ -95,7 +95,8 @@ void IPlayerManager::on_disconnect(const int cid) {
 void IPlayerManager::on_message(const int cid, const Message &message) {
 	if (
 		(_client == NULL && _server == NULL) || 
-		(_client != NULL && !_client->connected())
+		(_client != NULL && !_client->connected()) || 
+		(!Map->loaded() && (message.type == Message::UpdateWorld || message.type == Message::UpdatePlayers))
 		) {
 		LOG_DEBUG(("dropping late message %d:%s", cid, message.getType()));
 		return;
