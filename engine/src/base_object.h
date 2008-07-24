@@ -102,6 +102,8 @@ public:
 	
 	const Variants & get_variants() const { return _variants; }
 	
+	inline const v2<float>& get_direction_vector() const { return _direction; }
+	
 protected:
 	int _id;
 	PlayerState _state;
