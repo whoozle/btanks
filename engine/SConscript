@@ -134,3 +134,6 @@ Install('#', bt_main)
 
 if sys.platform == 'win32': 
 	bt_env.AddPostAction(bt_main, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')
+
+if len(bt_env['prefix']) > 0:
+	bt_env.Alias('install', Install(bt_env['prefix'] + '/bin', bt_main))

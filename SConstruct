@@ -217,6 +217,13 @@ except :
 
 			env.Append(CPPDEFINES=['RESOURCES_DIR="\\"' + resources_dir + '\\""'])
 
+			if len(env['plugins_dir']):
+				plugins_dir = env['plugins_dir']
+			else: 
+				plugins_dir = lib_dir + "/btanks"
+
+			env.Append(CPPDEFINES='PLUGINS_DIR="\\"' + plugins_dir + '\\""')
+
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
 	
