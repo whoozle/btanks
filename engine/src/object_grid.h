@@ -49,6 +49,9 @@ public:
 	}
 
 	void update(T id, const v2<int> &pos, const v2<int> &size) {
+		if (_grid.empty())
+			return;
+		
 		typename Index::iterator i = _index.find(id);
 		if (i != _index.end()) {
 		//skip modification if grid coordinates
@@ -70,6 +73,9 @@ public:
 	}
 
 	void remove(T id) {
+		if (_grid.empty())
+			return;
+
 		typename Index::iterator i = _index.find(id);
 		if (i != _index.end()) {
 			removeFromGrid(_grid, _grid_size, id, i->second);		
@@ -79,6 +85,9 @@ public:
 	}
 
 	void collide(std::set<T> &objects, const v2<int>& area_pos, const v2<int>& area_size) const {
+		if (_grid.empty())
+			return;
+
 		v2<int> size = (area_size - 1) / _grid_size + 1;
 		int n = size.x * size.y;
 		if (n >= 16) { //replace with config ? 
