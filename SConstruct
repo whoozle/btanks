@@ -162,6 +162,8 @@ else:
 	env.Append(CPPDEFINES = ['RELEASE'])
 
 Export('env')
+install_targets = list()
+Export('install_targets')
 
 lib_dir = '.'
 try : 
@@ -226,7 +228,7 @@ except :
 
 version = version[version.rfind(':') + 1:]
 revision = int(version.replace('M', ''))
-	
+
 Export('version')
 Export('revision')
 Export('lib_dir')
@@ -256,3 +258,6 @@ env.Append(LIBPATH=['#/build/' + buildmode + '/engine'])
 
 env.BuildDir('#/build/' + buildmode + '/engine', 'engine', 0)
 SConscript('#/build/' + buildmode + '/engine/' + 'SConscript')
+
+if len(install_targets) > 0:
+	env.Alias('install', install_targets)

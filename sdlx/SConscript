@@ -46,8 +46,14 @@ else:
 	sdlx_sources.append('wrappers/glSDL.c')
 
 sdlx = env.SharedLibrary('sdlx', sdlx_sources, LIBS=libs)
-Install('#', sdlx[0])
 Import('debug')
 
 if sys.platform == "win32":
 	sdlx_main = env.StaticLibrary('sdlx_main', ['SDL_win32_main.c'])
+
+if len(env['prefix']) > 0:
+	Import('install_targets')
+	Import('lib_dir')
+	install_targets.append(Install(lib_dir, sdlx))
+else:
+	Install('#', sdlx[0])
