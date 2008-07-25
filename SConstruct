@@ -166,6 +166,7 @@ install_targets = list()
 Export('install_targets')
 
 lib_dir = '.'
+plugins_dir = ''
 try : 
 	version_file = file('.svnversion', 'r')
 	try : 
