@@ -203,6 +203,7 @@ except :
 	if sys.platform != "win32":
 		prefix = env['prefix']
 		res_dir = env['resources_dir'] 
+		plugins_dir = ''
 	
 		if len(prefix) or len(res_dir): 	
 			env.Append(CPPDEFINES=['PREFIX="\\"' + prefix + '\\""'])
