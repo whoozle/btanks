@@ -261,4 +261,5 @@ env.BuildDir('#/build/' + buildmode + '/engine', 'engine', 0)
 SConscript('#/build/' + buildmode + '/engine/' + 'SConscript')
 
 if len(install_targets) > 0:
+	install_targets.append(env.Command(resources_dir + '/resources.dat', '#/data', 'zip -q -0 -r  $TARGET * -x \*.svn\* -x \*.wav', chdir='data'))
 	env.Alias('install', install_targets)
