@@ -19,4 +19,10 @@ mrt = env.SharedLibrary('mrt', \
 	'memory.cpp', 'calendar.cpp', 'base_directory.cpp', 'zip_dir.cpp', 'zip_file.cpp', 
 	'net_exception.cpp', 'dict_serializator.cpp', 
 	], LIBS=libs)
-Install('#', mrt[0])
+
+if len(env['prefix']) > 0:
+	Import('install_targets')
+	Import('lib_dir')
+	install_targets.append(Install(lib_dir, mrt))
+else:
+	Install('#', mrt[0])

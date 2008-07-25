@@ -33,6 +33,12 @@ else:
 env.Append(LIBPATH=['#/build/' + env['mode'] + '/engine'])
 
 editor = env.Program('bted', ed_src, LIBS=libs, RPATH=[lib_dir])
-Install('#', editor)
+
+if len(env['prefix']) > 0:
+	Import('install_targets')
+	install_targets.append(Install(env['prefix'] + '/bin', editor))
+else:
+	Install('#', editor)
+
 if sys.platform == 'win32': 
 	env.AddPostAction(editor, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')

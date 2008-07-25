@@ -232,6 +232,7 @@ revision = int(version.replace('M', ''))
 Export('version')
 Export('revision')
 Export('lib_dir')
+Export('plugins_dir')
 
 version = '0.8.%s' %version
 print "version: %s" %version

@@ -28,4 +28,10 @@ clunk = env.SharedLibrary('clunk',
 		'kiss/kiss_fftr.c', 'kiss/kiss_fft.c', 
 	], 
 	LIBS=clunk_libs)
-Install('#', clunk[0])
+
+if len(env['prefix']) > 0:
+	Import('install_targets')
+	Import('lib_dir')
+	install_targets.append(Install(lib_dir, clunk))
+else:
+	Install('#', clunk[0])

@@ -40,4 +40,9 @@ sources = [
 ]
 
 bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)
-Install('#', bt_obj[0])
+if len(env['prefix']) > 0:
+	Import('install_targets')
+	Import('plugins_dir')
+	install_targets.append(Install(plugins_dir, bt_obj))
+else:
+	Install('#', bt_obj[0])
