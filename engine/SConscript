@@ -113,7 +113,7 @@ if sys.platform != 'win32':
 
 bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs)
 
-if len(env['prefix']) > 0:
+if sys.platform != 'win32' and len(env['prefix']) > 0:
 	Import('install_targets')
 	Import('lib_dir')
 	install_targets.append(Install(lib_dir, bt))
@@ -140,7 +140,7 @@ bt_main = bt_env.Program('btanks', bt_main_sources, LIBS=bt_main_libs, RPATH=[li
 if sys.platform == 'win32': 
 	bt_env.AddPostAction(bt_main, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')
 
-if len(bt_env['prefix']) > 0:
+if sys.platform != 'win32' and len(bt_env['prefix']) > 0:
 	Import('install_targets');
 	install_targets.append(Install(bt_env['prefix'] + '/bin', bt_main))
 else: 

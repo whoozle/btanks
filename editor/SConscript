@@ -34,7 +34,7 @@ env.Append(LIBPATH=['#/build/' + env['mode'] + '/engine'])
 
 editor = env.Program('bted', ed_src, LIBS=libs, RPATH=[lib_dir])
 
-if len(env['prefix']) > 0:
+if sys.platform != 'win32' and len(env['prefix']) > 0:
 	Import('install_targets')
 	install_targets.append(Install(env['prefix'] + '/bin', editor))
 else:

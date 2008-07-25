@@ -29,7 +29,7 @@ clunk = env.SharedLibrary('clunk',
 	], 
 	LIBS=clunk_libs)
 
-if len(env['prefix']) > 0:
+if sys.platform != 'win32' and len(env['prefix']) > 0:
 	Import('install_targets')
 	Import('lib_dir')
 	install_targets.append(Install(lib_dir, clunk))
