@@ -1042,11 +1042,32 @@ const PlayerSlot *IPlayerManager::get_slot_by_id(const int id) const {
 }
 
 
-const int IPlayerManager::find_empty_slot() const {
+const int IPlayerManager::find_empty_slot() {
 	int i, n = _players.size();
 	for(i = 0; i < n; ++i) {
 		if (_players[i].empty() && _players[i].remote == -1)
 			break;
+	}
+
+	if (RTConfig->server_mode && i == n) {
+		for(i = 0; i < n; ++i) {
+			PlayerSlot &slot = _players[i];
+			if (slot.remote == -1) {
+				LOG_DEBUG(("found ai player in slot %d, dropping...", i));
+				Object *ai = slot.getObject();
+				if (ai)
+					ai->emit("death", NULL);
+
+				std::string name = slot.name;
+				slot.clear();
+
+				//hackish :(
+				slot.name = name;
+				action(_players[i], "network", "leave");
+				slot.name.clear();
+				break;
+			}
+		}
 	}
 	if (i == n) 
 		throw_ex(("no available slots found from %d", n));
