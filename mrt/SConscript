@@ -20,7 +20,7 @@ mrt = env.SharedLibrary('mrt', \
 	'net_exception.cpp', 'dict_serializator.cpp', 
 	], LIBS=libs)
 
-if sys.platform != 'win32' and len(env['prefix']) > 0:
+if sys.platform != 'win32' and env.has_key('prefix') and len(env['prefix']) > 0:
 	Import('install_targets')
 	Import('lib_dir')
 	install_targets.append(Install(lib_dir, mrt))
