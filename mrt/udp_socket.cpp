@@ -93,6 +93,10 @@ void UDPSocket::connect(const std::string &host, const int port) {
 }
 
 UDPSocket::UDPSocket() {
+	create();
+}
+
+void UDPSocket::create() {
 	Socket::create(PF_INET, SOCK_DGRAM, 0);
 }
 

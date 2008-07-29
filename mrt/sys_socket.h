@@ -83,6 +83,8 @@ namespace mrt {
 		friend class SocketSet;
 	private: 
 		void no_linger();
+		Socket(const Socket &socket);
+		const Socket& operator=(const Socket &socket);
 	};
 }
 
