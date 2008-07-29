@@ -91,6 +91,7 @@ void IPlayerManager::on_disconnect(const int cid) {
 }
 
 #include "var.h"
+#include "i18n.h"
 
 void IPlayerManager::on_message(const int cid, const Message &message) {
 	if (
@@ -571,7 +572,23 @@ TRY {
 					}
 				}
 			} else {
-				Game->getChat()->addAction(message.get("text"));
+				if (message.has("key")) {
+					std::string key = message.get("key");
+					if (I18n->has(key)) {
+						std::string msg = I18n->get(key);
+						if (message.has("1")) {
+							mrt::replace(msg, "$1", message.get("1"));
+						}
+						if (message.has("2")) {
+							mrt::replace(msg, "$2", message.get("2"));
+						}
+						Game->getChat()->addAction(msg);
+					} else {
+						Game->getChat()->addAction("unlocalized message \"" + key + "\"");
+					}
+				} else {
+					Game->getChat()->addAction(message.get("text"));
+				}
 			}
 			break;
 		} 
