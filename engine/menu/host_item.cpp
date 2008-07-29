@@ -53,10 +53,13 @@ void HostItem::update() {
 	std::string mapstr;
 	
 	if (ping > 0) {
+		_line->setFont("small_green");
 		mapstr = "[";
 		if (!map.empty())
 			mapstr += mrt::format_string("%s: %s (%s), ", I18n->get("menu", "map").c_str(), map.c_str(), get_type(game_type));
 		mapstr += mrt::format_string("%s: %d ms]", I18n->get("menu", "ping").c_str(), ping - 1);
+	} else {
+		_line->setFont("small");
 	}
 	
 	std::string hoststr = name, ip = addr.getAddr(addr.port != RTConfig->port);
