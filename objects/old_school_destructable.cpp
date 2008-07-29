@@ -27,7 +27,7 @@ public:
 	virtual Object * clone() const { return new OldSchoolDestructableObject(*this); }
 	virtual void tick(const float dt);
 	virtual void on_spawn();
-	virtual void addDamage(Object *from, const int hp, const bool emitDeath = true);
+	virtual void add_damage(Object *from, const int hp, const bool emitDeath = true);
 
 	virtual void serialize(mrt::Serializator &s) const;
 	virtual void deserialize(const mrt::Serializator &s);
@@ -64,7 +64,7 @@ void OldSchoolDestructableObject::deserialize(const mrt::Serializator &s) {
 	s.get(_spawn);
 }
 
-void OldSchoolDestructableObject::addDamage(Object *from, const int dhp, const bool emitDeath) {
+void OldSchoolDestructableObject::add_damage(Object *from, const int dhp, const bool emitDeath) {
 	if (_hops <= 0)
 		return;
 

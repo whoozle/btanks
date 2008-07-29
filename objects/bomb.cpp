@@ -70,7 +70,7 @@ void Bomb::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (emitter == NULL || get_state_progress() >= 0.8) 
 			emit("death", emitter);
-		return; //do not emit addDamage
+		return; //do not emit add_damage
 	} else if (event == "death") {
 		Object *o = spawn("cannon-explosion", "cannon-explosion");
 		o->set_z(get_z() + 1, true);
