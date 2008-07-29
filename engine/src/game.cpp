@@ -310,6 +310,12 @@ void IGame::init(const int argc, char *argv[]) {
 			if (cl < 3) 
 				Config->set("multiplayer.compression-level", 3);
 		}
+		if (revision < 7540) {
+			int sid;
+			Config->get("multiplayer.sync-interval-divisor", sid, 5);
+			if (sid > 5) 
+				Config->set("multiplayer.sync-interval-divisor", 5);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}

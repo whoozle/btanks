@@ -1473,7 +1473,7 @@ TRY {
 }
 
 void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, const int first_id) {
-	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 10);
+	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 5);
 	
 	const bool sync_update = first_id > 0;
 	int id0 = sync_update? first_id: _current_update_id;

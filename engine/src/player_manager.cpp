@@ -975,7 +975,7 @@ void IPlayerManager::clear(bool disconnect) {
 	_net_stats.clear();
 
 	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
-	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 10);
+	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 5);
 	_next_sync.set(sync_interval / sync_div);
 
 	LOG_DEBUG(("cleaning up players..."));
