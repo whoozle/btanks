@@ -43,8 +43,6 @@
 using namespace mrt;
 
 void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const bool reuse) {
-	create();
-
 	int on = 1;
 	if (reuse)
 		setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (char*)&on, sizeof(on));
@@ -63,8 +61,6 @@ void UDPSocket::listen(const std::string &bindaddr, const unsigned port, const b
 }
 
 void UDPSocket::connect(const mrt::Socket::addr &addr_) {
-	create();
-
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
@@ -77,8 +73,6 @@ void UDPSocket::connect(const mrt::Socket::addr &addr_) {
 }
 
 void UDPSocket::connect(const std::string &host, const int port) {
-	create();
-	
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
@@ -98,7 +92,7 @@ void UDPSocket::connect(const std::string &host, const int port) {
 		throw_net(("connect"));
 }
 
-void UDPSocket::create() {
+DPSocket::UDPSocket() {
 	Socket::create(PF_INET, SOCK_DGRAM, 0);
 }
 
