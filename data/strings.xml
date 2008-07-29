@@ -19,7 +19,7 @@
 
 		<string id="capture-the-flag">Capture the flag</string>
 		<string id="capture-the-flag" lang="ru">Захват флага</string>
-		<string id="capture-the-flag" lang="uk">Захоплення прапору</string>
+		<string id="capture-the-flag" lang="uk">За прапор</string>
 		
 		<string id="map">map</string>
 		<string id="map" lang="ru">карта</string>
@@ -96,7 +96,7 @@
 
 			<string id="capture-the-flag">CTF</string>
 			<string id="capture-the-flag" lang="ru">ЗАХВАТ ФЛАГА</string>
-			<string id="capture-the-flag" lang="uk">ЗАХОПЛЕННЯ ПРАПОРУ</string>
+			<string id="capture-the-flag" lang="uk">ЗА ПРАПОР</string>
 
 			<string id="team-deathmatch">TEAM DEATHMATCH</string>
 			<string id="team-deathmatch" lang="ru">ТИМ ДЕСМАТЧ</string>
@@ -643,6 +643,7 @@
 	<area id="maps/descriptions">
 		<string id="four_rooms">Four local gangs are rumbling in the city center. Hundreds of dead, no injured.</string>
 		<string id="four_rooms" lang="ru">На оживленном городском перекрестке встретились представители четырех районов. Сотни убитых, покалеченных нет.</string>
+		<string id="four_rooms" lang="uk">На жвавому міському перехресті зустрілись представники чотирьох районів. Сотні вбитих, скалічених немає.</string>
 		
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
@@ -994,7 +995,7 @@
 		         
 		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key.</string>
 		<string id="stats" lang="ru">Вы можете посмотреть статистику матча кнопкой &lt;tab&gt;.</string>
-		<string id="stats" lang="uk">Ви можете продивитися статистику матчу клавішею &lt;tab&gt;.</string>
+		<string id="stats" lang="uk">Ви можете подивитися статистику матчу клавішею &lt;tab&gt;.</string>
 		<string id="stats" lang="fr">Vous pouvez voir les scores pendant une partie multijoueur en pressant la touche 'TAB'.</string>
 		<string id="stats" lang="de">Mit der "TAB" Taste können Sie die Matchstatistik ansehen.</string>
 		<string id="stats" lang="it">Puoi vedere le statistiche del gioco premendo 'TAB'.</string>
@@ -1022,7 +1023,7 @@
 		
 		<string id="chat">You can press ENTER and chat with other players</string>
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
-		<string id="chat" lang="uk">Ви можете розмовляти із іншими гравцями, натиснувши ENTER.</string>
+		<string id="chat" lang="uk">Ви можете розмовляти з іншими гравцями, натиснувши ENTER.</string>
 		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTRÉE.</string>
 		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
 
@@ -1039,6 +1040,7 @@
 		<area id="network">
 			<string id="join1">$1 joined the game</string>
 			<string id="join1" lang="ru">К нам пришёл $1</string>
+			<string id="join1" lang="uk">До нас прийшов $1</string>
 
 			<string id="join2">$1 connected.</string>
 			<string id="join2" lang="ru">$1 подключился к игре</string>
@@ -1087,6 +1089,7 @@
 			<string id="_1">$1 shoot himself in a leg!</string>
 			<string id="_1" lang="ru">$1 прострелил себе ногу и умер</string>
 			<string id="_1" lang="uk">$1 прострілив собі ногу та помер</string>
+
 			<string id="_2">$1 said farewell to this cruel existence and killed himself</string>
 			<string id="_2" lang="ru">$1 попрощался с этим жестоким миром и убил себя</string>
 			<string id="_2" lang="uk">$1 попрощався з цим жорстоким світом та вбив себе</string>
