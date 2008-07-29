@@ -92,6 +92,13 @@ const std::string& II18n::get(const std::string &id) const {
 	return i->second;
 }
 
+bool II18n::has(const std::string &id) const {
+	if (id.empty())
+		throw_ex(("I18n->has(/empty-id/) is not allowed"));
+
+	return _strings.find(id) != _strings.end();
+}
+
 const std::string& II18n::get(const std::string &_area, const std::string &id) const {
 	if (id.empty())
 		throw_ex(("I18n->get(/empty-id/) is not allowed"));
