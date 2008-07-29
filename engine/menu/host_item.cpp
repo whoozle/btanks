@@ -43,8 +43,15 @@ void HostItem::render(sdlx::Surface &surface, const int x, const int y) const {
 		int w, h; 
 		get_size(w, h);
 	
-		const char * slash = "|\\-/";
-		_font->render(surface, x + w, y, std::string(&slash[((int)(timer * 10)) % 4], 1));
+		//const char * slash = "|\\-/";
+		//_font->render(surface, x + w, y, std::string(&slash[((int)(timer * 10)) % 4], 1));
+		int idx = 8 - (((int)(timer * 5)) % 8);
+		std::string str = "-----";
+		if (idx >= 5) {
+			idx = 8 - idx;
+		}
+		str[idx] = '=';
+		_font->render(surface, x + w, y, str);
 	}
 }
 
