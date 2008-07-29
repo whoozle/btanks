@@ -748,11 +748,14 @@
 		<object id="machinegunner-bullet"/>
 		<object id="machinegunner-in-watchtower"/>
 		<object id="machinegunner-item"/>
+		<object id="machinegunner-on-launcher"/>
+		<object id="machinegunner-player"/>
 		<object id="megaheal"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
+		<object id="nuke-missile"/>
 		<object id="nuke-missiles-item"/>
 		<object id="oil-barrels"/>
 		<object id="outline"/>
