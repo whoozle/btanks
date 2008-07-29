@@ -44,7 +44,7 @@ void HostItem::render(sdlx::Surface &surface, const int x, const int y) const {
 		get_size(w, h);
 	
 		const char * slash = "|\\-/";
-		_font->render(surface, x + w + 4, y, std::string(&slash[((int)(timer * 10)) % 4], 1));
+		_font->render(surface, x + w, y, std::string(&slash[((int)(timer * 10)) % 4], 1));
 	}
 }
 
