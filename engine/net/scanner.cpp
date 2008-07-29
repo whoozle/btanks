@@ -51,7 +51,6 @@ TRY {
 
 	mrt::UDPSocket udp_sock;
 	//udp_sock.listen(bindaddr, port, false);
-	udp_sock.create();
 	udp_sock.set_broadcast_mode(1);
 	LOG_DEBUG(("udp socket started..."));
 
