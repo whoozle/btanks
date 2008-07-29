@@ -93,9 +93,10 @@ else:
 	if env['gcc_visibility']: 
 		env.Append(CCFLAGS=['-fvisibility=hidden']);
 		env.Append(CXXFLAGS=['-fvisibility-inlines-hidden', '-fvisibility=hidden']);
+
 	if debug:
-		env.Append(CCFLAGS=['-ggdb'])
-		env.Append(CPPFLAGS=['-ggdb'])
+		env.Append(CCFLAGS=['-ggdb', '-D_FORTIFY_SOURCE=2'])
+		env.Append(CPPFLAGS=['-ggdb', '-D_FORTIFY_SOURCE=2'])
 	else: 
 		env.Append(CCFLAGS=['-O3'])
 		env.Append(CPPFLAGS=['-O3'])
