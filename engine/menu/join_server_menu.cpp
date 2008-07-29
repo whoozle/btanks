@@ -151,8 +151,16 @@ void JoinServerMenu::join() {
 		
 	Game->clear();
 	PlayerManager->start_client(addr, split?2:1);
-	onHide();
 }
+
+void JoinServerMenu::activate(bool active) {
+	if (active && _scanner == NULL) {
+		_scanner = new Scanner;				
+		_scanner->scan();
+		ping();
+	}
+}
+
 
 void JoinServerMenu::tick(const float dt) {
 	Container::tick(dt);
@@ -177,7 +185,6 @@ void JoinServerMenu::tick(const float dt) {
 	
 	if (_back->changed()) {
 		LOG_DEBUG(("[back] clicked"));
-		onHide();
 		MenuConfig->save();
 		_back->reset();
 		_parent->back();
@@ -208,9 +215,11 @@ void JoinServerMenu::tick(const float dt) {
 	if (_scan->changed()) {
 		_scan->reset();
 		ping_timer.reset();
-		ping(); //ping creates scanner
+		if (_scanner == NULL)
+			_scanner = new Scanner;
+
 		_scanner->scan();
-		
+		ping(); //ping creates scanner	
 	}
 
 	if (ping_timer.tick(dt)) {
@@ -225,10 +234,10 @@ void JoinServerMenu::tick(const float dt) {
 
 	if (_scanner == NULL) {
 		_scanner = new Scanner;
-		ping(); 
 		_scanner->scan();
+		ping(); 
 	}
-	
+
 	if (_scanner != NULL && _scanner->changed()) {
 		_scanner->reset();
 		Scanner::HostMap hosts;
@@ -313,14 +322,6 @@ void JoinServerMenu::ping() {
 	}	
 }
 
-void JoinServerMenu::onHide() {
-	if (_scanner != NULL) {
-		delete _scanner;
-		_scanner = NULL;
-	}
-}
-
-
 bool JoinServerMenu::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
@@ -337,7 +338,6 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 		return true;
 	
 	case SDLK_ESCAPE: 
-		onHide();
 		MenuConfig->save();
 		_parent->back();
 		return true;

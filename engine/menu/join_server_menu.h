@@ -46,7 +46,7 @@ public:
 	void update();
 
 private: 
-	void onHide();
+	void activate(bool active);
 	void ping();
 	Alarm ping_timer;
 
