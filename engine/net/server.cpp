@@ -93,8 +93,8 @@ void Server::restart() {
 			Message msg(Message::RequestServerStatus);
 			int id = PlayerManager->on_connect();
 			LOG_DEBUG(("reassigning connection: %d", id));
-			PlayerManager->on_message(id, msg);
 			_monitor->add(id, c);
+			PlayerManager->on_message(id, msg);
 			c = NULL;
 		} CATCH("restart", { delete c;})
 	}
