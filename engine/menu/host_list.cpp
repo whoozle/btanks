@@ -74,6 +74,49 @@ void HostList::append(const std::string &_item) {
 	_list.push_front(new_item);
 }
 
+struct ping_less_cmp {
+	bool operator()(Control * a, Control * b) const {
+		HostItem * ta = dynamic_cast<HostItem *>(a);
+		HostItem * tb = dynamic_cast<HostItem *>(b);
+		if (ta == NULL) 
+			return true;
+		if (tb == NULL)
+			return false;
+		
+		if (ta->ping >= 1 && tb->ping >= 1) {
+			return ta->ping < tb->ping;
+		} 
+		
+		if (ta->ping >= 1) 
+			return true;
+		
+		return false;
+	}
+};
+
+#include <algorithm>
+
+void HostList::sort() {
+	if (_list.empty())
+		return;
+	
+	if (_current_item >= (int)_list.size())
+		_current_item = 0;
+	
+	Control *selected = _list[_current_item];
+
+	//LOG_DEBUG(("sorting host list..."));
+	std::stable_sort(_list.begin(), _list.end(), ping_less_cmp());
+
+	for(size_t i = 0; i < _list.size(); ++i) {
+		if (((Control *)_list[i]) == selected) {
+			_current_item = i;
+			return;
+		}
+	}
+}
+
+
 void HostList::append(HostItem *item) {
 	item->update();
 	_list.push_front(item);

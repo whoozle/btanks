@@ -30,6 +30,7 @@ public:
 	void append(HostItem *);
 	
 	void promote();
+	void sort();
 	~HostList();
 
 private: 

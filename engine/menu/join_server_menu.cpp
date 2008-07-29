@@ -305,6 +305,7 @@ void JoinServerMenu::update() {
 	//	return;
 	//const std::string & map = host->map;
 	//LOG_DEBUG(("showing map: %s", map.c_str()));
+	_hosts->sort();
 }
 
 void JoinServerMenu::ping() {
