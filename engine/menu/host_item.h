@@ -6,6 +6,7 @@
 #include "game_type.h"
 
 class Label;
+namespace sdlx { class Font; }
 
 class HostItem : public Container {
 public:
@@ -16,8 +17,13 @@ public:
 	
 	HostItem();
 	void update();
+	void start(float t);
+	void tick(const float dt);
+	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 private: 
 	Label * _line;
+	const sdlx::Font *_font;
+	float timer;
 };
 
 #endif

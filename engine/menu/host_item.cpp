@@ -3,10 +3,26 @@
 #include "resource_manager.h"
 #include "i18n.h"
 #include "rt_config.h"
+#include "sdlx/font.h"
 
-HostItem::HostItem() : ping(0), players(0), slots(0), game_type(GameTypeDeathMatch), _line(new Label("small", "")) {
+HostItem::HostItem() : ping(0), players(0), slots(0), game_type(GameTypeDeathMatch), 
+	_line(new Label("small", "")), _font(ResourceManager->loadFont("small", true)), timer(0) {
 	add(0, 0, _line);
 }
+
+void HostItem::start(float t) {
+	timer = t;
+}
+
+void HostItem::tick(const float dt) {
+	Container::tick(dt);
+	if (timer > 0) {
+		timer -= dt;
+		if (timer < 0) 
+			timer = 0;
+	}
+}
+
 
 static const char * get_type(const GameType game_type) {
 	switch(game_type) {
@@ -17,6 +33,18 @@ static const char * get_type(const GameType game_type) {
 	case GameTypeTeamDeathMatch: return "team-deathmatch";
 	default: 
 		return "**invalid**";
+	}
+}
+
+void HostItem::render(sdlx::Surface &surface, const int x, const int y) const {
+	Container::render(surface, x, y);
+	
+	if (timer > 0) {
+		int w, h; 
+		get_size(w, h);
+	
+		const char * slash = "|\\-/";
+		_font->render(surface, x + w + 4, y, std::string(&slash[((int)(timer * 10)) % 4], 1));
 	}
 }
 
@@ -39,4 +67,5 @@ void HostItem::update() {
 	}
 	hoststr += "  ";
 	_line->set(prefix + hoststr + mapstr);
+	timer = 0;
 }

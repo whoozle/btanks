@@ -210,6 +210,7 @@ void JoinServerMenu::tick(const float dt) {
 		ping_timer.reset();
 		ping(); //ping creates scanner
 		_scanner->scan();
+		
 	}
 
 	if (ping_timer.tick(dt)) {
@@ -307,6 +308,8 @@ void JoinServerMenu::ping() {
 		if (host == NULL) 
 			continue;
 		_scanner->add(host->addr, host->name);
+		GET_CONFIG_VALUE("engine.rolling-slash-timeout", float, rst, 5.0f);
+		host->start(rst);
 	}	
 }
 
