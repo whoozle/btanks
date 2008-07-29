@@ -1304,10 +1304,9 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	if (player == NULL || 
 		killer == NULL || 
 		_client != NULL || 
-		killer->get_slot() < 0 || 
-		killer->get_slot() >= (int)_players.size() || 
 		GameMonitor->game_over())
 		return;
+
 
 	bool add_frags = RTConfig->game_type != GameTypeCTF;
 	
@@ -1323,10 +1322,20 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 			return;
 		}
 	}
+
+	if (killer->get_slot() < 0 || 
+		killer->get_slot() >= (int)_players.size()) {
+		//various environmental effects
+		if (player_slot == NULL)
+			return;
+		action(*player_slot, "environment", killer->registered_name);
+		return;
+	}
+
 	//LOG_DEBUG(("prepare: object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 	PlayerSlot &slot = _players[killer->get_slot()];
 
-	LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
+	//LOG_DEBUG(("object %s killed by %s", player->animation.c_str(), killer->animation.c_str()));
 		
 	if (slot.id == player->get_id()) { //suicide
 		action(slot, "suicide", killer->classname);
@@ -1446,7 +1455,7 @@ void IPlayerManager::send_hint(const int slot_id, const std::string &area, const
 void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, const std::string &subtype, const PlayerSlot *killer_slot) {
 	if (_client != NULL)
 		return;
-		
+	//LOG_DEBUG(("action(%s %s)", type.c_str(), subtype.c_str()));
 	//insults :)
 	std::queue<std::string> bases;
 	if (!subtype.empty())
@@ -1461,7 +1470,7 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 
 	while(keys.empty() && !bases.empty()) {
 		base = bases.front();
-		LOG_DEBUG(("enumerating %s", base.c_str()));
+		//LOG_DEBUG(("enumerating %s", base.c_str()));
 		I18n->enumerateKeys(keys, base); //plus single key
 		bases.pop();
 	}

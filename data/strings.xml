@@ -1108,6 +1108,11 @@
 			<string id="_1" lang="ru">$1 выйграл ещё одно очко для своей команды!</string>
 			<string id="_1" lang="uk">$1 виграв щє одне очко для своєї команди!</string>
 		</area>
+
+		<area id="environment">
+			<string id="sandworm-head1">$1 was eaten by sandworm</string>
+			<string id="sandworm-head1" lang="ru">$1 был безжалостно съеден песчаным червём</string>
+		</area>
 		
 	</area>
 	
