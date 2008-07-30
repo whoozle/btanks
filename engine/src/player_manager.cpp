@@ -584,7 +584,7 @@ TRY {
 						}
 						Game->getChat()->addAction(msg);
 					} else {
-						Game->getChat()->addAction("unlocalized message \"" + key + "\"");
+						Game->getChat()->addAction(message.get("text")); //use server generated version
 					}
 				} else {
 					Game->getChat()->addAction(message.get("text"));
