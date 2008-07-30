@@ -113,7 +113,7 @@ void UDPSocket::create() {
 
 	// disable  new behavior using
 	// IOCTL: SIO_UDP_CONNRESET
-	status = WSAIoctl(sd, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
+	status = WSAIoctl(_sock, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
 
 #endif	
 }
