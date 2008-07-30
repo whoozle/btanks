@@ -96,8 +96,26 @@ UDPSocket::UDPSocket() {
 	create();
 }
 
+#ifdef _WINDOWS
+#	ifndef SIO_UDP_CONNRESET
+#		define SIO_UDP_CONNRESET _WSAIOW(IOC_VENDOR, 12)
+#	endif
+#endif
+
+
 void UDPSocket::create() {
 	Socket::create(PF_INET, SOCK_DGRAM, 0);
+
+#ifdef _WINDOWS
+	DWORD dwBytesReturned = 0;
+	BOOL bNewBehavior = FALSE;
+	DWORD status;
+
+	// disable  new behavior using
+	// IOCTL: SIO_UDP_CONNRESET
+	status = WSAIoctl(sd, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
+
+#endif	
 }
 
 const int UDPSocket::send(const Socket::addr &addr, const void *data, const int len) const {
