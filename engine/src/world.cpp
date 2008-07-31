@@ -1171,6 +1171,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 						//if (o->_dead && !o->animation.empty())
 						//	o->_dead = false;
 						_objects.erase(j);
+						objects.erase(cmd.id);
 					}
 				}
 				break;
@@ -1191,9 +1192,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			deleteObject(o);
 			o = NULL;
 			objects.erase(i++);
-			ObjectMap::iterator j = _objects.find(id);
-			if (j != _objects.end())
-				_objects.erase(j);
+			_objects.erase(id);
 		} else {
 			++i; //not dead / dead and safe mode. waiting for the update.
 		}

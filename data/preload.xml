@@ -788,6 +788,7 @@
 		<object id="thrower-missile"/>
 		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
+		<object id="vehicle-machinegunner-bullet"/>
 		<object id="watchtower-top"/>
 		<object id="watchtower-with-machinegunner"/>
 		<object id="watchtower-with-thrower"/>
