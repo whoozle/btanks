@@ -229,12 +229,6 @@ void IGame::init(const int argc, char *argv[]) {
 		if (revision < 4009) {
 			Config->set("engine.sound.maximum-sources", 16);
 		}
-		if (revision < 4975) {
-			int ds;
-			Config->get("multiplayer.deltas-samples", ds, 30);
-			if (ds >= 100)
-				Config->set("multiplayer.deltas-samples", 30);
-		}
 		if (revision < 5264) {
 			std::set<std::string> keys;
 			Config->enumerateKeys(keys, "objects.");
@@ -315,6 +309,12 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->get("multiplayer.sync-interval-divisor", sid, 5);
 			if (sid > 5) 
 				Config->set("multiplayer.sync-interval-divisor", 5);
+		}
+		if (revision < 7565) {
+			int ds;
+			Config->get("multiplayer.deltas-samples", ds, 5);
+			if (ds >= 30)
+				Config->set("multiplayer.deltas-samples", 5);
 		}
 		
 		Config->set("engine.revision", getRevision());

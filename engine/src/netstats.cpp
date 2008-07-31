@@ -4,7 +4,7 @@
 
 NetStats::NetStats() : pings_idx(0), pings_n(0), ping(0), deltas_idx(0), deltas_n(0), delta(0) {
 	GET_CONFIG_VALUE("multiplayer.pings-samples", int, ps, 10);
-	GET_CONFIG_VALUE("multiplayer.deltas-samples", int, ds, 30);
+	GET_CONFIG_VALUE("multiplayer.deltas-samples", int, ds, 5);
 	pings.resize(ps);
 	deltas.resize(ds);
 }
