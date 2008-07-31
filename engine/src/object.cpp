@@ -63,7 +63,7 @@ Object * Object::deep_clone() const {
 	r->_fadeout_surface = NULL;
 	for(Group::iterator i = r->_group.begin(); i != r->_group.end(); ++i) {
 		i->second = i->second->deep_clone();
-		i->second->_parent = const_cast<Object *>(r);
+		i->second->_parent = r;
 	}
 	return r;
 }
