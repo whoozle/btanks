@@ -92,7 +92,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false), 
+IWorld::IWorld() : _last_id(0), _atatat(false), 
 	_max_dt(1), _out_of_sync(-1), _out_of_sync_sent(-1), _current_update_id(-1), _hp_bar(NULL) {
 	
 	LOG_DEBUG(("world ctor"));
@@ -102,11 +102,6 @@ IWorld::IWorld() : _last_id(0), _safe_mode(false), _atatat(false),
 
 IWorld::~IWorld() {
 	clear();
-}
-
-void IWorld::setSafeMode(const bool safe_mode) {
-	_safe_mode = safe_mode;
-	LOG_DEBUG(("set safe mode to %s", _safe_mode?"true":"false"));
 }
 
 void IWorld::deleteObject(Object *o) {
@@ -139,7 +134,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 	o->_id = (id > 0)?id:++_last_id;
 	
 	ObjectMap::iterator existing_object = _objects.find(o->_id);
-	if (_safe_mode && existing_object != _objects.end()) {
+	if (PlayerManager->is_client() && existing_object != _objects.end()) {
 		//client mode: actual id may overlap due possible races.
 		//note that it's temporary solution: on the next cropping update
 		//this objects will be killed or replaced :)
@@ -1186,7 +1181,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 		Object *o = i->second;
 		assert(o != NULL);
 
-		if (!_safe_mode && o->_dead) { //not dead/dead and server mode
+		if (!PlayerManager->is_client() && o->_dead) { //not dead/dead and server mode
 			//LOG_DEBUG(("object %d:%s is dead. cleaning up. (global map: %s)", o->get_id(), o->classname.c_str(), &objects == &_objects?"true":"false"));
 			int id = i->first;
 			deleteObject(o);

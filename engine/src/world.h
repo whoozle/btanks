@@ -97,9 +97,6 @@ public:
 	void tick(ObjectMap &objects, const float dt, const bool do_calculate = true);
 	void purge(const float dt);
 	
-	void setSafeMode(const bool safe_mode = true);
-	inline const bool safeMode() const { return _safe_mode; }
-
 	const float getImpassability(Object *obj, const v2<int> &position, const Object **collided_with = NULL, const bool probe = false, const bool skip_moving = false) const;
 	
 	const int get_children(const int id, const std::string &classname) const;
