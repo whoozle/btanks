@@ -114,6 +114,7 @@ void Monitor::_accept() {
 		s = new mrt::TCPSocket;
 		_server_sock->accept(*s);
 		s->noDelay();
+		LOG_DEBUG(("game client connected from %s", s->getAddress().getAddr().c_str()));
 		sdlx::AutoMutex m(_connections_mutex);
 		_new_connections.push_back(s);
 	} CATCH("_accept", { delete s; s = NULL; throw; })
