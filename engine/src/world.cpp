@@ -77,7 +77,7 @@ void IWorld::clear() {
 	_static_collision_map.clear();
 	
 	_last_id = 0;
-	_atatat = _safe_mode = false;
+	_atatat = false;
 	profiler.dump();
 	_out_of_sync = -1;
 	_out_of_sync_sent = -1;

@@ -935,6 +935,7 @@ IPlayerManager::~IPlayerManager() {}
 void IPlayerManager::start_server() {
 	clear();
 	_local_clients = 0;
+	World->setSafeMode(false);
 	TRY {
 		if (_client != NULL) {
 			delete _client;
@@ -980,6 +981,7 @@ void IPlayerManager::start_client(const mrt::Socket::addr &address, const size_t
 	});
 	_recent_address = address;
 }
+
 void IPlayerManager::clear(bool disconnect) {
 	LOG_DEBUG(("deleting server/client if exists."));
 	_ping = false;
