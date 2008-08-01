@@ -423,7 +423,7 @@
 			<property name="impassability" value="100"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC2NgGAUg8A4L/Q6LuktMCPZlKNuJCbuZYowMDGqM2O2hBvBhwi2nzjgw4ajIOJqW0MFsJvqlX2oCaWBcyjAiaFqDchqHkxUjfj497R7OAJtf6eV/ZHuoZSeofCcnLzgxUZZ/fcjMDz5MDKOASsCBaXDZe4sZu7gqI23rBVztCWq3M9DzrD6QLw7E96H+fsAMaVcZMNLOzqEAAFWx1mi4CwAA
+			H4sIAAAAAAACC2NgGAUg8A4L/Q6LuktMCPZlKNuJCbuZYowMDGqM2O2hBvBhwi2nzjgw4ajIOJqW0MFsJvqlX2oCaWBcyjAiaFqDchqHkxUjfj497R7OAJtf6eV/ZHuoZSeofCcnLzgxUZZ/fcjMDz5Mgys9zGKiTxlIC+DANLjsvcWMXVyVkbb1Aq72BLXbGeh5Vh/IFwfi+1B/P2CGtKsMGGln51AAAILHkaO4CwAA
 		</data>
 	</layer>
 	<layer name="fences destruction" width="30" height="25">
