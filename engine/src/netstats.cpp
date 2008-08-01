@@ -1,6 +1,7 @@
 #include "netstats.h"
 #include "config.h"
 #include "mrt/logger.h"
+#include <map>
 
 NetStats::NetStats() : pings_idx(0), pings_n(0), ping(0), deltas_idx(0), deltas_n(0), delta(0) {
 	GET_CONFIG_VALUE("multiplayer.pings-samples", int, ps, 10);
@@ -34,6 +35,8 @@ float NetStats::updatePing(const float p) {
 	return ping;
 }
 
+typedef std::map<const NetStats::delta_t, unsigned> gist_t;
+
 NetStats::public_delta_t NetStats::updateDelta(const int d) {
 	//LOG_DEBUG(("updateDelta(%d)", d));
 	size_t n = deltas.size();
@@ -50,6 +53,40 @@ NetStats::public_delta_t NetStats::updateDelta(const int d) {
 	}
 
 	delta /= (delta_t)deltas_n;
-	//LOG_DEBUG(("delta: %d, reduced: %d", delta, math::reduce(delta, (int)ping)));
+
+	gist_t gist;
+		
+	for(unsigned i = 0; i < deltas_n; ++i) {
+		delta_t d = deltas[i] - delta;
+		++gist[d];
+	}
+	
+	delta_t max1 = 0, max2 = 0;
+	unsigned max_value = 0;	
+	for(gist_t::iterator i = gist.begin(); i != gist.end(); ++i) {
+		//LOG_DEBUG(("%ld -> %u ", (long)i->first, i->second));
+		if (max_value == 0 || i->second > max_value) {
+			max1 = max2 = i->first;
+			max_value = i->second;
+		} else if (i->second == max_value) {
+			max2 = i->first;
+		}
+	}
+	//LOG_DEBUG(("max at %ld-%ld = %u", (long)max1, (long)max2, max_value));
+
+	delta += (max1 + max2) / 2;
+	
+	//sanity check : 
+	/*
+	gist.clear();
+	for(unsigned i = 0; i < deltas_n; ++i) {
+		delta_t d = deltas[i] - delta;
+		++gist[d];
+	}
+	
+	for(gist_t::iterator i = gist.begin(); i != gist.end(); ++i) {
+		LOG_DEBUG(("%ld -> %u ", (long)i->first, i->second));
+	}
+	*/
 	return (public_delta_t)delta;
 }
