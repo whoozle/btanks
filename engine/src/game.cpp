@@ -310,11 +310,11 @@ void IGame::init(const int argc, char *argv[]) {
 			if (sid > 5) 
 				Config->set("multiplayer.sync-interval-divisor", 5);
 		}
-		if (revision < 7565) {
+		if (revision < 7574) {
 			int ds;
-			Config->get("multiplayer.deltas-samples", ds, 5);
-			if (ds >= 30)
-				Config->set("multiplayer.deltas-samples", 5);
+			Config->get("multiplayer.deltas-samples", ds, 15);
+			if (ds < 15)
+				Config->set("multiplayer.deltas-samples", 15);
 		}
 		
 		Config->set("engine.revision", getRevision());
