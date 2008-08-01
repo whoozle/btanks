@@ -175,9 +175,14 @@ void AITrooper::calculate(const float dt) {
 
 	float range = getWeaponRange(_object);
 	
-
+	//LOG_DEBUG(("variants: %s", _variants.dump().c_str()));
 	_target_dir = get_target_position(_velocity,
-		_variants.has("trainophobic")? (_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): (_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops), 
+			_variants.has("monstroid")? ai::Targets->monster: 
+			(
+			_variants.has("trainophobic")? 
+				(_aim_missiles? ai::Targets->troops_train_and_missiles: ai::Targets->troops_and_missiles): 
+				(_aim_missiles? ai::Targets->troops_and_missiles: ai::Targets->troops)
+			), 
 		range);
 	if (_target_dir >= 0) {
 		//LOG_DEBUG(("target: %g %g %g", tp.x, tp.y, tp.length()));
