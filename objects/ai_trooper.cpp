@@ -117,6 +117,8 @@ void AITrooper::on_spawn() {
 	//LOG_DEBUG(("rt = %g", rt));
 	_reaction.set(rt);	
 	Trooper::on_spawn();
+	if (_variants.has("monstroid"))
+		classname = "monster";
 }
 
 Object* AITrooper::clone() const  {
