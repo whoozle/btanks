@@ -89,8 +89,10 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) const {
 			sdlx::Rect(_i * _surface->get_width() / _n, 0, _surface->get_width() / _n, _surface->get_height()), 
 			x + _left_area.x + lrw, y + (_left_area.h - _surface->get_height())/ 2);
 	} else { 
-		int tw = _font->render(NULL, 0, 0, _options[_i]);
-		_font->render(surface, x + _left_area.x + (w - tw) / 2, y + (_left_area.h - _font->get_height())/ 2, _options[_i]);
+		if (_i < (int)_options.size()) {
+			int tw = _font->render(NULL, 0, 0, _options[_i]);
+			_font->render(surface, x + _left_area.x + (w - tw) / 2, y + (_left_area.h - _font->get_height())/ 2, _options[_i]);
+		}
 	} 
 	
 	surface.blit(*_left_right, sdlx::Rect(lrw, 0, lrw, lrh), x +  _right_area.x, y + _right_area.y);
