@@ -1808,7 +1808,7 @@ Object * IWorld::pop(Object *object) {
 	cmd.id = object->get_id();
 
 	Object *r = NULL;
-	/*
+	
 	for(Commands::reverse_iterator i = _commands.rbegin(); i != _commands.rend(); ++i) {
 		if (i->id == cmd.id) {
 			r = i->object;
@@ -1816,7 +1816,7 @@ Object * IWorld::pop(Object *object) {
 			break;
 		}
 	}
-	*/
+	
 	if (r == NULL) {
 		ObjectMap::iterator j = _objects.find(cmd.id);
 		if (j == _objects.end())
