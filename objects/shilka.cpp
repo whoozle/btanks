@@ -90,7 +90,7 @@ void Shilka::emit(const std::string &event, Object * emitter) {
 				n = max - now;
 			}
 			for(int i = 0; i < n; ++i) {
-				spawn(mod_type + "(disembark)" + (RTConfig->game_type == GameTypeCooperative? "(ally)":""), 
+				spawn(mod_type + "(disembark)" + ((RTConfig->game_type == GameTypeCooperative && get_slot() >= 0)? "(ally)":""), 
 					mod_type, 
 					v2<float>(size.x * cos(M_PI * 2 * i / n), size.y * sin(M_PI * 2 * i / n)), 
 					v2<float>());
