@@ -217,7 +217,9 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 		LOG_DEBUG(("pinging %s/%s", addr.getAddr().c_str(), host.c_str()));
 		TRY {
 			if (!host.empty()) {
+				int port = addr.port;
 				addr = get_addr_by_name(host);
+				addr.port = port;
 				if (!addr.empty()) {
 					std::string ip = addr.getAddr();
 					LOG_DEBUG(("found address %s for %s", ip.c_str(), host.c_str()));
@@ -263,7 +265,7 @@ void Scanner::add(const mrt::Socket::addr &addr_, const std::string &name) {
 
 std::string Scanner::get_name_by_addr(const mrt::Socket::addr &addr) {
 	for(dns_cache_t::const_iterator i = dns_cache.begin(); i != dns_cache.end(); ++i) {
-		if (i->second == addr) 
+		if (i->second.ip == addr.ip) 
 			return i->first;
 	}
 	std::string name = addr.getName();
