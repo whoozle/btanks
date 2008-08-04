@@ -19,7 +19,6 @@
 		*) "Telefrag" - if two or more players teleports in the same teleport, only the last one survives.
 		*) Changed the oldest visual effect : earthquake to the smooth one. :)
 		*) Boomerang now bounces map instead of exploding
-		*) [rc2] Shilka drops down troopers and nuke mines after its death.
 	
 	*) Multiplayer fixes: 
 		*) Added 'scan' feature - scanning/querying servers in the local network. 
@@ -39,6 +38,7 @@
 		*) Removed useless allocations from the network monitor thread.
 		*) Fixed race condition with 'connection-id' causing errors on map join
 		*) [rc2] Better delta calculation based on simple errors histogram. 
+		*) [rc2] Various mp messages shows in player's locale. 
 
 	*) Scripting improvements: 
 		*) Added `trainophobic' and `monstroid' variants for the troops (attacking train/troops)
