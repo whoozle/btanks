@@ -55,7 +55,9 @@ TRY {
 	LOG_DEBUG(("udp socket started..."));
 
 	std::set<mrt_uint32_t> banned_addrs;
+
 #ifdef _WINDOWS
+
 	TRY {
 		char ac[256];
 		if (gethostname(ac, sizeof(ac)) == SOCKET_ERROR) 
@@ -176,7 +178,7 @@ TRY {
 								
 				std::string ip = addr.getAddr(false);
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
-				std::string name = addr.getName();
+				std::string name = get_name_by_addr(addr);
 				if (name == "netive.ru") {
 					name = "btanks.media.netive.ru";
 				}
@@ -215,14 +217,14 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 		LOG_DEBUG(("pinging %s/%s", addr.getAddr().c_str(), host.c_str()));
 		TRY {
 			if (!host.empty()) {
-				addr.getAddrByName(host);
+				addr = get_addr_by_name(host);
 				if (!addr.empty()) {
 					std::string ip = addr.getAddr();
 					LOG_DEBUG(("found address %s for %s", ip.c_str(), host.c_str()));
 				} else goto check_ip;
 			} else {
 			check_ip: 
-				std::string new_host = addr.getName();
+				std::string new_host = get_name_by_addr(addr);
 				if (new_host == "netive.ru") {
 					new_host = "btanks.media.netive.ru";
 				}
