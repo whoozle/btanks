@@ -259,3 +259,22 @@ void Scanner::add(const mrt::Socket::addr &addr_, const std::string &name) {
 	check_queue.push(CheckQueue::value_type(addr, name));
 }
 
+std::string Scanner::get_name_by_addr(const mrt::Socket::addr &addr) {
+	for(dns_cache_t::const_iterator i = dns_cache.begin(); i != dns_cache.end(); ++i) {
+		if (i->second == addr) 
+			return i->first;
+	}
+	std::string name = addr.getName();
+	dns_cache.insert(dns_cache_t::value_type(name, addr));
+	return name;
+}
+
+mrt::Socket::addr Scanner::get_addr_by_name(const std::string &name) {
+	dns_cache_t::const_iterator i = dns_cache.find(name);
+	if (i != dns_cache.end()) 
+		return i->second;
+	mrt::Socket::addr addr; 
+	addr.getAddrByName(name);
+	dns_cache.insert(dns_cache_t::value_type(name, addr));
+	return addr;
+}

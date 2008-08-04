@@ -37,6 +37,7 @@ public:
 	void add(const mrt::Socket::addr &ip, const std::string &name);
 
 private: 
+
 	void createMessage(mrt::Chunk & data);
 	void ping(mrt::UDPSocket &udp_sock);
 
@@ -49,6 +50,14 @@ private:
 	
 	//std::string _bindaddr;
 	int _port;
+
+
+	//dns cache. rewrite all this cryptic scanner stuff asap
+	std::string get_name_by_addr(const mrt::Socket::addr &addr);
+	mrt::Socket::addr get_addr_by_name(const std::string &name);
+	
+	typedef std::map<const std::string, mrt::Socket::addr> dns_cache_t;
+	dns_cache_t dns_cache;
 };
 
 #endif
