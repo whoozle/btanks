@@ -18,6 +18,8 @@
 		*) Several double-takes fixed.
 		*) "Telefrag" - if two or more players teleports in the same teleport, only the last one survives.
 		*) Changed the oldest visual effect : earthquake to the smooth one. :)
+		*) Boomerang now bounces map instead of exploding
+		*) [rc2] Shilka drops down troopers and nuke mines after its death.
 	
 	*) Multiplayer fixes: 
 		*) Added 'scan' feature - scanning/querying servers in the local network. 
@@ -35,10 +37,11 @@
 		*) Removed blinking timer, use effect timer instead (-10 bytes per object)
 		*) Removed _delta_position from the core objects, rewrite group handling. (-10 bytes again)
 		*) Removed useless allocations from the network monitor thread.
-		*) Fixed cid race condition causing errors on map join
+		*) Fixed race condition with 'connection-id' causing errors on map join
+		*) [rc2] Better delta calculation based on simple errors histogram. 
 
 	*) Scripting improvements: 
-		*) Added `trainophobic' variant for the troops (attacking train)
+		*) Added `trainophobic' and `monstroid' variants for the troops (attacking train/troops)
 		*) Added `obey` effect for controlling ai objects from script. Added pose control functions. Added timer.
 
 	*) Implemented 3d-spatial sound library with HRTF (clunk). Dropped OpenAL support.
@@ -77,6 +80,10 @@
 	*) [rc2] Fixed z boxes of teleported troops (aqua world for example)
 	*) [rc2] Fixed crash at startup if no sound card was found or it's busy
 	*) [rc2] Invalid channels value was fixed in ogg stream
+	*) [rc2] Added 'install' target for scons
+	*) [rc2] Fixed terrible error allowing objects become invincible (spaceport for example)
+	*) [rc2] Color lines in join menu dialog.
+	*) [rc2] UDP broadcast problems fixed. 
 	*) Billions bugfixes. 
 	
 0.7.5800: 
