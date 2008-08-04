@@ -98,7 +98,7 @@ void Chunk::set_data(void *p, const size_t s, const bool own) {
 }
 
 void Chunk::append(const Chunk &other) {
-	size_t size, s2 = other.get_size();
+	size_t s2 = other.get_size();
 	if (s2 == 0)
 		return;
 	set_size(size + s2);
