@@ -1,5 +1,6 @@
 #include "grid.h"
 #include "sdlx/rect.h"
+#include <assert.h>
 
 Grid::Grid(const int w, const int h) : _spacing(0) {
 	_controls.resize(h);
