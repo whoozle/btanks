@@ -27,12 +27,12 @@
 #include "clunk/stream.h"
 
 namespace mrt {
-class Chunk;
-class BaseFile;
+	class BaseFile;
 }
 
 namespace clunk {
 	class Sample;
+	class Buffer;
 }
 
 class OggStream : public clunk::Stream {
@@ -41,7 +41,7 @@ public:
 
 	OggStream(const std::string &fname);
 	void rewind();
-	bool read(mrt::Chunk &data, unsigned hint);
+	bool read(clunk::Buffer &data, unsigned hint);
 	~OggStream();
 
 private: 

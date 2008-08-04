@@ -104,7 +104,7 @@ void OggStream::rewind() {
 		throw_ogg(r, ("ov_raw_seek"));
 }
 
-bool OggStream::read(mrt::Chunk &data, unsigned hint) {
+bool OggStream::read(clunk::Buffer &data, unsigned hint) {
 	if (hint == 0) 
 		hint = 44100;
 	
@@ -148,7 +148,7 @@ void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 
 	GET_CONFIG_VALUE("engine.sound.file-buffer-size", int, buffer_size, 441000);
 
-	mrt::Chunk data;
+	clunk::Buffer data;
 
 	size_t pos = 0;
 	data.free();
