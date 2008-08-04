@@ -572,7 +572,8 @@ TRY {
 	s.get(_flags);
 
 	if (_game_over) {
-		s.get(_state);
+		std::string state;
+		s.get(state);
 		s.get(_state_timer);
 	}
 	
