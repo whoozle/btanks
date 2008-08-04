@@ -46,7 +46,7 @@ public:
 	void update();
 
 private: 
-	void activate(bool active);
+	void activate(const bool active);
 	void ping();
 	Alarm ping_timer;
 

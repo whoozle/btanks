@@ -153,7 +153,7 @@ void JoinServerMenu::join() {
 	PlayerManager->start_client(addr, split?2:1);
 }
 
-void JoinServerMenu::activate(bool active) {
+void JoinServerMenu::activate(const bool active) {
 	if (active && _scanner == NULL) {
 		_scanner = new Scanner;				
 		_scanner->scan();
