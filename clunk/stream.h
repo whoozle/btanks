@@ -23,12 +23,9 @@
 #include "export_clunk.h"
 #include <SDL_audio.h>
 
-namespace mrt {
-	class Chunk;
-}
-
 namespace clunk {
 class Context;
+class Buffer;
 
 /*! 
 	simple abstract class allowing you to play audio streams. Note that stream's methods will be called from the audio callback. 
@@ -50,7 +47,7 @@ public:
 		\param[out] data destination buffer
 		\param[in] hint points out for the recommented data size. You could read less or more hint. 
 	*/
-	virtual bool read(mrt::Chunk &data, unsigned hint) = 0;
+	virtual bool read(clunk::Buffer &data, unsigned hint) = 0;
 	virtual ~Stream();
 
 protected: 

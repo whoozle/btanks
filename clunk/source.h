@@ -23,10 +23,6 @@
 #include "v3.h"
 #include <SDL_audio.h>
 
-namespace mrt {
-	class Chunk;
-}
-
 struct kiss_fftr_state;
 
 namespace clunk {
@@ -40,6 +36,7 @@ namespace clunk {
 #endif
 
 class Sample;
+class Buffer;
 
 /*! 
 	class holding information about source. 
@@ -74,7 +71,7 @@ public:
 		\brief for the internal use only. DO NOT USE IT. 
 		\internal for the internal use only. 
 	*/
-	float process(mrt::Chunk &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
+	float process(clunk::Buffer &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
 	///returns current source's status.
 	bool playing() const;
 
@@ -94,7 +91,7 @@ private:
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
 	void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
-	void hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
+	void hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position, fadeout, fadeout_total;
 	

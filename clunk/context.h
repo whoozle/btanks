@@ -26,7 +26,7 @@
 #include <SDL_audio.h>
 #include <map>
 #include <deque>
-#include "mrt/chunk.h"
+#include "buffer.h"
 
 namespace clunk {
 
@@ -118,7 +118,7 @@ public:
 		\param[in] format SDL audio format. See SDL_audio.h or SDL documentation for the details.
 		\param[in] channels source channels. 
 	*/
-	void convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels);
+	void convert(clunk::Buffer &dst, const clunk::Buffer &src, int rate, const Uint16 format, const Uint8 channels);
 	
 	///returns object associated to the current listener position
 	Object *get_listener() { return listener; }
@@ -142,7 +142,7 @@ private:
 		bool loop;
 		float gain;
 		bool paused;
-		mrt::Chunk buffer;
+		clunk::Buffer buffer;
 	};
 	
 	typedef std::map<const int, stream_info> streams_type;

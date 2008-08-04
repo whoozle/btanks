@@ -22,11 +22,7 @@
 
 #include <SDL_audio.h>
 #include "export_clunk.h"
-#include "mrt/chunk.h"
-
-namespace mrt {
-	class Chunk;
-}
+#include "buffer.h"
 
 namespace clunk {
 class Context;
@@ -44,7 +40,7 @@ public:
 		\param[in] format SDL audio format. Look SDL_audio.h or SDL documentation. 
 		\param[in] channels audio channels
 	*/	
-	void init(const mrt::Chunk &data, int rate, const Uint16 format, const Uint8 channels);
+	void init(const clunk::Buffer &data, int rate, const Uint16 format, const Uint8 channels);
 	/*! 
 		\brief generate sine wave with given length (seconds)
 		\param[in] freq frequency
@@ -63,7 +59,7 @@ private:
 
 	Context *context;
 	SDL_AudioSpec spec;
-	mrt::Chunk data;
+	clunk::Buffer data;
 };
 }
 

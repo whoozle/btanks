@@ -24,7 +24,7 @@ env.MergeFlags(sdl_cflags, sdl_libs)
 clunk = env.SharedLibrary('clunk', 
 	[
 		'context.cpp', 'sample.cpp', 'object.cpp', 'source.cpp', 'sdl_ex.cpp', 'stream.cpp', 
-		'kemar.c', 
+		'kemar.c', 'buffer.cpp',
 		'kiss/kiss_fftr.c', 'kiss/kiss_fft.c', 
 	], 
 	LIBS=clunk_libs)

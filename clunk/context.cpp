@@ -95,7 +95,7 @@ void Context::process(Sint16 *stream, int size) {
 		//LOG_DEBUG(("processing stream %d", i->first));
 		stream_info &stream_info = i->second;
 		while ((int)stream_info.buffer.get_size() < size) {
-			mrt::Chunk data;
+			clunk::Buffer data;
 			bool eos = !stream_info.stream->read(data, size);
 			if (!data.empty() && stream_info.stream->sample_rate != spec.freq) {
 				//LOG_DEBUG(("converting audio data from %u to %u", stream_info.stream->sample_rate, spec.freq));
@@ -139,7 +139,7 @@ void Context::process(Sint16 *stream, int size) {
 		++i;
 	}
 	
-	mrt::Chunk buf;
+	clunk::Buffer buf;
 	buf.set_size(size);
 	
 	//TIMESPY(("mixing sources"));
@@ -298,7 +298,7 @@ void Context::set_sources_num(int sources) {
 	max_sources = sources;
 }
 
-void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Uint16 format, const Uint8 channels) {
+void Context::convert(clunk::Buffer &dst, const clunk::Buffer &src, int rate, const Uint16 format, const Uint8 channels) {
 	SDL_AudioCVT cvt;
 	memset(&cvt, 0, sizeof(cvt));
 	if (SDL_BuildAudioCVT(&cvt, format, channels, rate, spec.format, channels, spec.freq) == -1) {
@@ -341,7 +341,7 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 	Check ogg/vorbis library for a free production-quality audio codec. Samples allocates within context internally with clunk::Context::create_sample() method. 
 
 	\code
-	mrt::Chunk data; //placeholder for a memory chunk
+	clunk::Buffer data; //placeholder for a memory chunk
 	//decode ogg sample into data
 	clunk::Sample *sample = Context->create_sample();
 	sample->init(data, ogg_rate, AUDIO_S16LSB, ogg_channels);
@@ -416,7 +416,7 @@ void Context::convert(mrt::Chunk &dst, const mrt::Chunk &src, int rate, const Ui
 				//rewind your stream here
 			}
 			
-			bool read(mrt::Chunk &data, unsigned hint) {
+			bool read(clunk::Buffer &data, unsigned hint) {
 				//read as many data as you want, but it'd better to read around 'hint' bytes to avoid memory queue overhead. 
 			}
 

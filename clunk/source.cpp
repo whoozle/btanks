@@ -22,8 +22,9 @@
 #include "source.h"
 #include <SDL.h>
 #include "mrt/exception.h"
-#include "mrt/chunk.h"
+#include "buffer.h"
 #include "sample.h"
+#include <assert.h>
 
 #ifdef _WINDOWS
 #	define pow10f(x) powf(10.0f, (x))
@@ -91,7 +92,7 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 
 #define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
 
-void Source::hrtf(mrt::Chunk &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
+void Source::hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	//const int lowpass_cutoff = 5000 * CLUNK_ACTUAL_WINDOW / sample->spec.freq;
 	//LOG_DEBUG(("using cutoff at %d", lowpass_cutoff));
 	if (fft_state == NULL)
@@ -213,7 +214,7 @@ void Source::update_position(const int dp) {
 }
 
 
-float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
+float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
 	Sint16 * dst = (Sint16*) buffer.get_ptr();
 	unsigned dst_n = buffer.get_size() / dst_ch / 2;
 	const Sint16 * src = (Sint16*) sample->data.get_ptr();
@@ -282,7 +283,7 @@ float Source::process(mrt::Chunk &buffer, unsigned dst_ch, const v3<float> &delt
 	
 	int idt_offset = (int)(t_idt * sample->spec.freq);
 
-	mrt::Chunk sample3d_left, sample3d_right;
+	clunk::Buffer sample3d_left, sample3d_right;
 	int idt_abs = idt_offset >= 0? idt_offset: -idt_offset;
 	hrtf(sample3d_left, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_left);
 	hrtf(sample3d_right, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_right);
