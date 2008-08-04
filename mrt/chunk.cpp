@@ -98,11 +98,11 @@ void Chunk::set_data(void *p, const size_t s, const bool own) {
 }
 
 void Chunk::append(const Chunk &other) {
-	size_t s2 = other.get_size();
+	size_t s1 = size, s2 = other.get_size();
 	if (s2 == 0)
 		return;
-	set_size(size + s2);
-	memcpy((char *) ptr + size, other.ptr, s2);
+	set_size(s1 + s2);
+	memcpy((char *) ptr + s1, other.ptr, s2);
 }
 
 void Chunk::append(const void *data, const size_t data_size) {
