@@ -1,6 +1,7 @@
-#include "chunk.h"
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include "chunk.h"
 #include "ioexception.h"
 #include "fmt.h"
 
