@@ -246,7 +246,7 @@ void IWindow::init(const int argc, char *argv[]) {
 	bool force_gl = false;
 	Config->get("engine.window.width", _w, 800);
 	Config->get("engine.window.height", _h, 600);
-	Config->get("engine.window.fullscreen", _fullscreen, true);
+	Config->get("engine.window.fullscreen", _fullscreen, false);
 	
 	for(int i = 1; i < argc; ++i) {
 		if (strcmp(argv[i], "--fs") == 0) _fullscreen = true;
