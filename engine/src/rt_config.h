@@ -22,6 +22,7 @@
 
 #include "mrt/singleton.h"
 #include "game_type.h"
+#include "export_btanks.h"
 #include <string>
 
 namespace mrt {
