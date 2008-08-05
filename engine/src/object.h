@@ -49,8 +49,11 @@ public:
 	template<typename T>
 	inline void get_position(v2<T> &position) const { 
 		position = _position.convert<T>(); 
-		if (_parent != NULL) 
-			position += _parent->get_position().convert<T>();
+		if (_parent != NULL) {
+			v2<T> ppos;
+			_parent->get_position(ppos);
+			position += ppos;
+		}
 	}
 
 	inline const v2<float> get_center_position() const { return get_position() + size / 2; }
