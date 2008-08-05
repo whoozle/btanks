@@ -44,7 +44,7 @@ protected:
 private:
 	static const int magic[5][5];
 	int row, pos, attempt;
-	bool wait;
+	bool waiting;
 };
 }
 

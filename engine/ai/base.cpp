@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-#include "ai/base.h"
+#include "base.h"
 #include "object.h"
 #include "alarm.h"
 
@@ -33,17 +33,17 @@ const int Base::magic[MAGIC_ROWS][MAGIC_SIZE] = {
 	{4, 3, 2, 5, 1, }, 
 };
 
-Base::Base() : multiplier(1.0f), row(0), pos(0), attempt(0), wait(false) {}
+Base::Base() : multiplier(1.0f), row(0), pos(0), attempt(0), waiting(false) {}
 
 const bool Base::canFire() {
 	if (attempt == 0) {
 		pos = (pos + 1) % MAGIC_SIZE;
 		attempt = (int)(magic[row][pos] * multiplier);
-		wait = !wait;
+		waiting = !waiting;
 	} else {
 		--attempt;
 	}
-	return !wait;
+	return !waiting;
 }
 
 void Base::on_spawn(Object *src)  {
@@ -52,7 +52,7 @@ void Base::on_spawn(Object *src)  {
 	pos = (id * 3 + 7)  % MAGIC_SIZE;
 	//LOG_DEBUG(("spawning %s(%d) with %dx%d", src->animation.c_str(), id, row, pos));
 	attempt = (int) (magic[row][pos] * multiplier);
-	wait = false;
+	waiting = false;
 }
 
 void Base::serialize(mrt::Serializator &s) const {
@@ -60,7 +60,7 @@ void Base::serialize(mrt::Serializator &s) const {
 	s.add(row);
 	s.add(pos);
 	s.add(attempt);
-	s.add(wait);
+	s.add(waiting);
 }
 
 void Base::deserialize(const mrt::Serializator &s) {
@@ -68,5 +68,5 @@ void Base::deserialize(const mrt::Serializator &s) {
 	s.get(row);
 	s.get(pos);
 	s.get(attempt);
-	s.get(wait);
+	s.get(waiting);
 }
