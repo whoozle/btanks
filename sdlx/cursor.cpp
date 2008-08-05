@@ -19,21 +19,19 @@
 #include "sdlx/cursor.h"
 #include "sdlx.h"
 
-using namespace sdlx;
-
-const bool Cursor::enabled() {
+const bool sdlx::Cursor::enabled() {
     return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }
-void Cursor::Disable() {
+void sdlx::Cursor::Disable() {
     SDL_ShowCursor(SDL_DISABLE);
 }
-void Cursor::Enable() {
+void sdlx::Cursor::Enable() {
     SDL_ShowCursor(SDL_ENABLE);
 }
 
-void Cursor::set_position(const int x, const int y) {
+void sdlx::Cursor::set_position(const int x, const int y) {
     SDL_WarpMouse(x, y);
 }
-void Cursor::get_position(int &x, int &y) {
+void sdlx::Cursor::get_position(int &x, int &y) {
 	SDL_GetMouseState(&x, &y);
 }
