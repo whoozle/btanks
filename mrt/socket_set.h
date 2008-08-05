@@ -20,6 +20,9 @@
 */
 
 #include "export_mrt.h"
+#ifdef __APPLE__
+#  undef check
+#endif
 
 namespace mrt {
 
