@@ -191,7 +191,7 @@ void IWindow::initSDL() {
 	//sdlx::TTF::init();
 }
 
-#ifndef _WINDOWS
+#if !defined _WINDOWS and !defined __APPLE__
 static std::string getGLString(const GLenum name) {
 	typedef const GLubyte * (APIENTRY * PGLGETSTRING) (GLenum);
 	union {
@@ -438,8 +438,10 @@ void IWindow::createMainWindow() {
 		} else LOG_WARN(("SDL_GL_GetAttribute( SDL_GL_ACCELERATED_VISUAL) failed: %s, result: %d, value: %d", SDL_GetError(), r, accel));
 #endif
 
+#ifndef __APPLE__
 		LOG_DEBUG(("vendor: %s", getGLString(GL_VENDOR).c_str()));
 		LOG_DEBUG(("renderer: %s", getGLString(GL_RENDERER).c_str()));
+#endif
 
 	} else {
 		_window.set_video_mode(_w, _h, 0, flags);

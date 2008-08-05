@@ -20,6 +20,7 @@
  */
 
 #include "mrt/xml.h"
+#include "export_btanks.h"
 
 class BTANKSAPI XMLParser : public mrt::XMLParser {
 public: 

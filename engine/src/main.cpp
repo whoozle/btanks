@@ -18,7 +18,6 @@
 
 #include "mrt/logger.h"
 #include "mrt/random.h"
-
 #include "sdlx/system.h"
 #include "game.h"
 #include <stdlib.h>
@@ -37,10 +36,16 @@ static void clean_exit(int sno) {
 
 #endif
 
+#ifdef __APPLE__
+#	include <SDL.h>
+#	include <SDLmain.h>
+#else
+
 #ifdef __cplusplus
 extern "C"
 #endif
 	int main(int argc, char *argv[]);
+#endif
 
 int main(int argc, char *argv[]) {
 	try {

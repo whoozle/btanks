@@ -1088,13 +1088,30 @@ void IGame::onMap() {
 void IGame::loadPlugins() {
 	LOG_DEBUG(("loading plugins..."));
 	IFinder::FindResult path;
-	Finder->findAll(path, "../" + sdlx::Module::mangle("bt_objects"));
-
+	std::string plugin = std::string("../") + sdlx::Module::mangle("bt_objects");
+	//LOG_DEBUG(("checking %s", plugin.c_str()));
+	Finder->findAll(path, plugin);
+/*
+#ifdef __APPLE__
+	{
+		char buf[1024];
+		getcwd(buf, sizeof(buf));
+		LOG_DEBUG(("current directory: %s", buf));
+		mrt::FSNode dir;
+		std::string local_plugin = sdlx::Module::mangle("bt_objects");
+		LOG_DEBUG(("checking for plugin %s", local_plugin.c_str()));
+		if (dir.exists(std::string("./") + local_plugin))
+			path.push_back(IFinder::FindResult::value_type(std::string(), local_plugin));
+	}
+#endif
+*/
 #ifdef PLUGINS_DIR
-	mrt::FSNode dir;
-	std::string local_plugin = std::string(PLUGINS_DIR "/") + sdlx::Module::mangle("bt_objects");
-	if (dir.exists(local_plugin))
-		path.push_back(IFinder::FindResult::value_type(PLUGINS_DIR "/", local_plugin));
+	{
+		mrt::FSNode dir;
+		std::string local_plugin = std::string(PLUGINS_DIR "/") + sdlx::Module::mangle("bt_objects");
+		if (dir.exists(local_plugin))
+			path.push_back(IFinder::FindResult::value_type(PLUGINS_DIR "/", local_plugin));
+	}
 #endif
 
 	if (path.empty()) {

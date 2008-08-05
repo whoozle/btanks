@@ -25,8 +25,10 @@ using namespace sdlx;
 const std::string Module::mangle(const std::string &name) {
 #ifdef _WINDOWS
 	return name + ".dll";	
+#elif defined __APPLE__
+	return std::string("lib") + name + ".dylib";
 #else 
-	return "lib" + name + ".so";
+	return std::string("lib") + name + ".so";
 #endif
 }
 

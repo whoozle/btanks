@@ -57,6 +57,11 @@ template <typename FuncPtr> union union_ptr {
 #endif
 
 #ifdef __APPLE__
+
+const bool System::accelerated_gl(const bool windowed) {
+	return true;
+}
+
 #elif not defined _WINDOWS
 //remove it if you want
 
