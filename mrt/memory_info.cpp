@@ -17,7 +17,7 @@
 */
 
 
-#include "memory.h"
+#include "memory_info.h"
 #ifdef _WINDOWS
 #	include <windows.h>
 #else
