@@ -26,7 +26,7 @@
 #include "sample.h"
 #include <assert.h>
 
-#ifdef _WINDOWS
+#if defined _WINDOWS || __APPLE__
 #	define pow10f(x) powf(10.0f, (x))
 #	define log2f(x) (logf(x) / M_LN2)
 #endif

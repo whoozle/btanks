@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <memory.h>
-#include <malloc.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
