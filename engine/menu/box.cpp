@@ -43,6 +43,7 @@ void Box::set_background(const std::string &tile) {
 }
 
 void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
+	bg_tile = tile;
 	_highlight.free();
 	if (tile.empty()) {
 		_surface = NULL;
