@@ -38,6 +38,7 @@ public:
 
 	const bool inited() const { return _surface != 0; }
 	void init(const std::string &tile, int w, int h, int hl_h = 0);
+	void set_background(const std::string &tile);
 	
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	void copyTo(sdlx::Surface &surface, const int x, const int y);
@@ -48,7 +49,7 @@ public:
 	void setHLColor(int r, int g, int b, int a);
 private: 
 	int x1, x2, y1, y2, xn, yn;
-	
+
 	const sdlx::Surface *_surface;
 	sdlx::Surface _filler, _filler_u, _filler_d, _filler_l, _filler_r;
 	sdlx::Surface _highlight;

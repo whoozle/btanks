@@ -36,6 +36,12 @@ void Box::get_size(int &rw, int &rh) const {
 
 #define TILE_SIZE 8
 
+void Box::set_background(const std::string &tile) {
+	int w, h;
+	get_size(w, h);
+	init(tile, w, h, _highlight.isNull()?0: _highlight.get_height());
+}
+
 void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 	_highlight.free();
 	if (tile.empty()) {
