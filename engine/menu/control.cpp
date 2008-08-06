@@ -19,8 +19,7 @@
 #include "control.h"
 #include "sound/mixer.h"
 
-Control::Control() : _changed(false), _mouse_in(false), _hidden(false) {}
-
+Control::Control() : _base_x(0), _base_y(0), _changed(false), _mouse_in(false), _hidden(false) {}
 
 void Control::tick(const float dt) {}
 
@@ -51,6 +50,14 @@ void Control::invalidate(const bool play_sound) {
 	if (play_sound && !_changed)
 		Mixer->playSample(NULL, "menu/change.ogg", false);
 	_changed = true;
+}
+
+void Control::get_base(int &x, int &y) const {
+	x = _base_x; y = _base_y;
+}
+
+void Control::set_base(const int x, const int y) {
+	_base_x = x; _base_y = y;
 }
 
 Control::~Control() {}

@@ -48,8 +48,12 @@ public:
 	inline const bool hidden() const { return _hidden; }
 	
 	virtual void activate(const bool active);
+
+	void get_base(int &x, int &y) const;
+	void set_base(const int x, const int y);
 private: 
 	friend class Container;
+	int _base_x, _base_y;
 	bool _changed;
 	bool _mouse_in;
 protected: 

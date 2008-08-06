@@ -52,7 +52,7 @@ void Chat::layout() {
 		}
 		yp += line.font->get_height();
 	}
-	setBase(_input, xp, yp);
+	_input->set_base(xp, yp);
 }
 
 void Chat::addAction(const std::string &m) {

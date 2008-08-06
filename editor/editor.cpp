@@ -786,7 +786,7 @@ bool Editor::onMouse(const int button, const bool pressed, const int x, const in
 	}
 	
 	if (button == SDL_BUTTON_RIGHT && !pressed && _highlight_object) {
-		setBase(_object_properties, x, y);
+		_object_properties->set_base(x, y);
 		std::set<std::string> variants;
 		_add_object->get_variants(variants, _highlight_object->registered_name);
 		_object_properties->show(_highlight_object, variants);

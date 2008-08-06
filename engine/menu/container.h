@@ -45,10 +45,8 @@ private:
 
 protected:
 	const bool in(const Control *c, const int x, const int y) const;
-	void getBase(const Control *c, int &x, int &y) const;
-	void setBase(const Control *c, const int x, const int y);
 
-	typedef std::list<std::pair<v2<int>, Control *> > ControlList;
+	typedef std::list<Control *> ControlList;
 	ControlList _controls;
 	Control * _focus;
 };

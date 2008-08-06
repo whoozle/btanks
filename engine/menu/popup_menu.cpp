@@ -31,7 +31,7 @@ void PopupMenu::clear() {
 void PopupMenu::get(std::set<std::string> &labels) const {
 	labels.clear();
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
+		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(*i);
 		if (l == NULL) 
 			continue;
 		if (l->get_state())
@@ -55,14 +55,15 @@ bool PopupMenu::onMouse(const int button, const bool pressed, const int x, const
 		return true;
 	
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		ToggleLabel * l = dynamic_cast<ToggleLabel *>(i->second);
+		ToggleLabel * l = dynamic_cast<ToggleLabel *>(*i);
 		if (l == NULL) 
 			continue;
 
 		int bw, bh;
 		l->get_size(bw, bh);
-	
-		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+		int base_x, base_y;
+		(*i)->get_base(base_x, base_y);
+		const sdlx::Rect dst(base_x, base_y, bw, bh);
 		if (dst.in(x, y)) {
 			l->toggle();
 			result = l->get();
@@ -79,18 +80,19 @@ bool PopupMenu::onMouseMotion(const int state, const int x, const int y, const i
 
 	hl_pos = v2<int>(-1, -1);
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(i->second);
+		const ToggleLabel * l = dynamic_cast<const ToggleLabel *>(*i);
 		if (l == NULL) 
 			continue;
 
 		int bw, bh;
 		l->get_size(bw, bh);
-	
-		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+
+		int base_x, base_y;
+		(*i)->get_base(base_x, base_y);
+		const sdlx::Rect dst(base_x, base_y, bw, bh);
 		if (dst.in(x, y)) {
-			hl_pos = i->first;
-			hl_pos.x -= 16;
-			hl_pos.y += 9;
+			hl_pos.x = base_x - 16;
+			hl_pos.y = base_y + 9;
 		}
 	}
 	

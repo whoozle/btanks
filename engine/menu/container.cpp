@@ -22,21 +22,23 @@
 
 void Container::tick(const float dt) {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		if (i->second->hidden())
+		if ((*i)->hidden())
 			continue;
 		
-		i->second->tick(dt);
+		(*i)->tick(dt);
 	}
 }
 
 
 void Container::render(sdlx::Surface &surface, const int x, const int y) const {
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		if (i->second->hidden())
+		Control *c = *i;
+		if (c->hidden())
 			continue;
 
-		const v2<int> &dst = i->first;
-		i->second->render(surface, x + dst.x, y + dst.y);
+		int base_x, base_y;
+		c->get_base(base_x, base_y);
+		c->render(surface, x + base_x, y + base_y);
 	}
 }
 
@@ -44,11 +46,14 @@ void Container::get_size(int &w, int &h) const {
 	w = h = 0;
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
 		int cw = -1, ch = -1; //for a broken controls
-		i->second->get_size(cw, ch);
+		(*i)->get_size(cw, ch);
 		assert(cw != -1 && ch != -1);
 
-		int x2 = i->first.x + cw;
-		int y2 = i->first.y + ch;
+		int x2, y2;
+		(*i)->get_base(x2, y2);
+		
+		x2 += cw;
+		y2 += ch;
 
 		if (x2 > w) 
 			w = x2;
@@ -64,10 +69,10 @@ bool Container::onKey(const SDL_keysym sym) {
 		return true;
 	
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second->hidden() || i->second == _focus)
+		if ((*i)->hidden() || (*i) == _focus)
 			continue;
 
-		if (i->second->onKey(sym))
+		if ((*i)->onKey(sym))
 			return true;
 	}
 	return false;
@@ -76,20 +81,21 @@ bool Container::onKey(const SDL_keysym sym) {
 bool Container::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("%p: entering onMouse handler. (%d, %d)", (void *)this, x , y));
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second->hidden())
+		if ((*i)->hidden())
 			continue;
-		int bw, bh;
-		i->second->get_size(bw, bh);
+		int bw, bh, base_x, base_y;
+		(*i)->get_size(bw, bh);
+		(*i)->get_base(base_x, base_y);
 		
-		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
-		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)i->second, dst.x, dst.y, dst.w, dst.h));
+		const sdlx::Rect dst(base_x, base_y, bw, bh);
+		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)(*i), dst.x, dst.y, dst.w, dst.h));
 		if (dst.in(x, y)) {
 			if (pressed) {
 				//LOG_DEBUG(("%p: focus passed to %p", (void *)this,  (void *)_focus));
-				_focus = i->second;
+				_focus = (*i);
 			}
-			if (i->second->onMouse(button, pressed, x - dst.x, y - dst.y)) {
-				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)i->second));
+			if ((*i)->onMouse(button, pressed, x - dst.x, y - dst.y)) {
+				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)(*i)));
 				return true;
 			}
 		}
@@ -99,13 +105,14 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 
 bool Container::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		Control *c = i->second;
+		Control *c = (*i);
 		if (c->hidden())
 			continue;
-		int bw, bh;
+		int bw, bh, base_x, base_y;
 		c->get_size(bw, bh);
+		c->get_base(base_x, base_y);
 		
-		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+		const sdlx::Rect dst(base_x, base_y, bw, bh);
 		bool in = dst.in(x, y);
 		if (in && !c->_mouse_in) {
 			c->_mouse_in = true;
@@ -124,12 +131,13 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 
 void Container::add(const int x, const int y, Control *ctrl) {
 	assert(ctrl != NULL);
+	ctrl->set_base(x, y);
 #ifdef DEBUG
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		assert(ctrl != i->second); //double add! 
+		assert(ctrl != (*i)); //double add! 
 	}
 #endif
-	_controls.push_back(ControlList::value_type(v2<int>(x, y), ctrl));
+	_controls.push_back(ctrl);
 }
 
 Container::~Container() {
@@ -138,7 +146,7 @@ Container::~Container() {
 
 void Container::clear() {
 	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
-		delete i->second;
+		delete (*i);
 	}
 	_controls.clear();
 	_focus = NULL;
@@ -148,45 +156,46 @@ const bool Container::in(const Control *c, const int x, const int y) const {
 	assert(c != NULL);
 	ControlList::const_reverse_iterator i;
 	for(i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second == c)
+		if ((*i) == c)
 			break;
 	}
 	if (i == _controls.rend())
 		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
 	
-	int bw, bh;
+	int bw, bh, base_x, base_y;
 	c->get_size(bw, bh);
+	c->get_base(base_x, base_y);
 	
-	const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+	const sdlx::Rect dst(base_x, base_y, bw, bh);
 	return dst.in(x, y);
 }
 
-void Container::getBase(const Control *c, int &x, int &y) const {
-	assert(c != NULL);
-	ControlList::const_reverse_iterator i;
-	for(i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second == c)
-			break;
-	}
-	if (i == _controls.rend())
-		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
-
-	x = i->first.x; y = i->first.y;	
-}
-
-void Container::setBase(const Control *c, const int x, const int y) {
-	assert(c != NULL);
-	ControlList::reverse_iterator i;
-	for(i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second == c)
-			break;
-	}
-	if (i == _controls.rend())
-		throw_ex(("no control %p in container %p", (const void *)c, (const void *)this));
-
-	i->first.x = x; i->first.y = y;	
-}
-
 void Container::activate(const bool active) {
-	
+/*	int x, y;
+	sdlx::Cursor::get_position(x, y);
+	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
+		Control *c = (*i);
+		if (c->hidden())
+			continue;
+		if (active) {
+			int bw, bh;
+			c->get_size(bw, bh);
+			const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
+			bool in = dst.in(x, y);
+		
+		} else {
+			if (c->_mouse_in) {
+				c->_mouse_in = false;
+				c->on_mouse_enter(false);
+			}
+		}
+		if (active && !c->_mouse_in) {
+			c->_mouse_in = true;
+			c->on_mouse_enter(true);
+		} else if (!in && c->_mouse_in) {
+			c->_mouse_in = false;
+			c->on_mouse_enter(false);
+		}
+	}
+*/
 }
