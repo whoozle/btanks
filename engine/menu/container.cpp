@@ -99,13 +99,22 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 
 bool Container::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if (i->second->hidden())
+		Control *c = i->second;
+		if (c->hidden())
 			continue;
 		int bw, bh;
-		i->second->get_size(bw, bh);
+		c->get_size(bw, bh);
 		
 		const sdlx::Rect dst(i->first.x, i->first.y, bw, bh);
-		if (dst.in(x, y) && i->second->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
+		bool in = dst.in(x, y);
+		if (in && !c->_mouse_in) {
+			c->_mouse_in = true;
+			c->on_mouse_enter(true);
+		} else if (!in && c->_mouse_in) {
+			c->_mouse_in = false;
+			c->on_mouse_enter(false);
+		}
+		if (in && c->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
 			return true;
 		}
 	}

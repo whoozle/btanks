@@ -19,7 +19,7 @@
 #include "control.h"
 #include "sound/mixer.h"
 
-Control::Control() : _changed(false), _hidden(false) {}
+Control::Control() : _changed(false), _mouse_in(false), _hidden(false) {}
 
 
 void Control::tick(const float dt) {}
@@ -41,6 +41,10 @@ bool Control::onMouse(const int button, const bool pressed, const int x, const i
 
 bool Control::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
 	return false;
+}
+
+void Control::on_mouse_enter(bool enter) {
+	//LOG_DEBUG(("%s", enter?"enter":"leave"));
 }
 
 void Control::invalidate(const bool play_sound) {

@@ -26,6 +26,7 @@ namespace sdlx {
 	class Surface;
 }
 
+class Container;
 class BTANKSAPI Control {
 public: 
 	Control();
@@ -36,6 +37,7 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+	virtual void on_mouse_enter(bool enter = true);
 	virtual ~Control();
 	
 	void invalidate(const bool play_sound = false);
@@ -47,7 +49,9 @@ public:
 	
 	virtual void activate(const bool active);
 private: 
+	friend class Container;
 	bool _changed;
+	bool _mouse_in;
 protected: 
 	bool _hidden;
 };
