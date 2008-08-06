@@ -44,3 +44,10 @@ void Button::get_size(int &w, int &h) const {
 	h = _background.h;
 }
 
+void Button::on_mouse_enter(bool enter) {
+	if (enter && _background.get_background() == "menu/background_box.png") {
+		_background.set_background("menu/background_box_dark.png");
+	} else if (!enter && _background.get_background() != "menu/background_box.png") {
+		_background.set_background("menu/background_box.png");
+	}
+}
