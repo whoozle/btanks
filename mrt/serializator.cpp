@@ -156,10 +156,28 @@ void Serializator::add(const float f) {
 #ifdef IEEE_754_SERIALIZATION
 	add(&f, sizeof(f));
 #else
-	//LOG_DEBUG(("added float %f", f));
-	char buf[256];
-	unsigned int len = snprintf(buf, sizeof(buf) -1, "%g", f);
-	add(std::string(buf, len));
+	char buf[32];
+	char num[8];
+	int len = snprintf(buf, sizeof(buf), "%g", f);
+	assert(len >= 0 && len < (int)sizeof(buf));
+	memset(num, 0, sizeof(num));
+	for(int i = 0; i < len; ++i) {
+		char c = buf[i];
+		int idx = -1;
+		if (c >= '0' && c <= '9') {
+			idx = 1 + c - '0';
+		} else if (c == '.') {
+			idx = 11;
+		} else if (c == 'e' || c == 'E') {
+			idx = 12;
+		} else if (c == '-') {
+			idx = 13;
+		}
+		assert(idx >= 0 && idx < 16);
+		assert(i / 2 < (int)sizeof(num));
+		num[i/2] |= (i & 1)?idx: idx << 4;
+	}
+	add(num, (len + 1) / 2);
 #endif
 }
 
@@ -217,11 +235,38 @@ void Serializator::get(float &f) const {
 	if (size != sizeof(f))
 		throw_ex(("failed to deserialize IEEE 754 float(size %d, need %u)", size, (unsigned)sizeof(float)));	
 	get((void *)&f, size);
+	//LOG_DEBUG(("%g", f));
 #else
-	std::string str;
-	get(str);
-	if (sscanf(str.c_str(), "%f", &f) != 1)
-		throw_ex(("failed to cast '%s' to float", str.c_str()));
+	unsigned char buf[32];
+	memset(buf, 0, sizeof(buf));
+	
+	int len;
+	get(len);
+	if (len >= (int)sizeof(buf))
+		throw_ex(("float number too long(%d)", len));
+	
+	get(buf, len);
+
+	std::string num;
+	for(int i = 0; i < len * 2; ++i) {
+		int c = buf[i / 2];
+		int d = ((i & 1)? c: c >> 4) & 0x0f;
+		if (d == 0) {
+			break;
+		} else if (d >= 1 && d <= 10) {
+			num += ('0' + d - 1);
+		} else if (d == 11) {
+			num += '.';
+		} else if (d == 12) {
+			num += 'e';
+		} else if (d == 13) {
+			num += '-';
+		} else {
+			throw_ex(("unknown float characted %d", d));
+		}
+	}
+	if (sscanf(num.c_str(), "%g", &f) != 1) 
+		throw_ex(("failed to get float value from '%s'", num.c_str()));
 #endif
 }
 
