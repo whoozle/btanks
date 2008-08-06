@@ -66,6 +66,7 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 
 void VideoControl::activate(const bool a) {
 	active = a;
+	Control::activate(a);
 	//checkStatus();
 }
 

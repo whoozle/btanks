@@ -154,6 +154,7 @@ void JoinServerMenu::join() {
 }
 
 void JoinServerMenu::activate(const bool active) {
+	Container::activate(active);
 	if (active && _scanner == NULL) {
 		_scanner = new Scanner;				
 		_scanner->scan();

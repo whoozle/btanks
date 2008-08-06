@@ -186,3 +186,7 @@ void Container::setBase(const Control *c, const int x, const int y) {
 
 	i->first.x = x; i->first.y = y;	
 }
+
+void Container::activate(const bool active) {
+	
+}
