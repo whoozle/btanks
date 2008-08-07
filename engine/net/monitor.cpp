@@ -19,7 +19,7 @@
 #include "monitor.h"
 #include "mrt/chunk.h"
 #include "mrt/logger.h"
-#include "mrt/exception.h"
+#include "mrt/net_exception.h"
 #include "mrt/socket_set.h"
 #include "mrt/tcp_socket.h"
 #include "mrt/udp_socket.h"
