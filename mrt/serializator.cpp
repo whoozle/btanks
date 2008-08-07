@@ -229,6 +229,7 @@ void Serializator::get(int &n)  const {
 	} else if (len == 4) {
 		n = ntohl(*((uint32_t *)(ptr + _pos)));
 		_pos += 4;
+#if defined _WIN64 || __WORDSIZE == 64
 //temp hack for 64 bit arch
 	} else if (len == 8) {
 		long nh = ntohl(*((uint32_t *)(ptr + _pos)));
@@ -236,6 +237,7 @@ void Serializator::get(int &n)  const {
 		long nl = ntohl(*((uint32_t *)(ptr + _pos)));
 		_pos += 4;
 		n = (nh << 32) | nl;
+#endif
 	} else 
 		throw_ex(("control byte 0x%02x is unsupported. (corrupted data?) (position: %u, size: %u)", (unsigned)type, (unsigned)_pos, (unsigned)_data->get_size()));
 
