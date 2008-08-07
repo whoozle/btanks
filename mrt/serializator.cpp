@@ -43,6 +43,14 @@
 #	endif
 #endif
 
+#ifdef _WINDOWS
+#	include <float.h>
+#	include <limits>
+#	define isnan(f) _isnan(f)
+#	define isinf(f) ((_fpclass(f) == _FPCLASS_PINF)? 1: ((_fpclass(f) == _FPCLASS_NINF)? -1: 0))
+#	define INFINITY (std::numeric_limits<float>::infinity())
+#	define NAN (std::numeric_limits<float>::quiet_NaN())
+#endif
 
 #define IEEE_754_SERIALIZATION
 
