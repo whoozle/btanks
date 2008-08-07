@@ -68,8 +68,6 @@ void Monitor::_connect() {
 	}
 	LOG_DEBUG(("[monitor thread] connecting to %s", host.getAddr().c_str()));
 	
-	_dgram_sock->connect(host);
-
 	Connection *conn = NULL;
 	TRY { 
 		conn = new Connection(new mrt::TCPSocket);
@@ -475,12 +473,14 @@ TRY {
 				ConnectionMap::const_iterator i = _connections.find(task->id);
 				if (i != _connections.end()) {
 					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
-					int r = _dgram_sock->send(addr, task->data.get_ptr(), task->data.get_size());
-					if (r == -1)
-						throw_net(("sendto(%08x:%d, %u)", addr.ip, addr.port, (unsigned)task->data.get_size()));
-					if (r != (int)task->data.get_size()) {
-						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
-					}
+					TRY {
+						int r = _dgram_sock->send(addr, task->data.get_ptr(), task->data.get_size());
+						if (r == -1)
+							throw_net(("sendto(%08x:%d, %u)", addr.ip, addr.port, (unsigned)task->data.get_size()));
+						if (r != (int)task->data.get_size()) {
+							LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
+						}
+					} CATCH("sendto", )
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				delete task;
 			}
