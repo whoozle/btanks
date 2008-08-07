@@ -156,6 +156,17 @@ void Serializator::add(const float f) {
 #ifdef IEEE_754_SERIALIZATION
 	add(&f, sizeof(f));
 #else
+	{
+		int f_inf = isinf(f);
+		if (isnan(f)) {
+			add(12); //magic! :)
+			return;
+		} else if (f_inf != 0) {
+			add(f_inf > 0? 13: 14);
+			return; //magic values for nan 
+		}
+	}
+	
 	char buf[32];
 	char num[8];
 	int len = snprintf(buf, sizeof(buf), "%g", f);
@@ -237,14 +248,26 @@ void Serializator::get(float &f) const {
 	get((void *)&f, size);
 	//LOG_DEBUG(("%g", f));
 #else
-	unsigned char buf[32];
-	memset(buf, 0, sizeof(buf));
-	
 	int len;
 	get(len);
+
+	switch(len) {
+	case 12: 
+		f = NAN;
+		return;
+	case 13:
+		f = INFINITY;
+		return;
+	case 14: 
+		f = -INFINITY;
+		return;
+	}
+
+	unsigned char buf[32];
 	if (len >= (int)sizeof(buf))
 		throw_ex(("float number too long(%d)", len));
-	
+
+	memset(buf, 0, sizeof(buf));
 	get(buf, len);
 
 	std::string num;
@@ -262,7 +285,7 @@ void Serializator::get(float &f) const {
 		} else if (d == 13) {
 			num += '-';
 		} else {
-			throw_ex(("unknown float characted %d", d));
+			throw_ex(("unknown float character %d", d));
 		}
 	}
 	if (sscanf(num.c_str(), "%g", &f) != 1) 
