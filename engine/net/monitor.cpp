@@ -477,7 +477,7 @@ TRY {
 					mrt::Socket::addr addr= i->second->addr.empty()?i->second->sock->getAddress():i->second->addr;
 					int r = _dgram_sock->send(addr, task->data.get_ptr(), task->data.get_size());
 					if (r == -1)
-						throw_net(("sendto(%08x:%d, %u)", addr.ip, addr.port));
+						throw_net(("sendto(%08x:%d, %u)", addr.ip, addr.port, (unsigned)task->data.get_size()));
 					if (r != (int)task->data.get_size()) {
 						LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
 					}
