@@ -36,6 +36,7 @@ public:
 	void listen(const std::string &addr, const unsigned port, const bool reuse = false);
 	void set_broadcast_mode(int val = 1);
 
+	const int send(const void *data, const int len) const;
 	const int send(const Socket::addr &addr, const void *data, const int len) const;
 	void broadcast(const mrt::Chunk &data, const int port);
 	const int recv(Socket::addr &addr, void *data, const int len) const;

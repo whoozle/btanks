@@ -118,6 +118,10 @@ void UDPSocket::create() {
 #endif	
 }
 
+const int UDPSocket::send(const void *data, const int len) const {
+	return ::send(_sock, (const char *)data, len, 0);
+}
+
 const int UDPSocket::send(const Socket::addr &addr, const void *data, const int len) const {
 	sockaddr_in sockaddr;
 
