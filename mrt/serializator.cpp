@@ -157,6 +157,10 @@ void Serializator::add(const float f) {
 	add(&f, sizeof(f));
 #else
 	{
+		if (f == 0) {
+			add(0);
+			return;
+		}
 		int f_inf = isinf(f);
 		if (isnan(f)) {
 			add(12); //magic! :)
@@ -252,6 +256,9 @@ void Serializator::get(float &f) const {
 	get(len);
 
 	switch(len) {
+	case 0: 
+		f = 0;
+		return;
 	case 12: 
 		f = NAN;
 		return;
