@@ -582,6 +582,7 @@ TRY {
 						if (message.has("2")) {
 							mrt::replace(msg, "$2", message.get("2"));
 						}
+						LOG_DEBUG(("incoming: %s 1:%s 2:%s", key.c_str(), message.has("1")?message.get("1").c_str():"-", message.has("2")?message.get("2").c_str():"-"));
 						Game->getChat()->addAction(msg);
 					} else {
 						Game->getChat()->addAction(message.get("text")); //use server generated version
@@ -1502,6 +1503,7 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 	
 	Message m(Message::PlayerMessage);
 	m.set("key", key_i18n);
+	m.set("type", type);
 	m.set("1", slot.name);
 	
 	//remove before release, starting from here.
