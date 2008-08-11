@@ -1503,17 +1503,16 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 	Message m(Message::PlayerMessage);
 	m.set("key", key_i18n);
 	m.set("1", slot.name);
-	if (killer_slot != NULL)
-		m.set("2", killer_slot->name);
 	
 	//remove before release, starting from here.
 	std::string message = I18n->get(key_i18n);
 	mrt::replace(message, "$1", slot.name);
-	if (killer_slot != NULL) 
+	if (killer_slot != NULL) {
+		m.set("2", killer_slot->name);
 		mrt::replace(message, "$2", killer_slot->name);
+	}
 	
 	//remove till here.
-	
 	if (!RTConfig->server_mode)
 		Game->getChat()->addAction(message);
 
