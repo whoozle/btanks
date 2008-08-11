@@ -1362,7 +1362,7 @@ void IPlayerManager::onPlayerDeath(const Object *player, const Object *killer) {
 	} else {
 		if (player_slot != NULL) {
 			std::string type = player->has_effect("telefrag")?std::string("telefrag"): killer->classname;
-			action(slot, type, std::string(), player_slot);
+			action(slot, "kill", type, player_slot);
 		}
 		
 		if (add_frags)
@@ -1479,9 +1479,6 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 	if (!subtype.empty())
 		bases.push("multiplayer/" + type + "/" + subtype);
 	bases.push("multiplayer/" + type + "/_");
-	if (!subtype.empty())
-		bases.push("multiplayer/generic/" + subtype);
-	bases.push("multiplayer/generic/_");
 
 	std::deque<std::string> keys;
 	std::string base;
@@ -1493,8 +1490,10 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 		bases.pop();
 	}
 
-	if (keys.empty())
-		return; //sorry, no results - no insults. 
+	if (keys.empty()) {
+		LOG_WARN(("could not find %s/%s message", type.c_str(), subtype.c_str()));
+		return; //sorry, no results - no insults :)
+	}
 
 	int idx = mrt::random(keys.size());
 	const std::string& key = keys[idx];

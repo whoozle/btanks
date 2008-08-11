@@ -1061,7 +1061,7 @@
 			<string id="_2" lang="uk">$1 розпилив $2 на атоми</string>
 		</area>
 		
-		<area id="generic">
+		<area id="kill">
 			<string id="_1" lang="ru">$1 fried $2</string>
 			<string id="_1" lang="ru">$1 разнёс в клочья $2</string>
 			<string id="_1" lang="uk">$1 розніс на шматки $2</string>
@@ -1069,20 +1069,14 @@
 			<string id="_2">$1 torn $2 down</string>
 			<string id="_2" lang="ru">$1 порвал как грелку $2</string>
 			<string id="_2" lang="uk">$1 розірвав як грілку $2</string>
-			
-			<string id="mine">$1 triggered its own mine</string>
-			<string id="mine" lang="ru">$1 подорвался на мине</string>
-			<string id="mine" lang="uk">$1 підірвався на міні</string>
-		</area>
 
-		<area id="missile">
-			<string id="_1">$1 ate $2's missile</string>
-			<string id="_1" lang="ru">$1 съел ракету $2</string>
-			<string id="_1" lang="uk">$1 з'їв ракету $2</string>
+			<string id="missile1">$1 ate $2's missile</string>
+			<string id="missile1" lang="ru">$1 съел ракету $2</string>
+			<string id="missile1" lang="uk">$1 з'їв ракету $2</string>
 			
-			<string id="_2">$1 swallowed $2 missile</string>
-			<string id="_2" lang="ru">$1 проглотил ракету $2</string>
-			<string id="_2" lang="uk">$1 проковтнув ракету $2</string>
+			<string id="missile2">$1 swallowed $2 missile</string>
+			<string id="missile2" lang="ru">$1 проглотил ракету $2</string>
+			<string id="missile2" lang="uk">$1 проковтнув ракету $2</string>
 		</area>
 
 		<area id="suicide">
