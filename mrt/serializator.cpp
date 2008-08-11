@@ -168,13 +168,19 @@ void Serializator::add(const float f) {
 		if (f == 0) {
 			add(0);
 			return;
-		}
-		int f_inf = isinf(f);
-		if (isnan(f)) {
-			add(12); //magic! :)
+		} else if (f == 1) {
+			add(-4);
 			return;
-		} else if (f_inf != 0) {
-			add(f_inf > 0? 13: 14);
+		} else if (f == -1) {
+			add(-5);
+			return;
+		} else if (isnan(f)) {
+			add(-1); //magic! :)
+			return;
+		} 
+		int f_inf = isinf(f);
+		if (f_inf != 0) {
+			add(f_inf > 0? -2: -3);
 			return; //magic values for nan 
 		}
 	}
@@ -269,14 +275,20 @@ void Serializator::get(float &f) const {
 	case 0: 
 		f = 0;
 		return;
-	case 12: 
+	case -1: 
 		f = NAN;
 		return;
-	case 13:
+	case -2:
 		f = INFINITY;
 		return;
-	case 14: 
+	case -3: 
 		f = -INFINITY;
+		return;
+	case -4: 
+		f = 1;
+		return;
+	case -5: 
+		f = -1;
 		return;
 	}
 
