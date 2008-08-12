@@ -191,7 +191,7 @@ void IWindow::initSDL() {
 	//sdlx::TTF::init();
 }
 
-#if !defined _WINDOWS and !defined __APPLE__
+#if !defined _WINDOWS && !defined __APPLE__
 static std::string getGLString(const GLenum name) {
 	typedef const GLubyte * (APIENTRY * PGLGETSTRING) (GLenum);
 	union {
