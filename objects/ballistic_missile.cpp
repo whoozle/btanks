@@ -36,9 +36,8 @@ public:
 	
 	virtual const bool skip_rendering() const {
 		float l = _launch.get(), f = _fall.get();
-		if (l <= 0 && f > 0)
-			return true;
-		return false;
+		LOG_DEBUG(("l: %g f: %g", l, f));
+		return l >= 1 && f < 1;
 	}
 	
 	void calculate(const float dt) {
