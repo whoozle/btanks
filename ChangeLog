@@ -39,6 +39,9 @@
 		*) Fixed race condition with 'connection-id' causing errors on map join
 		*) [rc2] Better delta calculation based on simple errors histogram. 
 		*) [rc2] Various mp messages shows in player's locale. 
+		*) [rc2] Added DNS cache. 
+		*) [rc2] Added compact and portable serialization of the float type. 
+		*) [rc2] Fixed UDP malfunctioning on the BSD-based systems. 
 
 	*) Scripting improvements: 
 		*) Added `trainophobic' and `monstroid' variants for the troops (attacking train/troops)
@@ -56,6 +59,7 @@
 		*) Inner object loops ported to the grid-based approach. 
 		*) Added notifications for the adding/removing objects from the map.
 
+	*) [rc2] Engine ported and bundled for the MacOSX 10.5 Leopard!
 	*) Added pick/drop api to the engine. CTF flag use picking and dropping now. 
 	*) Put resources in single big file.
 	*) In a kill'em'all mode show marks on map if 5 or less targets available. 
@@ -83,6 +87,7 @@
 	*) [rc2] Added 'install' target for scons
 	*) [rc2] Fixed terrible error allowing objects become invincible (spaceport for example)
 	*) [rc2] Color lines in join menu dialog.
+	*) [rc2] Change background for the buttons on mouse enter/leave.
 	*) [rc2] UDP broadcast problems fixed. 
 	*) Billions bugfixes. 
 	
