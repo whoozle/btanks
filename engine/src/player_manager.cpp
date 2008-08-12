@@ -1502,7 +1502,6 @@ void IPlayerManager::action(const PlayerSlot &slot, const std::string &type, con
 	
 	Message m(Message::PlayerMessage);
 	m.set("key", key_i18n);
-	m.set("type", type);
 	m.set("1", slot.name);
 	
 	//remove before release, starting from here.
