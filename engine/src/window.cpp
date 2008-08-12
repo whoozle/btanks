@@ -297,7 +297,7 @@ void IWindow::init(const int argc, char *argv[]) {
 LOG_DEBUG(("setting caption..."));		
 SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
-#ifndef _WINDOWS
+#if !defined _WINDOWS && !defined __APPLE__
 	TRY {
 		mrt::Chunk data;
 		Finder->load(data, "tiles/icon.png");
@@ -307,11 +307,12 @@ SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 		SDL_WM_SetIcon(icon.get_sdl_surface(), NULL);
 	} CATCH("setting icon", {});
 
+#endif
+
 	if (_opengl && !force_gl && !sdlx::System::accelerated_gl(!_fullscreen)) {
 		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
 		_opengl = false;
 	}
-#endif
 
 	createMainWindow();
 
