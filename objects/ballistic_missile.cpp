@@ -36,7 +36,6 @@ public:
 	
 	virtual const bool skip_rendering() const {
 		float l = _launch.get(), f = _fall.get();
-		LOG_DEBUG(("l: %g f: %g", l, f));
 		return l >= 1 && f < 1;
 	}
 	
