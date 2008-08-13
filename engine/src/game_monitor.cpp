@@ -16,6 +16,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+/* 
+ * Additional rights can be granted beyond the GNU General Public License 
+ * on the terms provided in the Exception. If you modify this file, 
+ * you may extend this exception to your version of the file, 
+ * but you are not obligated to do so. If you do not wish to provide this
+ * exception without modification, you must delete this exception statement
+ * from your version and license this file solely under the GPL without exception. 
+*/
 #include <string>
 #include <stdexcept>
 #include <stdlib.h>
