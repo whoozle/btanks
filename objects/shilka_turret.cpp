@@ -119,12 +119,16 @@ public:
 		std::set<const Object *> objects;
 		_parent->enumerate_objects(objects, getWeaponRange("shilka-bullet"), &ai::Targets->troops);
 
-		int dirs = get_directions_number();
+		const int dirs = get_directions_number();
 		//int parent_dir = _parent->get_direction();
 		//(_parent->get_direction() - _parent->get_directions_number() / 2) * get_directions_number() / _parent->get_directions_number();
 
 		const Object *target = NULL;
 		v2<float> target_pos;
+
+		int parent_dirs = _parent->get_directions_number();
+		int parent_dir = (_parent->get_direction_vector().get_direction(parent_dirs) - 1) * get_directions_number() / parent_dirs;
+
 		for(std::set<const Object *>::iterator i = objects.begin(); i != objects.end(); ++i) {
 			const Object *o = *i;
 			if (o->get_id() == _parent->get_id() || o->impassability == 0 || o->hp <= 0 ||
@@ -134,6 +138,20 @@ public:
 				continue;
 			
 			pos = get_relative_position(o);
+			pos.normalize();
+			int dir = pos.get_direction(dirs) - 1;
+			int ddir = dir - parent_dir; 
+			if (ddir < -dirs / 2)
+				ddir += dirs;
+			if (ddir > dir / 2)
+				ddir -= dirs;
+
+			//LOG_DEBUG(("target at %d, parent_dir: %d, ddir: %d", dir, parent_dir, dir - parent_dir));
+
+			if (ddir > dirs / 8 || ddir < dirs / -8)
+				continue;
+			
+			
 			if (target == NULL || pos.quick_length() < target_pos.quick_length()) {
 				target = o;
 				target_pos = pos;
