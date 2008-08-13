@@ -856,6 +856,7 @@
 		<object id="thrower"/>
 		<object id="thrower-item"/>
 		<object id="thrower-missile"/>
+		<object id="thrower-on-launcher"/>
 		<object id="traffic-lights"/>
 		<object id="umbrella"/>
 		<object id="vehicle-machinegunner-bullet"/>
