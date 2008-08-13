@@ -272,6 +272,8 @@
 		<object id="mines-item"/>
 		<object id="missiles-on-launcher"/>
 		<object id="missiles-on-tank"/>
+		<object id="mortar-bullet"/>
+		<object id="mortar-explosion"/>
 		<object id="nuke-explosion"/>
 		<object id="nuke-mine"/>
 		<object id="nuke-missile"/>
