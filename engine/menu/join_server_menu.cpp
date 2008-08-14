@@ -210,15 +210,22 @@ void JoinServerMenu::tick(const float dt) {
 	}
 	
 	if (_add_dialog->changed()) {
+		std::string host = _add_dialog->get();
+		_add_dialog->set(std::string());
 		_add_dialog->reset();
 		_add_dialog->hide();
-		std::string host = _add_dialog->get();
+		
 		if (!host.empty()) {
-			_hosts->append(host);
+			HostItem *item = new HostItem;
+			item->addr.parse(host);
+			if (item->addr.ip == 0) {
+				item->name = host;
+			}
+			
+			_hosts->append(item);
 			ping();
 		}
 		
-		_add_dialog->set(std::string());
 	}
 
 
