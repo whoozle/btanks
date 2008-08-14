@@ -231,9 +231,12 @@ void JoinServerMenu::tick(const float dt) {
 			if (item->addr.port == 0) {
 				item->addr.port = port;
 			}
-			
-			_hosts->append(item);
-			ping();
+			if (item->addr.ip != 0 && item->addr.port != 0) {
+				_hosts->append(item);
+				ping();
+			} else {
+				delete item;
+			}
 		}
 		
 	}
