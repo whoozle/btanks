@@ -120,6 +120,7 @@ TRY {
 	case Message::RequestServerStatus: {
 		LOG_DEBUG(("sending server status message..."));
 		Message m(Message::ServerStatus);
+		m.set("release", RTConfig->release_name);
 		m.set("version", getVersion());
 		
 		bool fog;

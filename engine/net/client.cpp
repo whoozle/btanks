@@ -32,6 +32,7 @@
 #include "mrt/serializator.h"
 
 #include "client.h"
+#include "rt_config.h"
 #include "player_state.h"
 #include "message.h"
 #include "player_manager.h"
@@ -78,6 +79,7 @@ void Client::tick(const float dt) {
 		
 	if (!sent_req && connected()) {
 		Message msg(Message::RequestServerStatus);
+		msg.set("release", RTConfig->release_name);
 		send(msg);
 		sent_req = true;
 	}

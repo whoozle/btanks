@@ -49,6 +49,8 @@ public:
 
 	float time_limit;
 	int port;
+	
+	const std::string release_name;
 
 	void serialize(mrt::Serializator &s) const;
 	void deserialize(const mrt::Serializator &s);

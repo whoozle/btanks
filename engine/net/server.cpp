@@ -100,6 +100,8 @@ void Server::restart() {
 		conns.pop();
 		TRY {
 			Message msg(Message::RequestServerStatus);
+			msg.set("release", RTConfig->release_name);
+					
 			int id = PlayerManager->on_connect();
 			LOG_DEBUG(("reassigning connection: %d", id));
 			_monitor->add(id, c);
