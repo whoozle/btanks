@@ -775,7 +775,7 @@ TRY {
 			mrt::DictionarySerializator s;
 			serialize_slots(s);
 			if (player != NULL) {
-				World->serializeObject(s, o, true);
+				World->serializeObject(s, player, true);
 			} else {
 				s.add(0);
 			}
