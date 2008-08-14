@@ -102,6 +102,7 @@ void Client::tick(const float dt) {
 		case Message::TextMessage:
 		case Message::DestroyMap:
 		case Message::PlayerMessage:
+		case Message::ServerError:
 			PlayerManager->on_message(0, m);
 			break;
 

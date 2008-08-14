@@ -118,6 +118,13 @@ TRY {
 
 	switch(message.type) {
 	case Message::RequestServerStatus: {
+		std::string client_release = message.has("release")?message.get("release"):std::string("unknown");
+		if (client_release != RTConfig->release_name) {
+			Message m;
+			m.set("error", "obsolete-client");
+			_server->send(cid, m);
+			break;
+		}
 		LOG_DEBUG(("sending server status message..."));
 		Message m(Message::ServerStatus);
 		m.set("release", RTConfig->release_name);
@@ -567,6 +574,16 @@ TRY {
 			cell.deserialize(s);
 			Map->_destroy(cell.z, v2<int>(cell.x, cell.y));
 		}
+		break;
+	}
+	case Message::ServerError: {
+		_client->disconnect();
+		Game->clear();
+		std::string error = message.get("error");
+		if (I18n->has("errors", error))
+			GameMonitor->displayMessage("errors", error, 2);
+		else
+			GameMonitor->displayMessage("errors", "multiplayer-exception", 2);
 		break;
 	}
 	case Message::PlayerMessage: {
