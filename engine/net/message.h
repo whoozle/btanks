@@ -58,7 +58,8 @@ public:
 		PlayerMessage, 
 		RequestObjects,
 		JoinTeam,
-		ServerDiscovery
+		ServerDiscovery, 
+		ServerError
 	};
 	
 	Message();
