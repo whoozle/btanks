@@ -525,7 +525,7 @@ TRY {
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
 		LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 	
-		World->applyUpdate(s, dt);
+		World->deserializeObject(s);
 		} CATCH("on-message(respawn)", throw;);
 	break;
 	}
@@ -745,8 +745,9 @@ TRY {
 		LOG_DEBUG(("player in slot %u is dead. respawning. frags: %d", (unsigned)i, slot.frags));
 
 		slot.spawn_player(i, slot.classname, slot.animation);
+		Object *player = slot.getObject();
 
-		if (slot.getObject()) {
+		if (player != NULL) {
 			Mixer->playSample(slot.getObject(), "respawn.ogg", false);
 		}
 		
@@ -755,7 +756,12 @@ TRY {
 			m.channel = i;
 			mrt::DictionarySerializator s;
 			serialize_slots(s);
-			World->generateUpdate(s, false);
+			if (player != NULL) {
+				World->serializeObject(s, o, true);
+			} else {
+				s.add(0);
+			}
+			
 			
 			s.finalize(m.data);
 			send(slot, m);
