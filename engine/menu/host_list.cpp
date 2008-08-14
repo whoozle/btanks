@@ -109,7 +109,7 @@ void HostList::sort() {
 	if (_list.empty())
 		return;
 	
-	if (_current_item >= (int)_list.size())
+	if (_current_item < 0 || _current_item >= (int)_list.size())
 		_current_item = 0;
 	
 	Control *selected = _list[_current_item];

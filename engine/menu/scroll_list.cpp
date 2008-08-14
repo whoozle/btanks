@@ -415,6 +415,8 @@ void ScrollList::remove(const int idx) {
 
 	if (_current_item >= (int)_list.size()) 
 		_current_item = (int)_list.size() - 1;
+	if (_current_item < 0)
+		_current_item = 0;
 	invalidate();
 }
 
