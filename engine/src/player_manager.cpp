@@ -120,7 +120,7 @@ TRY {
 	case Message::RequestServerStatus: {
 		std::string client_release = message.has("release")?message.get("release"):std::string("unknown");
 		if (client_release != RTConfig->release_name) {
-			Message m;
+			Message m(Message::ServerError);
 			m.set("error", "obsolete-client");
 			_server->send(cid, m);
 			break;
