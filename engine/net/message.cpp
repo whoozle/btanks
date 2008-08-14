@@ -68,6 +68,7 @@ const char * Message::getType() const {
 	case RequestObjects: return "RequestObjects";
 	case JoinTeam: return "JoinTeam";
 	case ServerDiscovery: return "ServerDiscovery";
+	case ServerError: return "ServerError";
 	}
 	return "Unknown/Damaged";
 }
