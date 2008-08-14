@@ -55,6 +55,8 @@
 //#define IEEE_754_SERIALIZATION
 //define it to use machine/compiler specific binary format 
 
+#include <math.h>
+
 using namespace mrt;
 
 #ifdef DEBUG
