@@ -215,11 +215,21 @@ void JoinServerMenu::tick(const float dt) {
 		_add_dialog->reset();
 		_add_dialog->hide();
 		
+		LOG_DEBUG(("adding host %s", host.c_str()));
+		
 		if (!host.empty()) {
+			int port;
+			Config->get("multiplayer.port", port, 27255);
+			
 			HostItem *item = new HostItem;
 			item->addr.parse(host);
 			if (item->addr.ip == 0) {
 				item->name = host;
+				LOG_DEBUG(("this is not an ip address, resolving..."));
+				item->addr.getAddrByName(host);
+			}
+			if (item->addr.port == 0) {
+				item->addr.port = port;
 			}
 			
 			_hosts->append(item);
