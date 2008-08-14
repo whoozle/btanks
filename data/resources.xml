@@ -877,7 +877,7 @@
 	<object class="static-mortar" parent="mortar" />
 
 	<object class="bullet" speed="1000" mass="2" ttl="0.5818" hp="10" z="210" />
-	<object class="tank-bullet" parent="bullet" />
+	<object class="tank-bullet" parent="bullet" hp="15" />
 	<object class="ricochet-bullet" speed="1000" mass="2" ttl="1.5" hp="10" z="210" />
 	<object class="dispersion-bullet" speed="900" mass="2" ttl="0.4" hp="10" z="210" />
 	<object class="machinegunner-bullet" speed="1000" mass="2" ttl="0.5818" hp="2" z="210" />
