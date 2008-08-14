@@ -907,7 +907,10 @@
 		<string id="script-error">Script error.</string>
 		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 		<string id="script-error" lang="uk">Помилка в сценарії (скрипт).</string>
-	</area>         
+		
+		<string id="obsolete-client">Please upgrade Battle Tanks.</string>
+		<string id="obsolete-client" lang="ru">Обновите танки!</string>
+	</area>
 
 	<area id="tips">
 		<string id="minimap">You can show/hide minimap with the 'M' key.</string>
