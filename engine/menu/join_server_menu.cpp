@@ -206,7 +206,8 @@ void JoinServerMenu::tick(const float dt) {
 	
 	if (_del->changed()) {
 		_del->reset();
-		_hosts->remove(_hosts->get());
+		if (!_hosts->empty())
+			_hosts->remove(_hosts->get());
 	}
 	
 	if (_add_dialog->changed()) {
