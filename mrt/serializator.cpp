@@ -52,7 +52,8 @@
 #	define NAN (std::numeric_limits<float>::quiet_NaN())
 #endif
 
-#define IEEE_754_SERIALIZATION
+//#define IEEE_754_SERIALIZATION
+//define it to use machine/compiler specific binary format 
 
 using namespace mrt;
 
