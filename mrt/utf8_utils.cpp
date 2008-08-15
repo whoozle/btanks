@@ -16,8 +16,57 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-
 #include "utf8_utils.h"
+
+#include "tclUniData.c"
+
+#define WCHAR_T_SIZE 4
+
+static const unsigned char totalBytes[256] = {
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+    3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+#if WCHAR_T_SIZE > 3
+    4,4,4,4,4,4,4,4,
+#else
+    1,1,1,1,1,1,1,1,
+#endif
+#if WCHAR_T_SIZE > 4
+    5,5,5,5,
+#else
+    1,1,1,1,
+#endif
+#if WCHAR_T_SIZE > 5
+    6,6,6,6
+#else
+    1,1,1,1
+#endif
+};
+
+
+unsigned mrt::wchar2lower(unsigned ch) {
+    int info = GetUniCharInfo(ch);
+
+    if (GetCaseType(info) & 0x02) {
+		return (wchar_t) (ch + GetDelta(info));
+    } else {
+		return ch;
+    }
+}
+
+unsigned mrt::wchar2upper(unsigned ch) {
+	int info = GetUniCharInfo(ch);
+	if (GetCaseType(info) & 0x04) {
+		return (wchar_t) (ch - GetDelta(info));
+	} else {
+		return ch;
+	}
+}
 
 const std::string::size_type mrt::utf8_length(const std::string &str) {
 	std::string::size_type size = 0, str_size = str.size();
@@ -29,14 +78,11 @@ const std::string::size_type mrt::utf8_length(const std::string &str) {
 	return size;
 }
 
-#include "logger.h"
-
-int utf8_iterate(const std::string &str, size_t &start) {
+unsigned mrt::utf8_iterate(const std::string &str, size_t &start) {
 	if (start >= str.size()) 
 		return 0;
 
 	unsigned c0 = (unsigned char)str[start++];
-	LOG_DEBUG(("%u", c0));
 	if (c0 <= 0x7f) 
 		return c0;
 
