@@ -2,6 +2,7 @@
 #include "i18n.h"
 #include "mrt/random.h"
 #include "mrt/logger.h"
+#include "mrt/utf8_utils.h"
 
 #define RANDOM_ITEM(q) ((q)[mrt::random((q).size())])
 
@@ -37,6 +38,21 @@ const std::string Nickname::generate() {
 	} else {
 		name += I18n->get("names/roots", RANDOM_ITEM(roots));
 	}
+	
+	size_t pos = 0;
+	unsigned wchar;
+	std::string cap_name;
+	bool capitalize = true;
+	while((wchar = mrt::utf8_iterate(name, pos)) != 0) {
+		//LOG_DEBUG(("%04x", wchar));
+		if (wchar == ' ') {
+			capitalize = true;
+		} else if (capitalize) {
+			wchar = mrt::wchar2upper(wchar);
+			capitalize = false;
+		}
+		mrt::utf8_add_wchar(cap_name, wchar);
+	}
 
-	return name;	
+	return cap_name;	
 }
