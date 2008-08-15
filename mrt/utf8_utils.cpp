@@ -113,7 +113,7 @@ unsigned mrt::utf8_iterate(const std::string &str, size_t &start) {
 }
 
 
-void mrt::utf8_add_wchar(std::string &str, const int wchar) {
+void mrt::utf8_add_wchar(std::string &str, unsigned wchar) {
 	if (wchar <= 0x7f) {
 		str += (char)wchar;
 	} else if (wchar <= 0x7ff) {
