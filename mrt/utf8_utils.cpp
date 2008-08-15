@@ -29,6 +29,44 @@ const std::string::size_type mrt::utf8_length(const std::string &str) {
 	return size;
 }
 
+#include "logger.h"
+
+int utf8_iterate(const std::string &str, size_t &start) {
+	if (start >= str.size()) 
+		return 0;
+
+	unsigned c0 = (unsigned char)str[start++];
+	LOG_DEBUG(("%u", c0));
+	if (c0 <= 0x7f) 
+		return c0;
+
+	if (c0 == 0xc0 || c0 == 0xc1 || c0 >= 0xf5) 
+		return '?';
+	
+	if (start >= str.size())
+		return 0;
+	
+	unsigned c1 = (unsigned char)str[start++];
+	if (c0 >= 0xc2 && c0 <= 0xdf) 
+		return ((c0 & 0x1f) << 6) | (c1 & 0x3f);
+	
+
+	if (start >= str.size())
+		return 0;
+	unsigned c2 = (unsigned char)str[start++];
+	if (c0 >= 0xe0 && c0 <= 0xef) 
+		return ((c0 & 0x0f) << 12) | ((c1 & 0x3f) << 6) | (c2 & 0x3f);
+	
+	if (start >= str.size())
+		return 0;
+	unsigned c3 = (unsigned char)str[start++];
+	if (c0 >= 0xf0 && c0 <= 0xf4) 
+		return ((c0 & 0x07) << 18) | ((c1 & 0x3f) << 12) | ((c2 & 0x3f) << 6) | (c3 & 0x3f);
+
+	return '?';
+}
+
+
 void mrt::utf8_add_wchar(std::string &str, const int wchar) {
 	if (wchar <= 0x7f) {
 		str += (char)wchar;

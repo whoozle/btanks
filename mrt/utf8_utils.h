@@ -30,6 +30,7 @@ namespace mrt {
 	const size_t MRTAPI utf8_left(const std::string &str, const size_t pos);
 	const size_t MRTAPI utf8_right(const std::string &str, const size_t pos);
 	void MRTAPI utf8_resize(std::string &str, const size_t max);
+	int utf8_iterate(const std::string &str, size_t &start); //0 = end
 }
 
 #endif
