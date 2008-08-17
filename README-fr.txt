@@ -12,9 +12,13 @@ Le jeu peut fonctionner de deux façons différentes :
 
 Paramètres optionnels de la ligne de commande :
 --no-gl     désactive l'utilisation d'OpenGL (accélération matérielle)
+--force-gl  force l'utilisation d'OpenGL, même si aucune accélération matérielle n'est détectée.
 --fs        active le mode plein écran (il sera activé par défaut à l'avenir)
 --lang=XX   force le choix de la langue (XX - un code ISO à deux lettres : en, ru, de, fr)
 --vsync     active la synchronisation verticale -- à utiliser en cas de problèmes d'affichage
+--connect=host  se connecte à l'hôte donné en argument
+--no-sound      désactive complètement le son.
+--sound         active le son, même s'il est désactivé dans les préférences (bt.xml).
 
 La résolution d'écran peut également être précisée :
 -0 640x480

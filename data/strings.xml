@@ -4,34 +4,42 @@
 		<string id="network-status">You have one or more users connected. Click the button below to disconnect them all.</string>
 		<string id="network-status" lang="ru">К вам подключено несколько пользователей. Нажмите на кнопку с крестиком чтобы отключить их.</string>
 		<string id="network-status" lang="uk">До вас під'єднано кілька користувачів. Натисніть на кнопку із хрестиком щоб від'єднати їх.</string>
+		<string id="network-status" lang="fr">Un ou plusieurs utilisateurs sont connectés. Cliquez sur le bouton ci-dessous pour les déconnecter tous.</string>
 
 		<string id="choose-team">Join team:</string>
 		<string id="choose-team" lang="ru">Выберите команду:</string>
 		<string id="choose-team" lang="uk">Оберіть команду:</string>
+		<string id="choose-team" lang="fr">Rejoindre l'équipe :</string>
 
 		<string id="time-limit">Time limit</string>
 		<string id="time-limit" lang="ru">Ограничение времени</string>
 		<string id="time-limit" lang="uk">Обмеження часу</string>
+		<string id="time-limit" lang="fr">Limite de temps</string>
 		
 		<string id="teams">Teams</string>
 		<string id="teams" lang="ru">Выбор количества команд</string>
 		<string id="teams" lang="uk">Вибір кількості команд</string>
+		<string id="teams" lang="fr">Équipes</string>
 
 		<string id="capture-the-flag">Capture the flag</string>
 		<string id="capture-the-flag" lang="ru">Захват флага</string>
 		<string id="capture-the-flag" lang="uk">За прапор</string>
+		<string id="capture-the-flag" lang="fr">Capture de drapeau</string>
 		
 		<string id="map">map</string>
 		<string id="map" lang="ru">карта</string>
 		<string id="map" lang="uk">мапа</string>		
+		<string id="map" lang="fr">carte</string>
 		
 		<string id="ping">ping</string>
 		<string id="ping" lang="ru">звон</string>
 		<string id="ping" lang="uk">пінг</string>
+		<string id="ping" lang="fr">ping</string>
 		
 		<string id="game-type">type</string>
 		<string id="game-type" lang="ru">тип</string>
 		<string id="game-type" lang="uk">тип</string>
+		<string id="game-type" lang="fr">type</string>
 		
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
@@ -79,6 +87,7 @@
 			<string id="racing">RACING</string>
 			<string id="racing" lang="ru">ГОНКИ</string>
 			<string id="racing" lang="uk">ГОНИТВА</string>
+			<string id="racing" lang="fr">COURSE</string>
 			
 			<string id="deathmatch">DEATHMATCH</string>
 			<string id="deathmatch" lang="ru">ДЕСМАТЧ</string>
@@ -97,10 +106,12 @@
 			<string id="capture-the-flag">CTF</string>
 			<string id="capture-the-flag" lang="ru">ЗАХВАТ ФЛАГА</string>
 			<string id="capture-the-flag" lang="uk">ЗА ПРАПОР</string>
+			<string id="capture-the-flag" lang="fr">DRAPEAUX</string>
 
 			<string id="team-deathmatch">TEAM DEATHMATCH</string>
 			<string id="team-deathmatch" lang="ru">ТИМ ДЕСМАТЧ</string>
 			<string id="team-deathmatch" lang="uk">КОМАНДНИЙ ДЕСМАТЧ</string>
+			<string id="team-deathmatch" lang="fr">PAR ÉQUIPES</string>
 		</area>
 
 		<string id="add">ADD</string>
@@ -149,6 +160,7 @@
 		<string id="random-respawn">Random respawn</string>
 		<string id="random-respawn" lang="ru">Случайный респаун</string>
 		<string id="random-respawn" lang="uk">Випадковий респаун</string>
+		<string id="random-respawn" lang="fr">Point de départ aléatoire</string>
 		          
 		<string id="start-campaign">CAMPAIGN</string>
 		<string id="start-campaign" lang="ru">КАМПАНИЯ</string>
@@ -313,7 +325,7 @@
 		<string id="view-map">[click here to view tactics map]</string>
 		<string id="view-map" lang="ru">[клик - тактическая карта]</string>
 		<string id="view-map" lang="uk">[Клік - тактична мапа]</string>
-		<string id="view-map" lang="fr">[Cliquez ici pour voir le schéma tactique]</string>
+		<string id="view-map" lang="fr">[Cliquez ici pour le schéma tactique]</string>
 		<string id="view-map" lang="de">[Hier clicken, um die taktische Karte anzuschauen]</string>
 		<string id="view-map" lang="it">[clicca qui per vedere la mappa tattica]</string>
 		            
@@ -644,10 +656,12 @@
 		<string id="four_rooms">Four local gangs are rumbling in the city center. Hundreds of dead, no injured.</string>
 		<string id="four_rooms" lang="ru">На оживленном городском перекрестке встретились представители четырех районов. Сотни убитых, покалеченных нет.</string>
 		<string id="four_rooms" lang="uk">На жвавому міському перехресті зустрілись представники чотирьох районів. Сотні вбитих, скалічених немає.</string>
+		<string id="four_rooms" lang="fr">Quatre gangs locaux se battent pour le contrôle du centre-ville. Aucun blessé n'est à déplorer, mais les morts se comptent par centaines.</string>
 		
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
 		<string id="arena" lang="uk">Танкова Арена: Перевір свої вміння вбивати. (Нова мапа!)</string>
+		<string id="arena" lang="fr">Arène Battle Tanks : Mesurez votre habileté à Battle Tans. Tuez tous les adversaires pour gagner. (Nouveau !)</string>
 		
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
 		<string id="baykonur" lang="ru">Захват укрепрайона близ космодрома Байконур.</string>
@@ -723,6 +737,7 @@
 		<string id="paintball" lang="en">Various weapons at the same place.</string>
 		<string id="paintball" lang="ru">Если ты плюнешь дальше - я тебе полчатла. Вот этой плюкой. Если я - ты мне две спички, понял? Давай плюй, сынок. </string>
 		<string id="paintball" lang="uk">Якщо ти цвіркнеш далеко - я тобі півчатлу. Ось цією плюкою. Якщо ж я - ти мені два сірники, зрозумів? Цвіркай, синку. </string>
+		<string id="paintball" lang="fr">De nombreuses armes au même endroit.</string>
 
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
@@ -816,9 +831,11 @@
 
 	<area id="editor">
 		<string id="new-map">New map</string>
-		<string id="new-map" lang="de">Neue Karte</string>
 		<string id="new-map" lang="ru">Новая карта</string>
 		<string id="new-map" lang="uk">Нова мапа</string>
+		<string id="new-map" lang="fr">Nouvelle carte</string>
+		<string id="new-map" lang="it">Nuova mappa</string>
+		<string id="new-map" lang="de">Neue Karte</string>
 	</area>
 
 	<area id="messages">
@@ -860,6 +877,7 @@
 		<string id="wrong-checkpoint">WRONG CHECKPOINT!</string>
 		<string id="wrong-checkpoint" lang="ru">НЕ ТУДА!</string>
 		<string id="wrong-checkpoint" lang="uk">НЕ ТУДИ!</string>
+		<string id="wrong-checkpoint" lang="fr">MAUVAIS PASSAGE !</string>
 		
 		<string id="combo">COMBO !</string>
 		<string id="combo" lang="ru">КОМБО!</string>
@@ -878,7 +896,7 @@
 		<string id="time-limit-reached">TIME LIMIT WAS REACHED.</string>
 		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
 		<string id="time-limit-reached" lang="uk">ЧАС СКІНЧИВСЯ</string>
-		<string id="time-limit-reached" lang="fr">LA LIMITE DE TEMPS A ÉTÉ ATTEINTE.</string>
+		<string id="time-limit-reached" lang="fr">LE TEMPS EST TERMINÉ.</string>
 		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
 		
 		<string id="ready">GET READY</string>
@@ -887,6 +905,8 @@
 		<string id="go" lang="ru">В АТАКУ!!!</string>
 		<string id="ready" lang="uk">ПРИГОТУВАТИСЯ!</string>
 		<string id="go" lang="uk">В АТАКУ!!!</string>
+		<string id="ready" lang="fr">PRÊTS...</string>
+		<string id="go" lang="fr">CHARGEZ !</string>
 	</area>
 
 	<area id="errors">
@@ -907,9 +927,11 @@
 		<string id="script-error">Script error.</string>
 		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 		<string id="script-error" lang="uk">Помилка в сценарії (скрипт).</string>
+		<string id="script-error" lang="fr">Erreur de script.</string>
 		
 		<string id="obsolete-client">Please upgrade Battle Tanks.</string>
 		<string id="obsolete-client" lang="ru">Обновите танки!</string>
+		<string id="obsolete-client" lang="fr">Mettez Battle Tanks à jour.</string>
 	</area>
 
 	<area id="tips">
@@ -952,6 +974,7 @@
 		<string id="cars">Car is a quiet safe place. Enemy cannot see you while you in.</string>
 		<string id="cars" lang="ru">В машине достаточно безопасно. Враги по машинам не стреляют.</string>
 		<string id="cars" lang="uk">У машині достатньо безпечно. Вороги по машинах не стріляють.</string>
+		<string id="cars" lang="fr">La voiture est un endroit calme et sûr. L'ennemi ne peut pas vous voir lorsque vous êtes à l'intérieur.</string>
 		        
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
 		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
@@ -1017,26 +1040,28 @@
 		<string id="checkpoints" lang="de">Auf den kooperativen Karten gibt es normalerweise einige spezielle Stellen: Speicherstellen, die die Lage des Spielers behalten.</string>
 		<string id="checkpoints" lang="it">Le mappe di squadra salvano automaticamente la partita al raggiungimento di un CHECKPOINT.</string>
 		
-		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game</string>
-		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавьте ботов (AI) в меню выбора машинок</string>
+		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game.</string>
+		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавьте ботов (AI) в меню выбора машинок.</string>
 		<string id="deathmatch-bots" lang="uk">Якщо ви не плануєте грати з кимось по мережі в десматч, додайте ботів (AI) в меню вибору машинок.</string>
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 		<string id="deathmatch-bots" lang="it">Non hai avversari? Aggiungi qualche BOT mentri giochi.</string>
 		<string id="deathmatch-bots" lang="de">Haben Sie keinen Rivalen? Fügen Sie einige Roboters zum Deathmatch-Spiel hinzu.</string>
 		
-		<string id="chat">You can press ENTER and chat with other players</string>
+		<string id="chat">You can press ENTER and chat with other players.</string>
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
 		<string id="chat" lang="uk">Ви можете розмовляти з іншими гравцями, натиснувши ENTER.</string>
 		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTRÉE.</string>
 		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
 
-		<string id="nukeman">Machinegunner players can grab nuke missile items and become kamikaze</string>
-		<string id="nukeman" lang="ru">Играя пулемётчиком можно брать ядерные бомбы и превращаться в ядерного камикадзе</string>
+		<string id="nukeman">Machinegunner players can grab nuke missile items and become kamikaze.</string>
+		<string id="nukeman" lang="ru">Играя пулемётчиком можно брать ядерные бомбы и превращаться в ядерного камикадзе.</string>
 		<string id="nukeman" lang="uk">Грая кулеметником можна брати ядерні бомби та перетворюватися в ядерного камікадзе.</string>
+		<string id="nukeman" lang="fr">Les soldats joueurs peuvent ramasser des missiles nucléaires pour devenir des kamikazes.</string>
 		
-		<string id="buggy">Buggy can kill helicopters with its alternative fire</string>
+		<string id="buggy">Buggy can kill helicopters with its alternative fire.</string>
 		<string id="buggy" lang="ru">Багги может убивать вертолёты при помощи автоматической зенитной пушки. Зажмите кнопку альтернативного огня и ищите удобную позицию. </string>
 		<string id="buggy" lang="uk">Баггі може вбивати гелікоптери за допомогою автоматичної зенітної гармати. Затисніть клавішу альтернативного вогню та шукайте зручну позицію.</string>
+		<string id="buggy" lang="fr">Le buggy peut détruire les hélicoptères avec son arme secondaire.</string>
 	</area>
 
 	<area id="multiplayer">
@@ -1044,71 +1069,86 @@
 			<string id="join1">$1 joined the game</string>
 			<string id="join1" lang="ru">К нам пришёл $1</string>
 			<string id="join1" lang="uk">До нас прийшов $1</string>
+			<string id="join1" lang="fr">$1 a rejoint le jeu</string>
 
 			<string id="join2">$1 connected.</string>
 			<string id="join2" lang="ru">$1 подключился к игре</string>
 			<string id="join2" lang="uk">$1 приєднався до гри</string>
+			<string id="join2" lang="fr">$1 s'est connecté</string>
 			
 			<string id="leave">$1 left the game</string>
 			<string id="leave" lang="ru">$1 отключился</string>
 			<string id="leave" lang="uk">$1 від'єднався</string>
+			<string id="leave" lang="fr">$1 est parti</string>
 		</area>
 		
 		<area id="telefrag">
 			<string id="_1">$1 telefragged $2</string>
 			<string id="_1" lang="ru">$1 телефрагнул $2</string>
 			<string id="_1" lang="uk">$1 телефрагнув $2</string>
+			<string id="_1" lang="fr">$1 a télé-explosé $2</string>
 			
 			<string id="_2">$1 split $2 into atoms</string>
 			<string id="_2" lang="ru">$1 распылил $2 на атомы</string>
 			<string id="_2" lang="uk">$1 розпилив $2 на атоми</string>
+			<string id="_2" lang="fr">$1 a atomisé $2</string>
 		</area>
 		
 		<area id="kill">
-			<string id="_1" lang="ru">$1 fried $2</string>
+			<string id="_1">$1 fried $2</string>
 			<string id="_1" lang="ru">$1 разнёс в клочья $2</string>
 			<string id="_1" lang="uk">$1 розніс на шматки $2</string>
+			<string id="_1" lang="fr">$1 a cramé $2</string>
 
 			<string id="_2">$1 torn $2 down</string>
 			<string id="_2" lang="ru">$1 порвал как грелку $2</string>
 			<string id="_2" lang="uk">$1 розірвав як грілку $2</string>
+			<string id="_2" lang="fr">$1 a mis $2 en pièces</string>
 
 			<string id="missile1">$1 ate $2's missile</string>
 			<string id="missile1" lang="ru">$1 съел ракету $2</string>
 			<string id="missile1" lang="uk">$1 з'їв ракету $2</string>
+			<string id="missile1" lang="fr">$1 n'a pas aimé le missile de $2</string>
 			
 			<string id="missile2">$1 swallowed $2 missile</string>
 			<string id="missile2" lang="ru">$1 проглотил ракету $2</string>
 			<string id="missile2" lang="uk">$1 проковтнув ракету $2</string>
+			<string id="missile2" lang="fr">$1 a mangé un missile de $2</string>
 		</area>
 
 		<area id="suicide">
 			<string id="_1">$1 shoot himself in a leg!</string>
 			<string id="_1" lang="ru">$1 прострелил себе ногу и умер</string>
 			<string id="_1" lang="uk">$1 прострілив собі ногу та помер</string>
+			<string id="_1" lang="fr">$1 s'est tiré une balle dans le pied !</string>
 
 			<string id="_2">$1 said farewell to this cruel existence and killed himself</string>
 			<string id="_2" lang="ru">$1 попрощался с этим жестоким миром и убил себя</string>
 			<string id="_2" lang="uk">$1 попрощався з цим жорстоким світом та вбив себе</string>
+			<string id="_2" lang="fr">$1 a préféré quitter ce monde cruel !</string>
 			
 			<string id="mine1">$1 heedlessly stepped on its own mine!</string>
 			<string id="mine1" lang="ru">$1 наступил на собственную мину</string>
 			<string id="mine1" lang="uk">$1 наступив на власну міну</string>
+			<string id="mine1" lang="fr">$1 a retrouvé une de ses mines !</string>
 
 			<string id="mine2">$1 triggered its own mine!</string>
 			<string id="mine2" lang="ru">$1 взорвал себя на собственной мине</string>
 			<string id="mine2" lang="uk">$1 підірвав себе на власній міні</string>
+			<string id="mine2" lang="fr">$1 a sauté sur sa propre mine !</string>
 		</area>
 
 		<area id="ctf">
 			<string id="_1">$1 won another point!</string>
 			<string id="_1" lang="ru">$1 выйграл ещё одно очко для своей команды!</string>
 			<string id="_1" lang="uk">$1 виграв щє одне очко для своєї команди!</string>
+			<string id="_1" lang="fr">$1 marque un point de plus !</string>
 		</area>
 
 		<area id="environment">
 			<string id="sandworm-head1">$1 was eaten by sandworm</string>
 			<string id="sandworm-head1" lang="ru">$1 был безжалостно съеден песчаным червём</string>
+			<string id="sandworm-head1" lang="fr">$1 a été dévoré par un ver géant des sables.</string>
 		</area>
 		
 	</area>
@@ -1117,26 +1157,34 @@
 		<string id="model">loading models...</string>
 		<string id="model" lang="ru">погрузка моделей...</string>
 		<string id="model" lang="uk">завантаження моделей...</string>
+		<string id="model" lang="fr">chargement des modèles...</string>
 		<string id="animation">loading animations...</string>
 		<string id="animation" lang="ru">погрузка графики...</string>
 		<string id="animation" lang="uk">завантаження графіки...</string>
+		<string id="animation" lang="fr">chargement des animations...</string>
 		<string id="object">setting up objects...</string>
 		<string id="object" lang="ru">настройка объектов...</string>
 		<string id="object" lang="uk">налаштування об'єктів...</string>
+		<string id="object" lang="fr">création des objets...</string>
 		<string id="sound">loading sounds...</string>
 		<string id="sound" lang="ru">погрузка звуков...</string>
 		<string id="sound" lang="uk">завантаження звуків...</string>
+		<string id="sound" lang="fr">chargement des sons...</string>
 		<string id="layer">loading layers...</string>
 		<string id="layer" lang="ru">погрузка слоёв карты...</string>
 		<string id="layer" lang="uk">завантаження шарів мапи...</string>
+		<string id="layer" lang="fr">chargement des calques...</string>
 		<string id="tileset">loading tilesets...</string>
 		<string id="tileset" lang="ru">погрузка тайлсетов...</string>
 		<string id="tileset" lang="uk">завантаження тайлсетів...</string>
+		<string id="tileset" lang="fr">chargement des images...</string>
 		<string id="menu">creating menu...</string>
 		<string id="menu" lang="ru">создание меню...</string>
 		<string id="menu" lang="uk">створення меню...</string>
+		<string id="menu" lang="fr">création du menu...</string>
 		<string id="properties">reading map properties...</string>
 		<string id="properties" lang="ru">чтение свойств карты...</string>
 		<string id="properties" lang="uk">читання властивостей мапи...</string>
+		<string id="properties" lang="fr">lecture des propriétés de la carte...</string>
 	</area>
 </strings>
