@@ -43,9 +43,13 @@ using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
 	reference_distance(1), rolloff_factor(1), 
-	position(0), fadeout(0), fadeout_total(0), use_overlap(false) , 
+	position(0), fadeout(0), fadeout_total(0),
 	fft_state(NULL), ffti_state(NULL) 
-	 {
+	{
+	for(int i = 0; i < 2; ++i) {
+		use_overlap[i] = false;
+	}
+	
 	if (sample == NULL)
 		throw_ex(("sample for source cannot be NULL"));
 }
@@ -92,19 +96,21 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 
 #define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
 
-void Source::hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
+void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
 	//const int lowpass_cutoff = 5000 * CLUNK_ACTUAL_WINDOW / sample->spec.freq;
 	//LOG_DEBUG(("using cutoff at %d", lowpass_cutoff));
+	assert(channel_idx < 2);
 	if (fft_state == NULL)
 		fft_state = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 0, NULL, NULL);
 	if (ffti_state == NULL)
 		ffti_state = kiss_fftr_alloc(CLUNK_WINDOW_SIZE, 1, NULL, NULL);
 	
 	int n = (dst_n - 1) / CLUNK_ACTUAL_WINDOW + 1;
+	//LOG_DEBUG(("%d bytes, %d actual window size, %d windows", dst_n, CLUNK_ACTUAL_WINDOW, n));
 	result.set_size(2 * dst_n);
 
 	Sint16 *dst = (Sint16 *)result.get_ptr();
-	
+
 	for(int i = 0; i < n; ++i) {
 		kiss_fft_scalar src_data[CLUNK_WINDOW_SIZE];
 		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
@@ -160,7 +166,7 @@ void Source::hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_c
 		float max = CLUNK_WINDOW_SIZE;
 		int jmax = clunk_min(more, CLUNK_ACTUAL_WINDOW);
 		int jmin = clunk_min(jmax, CLUNK_WINDOW_OVERLAP);
-		//LOG_DEBUG(("last chunk : %d, overlap first %d", jmax, jmin));
+		//LOG_DEBUG(("last chunk : %d, overlap first %d, more: %d", jmax, jmin, more));
 
 		for(int j = 0; j < jmax + CLUNK_WINDOW_OVERLAP; ++j) {
 			float v = src_data[j];
@@ -177,15 +183,15 @@ void Source::hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_c
 			
 			if (j >= jmax) {
 				assert(j - jmax < CLUNK_WINDOW_OVERLAP);
-				overlap_data[j - jmax] = x;
+				overlap_data[channel_idx][j - jmax] = x;
 				//if (jmax != CLUNK_ACTUAL_WINDOW)
 				//	LOG_DEBUG(("overlap[%d] = %d", j - jmax, x));
-				use_overlap = true;
+				use_overlap[channel_idx] = true;
 			} else {
 				assert(offset + j < dst_n);
 
 				if (use_overlap && j < jmin) {
-					x = (x * j + overlap_data[j] * (jmin - j)) / jmin;
+					x = (x * j + overlap_data[channel_idx][j] * (jmin - j)) / jmin;
 				}
 
 				dst[offset + j] = x;
@@ -212,7 +218,6 @@ void Source::update_position(const int dp) {
 		}
 	}
 }
-
 
 float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
 	Sint16 * dst = (Sint16*) buffer.get_ptr();
@@ -285,8 +290,8 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 
 	clunk::Buffer sample3d_left, sample3d_right;
 	int idt_abs = idt_offset >= 0? idt_offset: -idt_offset;
-	hrtf(sample3d_left, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_left);
-	hrtf(sample3d_right, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_right);
+	hrtf(0, sample3d_left, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_left);
+	hrtf(1, sample3d_right, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_right);
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));

@@ -91,12 +91,12 @@ private:
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
 	void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
-	void hrtf(clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
+	void hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position, fadeout, fadeout_total;
 	
-	Sint16 overlap_data[CLUNK_WINDOW_OVERLAP];
-	bool use_overlap;
+	bool use_overlap[2];
+	Sint16 overlap_data[2][CLUNK_WINDOW_OVERLAP];
 	
 	kiss_fftr_state *fft_state, *ffti_state;
 };
