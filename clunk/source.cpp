@@ -190,7 +190,7 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 			} else {
 				assert(offset + j < dst_n);
 
-				if (use_overlap && j < jmin) {
+				if (use_overlap[channel_idx] && j < jmin) {
 					x = (x * j + overlap_data[channel_idx][j] * (jmin - j)) / jmin;
 				}
 
