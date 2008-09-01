@@ -121,7 +121,7 @@ const std::string FSNode::normalize(const std::string &path_) {
 	std::vector<std::string> p, r;
 	mrt::split(p, path, "/");
 	for(size_t i = 0; i < p.size(); ++i) {
-		if (p[i] == "." || p[i].empty())
+		if (p[i] == "." || (i > 0 && p[i].empty()))
 			continue;
 		if (p[i] == ".." && !r.empty()) {
 			r.resize(r.size() - 1);
