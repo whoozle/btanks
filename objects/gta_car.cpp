@@ -29,9 +29,9 @@
 #include "config.h"
 #include "rotating_object.h"
 
-class Car: public RotatingObject {
+class GTACar: public RotatingObject {
 public: 
-	Car() : RotatingObject("vehicle") {}
+	GTACar() : RotatingObject("vehicle") {}
 
 	void on_spawn() {
 		disown();
@@ -40,4 +40,4 @@ public:
 	
 };
 
-REGISTER_OBJECT("static-gta-car", Car, ());
+REGISTER_OBJECT("static-gta-car", GTACar, ());
