@@ -36,10 +36,10 @@ public:
 	void on_spawn() {
 		disown();
 		disable_ai = true;
+		play("hold", true);
 	}
 	
-	Object *clone() const { return GTACar(*this); }
-	
+	Object *clone() const { return new GTACar(*this); }
 };
 
 REGISTER_OBJECT("static-gta-car", GTACar, ());

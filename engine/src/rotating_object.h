@@ -2,8 +2,10 @@
 #define BTANKS_ENGINE_ROTATING_OBJECT_H__
 
 #include "export_btanks.h"
-#include "sdlx/surface.h"
 #include "object.h"
+namespace sdlx {
+	class Surface;
+}
 
 class BTANKSAPI RotatingObject : public Object {
 public: 
@@ -13,7 +15,7 @@ public:
 
 private: 
 	float angle;
-	sdlx::Surface cached_surface;
+	sdlx::Surface *cached_surface;
 };
 
 #endif

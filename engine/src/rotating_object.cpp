@@ -1,5 +1,6 @@
 #include <math.h>
 #include "rotating_object.h"
+#include "sdlx/surface.h"
 
 RotatingObject::RotatingObject(const std::string &classname) : Object(classname), angle_speed(0) {
 
