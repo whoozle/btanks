@@ -13,10 +13,12 @@ public:
 	RotatingObject(const std::string &classname);
 	void calculate(const float dt);
 	void tick(const float dt);
+	void render(sdlx::Surface &surface, const int x, const int y);
+	~RotatingObject();
 
 private: 
-	float angle;
-	sdlx::Surface *cached_surface;
+	float angle, cached_angle;
+	sdlx::Surface *cached_surface, *src_surface;
 };
 
 #endif
