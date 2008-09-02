@@ -303,6 +303,7 @@ private:
 	friend class IWorld;
 	friend class ai::Buratino;
 	friend class ai::Waypoints;
+	friend class RotatingObject;
 	using BaseObject::_position;
 };
 
