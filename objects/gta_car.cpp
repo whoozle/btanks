@@ -38,6 +38,8 @@ public:
 		disable_ai = true;
 	}
 	
+	Object *clone() const { return GTACar(*this); }
+	
 };
 
 REGISTER_OBJECT("static-gta-car", GTACar, ());
