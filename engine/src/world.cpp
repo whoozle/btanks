@@ -57,6 +57,18 @@
 #include "math/binary.h"
 #include "profiler.h"
 
+#include "rotating_object.h"
+
+static inline void call_calculate(Object *object, float dt) {
+	RotatingObject *ro = dynamic_cast<RotatingObject *>(object);
+	if (ro == NULL) {
+		object->Object::calculate(dt);
+	} else {
+		ro->RotatingObject::calculate(dt);
+	}
+}
+
+
 IMPLEMENT_SINGLETON(World, IWorld);
 
 static Profiler profiler;
@@ -661,7 +673,7 @@ TRY {
 		}
 		
 		o.update_player_state(state);
-		o.Object::calculate(dt);
+		call_calculate(&o, dt);
 	} else if (o.has_effect("drifting")) {
 		//drifting
 		drifting = true;
@@ -674,7 +686,7 @@ TRY {
 		if (t == dd) {
 			TRY { 
 				if (o.disable_ai) {
-					o.Object::calculate(dt);
+					call_calculate(&o, dt);
 				} else {
 					o.calculate(dt);
 				}
@@ -697,7 +709,7 @@ TRY {
 				}
 				o.limit_rotation(dt, 0.1f, true, false);
 			} else if (o.disable_ai) {
-				o.Object::calculate(dt);
+				call_calculate(&o, dt);
 			} else {
 				if (ep) {
 					profiler.reset();
