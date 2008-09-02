@@ -977,6 +977,7 @@
 	<object class="ziehharmonikaspieler" hp="30" speed="80" mass="80" z="-1" />
 
 	<object class="car" hp="20" speed="200" mass="500" />
+	<object class="static-gta-car" parent="car" />
 	<object class="static-car" parent="car" />
 	<object class="outline" impassability="0" />
 	<object class="random-tooltip" z="995" />

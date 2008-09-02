@@ -36,7 +36,7 @@ sources = [
 	'heli.cpp', 'bomb.cpp', 'explosive.cpp', 'mortar.cpp',
 	'sandworm.cpp', 'barrier.cpp', 'pillbox.cpp', 'buggy.cpp', 'turrel.cpp', 
 	'ballistic_missile.cpp', 'mortar_bullet.cpp', 'ctf_base.cpp', 'ctf_flag.cpp', 
-	'shilka_turret.cpp', 
+	'shilka_turret.cpp', 'gta_car.cpp'
 ]
 
 bt_obj = env.SharedLibrary('bt_objects', sources, LIBS=libs)

@@ -432,6 +432,12 @@
 	<class id="static-dirt">
 		<animation id="dirt" />
 	</class>
+	<class id="static-gta-car">
+		<animation id="blue-car" />
+		<animation id="red-car" />
+		<animation id="yellow-car" />
+		<animation id="green-car" />
+	</class>
 	<class id="static-helicopter">
 		<animation id="helicopter" />
 	</class>

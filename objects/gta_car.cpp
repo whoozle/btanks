@@ -40,4 +40,4 @@ public:
 	
 };
 
-REGISTER_OBJECT("gta-car", Car, ());
+REGISTER_OBJECT("static-gta-car", Car, ());
