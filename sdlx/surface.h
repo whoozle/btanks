@@ -134,6 +134,10 @@ namespace sdlx {
 		//win32 specific
 		void load_from_resource(const char *name);
 		
+		//sdl_gfx
+		
+		void rotozoom(const sdlx::Surface &src, double angle, double zoom, bool smooth = true);
+		
 	private:
 		Surface(const Surface &x);
 		const Surface& operator=(const Surface &x);

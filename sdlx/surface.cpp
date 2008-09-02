@@ -429,3 +429,21 @@ void Surface::set_color_key(Uint32 key, Uint32 flag) {
 	if (SDL_SetColorKey(surface, flag, key) != 0)
 		throw_sdl(("SDL_SetColorKey"));
 }
+
+#include "gfx/SDL_rotozoom.h"
+
+void Surface::rotozoom(const sdlx::Surface &src, double angle, double zoom, bool smooth) {
+	if (src.isNull())
+		throw_ex(("null rotozoom source surface"));
+	
+	free();
+	int dstwidth = 0, dstheight = 0;
+	::rotozoomSurfaceSize(src.get_width(), src.get_height(), angle, zoom, &dstwidth, &dstheight);
+	if (dstwidth <= 0 || dstheight <= 0) 
+		throw_ex(("rotozoomSurfaceSize returns invalid size: %dx%d", dstwidth, dstheight));
+	
+	SDL_Surface * r = ::rotozoomSurface((SDL_Surface *)src.get_sdl_surface(), angle, zoom, smooth? SMOOTHING_ON: SMOOTHING_OFF);
+	if (r == NULL)
+		throw_sdl(("rotozoomSurface(%dx%d, %g, %g, %s)", src.get_width(), src.get_height(), angle, zoom, smooth?"true":"false"));
+	assign(r);
+}
