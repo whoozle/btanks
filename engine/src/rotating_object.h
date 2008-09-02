@@ -12,6 +12,7 @@ public:
 	float angle_speed;
 	RotatingObject(const std::string &classname);
 	void calculate(const float dt);
+	void tick(const float dt);
 
 private: 
 	float angle;

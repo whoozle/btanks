@@ -31,7 +31,9 @@
 
 class GTACar: public RotatingObject {
 public: 
-	GTACar() : RotatingObject("vehicle") {}
+	GTACar() : RotatingObject("vehicle") {
+		angle_speed = 2;
+	}
 
 	void on_spawn() {
 		disown();
