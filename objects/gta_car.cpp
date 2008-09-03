@@ -40,6 +40,18 @@ public:
 		disable_ai = true;
 		play("hold", true);
 	}
+
+	void tick(const float dt) {
+		const std::string &state = get_state();
+		if (_velocity.is0() && state == "move") {
+			cancel_all();
+			play("hold", true);
+		} else if (!_velocity.is0() && state == "hold") {
+			cancel_all();
+			play("move", true);
+		}
+		RotatingObject::tick(dt);
+	}
 	
 	Object *clone() const { return new GTACar(*this); }
 };
