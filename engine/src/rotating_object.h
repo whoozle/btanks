@@ -11,10 +11,12 @@ class BTANKSAPI RotatingObject : public Object {
 public: 
 	float angle_speed;
 	RotatingObject(const std::string &classname);
-	void calculate(const float dt);
-	void tick(const float dt);
-	void render(sdlx::Surface &surface, const int x, const int y);
-	~RotatingObject();
+	RotatingObject(const RotatingObject &ro);
+	
+	virtual void calculate(const float dt);
+	virtual void tick(const float dt);
+	virtual void render(sdlx::Surface &surface, const int x, const int y);
+	virtual ~RotatingObject();
 
 private: 
 	float angle, cached_angle;

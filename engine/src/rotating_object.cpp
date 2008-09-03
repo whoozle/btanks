@@ -5,6 +5,10 @@
 
 RotatingObject::RotatingObject(const std::string &classname) : Object(classname), angle_speed(0), angle(0), cached_angle(0), 
 	cached_surface(NULL), src_surface(NULL) {}
+	
+RotatingObject::RotatingObject(const RotatingObject &ro) : 
+Object(ro), angle_speed(angle_speed), angle(ro.angle), cached_angle(ro.cached_angle), cached_surface(NULL), src_surface(NULL) {
+}
 
 void RotatingObject::calculate(const float dt) {
 	if (_parent != NULL) {
@@ -20,7 +24,7 @@ void RotatingObject::calculate(const float dt) {
 	angle = fmodf(angle + angle_speed * dt * ((_state.right? -1: 0) + (_state.left? 1: 0)), M_PI * 2);
 	if (angle < 0)
 		angle += M_PI * 2;
-	//LOG_DEBUG(("angle = %g", angle));
+	LOG_DEBUG(("angle = %g", angle));
 	_velocity.x = dv * cos(angle);
 	_velocity.y = - dv * sin(angle);
 }
@@ -72,7 +76,6 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
 
 	cached_surface->rotozoom(*src_surface, dd, 1, true);
-	cached_surface->display_format_alpha();
 	cached_angle = angle;
 }
 
