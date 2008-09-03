@@ -89,3 +89,13 @@ RotatingObject::~RotatingObject() {
 	delete cached_surface;
 	delete src_surface;
 }
+
+void RotatingObject::serialize(mrt::Serializator &s) const {
+	Object::serialize(s);
+	s.add(angle);
+}
+
+void RotatingObject::deserialize(const mrt::Serializator &s) {
+	Object::deserialize(s);
+	s.get(angle);
+}

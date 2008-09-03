@@ -18,6 +18,9 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y);
 	virtual ~RotatingObject();
 
+	virtual void serialize(mrt::Serializator &s) const;
+	virtual void deserialize(const mrt::Serializator &s);
+
 private: 
 	float angle, cached_angle;
 	std::string last_state;
