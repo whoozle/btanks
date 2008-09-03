@@ -1235,7 +1235,11 @@ void IMap::deserialize(const mrt::Serializator &s) {
 		sdlx::Surface *image  = NULL;
 		int n = 0;
 		TRY {
-			std::string fname = Finder->find("maps/" + name);
+			std::string fname = Finder->find("maps/" + name, false);
+			if (fname.empty()) {
+				//last resort, try match filename with any tilesets folder.
+				fname = Finder->find("tilesets/" + mrt::FSNode::get_filename(name));
+			}
 
 			scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
 
