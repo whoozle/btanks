@@ -20,6 +20,8 @@ public:
 
 private: 
 	float angle, cached_angle;
+	std::string last_state;
+	int last_pos;
 	sdlx::Surface *cached_surface, *src_surface;
 };
 

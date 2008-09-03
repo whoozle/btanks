@@ -9,6 +9,7 @@ RotatingObject::RotatingObject(const std::string &classname) : Object(classname)
 RotatingObject::RotatingObject(const RotatingObject &ro) : 
 Object(ro), 
 angle_speed(ro.angle_speed), angle(ro.angle), cached_angle(ro.cached_angle), 
+last_state(ro.last_state), last_pos(ro.last_pos), 
 cached_surface(NULL), src_surface(NULL) {}
 
 void RotatingObject::calculate(const float dt) {
@@ -53,7 +54,7 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 		return;
 	}
 */
-	if (angle == cached_angle && cached_surface != NULL) {
+	if (angle == cached_angle && cached_surface != NULL && last_pos == _pos && last_state == get_state()) {
 		//render cached copy
 		surface.blit(*cached_surface, x + (int)size.x - cached_surface->get_width(), y + (int)size.y - cached_surface->get_height());
 		return;
@@ -80,6 +81,8 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	cached_surface->rotozoom(*src_surface, dd * 180 / M_PI, 1, true);
 	cached_angle = angle;
 	surface.blit(*cached_surface, x + (int)size.x - cached_surface->get_width(), y + (int)size.y - cached_surface->get_height());
+	last_pos = _pos;
+	last_state = get_state();
 }
 
 RotatingObject::~RotatingObject() {
