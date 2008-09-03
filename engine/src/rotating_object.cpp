@@ -7,8 +7,9 @@ RotatingObject::RotatingObject(const std::string &classname) : Object(classname)
 	cached_surface(NULL), src_surface(NULL) {}
 	
 RotatingObject::RotatingObject(const RotatingObject &ro) : 
-Object(ro), angle_speed(angle_speed), angle(ro.angle), cached_angle(ro.cached_angle), cached_surface(NULL), src_surface(NULL) {
-}
+Object(ro), 
+angle_speed(ro.angle_speed), angle(ro.angle), cached_angle(ro.cached_angle), 
+cached_surface(NULL), src_surface(NULL) {}
 
 void RotatingObject::calculate(const float dt) {
 	if (_parent != NULL) {
@@ -21,10 +22,11 @@ void RotatingObject::calculate(const float dt) {
 	if (dv == 0) //fix me later
 		return;
 	
-	angle = fmodf(angle + angle_speed * dt * ((_state.right? -1: 0) + (_state.left? 1: 0)), M_PI * 2);
+	float da = angle_speed * dt * ((_state.right? -1: 0) + (_state.left? 1: 0));
+	angle = fmodf(angle + da , M_PI * 2);
 	if (angle < 0)
 		angle += M_PI * 2;
-	LOG_DEBUG(("angle = %g", angle));
+	//LOG_DEBUG(("angle_speed = %g, angle = %g, da = %g, dt = %g", angle_speed, angle, da, dt));
 	_velocity.x = dv * cos(angle);
 	_velocity.y = - dv * sin(angle);
 }
@@ -42,6 +44,9 @@ void RotatingObject::tick(const float dt) {
 }
 
 void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
+	if (skip_rendering())
+		return;
+	
 	int dirs = get_directions_number();
 /*	if (dirs >= ROTATE_STEPS) {
 		Object::render(surface, x, y);
@@ -54,9 +59,6 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 		return;
 	}
 
-	sdlx::Rect src;
-	if (!get_render_rect(src))
-		return;
 
 	int dir = (int)(angle * dirs / M_PI / 2 + 0.5);
 	float dd = angle - dir * (M_PI * 2 / dirs);
@@ -75,8 +77,9 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	Object::render(*src_surface, 0, 0); 
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
 
-	cached_surface->rotozoom(*src_surface, dd, 1, true);
+	cached_surface->rotozoom(*src_surface, dd * 180 / M_PI, 1, true);
 	cached_angle = angle;
+	surface.blit(*cached_surface, x + (int)size.x - cached_surface->get_width(), y + (int)size.y - cached_surface->get_height());
 }
 
 RotatingObject::~RotatingObject() {
