@@ -81,7 +81,7 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	cached_surface->rotozoom(*src_surface, dd * 180 / M_PI, 1, true);
 	cached_angle = angle;
 	surface.blit(*cached_surface, x + (int)size.x - cached_surface->get_width(), y + (int)size.y - cached_surface->get_height());
-	last_pos = _pos;
+	last_pos = (int)_pos;
 	last_state = get_state();
 }
 
