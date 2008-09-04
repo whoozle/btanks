@@ -1506,8 +1506,8 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 			continue;
 		}
 
-		if (!sync_update && o->speed == 0 && !o->_need_sync) 
-			continue;
+		//if (!sync_update && o->speed == 0 && !o->_need_sync) 
+		//	continue; //actually this hack causing cannons to be out-of-sync everywhere :(
 
 		serializeObject(s, o, sync_update);
 		if (clean_sync_flag)
