@@ -234,7 +234,7 @@
 	<tileset name="roads" firstgid="1171" tilewidth="64" tileheight="64">
 		<image source="../tilesets/roads.png"/>
 	</tileset>
-	<tileset name="captions" firstgid="1261" tilewidth="64" tileheight="64">
+	<tileset name="captions" firstgid="1281" tilewidth="64" tileheight="64">
 		<image source="../tilesets/captions.png"/>
 	</tileset>
 	<layer name="zerolayer" width="20" height="80">
@@ -337,7 +337,7 @@
 	</layer>
 	<layer name="junk" width="20" height="80">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+2XXwqDMAzGQ+hxfPIYO8SGJ1WwPlioegV3EgNb2R+kuJm5zn0/CHlqAv2+hobokYx0ORBImcFs37Mx3+kL3qNkoor16rVSyzHuFQDwOazMmJpvWWNueYkO8wus/XeJf3q+ZABi5PAIAH+5d2nS8m/fBXbQfXrcXrU9P+nhOX5uzhNBV/eiviPresLd1UvBa5qzJOxUeD8gJQqJo8RpQQ5MfqKJGgAZAAA=
+			H4sIAAAAAAACC+2XWwqDQAxFY3A5frmMLqLShVqFKq0DPrZQV9KADq2lSK3xVe+BkK+5wyR3AiHq4pEuBwJjCR2is6OndxWtW6tXufO/J3WXuRf8RsREMevpZaJlGHUFAExHIjPmws+sMbdyiQLzC4ykEv+U3GQA+vDhEQB2uXdpkvG2a4Ed9D89nrS9rd/6kXP/uU+esH01A/t7Z11PmBe9NXhNc5bYnQr/B6yJk8RRIvgiWx4EdWapABkAAA==
 		</data>
 	</layer>
 	<layer name="track" width="20" height="80">
@@ -438,7 +438,7 @@
 			<property name="pierceable" value="true"/>
 		</properties>
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+3VMQqAMBBE0V3wMumtvIBeNwfQVm9ja1K5hb0Igxr4D6YdQshuzPB3s5strutbo2tz7hUA8K4jUoR9VXy+jr8RD5Uru7j37m2nSC/sGyMTswKgQQP7CGhGZl4BfOQE7ChZjgAZAAA=
+			H4sIAAAAAAACC+3UMQqAMAwF0Apext3JC+h1PZmrdTJDdxEiUngP/vopNEkpAADfOyM1se9Kft84+CPeqS1Hcu/TbE+RObFvjWx2BejQ4h5BN3b7CvzkBpb/tj0AGQAA
 		</data>
 	</layer>
 	<layer name="fences" width="20" height="80">
@@ -490,7 +490,7 @@
 	</layer>
 	<layer name="trees#2" width="20" height="80">
 		<data encoding="base64" compression="gzip">
-			H4sIAAAAAAACC+2WTUtCQRSGR8a/ZbQI/C2tXZtBQRoklGWB+ZF/otr0oZtK3fRFrYp2SXfTL+iB3DiY17metBvnhYfL4JzXe+aewxlj4qEla2KpxUS0uFTEuIUf4tIJo/qn2qM3yoP+CJLfz33WBxF7pk5cw4k9Yt38hR7M4rkCOVgV8N/AIw8F2LTDZ7EG657/sc3+HSjBrh0+iy0oevpV2H8IVajZ2eQ/jUblP833dfN3tSycX8ZZu33hm1/WjO+LsPz+qo551xM4FXrnS3xa0Bby6+DThV5M7wEqVZR5LqFR81ylcvWZDN9zRh2dw4VQPV3hcw03Qn63+NzBvda7SqX3R70/zkzPwmcbhPg98PsjPFmZ+fRCzCu8WZn59E5MHz7s/OeT9qdqHjXlU3OT1JRPzU1SU18EpMqDABkAAA==
+			H4sIAAAAAAACC+2WTUtCQRSG5zLYv0paBP2W1q7NQMESErJPKDP7E9ZGMzemtemLWiXtivoPPpAbB+0615N247zwcBmc83rP3HM4Y0w8tGxNLLUURItbjBiXHBO3EhjVP9UevbE/6I8g8f08YH0YsWcqxJ06sVXWZ7/Qg2k81yAD6wL+eTw2YBMKdvgsspDz/I9t9pdgB3bt8FlsQdHT74j9x1CGEzub/KfRqPyn+b5u/q5WhfNLOWu3L3zzS5uf+yIsv7+qGu96DhdC79zE5wpaQn5dfG7gNqb3AJUqyjyX0Kh5rlK5WkiE76lTRw24FKqnNj7X0BHyu8PnHh603lUqvT/q/XFmehE+268Qv0d+f4JnKzOfXonpwZuVmU/vxHzAp53/fNL+VM2jpnxqbpKa8qm5SWqqDyb4EuAAGQAA
 		</data>
 	</layer>
 	<layer name="front stars" width="20" height="80" visible="0">
