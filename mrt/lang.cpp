@@ -27,6 +27,10 @@
 #include "lang.h"
 #include "logger.h"
 
+#ifdef __APPLE__
+#	include "Cocoa/Cocoa.h"
+#endif
+
 const std::string mrt::get_lang_code() {
 #ifdef _WINDOWS
 	LANGID lang_id = GetUserDefaultLangID();
@@ -132,7 +136,14 @@ const std::string mrt::get_lang_code() {
 	case 0x61: return "ne";
 	case 0x65: return "dv";
 	}
-#else 
+#elif defined __APPLE__
+	NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
+	NSArray * languages = [defs objectForKey:@"AppleLanguages"];
+	NSString * pref = [languages objectAtIndex:0];
+	std::string lang = std::string([pref UTF8String]);
+	LOG_DEBUG(("stardardUserDefaults.AppleLanguages[0] = \"%s\"", lang.c_str()));
+	return lang;
+#else
 	//non win-32
 	const char * lang_env = getenv("LANG");
 	if (lang_env == NULL || strlen(lang_env) == 0)
