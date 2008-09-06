@@ -102,7 +102,7 @@ void IPlayerManager::on_disconnect(const int cid) {
 #include "var.h"
 #include "i18n.h"
 
-void IPlayerManager::on_message(const int cid, const Message &message) {
+void IPlayerManager::on_message(const int cid, const Message &message, const unsigned recv_ts) {
 	if (
 		(_client == NULL && _server == NULL) || 
 		(_client != NULL && !_client->connected()) || 
@@ -454,7 +454,7 @@ TRY {
 	
 	case Message::Pang: {
 		mrt::Serializator out, in(&message.data);
-		unsigned old_client_ts, server_ts, client_ts = now;
+		unsigned old_client_ts, server_ts, client_ts = recv_ts;
 		int server_delta;
 		in.get(old_client_ts);
 		in.get(server_ts);
@@ -491,7 +491,7 @@ TRY {
 	
 	case Message::Pong: {
 		mrt::Serializator in(&message.data);
-		unsigned client_ts, old_server_ts, server_ts = now;
+		unsigned client_ts, old_server_ts, server_ts = recv_ts;
 		int client_delta;
 		in.get(client_ts);
 		in.get(old_server_ts);

@@ -105,7 +105,7 @@ void Server::restart() {
 			int id = PlayerManager->on_connect();
 			LOG_DEBUG(("reassigning connection: %d", id));
 			_monitor->add(id, c);
-			PlayerManager->on_message(id, msg);
+			PlayerManager->on_message(id, msg, 0);
 			c = NULL;
 		} CATCH("restart", { delete c;})
 	}
@@ -127,8 +127,9 @@ void Server::tick(const float dt) {
 	int id = -1;
 	TRY {
 		mrt::Chunk data;
+		unsigned recv_ts;
 		
-		while(_monitor->recv(id, data)) {
+		while(_monitor->recv(id, data, recv_ts)) {
 			Message m;
 			m.deserialize2(data);
 
@@ -142,7 +143,7 @@ void Server::tick(const float dt) {
 			case Message::PlayerMessage: 
 			case Message::RequestObjects:
 			case Message::JoinTeam:
-				PlayerManager->on_message(id, m);
+				PlayerManager->on_message(id, m, recv_ts);
 
 			case Message::ServerDiscovery:
 				break;

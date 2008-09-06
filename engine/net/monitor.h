@@ -55,7 +55,7 @@ public:
 	void send(const int id, const mrt::Chunk &data, const bool dgram = false);
 	void broadcast(const mrt::Chunk &data, const bool dgram = false);
 	void accept();
-	const bool recv(int &id, mrt::Chunk &data);
+	const bool recv(int &id, mrt::Chunk &data, unsigned int &recv_ts);
 	const bool disconnected(int &id);
 	
 	void disconnect(const int id);
@@ -91,6 +91,8 @@ private:
 		unsigned int len;
 		bool size_task;
 		unsigned char flags;
+
+		unsigned recv_ts;
 	private: 
 		Task(const Task &);
 		const Task& operator=(const Task &);

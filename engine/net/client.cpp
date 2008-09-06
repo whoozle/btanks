@@ -85,8 +85,9 @@ void Client::tick(const float dt) {
 	}
 
 	int id;
+	unsigned recv_ts;
 	mrt::Chunk data;
-	while(_monitor->recv(id, data)) {
+	while(_monitor->recv(id, data, recv_ts)) {
 		assert(id == 0);
 		Message m;
 		m.deserialize2(data);
@@ -103,7 +104,7 @@ void Client::tick(const float dt) {
 		case Message::DestroyMap:
 		case Message::PlayerMessage:
 		case Message::ServerError:
-			PlayerManager->on_message(0, m);
+			PlayerManager->on_message(0, m, recv_ts);
 			break;
 
 		default:

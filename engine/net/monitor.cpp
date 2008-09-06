@@ -128,13 +128,13 @@ void Monitor::_accept() {
 }
 
 Monitor::Task::Task(const int id) : 
-	id(id), data(), pos(0), len(0), size_task(false), flags(0){}
+	id(id), data(), pos(0), len(0), size_task(false), flags(0), recv_ts(0) {}
 
 Monitor::Task::Task(const int id, const mrt::Chunk &d) : 
-	id(id), data(d), pos(0), len(data.get_size()), size_task(false), flags(0) {}
+	id(id), data(d), pos(0), len(data.get_size()), size_task(false), flags(0), recv_ts(0)  {}
 
 Monitor::Task::Task(const int id, const int size) : 
-	id(id), data(size), pos(0), len(data.get_size()), size_task(false), flags(0) {}
+	id(id), data(size), pos(0), len(data.get_size()), size_task(false), flags(0), recv_ts(0)  {}
 
 Monitor::Task::~Task() { data.free(); pos = len = 0; }
 
@@ -253,7 +253,7 @@ Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_
 }
 
 
-const bool Monitor::recv(int &id, mrt::Chunk &data) {
+const bool Monitor::recv(int &id, mrt::Chunk &data, unsigned int &recv_ts) {
 	sdlx::AutoMutex m(_result_mutex);
 	if (_result_q.empty())
 		return false;
@@ -264,6 +264,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	TRY { 
 		id = task->id;
 		data = task->data;
+		recv_ts = task->recv_ts;
 		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.get_size()));
 	} CATCH("recv", { delete task; throw; });
 	delete task;
@@ -411,6 +412,7 @@ TRY {
 					Task * t = NULL;
 					TRY {
 						t = new Task(i->first);
+						t->recv_ts = SDL_GetTicks();
 					
 						parse(t->data, buf, r);
 					} CATCH("processing datagram", {
@@ -518,6 +520,7 @@ TRY {
 				TaskQueue::iterator ti = findTask(_recv_q, cid);
 				if (ti == _recv_q.end()) {
 					Task *t = new Task(cid, 5);
+					t->recv_ts = SDL_GetTicks();
 					t->size_task = true;
 					_recv_q.push_back(t);
 					//LOG_DEBUG(("added size task to r-queue"));
@@ -547,8 +550,10 @@ TRY {
 						unsigned char flags = *((unsigned char *)(t->data.get_ptr()) + 4);
 						//LOG_DEBUG(("added task for %u bytes. flags = %02x", len, flags));
 						eraseTask(_recv_q, ti);
-						
+
+						unsigned recv_ts = t->recv_ts;
 						Task *t = new Task(cid, len);
+						t->recv_ts = recv_ts;
 						t->flags = flags;
 						_recv_q.push_back(t);
 					} else {
