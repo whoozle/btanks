@@ -47,6 +47,8 @@ private:
 
 	sl08::slot4<bool, const int, const bool, const int, const int, MouseControl> on_mouse_slot;	
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
+	v2<int> target_screen;
+	bool target_screen_set;
 
 	v2<float> _target_rel, _target;
 	int _target_dir;

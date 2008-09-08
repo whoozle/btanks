@@ -311,7 +311,7 @@ void PlayerSlot::createControlMethod(const std::string &control_method_name) {
 	if (control_method_name == "keys" || control_method_name == "keys-1" || control_method_name == "keys-2") {
 		control_method = new KeyPlayer(control_method_name);
 	} else if (control_method_name == "mouse") {
-		throw_ex(("fix mouse control method, then disable this exception ;)"));
+		//throw_ex(("fix mouse control method, then disable this exception ;)"));
 		control_method = new MouseControl();
 	} else if (control_method_name == "joy-1") {
 		TRY {

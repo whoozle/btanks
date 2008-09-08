@@ -1270,12 +1270,6 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 		}
 }
 
-void IPlayerManager::screen2world(v2<float> &pos, const int p, const int x, const int y) {
-	PlayerSlot &slot = _players[p];
-	pos.x = slot.map_pos.x + x;
-	pos.y = slot.map_pos.x + y;
-}
-
 const size_t IPlayerManager::get_slots_count() const {
 	return _players.size();
 }

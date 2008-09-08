@@ -34,6 +34,7 @@
 #include "object.h"
 #include "math/unary.h"
 #include "object.h"
+#include "sdlx/cursor.h"
 
 MouseControl::MouseControl(): _shoot(false) {
 	on_mouse_slot.assign(this, &MouseControl::onMouse, Window->mouse_signal);
@@ -48,7 +49,7 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 		return false;
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
-	v2<float> world;
+/*	v2<float> world;
 	PlayerManager->screen2world(world, 0, x, y); //fixme!! hardcoded player number
 	if (_shoot) {
 		Object *o = getObject();
@@ -57,22 +58,38 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	}
 	else _target = world;
 	
-	v2<float> pos;
-	get_position(pos);
-	_target_rel = _target - pos;
-	_target_dir = getObject()->get_direction();
 	int dir = (world - pos).get_direction8() - 1;
 	if (dir) {
 		_target_dir = dir - 1;
 		LOG_DEBUG(("target_dir = %d", _target_dir));
 		assert(_target_dir >= 0);
 	}
+*/
+	target_screen.x = x;
+	target_screen.y = y;
+	target_screen_set = true;
+	
 	return true;
 }
 
 void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
+	if (!sdlx::Cursor::enabled())
+		sdlx::Cursor::Enable();
+	
+	if (target_screen.is0()) {
+		return;
+	}
+	
 	v2<float> pos;
 	get_position(pos);
+
+	if (target_screen_set) {
+		target_screen_set = false;
+		_target = slot.screen2world(target_screen);
+
+		_target_rel = _target - pos;
+		_target_dir = getObject()->get_direction();
+	}
 	
 	{
 		v2<float> velocity = _target - pos;

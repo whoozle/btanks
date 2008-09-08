@@ -114,6 +114,10 @@ public:
 	void updateState(PlayerState &state, float dt);	
 	void join(const Team::ID t);
 	
+	const v2<float> screen2world(const v2<int> &screen) {
+		return map_pos + screen.convert<float>();
+	}
+	
 private: 
 	typedef std::queue<std::pair<float, Tooltip *> > Tooltips;
 	Tooltips tooltips;

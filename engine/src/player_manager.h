@@ -90,8 +90,6 @@ public:
 	const size_t get_slots_count() const;
 	const size_t get_free_slots_count() const;
 	
-	void screen2world(v2<float> &pos, const int p, const int x, const int y);
-
 	const int find_empty_slot();
 	const int spawn_player(const std::string &classname, const std::string &animation, const std::string &method);
 
