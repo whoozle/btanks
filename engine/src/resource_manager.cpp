@@ -402,6 +402,12 @@ const sdlx::Font *IResourceManager::loadFont(const std::string &name, const bool
 			Finder->load(data, "font/" + name + "_0080.png");
 			f->add_page(0x00a0, data, alpha);
 		}
+
+		const std::string page2460 = Finder->find("font/" + name + "_2460.png", false);
+		if (!page2460.empty()) {
+			Finder->load(data, "font/" + name + "_2460.png");
+			f->add_page(0x2460, data, alpha);
+		}
 	return f;
 }
 
