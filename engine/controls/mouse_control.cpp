@@ -160,7 +160,7 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state, const floa
 	state.leave = bleave?1:0;
 }
 
-void MouseControl::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+void MouseControl::get_name(std::vector<std::string> &controls, const PlayerState &state) const {
 	if (state.fire) 
 		controls.push_back(get_button_name(1)); //rmb
 	if (state.alt_fire) 

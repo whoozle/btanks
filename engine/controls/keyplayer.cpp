@@ -90,7 +90,7 @@ void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float d
 	controls.push_back(mrt::format_string("[%s]", name?name: "unknown")); \
 }
 
-void KeyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+void KeyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) const {
 	CHECKSTATE(left, _left);
 	CHECKSTATE(right, _right);
 	CHECKSTATE(up, _up);

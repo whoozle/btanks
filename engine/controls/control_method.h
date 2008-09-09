@@ -41,7 +41,8 @@ protected:
 public:	
 	ControlMethod();
 	void updateState(PlayerSlot &slot, PlayerState &state, const float dt);
-	const std::string get_name() const;
+	const std::string get_name(PlayerState& state) const;
+	
 	virtual void probe() const = 0;
 	virtual ~ControlMethod() {}
 private: 

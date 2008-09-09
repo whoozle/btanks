@@ -43,7 +43,7 @@ public:
 	void probe() const {}
 private:
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
-	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state);
+	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;
 	static const std::string get_button_name(int idx);
 	
 	void get_position(v2<float>&pos) const;

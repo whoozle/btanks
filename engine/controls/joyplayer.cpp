@@ -85,7 +85,7 @@ void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float 
 	}
 }
 
-void JoyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+void JoyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) const {
 	if (state.fire) { 
 		controls.push_back(get_button_name(_bindings.get(tButton, 0)));
 	}

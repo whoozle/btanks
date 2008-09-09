@@ -47,3 +47,11 @@ void ControlMethod::updateState(PlayerSlot &slot, PlayerState &state, const floa
 		return;
 	}
 }
+
+const std::string ControlMethod::get_name(PlayerState& state) const {
+	std::vector<std::string> c;
+	get_name(c, state);
+	std::string r;
+	mrt::join(r, c, "+");
+	return r;
+}
