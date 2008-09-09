@@ -805,6 +805,9 @@ TRY {
 		return;
 	} 
 	
+	if (PlayerManager->is_server_active())
+		o.delta_distance_stat += (int)len;
+	
 	/*
 	GET_CONFIG_VALUE("engine.mass-acceleration-divisor", float, ac_div, 1000.0);
 
@@ -1493,10 +1496,48 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	const bool sync_update = first_id > 0;
 	int id0 = sync_update? first_id: _current_update_id;
 	
+	int n = 0, max_n = _objects.size() / sync_div;
+		
+	std::priority_queue<Object *, std::vector<Object *>, BaseObject::PriorityComparator<Object *> > priority_objects;
 	ObjectMap::iterator i;
+
+	if (!sync_update) {
+		//let's use distance stats to prioritize some objects: 
+		int pc = 0, sum_w = 0, win_n = 0;
+		for(i = _objects.begin(); i != _objects.end(); ++i) {
+			Object *o = i->second;
+			assert(o != NULL);
+			if (o->_dead || o->registered_name == "damage-digits") 
+				continue;
+			
+			int w = o->get_mp_priority();
+			if (w > 0) {
+				priority_objects.push(o);
+				sum_w += w;
+				++pc;
+			}
+		}
+		while(!priority_objects.empty() && n < max_n) {
+			Object *o = priority_objects.top();
+			priority_objects.pop();
+
+			int w = o->get_mp_priority();
+			bool win = mrt::random(sum_w) < 2 * w;
+			if (win) {
+				++win_n;
+				serializeObject(s, o, sync_update);
+				if (clean_sync_flag)
+					o->set_sync(false);
+				++n;
+			}
+			//LOG_DEBUG(("%d: object %s with weight %d, freq: %g, win: %c", pc++, o->animation.c_str(), w, 1.0 * w / sum_w, win?'+':'-'));
+			o->reset_mp_priority();
+		}
+		LOG_DEBUG(("priorities: %d, total weight: %d, total: %u, wins: %d", pc, sum_w, (unsigned)_objects.size(), win_n));	
+	}
+	
 	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
 	
-	int n = 0, max_n = _objects.size() / sync_div;
 	for( ; i != _objects.end() && (sync_update || n < max_n); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);

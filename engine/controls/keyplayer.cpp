@@ -84,3 +84,19 @@ void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float d
 	state.leave = keys[leave] != 0;
 	state.hint_control = keys[_hint_control] != 0;
 }
+
+#define CHECKSTATE(name, member) if (state.name) {\
+	const char *name = SDL_GetKeyName(this->member); \
+	controls.push_back(mrt::format_string("[%s]", name?name: "unknown")); \
+}
+
+void KeyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+	CHECKSTATE(left, _left);
+	CHECKSTATE(right, _right);
+	CHECKSTATE(up, _up);
+	CHECKSTATE(down, _down);
+	CHECKSTATE(fire, _fire);
+	CHECKSTATE(alt_fire, _alt_fire);
+	CHECKSTATE(leave, leave);
+	CHECKSTATE(hint_control, _hint_control);
+}

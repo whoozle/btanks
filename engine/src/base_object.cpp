@@ -42,7 +42,8 @@ BaseObject::BaseObject(const std::string &classname):
 	_need_sync(true),
 	_dead(false), 
 	_position(), _interpolation_progress(1), _z(0), 
-	_owners(), _owner_set(), _spawned_by(0) {
+	_owners(), _owner_set(), _spawned_by(0), 
+	delta_distance_stat(0) {
 	//LOG_DEBUG(("allocated id %ld", _id));
 }
 

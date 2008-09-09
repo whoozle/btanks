@@ -152,6 +152,7 @@ private:
 	std::vector<SpecialZone> _zones;
 
 	NetStats _net_stats;
+	
 	unsigned _next_ping;
 	bool _ping;
 	Alarm _next_sync;

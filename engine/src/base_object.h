@@ -113,6 +113,18 @@ public:
 	
 	inline const v2<float>& get_direction_vector() const { return _direction; }
 	
+	/* multiplayer weight for the given object */ 
+	inline int get_mp_priority() const { return delta_distance_stat; }
+	inline void reset_mp_priority() { delta_distance_stat = 0; }
+	
+	template<typename T>
+	struct PriorityComparator {
+	public:
+		inline bool operator()(const T &x, const T& y) const {
+			return x->get_mp_priority() < y->get_mp_priority();
+		}
+	};
+
 protected:
 	int _id;
 	PlayerState _state;
@@ -136,6 +148,8 @@ private:
 	std::set<int> _owner_set;
 
 	int _spawned_by;
+	
+	int delta_distance_stat;
 	
 	friend class IWorld;
 	friend class Object;

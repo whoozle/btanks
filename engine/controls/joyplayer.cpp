@@ -85,3 +85,26 @@ void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float 
 	}
 }
 
+void JoyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+	if (state.fire) { 
+		controls.push_back(get_button_name(_bindings.get(tButton, 0)));
+	}
+	if (state.alt_fire) {
+		controls.push_back(get_button_name(_bindings.get(tButton, 1)));
+	}
+	if (state.leave) {
+		controls.push_back(get_button_name(_bindings.get(tButton, 3)));
+	}
+	if (state.hint_control) {
+		controls.push_back(get_button_name(_bindings.get(tButton, 4)));
+	}
+}
+
+const std::string JoyPlayer::get_button_name(int idx) {
+	if (idx < 0 || idx > 9)
+		return mrt::format_string("(%d)", idx);
+	//11 100 010    10 010 001
+	std::string r = "\342\221";
+	r += (char)(0xa0 + idx);
+	return r;
+}

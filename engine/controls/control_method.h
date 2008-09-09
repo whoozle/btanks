@@ -37,9 +37,11 @@ class PlayerSlot;
 class ControlMethod {
 protected:
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt) = 0;
+	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const = 0;
 public:	
 	ControlMethod();
 	void updateState(PlayerSlot &slot, PlayerState &state, const float dt);
+	const std::string get_name() const;
 	virtual void probe() const = 0;
 	virtual ~ControlMethod() {}
 private: 

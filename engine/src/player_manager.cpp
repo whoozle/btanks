@@ -264,7 +264,7 @@ TRY {
 		mrt::DictionarySerializator s(&message.data);
 		deserialize_slots(s);
 		float dt = (now + _net_stats.getDelta() - timestamp) / 1000.0f;
-		//LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
+		LOG_DEBUG(("update world, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 		int sync_id = -1;
 		if (message.has("sync"))
 			sync_id = atoi(message.get("sync").c_str());

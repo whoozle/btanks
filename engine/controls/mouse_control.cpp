@@ -159,3 +159,21 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state, const floa
 	state.alt_fire = _shoot_alt && !trigger;
 	state.leave = bleave?1:0;
 }
+
+void MouseControl::get_name(std::vector<std::string> &controls, const PlayerState &state) {
+	if (state.fire) 
+		controls.push_back(get_button_name(1)); //rmb
+	if (state.alt_fire) 
+		controls.push_back(get_button_name(4)); //4 wheel up/down
+	if (state.leave) 
+		controls.push_back(get_button_name(2)); //mmb
+}
+
+const std::string MouseControl::get_button_name(int idx) {
+	if (idx < 0 || idx > 5)
+		return mrt::format_string("(mouse %d)", idx);
+	//11 100 010    10 010 001
+	std::string r = "\342\221";
+	r += (char)(0xaa + idx);
+	return r;
+}

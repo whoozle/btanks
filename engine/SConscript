@@ -48,7 +48,7 @@ bt_sources = 	[
 	'ai/base.cpp', 'ai/buratino.cpp', 'ai/herd.cpp', 'ai/traits.cpp', 'ai/waypoints.cpp', 'ai/rush.cpp', 'ai/old_school.cpp', 'ai/trooper.cpp', 'ai/targets.cpp', 
 		
 	'src/player_state.cpp', 'controls/joy_bindings.cpp', 'controls/control_method.cpp', 
-	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/external_control.cpp', 'controls/mouse_control.cpp', 
+	'controls/joyplayer.cpp', 'controls/keyplayer.cpp', 'controls/mouse_control.cpp', 
 
 	'src/object.cpp', 'src/animation_model.cpp', 'src/rotating_object.cpp', 
 	'src/resource_manager.cpp', 'src/world.cpp',
