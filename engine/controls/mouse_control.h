@@ -52,7 +52,7 @@ private:
 
 	v2<float> _target_rel, _target;
 	int _target_dir;
-	bool _shoot;
+	bool _shoot, _shoot_alt;
 };
 
 #endif

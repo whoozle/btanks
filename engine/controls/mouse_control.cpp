@@ -45,6 +45,11 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	//LOG_DEBUG(("button %d,%d %d: %c", x, y, button, pressed?'+':'-'));
 	if (button == SDL_BUTTON_RIGHT) { //fixme: hardcoded
 		_shoot = pressed;
+		return true;
+	}
+	if (button == SDL_BUTTON_MIDDLE) { //fixme: hardcoded
+		_shoot_alt = pressed;
+		return true;
 	}
 	if (!pressed) {
 		if (button == SDL_BUTTON_LEFT) 
@@ -88,7 +93,6 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 	if (object == NULL)
 		return;
 	
-	
 	v2<float> pos;
 	object->get_center_position(pos);
 
@@ -121,10 +125,10 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 		}
 	}
 	
-	state.fire = _target_rel.is0() && _shoot;
-	if (state.fire) {
-		object->set_direction(_target_dir);
-	}
+	//state.fire = _target_rel.is0() && _shoot;
+	//if (state.fire) {
+	//	object->set_direction(_target_dir);
+	//}
 	
 	if (_target_rel.x == 0) {
 		state.left = state.right = false;
@@ -140,4 +144,7 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 		state.up = _target_rel.y < 0;
 		state.down = !state.up;
 	}
+	
+	state.fire = _shoot?1:0;
+	state.alt_fire = _shoot_alt?1:0;
 }
