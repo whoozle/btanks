@@ -161,10 +161,12 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state, const floa
 }
 
 void MouseControl::get_name(std::vector<std::string> &controls, const PlayerState &state) const {
+	if (state.left || state.right || state.up || state.down)
+		controls.push_back(get_button_name(0)); //lmb
 	if (state.fire) 
 		controls.push_back(get_button_name(1)); //rmb
 	if (state.alt_fire) 
-		controls.push_back(get_button_name(4)); //4 wheel up/down
+		controls.push_back(get_button_name(3)); //4 wheel up/down
 	if (state.leave) 
 		controls.push_back(get_button_name(2)); //mmb
 }
