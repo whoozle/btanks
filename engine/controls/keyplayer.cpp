@@ -70,7 +70,7 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 	_hint_control = (SDLKey)hint_control;
 }
 
-void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state) {
+void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
 	if (_disabled)
 		return;
 	

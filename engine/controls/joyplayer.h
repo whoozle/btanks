@@ -38,7 +38,7 @@ public:
 	virtual void probe() const;
 
 private:
-	virtual void _updateState(PlayerSlot &slot, PlayerState &state);
+	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	int _idx;
 	mutable std::string _name;
 	sdlx::Joystick _joy;

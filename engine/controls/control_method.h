@@ -36,7 +36,7 @@ class PlayerSlot;
 
 class ControlMethod {
 protected:
-	virtual void _updateState(PlayerSlot &slot, PlayerState &state) = 0;
+	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt) = 0;
 public:	
 	ControlMethod();
 	void updateState(PlayerSlot &slot, PlayerState &state, const float dt);

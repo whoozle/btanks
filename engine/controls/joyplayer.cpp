@@ -50,7 +50,7 @@ void JoyPlayer::probe() const {
 
 #define THRESHOLD 16384
 
-void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state) {
+void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float dt) {
 	SDL_JoystickUpdate();
 	Sint16 x = _joy.get_axis(_bindings.get(tAxis, 0));
 	Sint16 y = _joy.get_axis(_bindings.get(tAxis, 1));

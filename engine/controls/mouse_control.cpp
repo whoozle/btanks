@@ -37,7 +37,7 @@
 #include "sdlx/cursor.h"
 #include "tmx/map.h"
 
-MouseControl::MouseControl(): _shoot(false) {
+MouseControl::MouseControl(): _shoot(false), _shoot_alt(false), bleave(false), alt_fire(0.3f, false) {
 	on_mouse_slot.assign(this, &MouseControl::onMouse, Window->mouse_signal);
 } 
 
@@ -47,8 +47,13 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 		_shoot = pressed;
 		return true;
 	}
-	if (button == SDL_BUTTON_MIDDLE) { //fixme: hardcoded
-		_shoot_alt = pressed;
+	if (button == SDL_BUTTON_MIDDLE) {
+		bleave = pressed;
+		return true;
+	}
+	if (button == SDL_BUTTON_WHEELUP || button == SDL_BUTTON_WHEELDOWN) { //fixme: hardcoded
+		_shoot_alt = true;
+		alt_fire.reset();
 		return true;
 	}
 	if (!pressed) {
@@ -81,7 +86,7 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	return true;
 }
 
-void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
+void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
 	if (!sdlx::Cursor::enabled())
 		sdlx::Cursor::Enable();
 
@@ -145,6 +150,12 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 		state.down = !state.up;
 	}
 	
+	bool trigger = alt_fire.tick(dt);
+	if (trigger) {
+		_shoot_alt = false;
+	}
+	
 	state.fire = _shoot?1:0;
-	state.alt_fire = _shoot_alt?1:0;
+	state.alt_fire = _shoot_alt && !trigger;
+	state.leave = bleave?1:0;
 }

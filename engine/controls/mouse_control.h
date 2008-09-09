@@ -34,6 +34,7 @@
 #include "player_state.h"
 #include "math/v2.h"
 #include "sl08/sl08.h"
+#include "alarm.h"
 
 class Object;
 class MouseControl : public ControlMethod {
@@ -41,7 +42,7 @@ public:
 	MouseControl(); 
 	void probe() const {}
 private:
-	virtual void _updateState(PlayerSlot &slot, PlayerState &state);
+	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	void get_position(v2<float>&pos) const;
 	Object * getObject() const;
 
@@ -52,7 +53,8 @@ private:
 
 	v2<float> _target_rel, _target;
 	int _target_dir;
-	bool _shoot, _shoot_alt;
+	bool _shoot, _shoot_alt, bleave;
+	Alarm alt_fire;
 };
 
 #endif

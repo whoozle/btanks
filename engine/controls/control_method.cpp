@@ -5,7 +5,7 @@ ControlMethod::ControlMethod() : _release_set(false), _release_timer(false) {
 }
 
 void ControlMethod::updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
-	_updateState(slot, state);
+	_updateState(slot, state, dt);
 	
 	int dirs = 0;
 	dirs += state.left;
