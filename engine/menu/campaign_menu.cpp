@@ -83,7 +83,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(w - sw - 2 * mx - mx / 2, map_base, _maps);
 
 	int xbase = 2 * mx, ybase = (h - panel_h - 5 * my);
-	add(xbase, ybase, b = new Box("menu/background_box_dark.png", panel_w, panel_h));
+	add(xbase, ybase, score_box = b = new Box("menu/background_box_dark.png", panel_w, panel_h));
 	b->getMargins(mx, my);
 	
 	Grid *grid = new Grid(2, 4);
@@ -172,6 +172,24 @@ void CampaignMenu::init() {
 		throw_ex(("bug in compaign.xml. no map could be played now"));
 }
 
+const std::string CampaignMenu::convert_time(const float t) {
+	int s = (int)t;
+	int m = s / 60;
+	int h = m / 60;
+	s %= 60;
+	m %= 60;
+	return mrt::format_string("%d:%02d:%02d", h, m, s);
+}
+
+
+void CampaignMenu::update_time(Label *l, const std::string &name) {
+	float t = 0;
+	if (Config->has(name))
+		Config->get(name, t, 0);
+	l->set(t > 0? convert_time(t): std::string("-:--:--"));
+}
+
+
 void CampaignMenu::tick(const float dt) {
 	BaseMenu::tick(dt);
 	if (_invalidate_me) {
@@ -197,9 +215,19 @@ void CampaignMenu::tick(const float dt) {
 		int mi = _maps->get();
 		if (mi < (int)map_id.size()) {
 			Campaign::Map map = campaign.maps[map_id[mi]];
-			Config->set("campaign." + campaign.name + ".current-map", map.id);
+			Config->set(std::string("campaign.") + campaign.name + ".current-map", map.id);
 			_map_view->setOverlay(map.map_frame, map.position);
 			_map_view->setDestination(map.position.convert<float>());
+
+			std::string mname = std::string("campaign.") + campaign.name + ".maps." + map.id;
+			update_time(_last_time, mname + ".last-time");
+			update_time(_best_time, mname + ".best-time");
+			score_grid->recalculate();
+
+			int bw, bh, mx, my;
+			score_grid->get_size(bw, bh);
+			score_box->getMargins(mx, my);
+			score_box->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
 		}
 	}
 	

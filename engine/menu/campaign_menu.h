@@ -6,6 +6,7 @@
 #include "sdlx/rect.h"
 #include "campaign.h"
 
+class Box;
 class MainMenu;
 class Chooser;
 class ScrollList;
@@ -27,6 +28,8 @@ public:
 	
 private:
 	void init();
+	static const std::string convert_time(const float t);
+	static void update_time(Label *l, const std::string &name);
 
 	MainMenu *_parent;
 	int _w, _h;
@@ -39,6 +42,7 @@ private:
 	std::vector<int> map_id;
 	
 	Grid * score_grid;
+	Box * score_box;
 	Label * _score, *_last_time, *_best_time;
 
 	bool _invalidate_me;
