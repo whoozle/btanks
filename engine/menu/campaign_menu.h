@@ -13,6 +13,7 @@ class Label;
 class Button;
 class Shop;
 class ImageView;
+class Grid;
 
 class CampaignMenu : public BaseMenu {
 public: 
@@ -37,7 +38,8 @@ private:
 	ScrollList *_maps;	
 	std::vector<int> map_id;
 	
-	Label * _score;
+	Grid * score_grid;
+	Label * _score, *_last_time, *_best_time;
 
 	bool _invalidate_me;
 	Shop *_shop;

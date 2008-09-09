@@ -23,6 +23,7 @@
 #include "menu/video_control_disabled.h"
 #include "tmx/map.h"
 #include "rt_config.h"
+#include "menu/grid.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -68,30 +69,50 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign->get_size(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
-	int panel_w = 256, panel_h = 96;
+	int panel_w = 256, panel_h = 128;
 
 	int map_base = 3 * my + ch;
 	_map_view = new ImageView(w - 4 * mx - panel_w, h - 6 * my);
 	add(3 * mx, map_base - 8 , _map_view);
 	
-	_maps = new ScrollList("menu/background_box_dark.png", "medium", panel_w, h - map_base - 6 * my - panel_h, 5, 138);
+	_maps = new ScrollList("menu/background_box_dark.png", "medium", panel_w, h - map_base - 4 * my, 5, 138);
 	_maps->setAlign(ScrollList::AlignCenter);
 	_maps->setHLColor(255, 0, 0, 0x66);
 	int sw, sh;
 	_maps->get_size(sw, sh);
-	add(w - sw - 2 * mx - mx / 2, map_base + my, _maps);
+	add(w - sw - 2 * mx - mx / 2, map_base, _maps);
 
-	int xbase, ybase;
-	add(xbase = (w - sw - 2 * mx - mx / 2), ybase = (h - panel_h - 3 * my - my / 2), b = new Box("menu/background_box_dark.png", panel_w, panel_h));
-	b->get_size(bw, bh);
+	int xbase = 2 * mx, ybase = (h - panel_h - 5 * my);
+	add(xbase, ybase, b = new Box("menu/background_box_dark.png", panel_w, panel_h));
 	b->getMargins(mx, my);
 	
-	Label *label = new Label("medium", I18n->get("menu", "score"));
-	add(xbase + mx, ybase + my, label);
-	label->get_size(cw, ch);
+	Grid *grid = new Grid(2, 4);
+	score_grid = grid;
+		
+	grid->set(0, 0, new Label("medium", I18n->get("menu", "score")));
+	grid->set(0, 1, _score = new Label("medium", "0"));
 
-	_score = new Label("medium", "0");
-	add(xbase + mx + cw, ybase + my, _score);
+	grid->set(1, 0, new Label("medium", I18n->get("menu", "last-time")));
+	grid->set(1, 1, _last_time = new Label("medium", "-:--:--"));
+
+	grid->set(2, 0, new Label("medium", I18n->get("menu", "best-time")));
+	grid->set(2, 1, _best_time = new Label("medium", "-:--:--"));
+
+	std::vector<std::string> levels;
+	levels.push_back(I18n->get("menu/difficulty", "easy"));
+	levels.push_back(I18n->get("menu/difficulty", "normal"));
+	levels.push_back(I18n->get("menu/difficulty", "hard"));
+	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
+	
+	grid->set(3, 0, _c_difficulty = new Chooser("medium", levels));
+	grid->set_spacing(2);
+	
+	add(xbase + mx, ybase + my, grid);
+
+	grid->recalculate();
+	grid->get_size(bw, bh);
+	b->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
+	
 
 	_b_shop = new Button("medium", I18n->get("menu", "shop"));
 	_b_shop->get_size(bw, bh);
@@ -102,16 +123,6 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(0, 0, _shop);
 	_shop->hide();
 	
-	std::vector<std::string> levels;
-	levels.push_back(I18n->get("menu/difficulty", "easy"));
-	levels.push_back(I18n->get("menu/difficulty", "normal"));
-	levels.push_back(I18n->get("menu/difficulty", "hard"));
-	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
-	
-	_c_difficulty = new Chooser("medium", levels);
-	_c_difficulty->get_size(bw, bh);
-	
-	add(xbase + mx, ybase + my + bh * 3 / 2, _c_difficulty);
 	
 	init();
 }

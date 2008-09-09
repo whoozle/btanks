@@ -391,6 +391,12 @@
 		<string id="score" lang="fr">Score :</string>
 		<string id="score" lang="de">Punkte: </string>
 		<string id="score" lang="it">Punteggio: </string>
+
+		<string id="last-time">Last time: </string>
+		<string id="last-time" lang="ru">Последнее время: </string>
+		
+		<string id="best-time">Best time: </string>
+		<string id="best-time" lang="ru">Лучшее время: </string>
 		           
 		<string id="shop">shop</string>
 		<string id="shop" lang="ru">магазин</string>
