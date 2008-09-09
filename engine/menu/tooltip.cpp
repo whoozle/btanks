@@ -42,8 +42,18 @@
 #include <deque>
 
 Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w)  : 
-area(area), message(message), _use_background(use_background) {
-	std::string text, _text = I18n->get(area, message);
+area(area), message(message) {
+	init(I18n->get(area, message), use_background, w);
+}
+
+Tooltip::Tooltip(const std::string &area, const std::string &message, const std::string &text, const bool use_background, const int w) : 
+area(area), message(message) {
+	init(text, use_background, w);
+}
+
+void Tooltip::init(const std::string &_text, const bool use_background, const int w) {
+	_use_background = use_background;
+	std::string text;
 	bool space = true;
 	size_t i;
 	for(i = 0; i < _text.size(); ++i) {
