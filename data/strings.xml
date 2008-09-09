@@ -385,12 +385,18 @@
 		<string id="enable-fog-of-war" lang="de">Nebel des Krieges (schwer)</string>
 		<string id="enable-fog-of-war" lang="it">Abilita nebbia di guerra (solo massima difficolta')</string>
 		             
-		<string id="score">score: </string>
-		<string id="score" lang="ru">счёт: </string>
+		<string id="score">Score: </string>
+		<string id="score" lang="ru">Счёт: </string>
 		<string id="score" lang="uk">Рахунок: </string>
 		<string id="score" lang="fr">Score :</string>
 		<string id="score" lang="de">Punkte: </string>
 		<string id="score" lang="it">Punteggio: </string>
+
+		<string id="last-score">Last score: </string>
+		<string id="last-score" lang="ru">Последний счёт: </string>
+		
+		<string id="best-score">Best score: </string>
+		<string id="best-score" lang="ru">Лучший счёт: </string>
 
 		<string id="last-time">Last time: </string>
 		<string id="last-time" lang="ru">Последнее время: </string>

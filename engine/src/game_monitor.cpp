@@ -1193,6 +1193,8 @@ void IGameMonitor::saveCampaign() {
 		Config->get(mname + ".maximum-score", mscore, 0);
 		if (slot.score > mscore) 
 			Config->set(mname + ".maximum-score", slot.score);
+			
+		Config->set(mname + ".last-score", slot.score);
 	}
 			
 	bool win;

@@ -25,11 +25,13 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	
 	void start();
+	void update_map();
 	
 private:
 	void init();
 	static const std::string convert_time(const float t);
 	static void update_time(Label *l, const std::string &name);
+	static void update_score(Label *l, const std::string &name);
 
 	MainMenu *_parent;
 	int _w, _h;
@@ -43,7 +45,7 @@ private:
 	
 	Grid * score_grid;
 	Box * score_box;
-	Label * _score, *_last_time, *_best_time;
+	Label * _score, *_last_time, *_best_time, *_last_score, *_best_score;
 
 	bool _invalidate_me;
 	Shop *_shop;

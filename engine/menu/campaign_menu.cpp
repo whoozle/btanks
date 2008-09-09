@@ -69,7 +69,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_active_campaign->get_size(cw, ch);
 	add(w / 2 - cw / 2, my, _active_campaign);
 
-	int panel_w = 256, panel_h = 128;
+	int panel_w = 256, panel_h = 175;
 
 	int map_base = 3 * my + ch;
 	_map_view = new ImageView(w - 4 * mx - panel_w, h - 6 * my);
@@ -86,17 +86,23 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(xbase, ybase, score_box = b = new Box("menu/background_box_dark.png", panel_w, panel_h));
 	b->getMargins(mx, my);
 	
-	Grid *grid = new Grid(2, 4);
+	Grid *grid = new Grid(2, 6);
 	score_grid = grid;
 		
 	grid->set(0, 0, new Label("medium", I18n->get("menu", "score")));
 	grid->set(0, 1, _score = new Label("medium", "0"));
 
-	grid->set(1, 0, new Label("medium", I18n->get("menu", "last-time")));
-	grid->set(1, 1, _last_time = new Label("medium", "-:--:--"));
+	grid->set(1, 0, new Label("medium", I18n->get("menu", "last-score")));
+	grid->set(1, 1, _last_score = new Label("medium", "0"));
 
-	grid->set(2, 0, new Label("medium", I18n->get("menu", "best-time")));
-	grid->set(2, 1, _best_time = new Label("medium", "-:--:--"));
+	grid->set(2, 0, new Label("medium", I18n->get("menu", "best-score")));
+	grid->set(2, 1, _best_score = new Label("medium", "0"));
+
+	grid->set(3, 0, new Label("medium", I18n->get("menu", "last-time")));
+	grid->set(3, 1, _last_time = new Label("medium", "-:--:--"));
+
+	grid->set(4, 0, new Label("medium", I18n->get("menu", "best-time")));
+	grid->set(4, 1, _best_time = new Label("medium", "-:--:--"));
 
 	std::vector<std::string> levels;
 	levels.push_back(I18n->get("menu/difficulty", "easy"));
@@ -104,7 +110,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	levels.push_back(I18n->get("menu/difficulty", "hard"));
 	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
 	
-	grid->set(3, 0, _c_difficulty = new Chooser("medium", levels));
+	grid->set(5, 0, _c_difficulty = new Chooser("medium", levels));
 	grid->set_spacing(2);
 	
 	add(xbase + mx, ybase + my, grid);
@@ -112,7 +118,6 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	grid->recalculate();
 	grid->get_size(bw, bh);
 	b->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
-	
 
 	_b_shop = new Button("medium", I18n->get("menu", "shop"));
 	_b_shop->get_size(bw, bh);
@@ -188,7 +193,12 @@ void CampaignMenu::update_time(Label *l, const std::string &name) {
 		Config->get(name, t, 0);
 	l->set(t > 0? convert_time(t): std::string("-:--:--"));
 }
-
+void CampaignMenu::update_score(Label *l, const std::string &name) {
+	int score = 0;
+	if (Config->has(name))
+		Config->get(name, score, 0);
+	l->set(mrt::format_string("%d", score));
+}
 
 void CampaignMenu::tick(const float dt) {
 	BaseMenu::tick(dt);
@@ -212,23 +222,7 @@ void CampaignMenu::tick(const float dt) {
 	if (_maps->changed()) {
 		_maps->reset();
 
-		int mi = _maps->get();
-		if (mi < (int)map_id.size()) {
-			Campaign::Map map = campaign.maps[map_id[mi]];
-			Config->set(std::string("campaign.") + campaign.name + ".current-map", map.id);
-			_map_view->setOverlay(map.map_frame, map.position);
-			_map_view->setDestination(map.position.convert<float>());
-
-			std::string mname = std::string("campaign.") + campaign.name + ".maps." + map.id;
-			update_time(_last_time, mname + ".last-time");
-			update_time(_best_time, mname + ".best-time");
-			score_grid->recalculate();
-
-			int bw, bh, mx, my;
-			score_grid->get_size(bw, bh);
-			score_box->getMargins(mx, my);
-			score_box->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
-		}
+		update_map();
 	}
 	
 	if (Map->loaded() && !_b_shop->hidden())
@@ -246,6 +240,36 @@ void CampaignMenu::tick(const float dt) {
 		_c_difficulty->reset();
 		Config->set("campaign." + campaign.name + ".difficulty", _c_difficulty->get());
 	}
+}
+
+void CampaignMenu::update_map() {
+	int ci = _active_campaign->get();
+	if (ci >= (int)_campaigns.size())
+		throw_ex(("no compaigns defined"));
+	
+	const Campaign &campaign = _campaigns[ci];
+	int mi = _maps->get();
+	if (mi < 0 || mi >= (int)map_id.size())
+		return;
+	
+	Campaign::Map map = campaign.maps[map_id[mi]];
+	Config->set(std::string("campaign.") + campaign.name + ".current-map", map.id);
+	_map_view->setOverlay(map.map_frame, map.position);
+	_map_view->setDestination(map.position.convert<float>());
+
+	std::string mname = std::string("campaign.") + campaign.name + ".maps." + map.id;
+	
+	update_time(_last_time, mname + ".last-time");
+	update_time(_best_time, mname + ".best-time");
+	update_score(_last_score, mname + ".last-score");
+	update_score(_best_score, mname + ".maximum-score");
+	
+	score_grid->recalculate();
+
+	int bw, bh, mx, my;
+	score_grid->get_size(bw, bh);
+	score_box->getMargins(mx, my);
+	score_box->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
 }
 
 bool CampaignMenu::onKey(const SDL_keysym sym) {
