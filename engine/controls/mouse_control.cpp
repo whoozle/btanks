@@ -35,6 +35,7 @@
 #include "math/unary.h"
 #include "object.h"
 #include "sdlx/cursor.h"
+#include "tmx/map.h"
 
 MouseControl::MouseControl(): _shoot(false) {
 	on_mouse_slot.assign(this, &MouseControl::onMouse, Window->mouse_signal);
@@ -45,8 +46,11 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 	if (button == SDL_BUTTON_RIGHT) { //fixme: hardcoded
 		_shoot = pressed;
 	}
-	if (!pressed)
-		return false;
+	if (!pressed) {
+		if (button == SDL_BUTTON_LEFT) 
+			target_screen_set = false;
+		return true;
+	}
 	
 	//LOG_DEBUG(("shoot: %c, move: %c", _shoot?'+':'-', _move?'+':'-'));
 /*	v2<float> world;
@@ -75,24 +79,39 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 	if (!sdlx::Cursor::enabled())
 		sdlx::Cursor::Enable();
-	
+
 	if (target_screen.is0()) {
 		return;
 	}
+
+	Object *object = slot.getObject();
+	if (object == NULL)
+		return;
+	
 	
 	v2<float> pos;
-	get_position(pos);
+	object->get_center_position(pos);
 
 	if (target_screen_set) {
-		target_screen_set = false;
+		//hack hack hack 
+		sdlx::Cursor::get_position(target_screen.x, target_screen.y);
+		//target_screen_set = false;
 		_target = slot.screen2world(target_screen);
 
-		_target_rel = _target - pos;
-		_target_dir = getObject()->get_direction();
+		_target_rel = Map->distance(pos, _target);
+
+		_target_dir = object->get_direction();
 	}
 	
 	{
-		v2<float> velocity = _target - pos;
+		v2<float> velocity = Map->distance(pos, _target);
+		int dirs = object->get_directions_number();
+		switch(dirs) {
+			case 8: 
+				velocity.quantize8(); break;
+			case 16:
+				velocity.quantize16(); break;
+		}
 
 		if (velocity.x * _target_rel.x <= 0) {
 			_target_rel.x = 0;
@@ -104,7 +123,7 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 	
 	state.fire = _target_rel.is0() && _shoot;
 	if (state.fire) {
-		getObject()->set_direction(_target_dir);
+		object->set_direction(_target_dir);
 	}
 	
 	if (_target_rel.x == 0) {
@@ -122,16 +141,3 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state) {
 		state.down = !state.up;
 	}
 }
-
-Object * MouseControl::getObject() const {
-	PlayerSlot &slot = PlayerManager->get_slot(0);
-	return slot.getObject();
-}
-
-
-void MouseControl::get_position(v2<float>&pos) const {
-	Object *obj = getObject();
-	obj->get_position(pos);
-	pos += obj->size / 2;
-}
-
