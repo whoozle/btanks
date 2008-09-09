@@ -448,6 +448,7 @@ void IGameMonitor::clear() {
 	bonuses.clear();
 	
 	memset(team_base, 0, sizeof(team_base));
+	total_time = 0;
 }
 
 void IGameMonitor::tick(const float dt) {	
@@ -475,6 +476,7 @@ void IGameMonitor::tick(const float dt) {
 			_timer = 0;
 		}
 	}
+	total_time += dt;
 
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
@@ -1108,6 +1110,7 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	slot.getDefaultVehicle(object, vehicle);
 	slot.spawn_player(0, object, vehicle);
 	PlayerManager->get_slot(0).setViewport(Window->get_size());
+	total_time = 0;
 }
 
 IGameMonitor::~IGameMonitor() {
@@ -1198,7 +1201,12 @@ void IGameMonitor::saveCampaign() {
 		Config->set(mname + ".win", _win);
 		_campaign->clearBonuses();
 	} 
-			
+
+	float best_time;
+	Config->get(mname + ".best-time", best_time, total_time);
+	if (_win && total_time > 0 && total_time < best_time) {
+		Config->set(mname + ".best-time", total_time);
+	}			
 	_campaign = NULL;	
 }
 

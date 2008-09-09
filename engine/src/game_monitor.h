@@ -223,6 +223,7 @@ private:
 	Timers timers;
 	
 	int team_base[4];
+	float total_time;
 };
 
 SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
