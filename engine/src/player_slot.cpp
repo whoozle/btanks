@@ -44,6 +44,10 @@
 
 #include "i18n.h"
 
+#include "controls/keyplayer.h"
+#include "controls/joyplayer.h"
+#include "controls/mouse_control.h"
+
 PlayerSlot::PlayerSlot() : 
 id(-1), control_method(NULL), need_sync(false), dont_interpolate(false), remote(-1), visible(false), 
 classname(), animation(), frags(0), spawn_limit(0), dead_time(0), score(0), spectator(false), team(Team::None), 
@@ -156,8 +160,34 @@ void PlayerSlot::removeTooltips() {
 
 #include "player_manager.h"
 
+#define REPLACE_MAGIC(var, control) if (text.find(var) != std::string::npos) { \
+		PlayerState state; \
+		state.control = 1; \
+		mrt::replace(text, var, cm->get_name(state)); \
+	}
+
 void PlayerSlot::displayTooltip(const std::string &area, const std::string &message) {
-	Tooltip *tooltip = new Tooltip(area, message, true);
+	ControlMethod *cm = control_method;
+	bool delete_cm = false;
+	if (cm == NULL) {
+		cm = new KeyPlayer("keys");
+		delete_cm = true;
+	}
+	std::string text = I18n->get(area, message);
+	
+	REPLACE_MAGIC("$fire", fire);
+	REPLACE_MAGIC("$altfire", alt_fire);
+	REPLACE_MAGIC("$leave", leave);
+	REPLACE_MAGIC("$hint_control", hint_control);
+	REPLACE_MAGIC("$left", left);
+	REPLACE_MAGIC("$right", right);
+	REPLACE_MAGIC("$up", up);
+	REPLACE_MAGIC("$down", down);
+	
+	if (delete_cm)
+		delete cm;
+	
+	Tooltip *tooltip = new Tooltip(area, message, text, true);
 	if (tooltips.empty()) {
 		GameMonitor->onTooltip("show", PlayerManager->get_slot_id(id), area, message);	
 	}
@@ -253,12 +283,6 @@ void PlayerSlot::tick(const float dt) {
 PlayerSlot::~PlayerSlot() {
 	clear();
 }
-
-
-#include "controls/keyplayer.h"
-#include "controls/joyplayer.h"
-#include "controls/mouse_control.h"
-//#include "controls/external_control.h"
 
 void PlayerSlot::join(const Team::ID t) {
 	team = t;
