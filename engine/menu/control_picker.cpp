@@ -39,6 +39,8 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 	Label *l = new Label(font, label);
 	l->get_size(bw, bh);
 	add(0, 0, l);
+
+	_values.push_back("mouse");
 	
 	if (variant == "split") {
 		_values.push_back("keys-1");
