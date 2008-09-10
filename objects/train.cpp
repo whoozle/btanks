@@ -139,7 +139,7 @@ void Train::tick(const float dt) {
 		if (pos.y  >= dst_y && !GameMonitor->game_over()) { 
 			LOG_DEBUG(("escaped!"));
 			if (_variants.has("win-on-exit")) 
-				GameMonitor->game_over("messages", "train-saved", 5, true);
+				GameMonitor->game_over("messages", "train-saved", 3, true);
 			//Object::emit("death", NULL);
 		}
 	}
