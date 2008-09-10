@@ -164,15 +164,26 @@ void Trooper::on_spawn() {
 	_pose = "run";
 }
 
+bool Trooper::can_attach(Object *vehicle) const {
+	if (registered_name == "machinegunner-player")
+		return true;
+	
+	if (!disable_ai)
+		return false;
+	
+	v2<float> rel = get_relative_position(vehicle);
+	v2<float> dir = vehicle->get_direction_vector();
+	dir.normalize(size.length() / 2);
+	if (_direction.same_sign(-dir))
+		return false;
+	return _direction.same_sign(rel);
+}
+
 void Trooper::emit(const std::string &event, Object * emitter) {
 	if (event == "death") {
 		spawn("corpse(human-death)", "dead-" + animation, v2<float>(), v2<float>());
 	} else if (event == "collision" && emitter != NULL && emitter->classname == "vehicle" && !_variants.has("nukeman")) {
-		if (
-			(
-				(disable_ai && _velocity.same_sign(get_relative_position(emitter))) || 
-				(registered_name == "machinegunner-player")
-			) && attachVehicle(emitter))
+		if (can_attach(emitter) && attachVehicle(emitter))
 			return;
 	}
 	Object::emit(event, emitter);

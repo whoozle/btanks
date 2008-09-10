@@ -63,6 +63,8 @@ public:
 	virtual const bool take(const BaseObject *obj, const std::string &type);
 
 protected: 
+	bool can_attach(Object *vehicle) const;
+	
 	std::string _object;
 	Alarm _fire, _alt_fire;
 	
