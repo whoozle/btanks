@@ -33,6 +33,7 @@
 #include "mrt/random.h"
 #include "player_manager.h"
 #include "ai/targets.h"
+#include "special_owners.h"
 
 class Bullet : public Object {
 public:
@@ -174,6 +175,9 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			dpos = get_relative_position(emitter) / 2;
 		} 
 */
+		if (emitter != NULL && _variants.has("skip-map") && emitter->has_owner(OWNER_MAP))
+			return;
+		
 		if (_type == "regular") {
 			GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
 			int z = (_velocity.y >= 0) ? edzo : 0;
