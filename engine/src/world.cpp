@@ -1501,6 +1501,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	std::priority_queue<Object *, std::vector<Object *>, BaseObject::PriorityComparator<Object *> > priority_objects;
 	ObjectMap::iterator i;
 
+#if 0
 	if (!sync_update) {
 		//let's use distance stats to prioritize some objects: 
 		int pc = 0, sum_w = 0, win_n = 0;
@@ -1535,6 +1536,7 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		}
 		LOG_DEBUG(("priorities: %d, total weight: %d, total: %u, wins: %d", pc, sum_w, (unsigned)_objects.size(), win_n));	
 	}
+#endif
 	
 	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
 	
