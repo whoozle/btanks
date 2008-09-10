@@ -106,23 +106,10 @@ public:
 	}
 
 	inline const bool same_sign(const v2<T> &other) const {
-		
-		if (x == 0) {
-			if (other.x != 0)
-				return false;
-		} else { //x != 0
-			if (other.x * x < 0)
-				return false;
-		}
-
-		if (y == 0) {
-			if (other.y != 0)
-				return false;
-		} else { //y != 0
-			if (other.y * y < 0)
-				return false;
-		}
-		return true;
+		return !(is0() || other.is0() || 
+			(x != 0 && other.x * x < 0) || 
+			(y != 0 && other.y * y < 0) 
+		);
 	}
 	
 	//operators 
