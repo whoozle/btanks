@@ -26,6 +26,8 @@
  * from your version and license this file solely under the GPL without exception. 
 */
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "object.h"
 #include "registrar.h"
 #include "resource_manager.h"
@@ -172,11 +174,15 @@ bool Trooper::can_attach(Object *vehicle) const {
 		return false;
 	
 	v2<float> rel = get_relative_position(vehicle);
+	rel.normalize();
 	v2<float> dir = vehicle->get_direction_vector();
-	dir.normalize(size.length() / 2);
-	if (_direction.same_sign(-dir))
+	dir.normalize();
+	float c = - rel.x * dir.x - rel.y * dir.y;
+	//LOG_DEBUG(("cos = %g", c));
+	if (c > 0.8660254037844386468) //sqrt(3) / 2
 		return false;
-	return _direction.same_sign(rel);
+
+	return true;
 }
 
 void Trooper::emit(const std::string &event, Object * emitter) {
