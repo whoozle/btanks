@@ -55,7 +55,10 @@ void IConfig::save() const {
 	LOG_DEBUG(("saving config to %s...", _file.c_str()));	
 	std::string data = "<config>\n";
 	for(VarMap::const_iterator i = _map.begin(); i != _map.end(); ++i) {
-		data += mrt::format_string("\t<value name=\"%s\" type=\"%s\">%s</value>\n", i->first.c_str(), i->second->type.c_str(), i->second->toString().c_str());
+		data += mrt::format_string("\t<value name=\"%s\" type=\"%s\">%s</value>\n", 
+			XMLParser::escape(i->first).c_str(), 
+			i->second->type.c_str(), 
+			XMLParser::escape(i->second->toString()).c_str());
 	}
 	data += "</config>\n";
 	mrt::File f;
