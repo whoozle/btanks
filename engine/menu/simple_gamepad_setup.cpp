@@ -4,7 +4,7 @@
 #include "label.h"
 #include "i18n.h"
 
-SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")) {
+SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")), selection(NULL) {
 	add(0, 0, bg = new Box("menu/background_box_dark.png", bg_table->get_width() + 96, bg_table->get_height() + 140, 24));
 	int bw, bh, mx, my;
 	bg->get_size(bw, bh);
@@ -22,8 +22,14 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 }
 
 void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y) const {
+	if (selection == NULL)
+		selection = ResourceManager->loadSurface("menu/gamepad_selection.png");
+	
 	Container::render(surface, x, y);
 	surface.blit(*bg_table, x + bg_table_pos.x, y + bg_table_pos.y);
+	if (active_row >= 0 && active_row < 8) {
+		surface.blit(*selection, x + bg_table_pos.x + 152, y + bg_table_pos.y + 44 + 30 * active_row);
+	}
 }
 
 bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
@@ -48,5 +54,6 @@ bool SimpleGamepadSetup::onMouse(const int button, const bool pressed, const int
 }
 
 bool SimpleGamepadSetup::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-
+	active_row = (y - bg_table_pos.y - 44) / 30;
+	return true;
 }

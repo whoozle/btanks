@@ -20,8 +20,10 @@ public:
 
 private: 
 	Box * bg;
-	const sdlx::Surface *bg_table;
+	const sdlx::Surface *bg_table; 
+	mutable const sdlx::Surface *selection;
 	v2<int> bg_table_pos;
+	int active_row;
 };
 
 
