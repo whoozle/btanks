@@ -49,6 +49,8 @@ class Animation;
 class AnimationModel;
 class Pose;
 
+#define AUTOLOAD_SURFACE(surface, filename) if ((surface) == NULL) surface = ResourceManager->loadSurface(filename)
+
 class BTANKSAPI IResourceManager : public NotifyingXMLParser {
 public:
 	IResourceManager();

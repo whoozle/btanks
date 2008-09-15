@@ -22,8 +22,7 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 }
 
 void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y) const {
-	if (selection == NULL)
-		selection = ResourceManager->loadSurface("menu/gamepad_selection.png");
+	AUTOLOAD_SURFACE(selection, "menu/gamepad_selection.png");
 	
 	Container::render(surface, x, y);
 	surface.blit(*bg_table, x + bg_table_pos.x, y + bg_table_pos.y);
