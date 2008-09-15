@@ -3,6 +3,7 @@
 #include "box.h"
 #include "label.h"
 #include "i18n.h"
+#include "window.h"
 
 SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")), selection(NULL) {
 	add(0, 0, bg = new Box("menu/background_box_dark.png", bg_table->get_width() + 96, bg_table->get_height() + 140, 24));
@@ -18,6 +19,23 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	int ch = (bg_table->get_height() - 46) / n;
 	for(size_t i = 0; i < n; ++i) {
 		add(bg_table_pos.x + 8, bg_table_pos.y + 47 + i * ch, new Label("medium", I18n->get("menu", labels[i])));
+	}
+
+	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
+}
+
+void SimpleGamepadSetup::on_event(const SDL_Event &event) {
+	if (hidden() || active_row < 0 || active_row >= 8) 
+		return;
+
+	switch(event.type) {
+		case SDL_JOYAXISMOTION: 
+		case SDL_JOYHATMOTION: 
+		case SDL_JOYBUTTONDOWN: 
+			LOG_DEBUG(("wow!"));
+			break;
+
+		default:; 
 	}
 }
 

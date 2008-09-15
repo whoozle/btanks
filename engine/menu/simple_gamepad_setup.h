@@ -4,6 +4,7 @@
 #include "container.h"
 #include "export_btanks.h"
 #include "math/v2.h"
+#include "sl08/sl08.h"
 
 class Box;
 
@@ -14,11 +15,14 @@ public:
 	void reload() {}
 	void save() {}
 
+private: 
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
-private: 
+	sl08::slot1<void, const SDL_Event &, SimpleGamepadSetup> on_event_slot;
+	virtual void on_event(const SDL_Event &event);
+
 	Box * bg;
 	const sdlx::Surface *bg_table; 
 	mutable const sdlx::Surface *selection;
