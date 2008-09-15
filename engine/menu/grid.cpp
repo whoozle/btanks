@@ -63,18 +63,32 @@ void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 				int cw, ch;
 				d.c->get_size(cw, ch);
 
-				if (d.align & Center) {
-					xc = (_split_w[j] - cw) / 2;
-				} else if (d.align & Right) {
-					xc = _split_w[j] - cw - _spacing;
+				if (d.align & (Center | Right)) {
+					int w = 0;
+					for(size_t jj = j; jj < j + d.colspan && jj < row.size(); ++jj) 
+						w += _split_w[jj];
+					xc = w - cw;
+					if (d.align & Center) {
+						xc /= 2;
+					} else {
+						xc -= _spacing;
+					}
+					//xc = (_split_w[j] - cw) / 2; //center
+					//xc = _split_w[j] - cw - _spacing; //right
 				} else {
 					xc = _spacing;
 				}
 
-				if (d.align & Middle) {
-					yc = (_split_h[i] - ch) / 2;
-				} else if (d.align & Bottom) {
-					yc = _split_h[i] - ch - _spacing;
+				if (d.align & (Middle | Bottom)) {
+					int h = 0;
+					for(size_t ii = i; ii < i + d.rowspan && ii < _controls.size(); ++ii) 
+						h += _split_h[ii];
+					yc = h - ch;
+					if (d.align & Middle) {
+						yc /= 2;
+					} else {
+						yc -= _spacing;
+					}
 				} else {
 					yc = _spacing;
 				}
