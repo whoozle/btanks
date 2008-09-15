@@ -110,7 +110,8 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	levels.push_back(I18n->get("menu/difficulty", "hard"));
 	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
 	
-	grid->set(5, 0, _c_difficulty = new Chooser("medium", levels));
+	grid->set(5, 0, _c_difficulty = new Chooser("medium", levels), Grid::Center | Grid::Middle);
+	grid->set_span(5, 0, 1, 2);
 	grid->set_spacing(2);
 	
 	add(xbase + mx, ybase + my, grid);
