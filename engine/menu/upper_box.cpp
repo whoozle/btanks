@@ -49,8 +49,7 @@ void UpperBox::update(const GameType game_type) {
 	}
 }
 
-UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _server(server) {
-	_checkbox = ResourceManager->loadSurface("menu/radio.png");
+UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _server(server), _checkbox(NULL) {
 	add(0, 0, _box = new Box("menu/background_box.png", _w, _h));
 	
 	int mx, my;
@@ -84,6 +83,8 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 }
 
 void UpperBox::render(sdlx::Surface &surface, const int x, const int y) const{
+	AUTOLOAD_SURFACE(_checkbox, "menu/radio.png");
+
 	Container::render(surface, x, y);
 	
 	int font_dy = (_big->get_height() - _medium->get_height()) / 2;

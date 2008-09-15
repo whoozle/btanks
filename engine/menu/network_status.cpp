@@ -2,10 +2,12 @@
 #include "resource_manager.h"
 
 NetworkStatusControl::NetworkStatusControl() : 
-	Tooltip("menu", "network-status", true), _bclose(ResourceManager->loadSurface("menu/disconnect.png")) {
+	Tooltip("menu", "network-status", true), _bclose(NULL) {
 }
 
 void NetworkStatusControl::render(sdlx::Surface &surface, const int x, const int y) const {
+	AUTOLOAD_SURFACE(_bclose, "menu/disconnect.png");
+
 	Tooltip::render(surface, x, y);
 	int mx, my, w, h;
 	_background.getMargins(mx, my);

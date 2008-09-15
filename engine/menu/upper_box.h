@@ -53,7 +53,7 @@ private:
 	std::string value;
 
 	bool _server;
-	const sdlx::Surface *_checkbox;
+	mutable const sdlx::Surface *_checkbox;
 	const sdlx::Font *_big, *_medium;
 	mutable sdlx::Rect _on_area, _off_area;
 	Box   *_box;
