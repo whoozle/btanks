@@ -10,7 +10,7 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 private: 
-	const sdlx::Surface * _bclose;
+	mutable const sdlx::Surface * _bclose;
 	mutable sdlx::Rect _close_area;
 };
 
