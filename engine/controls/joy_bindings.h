@@ -5,7 +5,7 @@
 #include <map>
 
 enum JoyControlType {
-	tButton = 1, tAxis = 2, tHat = 3
+	tButton = 1, tAxis = 2, tHat = 3, tBall = 4
 };
 
 
