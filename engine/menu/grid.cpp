@@ -162,20 +162,22 @@ void Grid::recalculate(const int w, const int h) {
 	for(size_t i = 0; i < _controls.size(); ++i) {
 		const Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {
-			Control *c = row[j].c;
+			const ControlDescriptor &d = row[j];
+			const Control *c = d.c;
 			if (c == NULL)
 				continue;
 			int cw = -1, ch = -1;
 			c->get_size(cw, ch);
 			assert(cw >= 0 && ch >= 0);
 			
-			cw += 2 * _spacing;
-			ch += 2 * _spacing;
-			if (cw > _split_w[j]) {
-				_split_w[j] = cw;
+			cw += 2 * _spacing * d.colspan;
+			ch += 2 * _spacing * d.rowspan;
+			int cws = (cw - 1) / d.colspan + 1, chs = (ch - 1) / d.rowspan + 1;
+			if (cws > _split_w[j]) {
+				_split_w[j] = cws;
 			}
-			if (ch > _split_h[i]) {
-				_split_h[i] = ch;
+			if (chs > _split_h[i]) {
+				_split_h[i] = chs;
 			}
 		}
 	}
