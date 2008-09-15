@@ -30,6 +30,7 @@
 #include "chooser.h"
 #include "menu.h"
 #include "control_picker.h"
+#include "simple_gamepad_setup.h"
 #include "i18n.h"
 #include "label.h"
 #include "slider.h"
@@ -37,12 +38,12 @@
 #include "checkbox.h"
 #include "sound/mixer.h"
 #include "redefine_keys.h"
-#include "gamepad_setup.h"
 #include "player_manager.h"
 #include "game_monitor.h"
 #include "window.h"
+#include "sdlx/joystick.h"
 
-OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false) {
+OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false), _gamepad(NULL) {
 	Mixer->loadSample("shot.ogg");
 	
 	_background.init("menu/background_box.png", w - 100, h - 100);
@@ -246,13 +247,14 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add((w - sw) / 2, (h - sh) / 2, _keys);
 	_keys->hide();
 	
-	_gamepad = new GamepadSetup(w, h);
-	_gamepad->get_size(sw, sh);
-	add((w - sw) / 2, (h - sh) / 2, _gamepad);
-	_gamepad->hide();
+	if (sdlx::Joystick::getCount() > 0) {
+		_gamepad = new SimpleGamepadSetup();
+		_gamepad->get_size(sw, sh);
 	
-
-	
+		add((w - sw) / 2, (h - sh) / 2, _gamepad);
+		_gamepad->hide();
+	}
+		
 	reload();
 }
 
@@ -454,7 +456,7 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 
 	case SDLK_j: 
 	case SDLK_g: 
-		if (sdlx::Joystick::getCount() && _keys->hidden()) {
+		if (_gamepad != NULL && _keys->hidden()) {
 			_gamepad->reload();
 			_gamepad->hide(false);
 		}
@@ -462,7 +464,7 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 		return true;
 
 	case SDLK_r: 
-		if (_gamepad->hidden())
+		if (_gamepad == NULL || _gamepad->hidden())
 			_keys->hide(false);
 		return true;
 

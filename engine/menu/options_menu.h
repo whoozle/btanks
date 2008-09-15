@@ -41,7 +41,7 @@ class MainMenu;
 class ControlPicker;
 class Object;
 class RedefineKeys;
-class GamepadSetup;
+class SimpleGamepadSetup;
 class Chooser;
 class Checkbox;
 
@@ -75,7 +75,7 @@ private:
 	Alarm _shoot;
 	
 	RedefineKeys * _keys;
-	GamepadSetup * _gamepad;
+	SimpleGamepadSetup * _gamepad;
 
 	std::set<std::string> _langs;
 };
