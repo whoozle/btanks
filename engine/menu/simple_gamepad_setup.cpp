@@ -6,6 +6,7 @@
 #include "window.h"
 #include "menu.h"
 #include "chooser.h"
+#include "math/unary.h"
 
 SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")), selection(NULL) {
 	int joys = joy.getCount();
@@ -45,11 +46,33 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 		return;
 
 	switch(event.type) {
-		case SDL_JOYAXISMOTION: 
-		case SDL_JOYHATMOTION: 
-		case SDL_JOYBUTTONDOWN: 
-			LOG_DEBUG(("wow!"));
+		case SDL_JOYAXISMOTION: {
+			const SDL_JoyAxisEvent &je = event.jaxis;
+			int v = math::abs(je.value);
+			if (v < 32767 / 3) 
+				break;
+			LOG_DEBUG(("axis %d", je.axis));
 			break;
+		}
+
+		case SDL_JOYBALLMOTION: {
+			const SDL_JoyBallEvent &je = event.jball;
+			int dx = math::abs(je.xrel), dy = math::abs(je.yrel);
+			LOG_DEBUG(("ball %d: %s", je.ball, dx > dy? "X": "Y"));
+			break;
+		}
+
+		case SDL_JOYHATMOTION: {
+			const SDL_JoyHatEvent &je = event.jhat;
+			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
+			break;
+		}
+
+		case SDL_JOYBUTTONDOWN: {
+			const SDL_JoyButtonEvent &je = event.jbutton;
+			LOG_DEBUG(("button %d", je.button));
+			break;
+		}
 
 		default:; 
 	}
