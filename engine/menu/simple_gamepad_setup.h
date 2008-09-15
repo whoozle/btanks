@@ -2,7 +2,6 @@
 #define BTANKS_SIMPLE_GAMEPAD_SETUP_H__
 
 #include "container.h"
-#include "export_btanks.h"
 #include "math/v2.h"
 #include "sl08/sl08.h"
 #include "sdlx/joystick.h"
@@ -10,7 +9,7 @@
 class Box;
 class Chooser;
 
-class BTANKSAPI SimpleGamepadSetup : public Container {
+class SimpleGamepadSetup : public Container {
 public:
 	SimpleGamepadSetup();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;

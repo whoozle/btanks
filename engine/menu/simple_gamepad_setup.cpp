@@ -54,14 +54,14 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			LOG_DEBUG(("axis %d", je.axis));
 			break;
 		}
-
+#if 0
 		case SDL_JOYBALLMOTION: {
 			const SDL_JoyBallEvent &je = event.jball;
 			int dx = math::abs(je.xrel), dy = math::abs(je.yrel);
 			LOG_DEBUG(("ball %d: %s", je.ball, dx > dy? "X": "Y"));
 			break;
 		}
-
+#endif
 		case SDL_JOYHATMOTION: {
 			const SDL_JoyHatEvent &je = event.jhat;
 			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
