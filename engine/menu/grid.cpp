@@ -33,6 +33,24 @@ void Grid::set(const int r, const int c, Control *ctrl, const int align) {
 	d.align = align;
 }
 
+void Grid::set_span(const int r, const int c, const int rowspan, const int colspan) {
+	if (rowspan <= 0) 
+		throw_ex(("rowspan %d is invalid", rowspan));
+	if (colspan <= 0) 
+		throw_ex(("colspan %d is invalid", colspan));
+	
+	if (r < 0 || r >= (int)_controls.size())
+		throw_ex(("set(%d, %d) is out of range", r, c));
+	Row &row = _controls[r];
+	if (c < 0 || c >= (int) row.size())
+		throw_ex(("set(%d, %d) is out of range", r, c));
+
+	ControlDescriptor &d = row[c];
+	d.colspan = colspan;
+	d.rowspan = rowspan;
+}
+
+
 void Grid::render(sdlx::Surface &surface, const int x, const int y) const {
 	int yp = y;
 	for(size_t i = 0; i < _controls.size(); ++i) {

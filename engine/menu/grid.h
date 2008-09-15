@@ -13,6 +13,7 @@ public:
 	~Grid();
 	
 	void set(const int row, const int col, Control *ctrl, const int align = None);
+	void set_span(const int row, const int col, const int rowspan, const int colspan);
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual void get_size(int &w, int &h) const;
@@ -25,9 +26,10 @@ public:
 
 private: 
 	struct ControlDescriptor {
-		ControlDescriptor() : c(NULL), align(0) {}
+		ControlDescriptor() : c(NULL), align(0), colspan(1), rowspan(1) {}
 		Control *c;
 		int align;
+		int colspan, rowspan;
 	};
 	
 	ControlDescriptor * find(int& x, int& y);
