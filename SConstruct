@@ -33,7 +33,7 @@ if sys.platform != "win32":
 	opts.Add('resources_dir', 'resources directory (default: prefix/share/btanks)', '')
 
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
-opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'false'))
+opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'true'))
 opts.Add(BoolOption('enable_lua', 'enable lua support', 'true'))
 
 opts.Update(env)
