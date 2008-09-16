@@ -37,6 +37,7 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	ch = (bg_table->get_height() - 46) / n;
 	for(size_t i = 0; i < n; ++i) {
 		add(bg_table_pos.x + 8, bg_table_pos.y + 47 + i * ch, new Label("medium", I18n->get("menu", labels[i])));
+		add(bg_table_pos.x + 160, bg_table_pos.y + 50 + i * ch, controls[i] = new Label("small", std::string()));
 	}
 	
 	int ybase = bg_table_pos.y + bg_table->get_height() + my; 
@@ -55,9 +56,16 @@ void SimpleGamepadSetup::init(const int idx) {
 	profile = joy.getName(idx);
 	joy_list->set(idx);
 	float dz;
-	Config->get(std::string("player.controls.") + profile + ".dead_zone", dz, 0.8f);
+	Config->get(std::string("player.controls.joystick.") + profile + ".dead-zone", dz, 0.8f);
 	dead_zone->set(dz);
 	bindings = SimpleJoyBindings(profile, joy);
+	refresh();
+}
+
+void SimpleGamepadSetup::refresh() {
+	for(unsigned i = 0; i < 8; ++i) {
+		controls[i]->set(bindings.get_name(i));
+	}
 }
 
 void SimpleGamepadSetup::on_event(const SDL_Event &event) {
@@ -71,8 +79,9 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			int v = math::abs(je.value);
 			if (v < (int)(32767 * dead_zone->get())) 
 				break;
-			//LOG_DEBUG(("axis %d: %d", je.axis, je.value));
+			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
 		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, v > 0? 1: -1));
+		 	refresh();
 			break;
 		}
 		case SDL_JOYHATMOTION: {
@@ -80,15 +89,17 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			if (je.value == SDL_HAT_CENTERED)
 				break;
 			
-			//LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
+			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Hat, je.hat, je.value));
+		 	refresh();
 			break;
 		}
 
 		case SDL_JOYBUTTONDOWN: {
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			//LOG_DEBUG(("button %d", je.button));
+			LOG_DEBUG(("button %d", je.button));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Button, je.button, 0));
+		 	refresh();
 			break;
 		}
 
@@ -118,6 +129,8 @@ bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
 		return true;
 
 	case SDLK_RETURN:
+		if (!bindings.valid())
+			return true;
 		save();
 		hide();
 		return true;
@@ -159,6 +172,6 @@ void SimpleGamepadSetup::tick(const float dt) {
 	}
 	if (dead_zone->changed()) {
 		dead_zone->reset();
-		Config->set(std::string("player.controls.joystick.") + profile + ".dead_zone", dead_zone->get());
+		Config->set(std::string("player.controls.joystick.") + profile + ".dead-zone", dead_zone->get());
 	}
 }

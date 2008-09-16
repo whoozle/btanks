@@ -155,6 +155,7 @@ bool SimpleJoyBindings::valid() const {
 }
 
 void SimpleJoyBindings::validate() {
+	return;
 	std::set<State> used_controls;
 	
 	for(int i = 0; i < 8; ++i) {
@@ -164,6 +165,21 @@ void SimpleJoyBindings::validate() {
 	}
 	if (used_controls.size() == 8)
 		return;
+	
+	{
+		//eliminated duplicates
+		std::set<State> seen(used_controls);
+		for(int i = 0; i < 8; ++i) {
+			if (state[i].type == State::None) 
+				continue;
+			if (seen.find(state[i]) == seen.end()) {
+				//duplicate
+				state[i].clear();
+			} else {
+				seen.erase(state[i]);
+			}
+		}
+	}
 	
 	for(int idx = 0; idx < 4; idx += 2) {
 		if (state[idx].type != State::None) 
@@ -177,6 +193,7 @@ void SimpleJoyBindings::validate() {
 			s.index = i;
 			if (used_controls.find(s) == used_controls.end()) {
 				state[idx] = s;
+				used_controls.insert(s);
 				set_opposite(state[idx + 1], state[idx]);
 				goto found;
 			}
@@ -187,6 +204,7 @@ void SimpleJoyBindings::validate() {
 			s.index = i;
 			if (used_controls.find(s) == used_controls.end()) {
 				state[idx] = s;
+				used_controls.insert(s);
 				set_opposite(state[idx + 1], state[idx]);
 				goto found;
 			}
@@ -203,6 +221,7 @@ void SimpleJoyBindings::validate() {
 		for(int b = 0; b < buttons; ++b) {
 			s.index = b;
 			if (used_controls.find(s) == used_controls.end()) {
+				used_controls.insert(s);
 				state[i] = s;
 				break;
 			}
