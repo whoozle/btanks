@@ -101,7 +101,7 @@ void SimpleJoyBindings::set(int idx, const State &s) {
 
 SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) :
 	config_base("player.controls.joystick." + profile + ".") { 
-	LOG_DEBUG(("loading binding for the '%s'", profile.c_str()));
+	LOG_DEBUG(("loading joystick bindings for the '%s'", profile.c_str()));
 	
 	axis = joy.get_axis_num();
 	buttons = joy.get_buttons_num();
