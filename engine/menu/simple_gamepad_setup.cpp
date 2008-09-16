@@ -159,6 +159,6 @@ void SimpleGamepadSetup::tick(const float dt) {
 	}
 	if (dead_zone->changed()) {
 		dead_zone->reset();
-		Config->set(std::string("player.controls.") + profile + ".dead_zone", dead_zone->get());
+		Config->set(std::string("player.controls.joystick.") + profile + ".dead_zone", dead_zone->get());
 	}
 }
