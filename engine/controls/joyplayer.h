@@ -30,21 +30,19 @@
 
 #include "control_method.h"
 #include "sdlx/joystick.h"
-#include "joy_bindings.h"
+#include "simple_joy_bindings.h"
 
 class JoyPlayer :public ControlMethod {
 public:
 	JoyPlayer(const int idx);
-	virtual void probe() const;
 
 private:
 	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;
-	static const std::string get_button_name(int idx);
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	int _idx;
-	mutable std::string _name;
+	std::string _name;
 	sdlx::Joystick _joy;
-	Bindings _bindings;
+	SimpleJoyBindings _bindings;
 };
 
 #endif

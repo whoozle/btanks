@@ -6,6 +6,8 @@
 #include "sdlx/joystick.h"
 #include "mrt/logger.h"
 #include <set>
+#include "config.h"
+#include "player_state.h"
 
 const std::string SimpleJoyBindings::State::to_string() const {
 	switch(type) {
@@ -77,6 +79,13 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 	throw_ex(("invalid control type '%c'", t));
 }
 
+
+const SimpleJoyBindings::State & SimpleJoyBindings::get(int idx) const {
+	if (idx < 0 || idx >= 8)
+		throw_ex(("invalid state index %d", idx));
+	return state[idx];
+}
+
 void SimpleJoyBindings::set(int idx, const State &s) {
 	if (idx < 0 || idx >= 8)
 		throw_ex(("invalid state index %d", idx));
@@ -128,6 +137,8 @@ void SimpleJoyBindings::save() {
 }
 
 void SimpleJoyBindings::reload() {
+	Config->get(config_base + "dead-zone", dead_zone, 0.8f);
+
 	for(int i = 0; i < 8; ++i) {
 		std::string key = config_base + names[i];
 		if (Config->has(key)) {
@@ -156,7 +167,10 @@ void SimpleJoyBindings::set_opposite(State &dst, const State &src) {
 		case State::Hat:
 			dst.type = src.type;
 			dst.index = src.index;
-			dst.value = ((~src.value) & (SDL_HAT_UP | SDL_HAT_DOWN | SDL_HAT_LEFT | SDL_HAT_RIGHT));
+			if (src.value & (SDL_HAT_UP | SDL_HAT_DOWN))
+				dst.value = src.value ^ (SDL_HAT_UP | SDL_HAT_DOWN);
+			if (src.value & (SDL_HAT_LEFT | SDL_HAT_RIGHT))
+				dst.value = src.value ^ (SDL_HAT_LEFT | SDL_HAT_RIGHT);
 			dst.need_save |= src.need_save;
 			break;
 		default: 
@@ -258,8 +272,16 @@ const std::string SimpleJoyBindings::get_name(int idx) const {
 
 const std::string SimpleJoyBindings::State::get_name() const {
 	switch(type) {
-	case Button:
-		return mrt::format_string("(%d)", index + 1);
+	case Button: {
+		if (index < 0)
+			throw_ex(("invalid button index %d", index));
+		if (index > 10) 
+			return mrt::format_string("(%d)", index + 1);
+			
+		std::string r = "\342\221";
+		r += (char)(0xa0 + index);
+		return r;
+	}
 	case Axis:
 		return mrt::format_string("Axis %d %c", index + 1, value > 0? '+': '-');
 	case Hat: {
@@ -279,4 +301,47 @@ const std::string SimpleJoyBindings::State::get_name() const {
 	default: 
 		return std::string();
 	}
+}
+
+//"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"
+
+void SimpleJoyBindings::update(PlayerState &dst, const sdlx::Joystick &joy) const {
+	if (!joy.opened())
+		throw_ex(("joystick was not opened"));
+	
+	for(int i = 0; i < 8; ++i) {
+		int vi = 0;
+		const State &s = state[i];
+		switch(s.type) {
+
+			case State::Button: 
+				vi = joy.get_button(s.index)? 1:0;
+			break;
+
+			case State::Axis: 
+				vi = (joy.get_axis(s.index) * s.value >= (int)(dead_zone * 32767))? 1:0;
+			break;
+
+			case State::Hat: 
+				vi = ((joy.get_hat(s.index) & s.value) == s.value)? 1:0;
+			break;
+			
+			case State::None: break;
+		}
+		switch(i) {
+		case 0: dst.left = vi; break;
+		case 1: dst.right = vi; break;
+		case 2: dst.up = vi; break;
+		case 3: dst.down = vi; break;
+		case 4: dst.fire = vi; break;
+		case 5: dst.alt_fire = vi; break;
+		case 6: dst.leave = vi; break;
+		case 7: dst.hint_control = vi; break;
+		}
+	}
+}
+
+void SimpleJoyBindings::set_dead_zone(const float dz) {
+	dead_zone = dz;
+	Config->set(config_base + "dead-zone", dz);
 }

@@ -36,7 +36,7 @@
 class KeyPlayer : public ControlMethod {
 public:
 	KeyPlayer(const std::string &variant);
-	virtual void probe() const {} //always present
+
 	static void disable() { _disabled = true; }
 	static void enable() { _disabled = false; }
 

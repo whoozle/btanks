@@ -40,7 +40,7 @@ class Object;
 class MouseControl : public ControlMethod {
 public:
 	MouseControl(); 
-	void probe() const {}
+
 private:
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;

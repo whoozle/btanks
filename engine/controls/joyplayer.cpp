@@ -35,28 +35,16 @@
 
 JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
 	_name = sdlx::Joystick::getName(idx);
-	_bindings.load(sdlx::Joystick::getName(idx), _joy.get_buttons_num(), _joy.get_axis_num(), _joy.get_hats_num());
-}
-
-void JoyPlayer::probe() const {
-	if (_joy.opened())
-		return;
-
-	_name = sdlx::Joystick::getName(_idx);
-	sdlx::Joystick joy; 
-	joy.open(_idx);
-	joy.close();
+	_bindings = SimpleJoyBindings(_name, _joy);
 }
 
 #define THRESHOLD 16384
 
 void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float dt) {
 	SDL_JoystickUpdate();
-	Sint16 x = _joy.get_axis(_bindings.get(tAxis, 0));
-	Sint16 y = _joy.get_axis(_bindings.get(tAxis, 1));
 	
-	_state.clear();	
-	
+	_bindings.update(_state, _joy);
+/*	
 	if (x >= THRESHOLD) _state.right = true;
 	if (x <= -THRESHOLD) _state.left = true;
 	if (y >= THRESHOLD) _state.down = true;
@@ -83,28 +71,20 @@ void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float 
 		slot.map_dpos.x = (xa * r) / 32767;
 		slot.map_dpos.y = (ya * r) / 32767;
 	}
+*/
 }
 
 void JoyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) const {
 	if (state.fire) { 
-		controls.push_back(get_button_name(_bindings.get(tButton, 0)));
+		controls.push_back(_bindings.get_name(4));
 	}
 	if (state.alt_fire) {
-		controls.push_back(get_button_name(_bindings.get(tButton, 1)));
+		controls.push_back(_bindings.get_name(5));
 	}
 	if (state.leave) {
-		controls.push_back(get_button_name(_bindings.get(tButton, 3)));
+		controls.push_back(_bindings.get_name(6));
 	}
 	if (state.hint_control) {
-		controls.push_back(get_button_name(_bindings.get(tButton, 4)));
+		controls.push_back(_bindings.get_name(7));
 	}
-}
-
-const std::string JoyPlayer::get_button_name(int idx) {
-	if (idx < 0 || idx > 9)
-		return mrt::format_string("(%d)", idx);
-	//11 100 010    10 010 001
-	std::string r = "\342\221";
-	r += (char)(0xa0 + idx);
-	return r;
 }

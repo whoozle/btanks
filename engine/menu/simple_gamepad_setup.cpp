@@ -55,10 +55,8 @@ void SimpleGamepadSetup::init(const int idx) {
 	joy.open(idx);
 	profile = joy.getName(idx);
 	joy_list->set(idx);
-	float dz;
-	Config->get(std::string("player.controls.joystick.") + profile + ".dead-zone", dz, 0.8f);
-	dead_zone->set(dz);
 	bindings = SimpleJoyBindings(profile, joy);
+	dead_zone->set(bindings.get_dead_zone());
 	refresh();
 }
 
@@ -185,6 +183,6 @@ void SimpleGamepadSetup::tick(const float dt) {
 	}
 	if (dead_zone->changed()) {
 		dead_zone->reset();
-		Config->set(std::string("player.controls.joystick.") + profile + ".dead-zone", dead_zone->get());
+		bindings.set_dead_zone(dead_zone->get());
 	}
 }

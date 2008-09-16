@@ -7,6 +7,8 @@ namespace sdlx {
 	class Joystick;
 }
 
+class PlayerState;
+
 class SimpleJoyBindings {
 public: 
 	struct State {
@@ -42,10 +44,18 @@ public:
 	void save();
 	void reload();
 	void set(int idx, const State &state);
+	const State &get(int idx) const;
 	bool valid() const;
+
+//static const char * names[] = {"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"};
 	
 	const std::string get_name(int idx) const;
-
+	
+	void update(PlayerState &state, const sdlx::Joystick &joy) const;
+	
+	void set_dead_zone(const float dz);
+	const float get_dead_zone() const { return dead_zone; }
+	
 private: 
 	void validate();
 	static void set_opposite(State &dst, const State &src);
@@ -53,7 +63,7 @@ private:
 	State state[8];
 	std::string config_base;
 	int axis, buttons, hats;
-	
+	float dead_zone;
 };
 
 #endif
