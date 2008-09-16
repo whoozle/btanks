@@ -57,6 +57,7 @@ void SimpleGamepadSetup::init(const int idx) {
 	float dz;
 	Config->get(std::string("player.controls.") + profile + ".dead_zone", dz, 0.8f);
 	dead_zone->set(dz);
+	bindings = SimpleJoyBindings(profile, joy);
 }
 
 void SimpleGamepadSetup::on_event(const SDL_Event &event) {
@@ -83,6 +84,9 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 #endif
 		case SDL_JOYHATMOTION: {
 			const SDL_JoyHatEvent &je = event.jhat;
+			if (je.value == SDL_HAT_CENTERED)
+				break;
+			
 			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
 			break;
 		}

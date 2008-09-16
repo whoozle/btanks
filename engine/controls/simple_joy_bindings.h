@@ -3,27 +3,50 @@
 
 #include <string>
 
+namespace sdlx {
+	class Joystick;
+}
+
 class SimpleJoyBindings {
 public: 
 	struct State {
 		enum Type {None, Axis, Button, Hat} type;
 		int index, value;
-		State() : type(None), index(-1), value(0) {}
-		State(Type type, int index, int value = 0) : type(type), index(index), value(value) {}
+		bool need_save;
+		
+		inline State() : type(None), index(-1), value(0), need_save(false) {}
 		
 		const std::string to_string() const;
 		void from_string(const std::string &value);
+		inline void clear() {
+			type = None; index = -1; value = 0; need_save = false;
+		}
+		inline bool operator<(const State &o) const {
+			if (type != o.type)
+				return type < o.type;
+			if (index != o.index)
+				return index < o.index;
+
+			return value < o.value;
+		}
 	};
 
 	//by index (0-8) get joystick state (Axis, 1, -1 (negative)), (Button, 2), (Hat, Center)
-	SimpleJoyBindings(const std::string &profile, int axis, int buttons, int hats);
+	SimpleJoyBindings() : config_base(), axis(0), buttons(0), hats(0) {}
+	SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy);
 	void save();
 	void reload();
+	void set(int idx, const State &state);
+	bool valid() const;
+
 private: 
+	void validate();
+	static void set_opposite(State &dst, const State &src);
+	
+	State state[8];
 	std::string config_base;
 	int axis, buttons, hats;
 	
-	State state[8];
 };
 
 #endif

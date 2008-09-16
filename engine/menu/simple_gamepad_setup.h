@@ -5,6 +5,7 @@
 #include "math/v2.h"
 #include "sl08/sl08.h"
 #include "sdlx/joystick.h"
+#include "controls/simple_joy_bindings.h"
 
 class Box;
 class Chooser;
@@ -40,6 +41,7 @@ private:
 
 	sdlx::Joystick joy;
 	std::string profile;
+	SimpleJoyBindings bindings;
 };
 
 

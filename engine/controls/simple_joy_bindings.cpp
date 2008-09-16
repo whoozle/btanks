@@ -2,6 +2,9 @@
 #include "mrt/exception.h"
 #include "config.h"
 #include <stdlib.h>
+#include "sdlx/sdlx.h"
+#include "sdlx/joystick.h"
+#include <set>
 
 const std::string SimpleJoyBindings::State::to_string() const {
 	switch(type) {
@@ -29,6 +32,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 				throw_ex(("invalid axis index (%d)", i));
 			index = i;
 			value = v == '+'? 1: -1;
+			need_save = true;
 			return;
 		}
 
@@ -40,6 +44,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 				throw_ex(("invalid button index (%d)", i));
 			index = i;
 			value = 0;
+			need_save = true;
 			return;
 		}
 
@@ -60,6 +65,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 
 			index = i;
 			value = j;
+			need_save = true;
 			return;
 		}
 	
@@ -67,18 +73,45 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 	throw_ex(("invalid control type '%c'", t));
 }
 
+void SimpleJoyBindings::set(int idx, const State &s) {
+	if (idx < 0 || idx >= 8)
+		throw_ex(("invalid state index %d", idx));
+	state[idx] = s;
+	state[idx].need_save = true;
+	switch(idx) {
+		case 0: 
+			set_opposite(state[1], state[0]); break;
+		case 1: 
+			set_opposite(state[0], state[1]); break;
+		case 2: 
+			set_opposite(state[3], state[2]); break;
+		case 3: 
+			set_opposite(state[2], state[3]); break;
+	}
+	validate();
+}
 
-SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, int axis, int buttons, int hats): 
-config_base("player.controls." + profile + "."), axis(axis), buttons(buttons), hats(hats) {
+SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) : 
+	config_base("player.controls." + profile + ".") { 
+	
+	axis = joy.get_axis_num();
+	buttons = joy.get_buttons_num();
+	hats = joy.get_hats_num();
+	
 	reload();
 }
 
-void SimpleJoyBindings::save() {
+static const char * names[] = {"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"};
 
+void SimpleJoyBindings::save() {
+	for(int i = 0; i < 8; ++i) {
+		if (state[i].need_save) {
+			Config->set(config_base + names[i], state[i].to_string());
+		}
+	}	
 }
 
 void SimpleJoyBindings::reload() {
-	const char * names[] = {"up", "down", "left", "right", "fire", "alt-fire", "disembark", "hint-ctrl"};
 	for(int i = 0; i < 8; ++i) {
 		if (Config->has(config_base + names[i])) {
 			std::string value; 
@@ -86,7 +119,93 @@ void SimpleJoyBindings::reload() {
 			try {
 				state[i].from_string(value);
 			} CATCH("reload", continue);
+		} else {
+			state[i].clear();
 		}
+	}
+	validate();
+}
+
+void SimpleJoyBindings::set_opposite(State &dst, const State &src) {
+	switch(src.type) {
+		case State::Axis:
+			dst.type = src.type;
+			dst.value = -src.value;
+			dst.index = src.index;
+			break;
+		case State::Hat:
+			dst.type = src.type;
+			dst.index = src.index;
+			dst.value = ((~src.value) & (SDL_HAT_UP | SDL_HAT_DOWN | SDL_HAT_LEFT | SDL_HAT_RIGHT));
+			break;
+		default: 
+			break;
 	}
 }
 
+bool SimpleJoyBindings::valid() const {
+	std::set<State> used_controls;
+	
+	for(int i = 0; i < 8; ++i) {
+		if (state[i].type != State::None) {
+			used_controls.insert(state[i]);
+		}
+	}
+	return used_controls.size() == 8;
+}
+
+void SimpleJoyBindings::validate() {
+	std::set<State> used_controls;
+	
+	for(int i = 0; i < 8; ++i) {
+		if (state[i].type != State::None) {
+			used_controls.insert(state[i]);
+		}
+	}
+	if (used_controls.size() == 8)
+		return;
+	
+	for(int idx = 0; idx < 4; idx += 2) {
+		if (state[idx].type != State::None) 
+			continue;
+		
+		State s;
+		s.type = State::Axis;
+		s.value = -1;
+
+		for(int i = 0; i < axis; ++i) {
+			s.index = i;
+			if (used_controls.find(s) == used_controls.end()) {
+				state[idx] = s;
+				set_opposite(state[idx + 1], state[idx]);
+				goto found;
+			}
+		}
+		s.type = State::Hat;
+		s.value = idx == 0 ?SDL_HAT_LEFT: SDL_HAT_UP;
+		for(int i = 0; i < hats; ++i) {
+			s.index = i;
+			if (used_controls.find(s) == used_controls.end()) {
+				state[idx] = s;
+				set_opposite(state[idx + 1], state[idx]);
+				goto found;
+			}
+		}
+		found:;
+	}
+
+	for(int i = 0; i < 8; ++i) {
+		if (state[i].type != State::None) 
+			continue;
+		State s;
+		s.type = State::Button;
+		
+		for(int b = 0; b < buttons; ++b) {
+			s.index = b;
+			if (used_controls.find(s) == used_controls.end()) {
+				state[i] = s;
+				break;
+			}
+		}
+	}
+}
