@@ -31,6 +31,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 			int i = atoi(str.c_str() + 2);
 			if (i < 0) 
 				throw_ex(("invalid axis index (%d)", i));
+			type = Axis;
 			index = i;
 			value = v == '+'? 1: -1;
 			need_save = true;
@@ -43,6 +44,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 			int i = atoi(str.c_str() + 1);
 			if (i < 0) 
 				throw_ex(("invalid button index (%d)", i));
+			type = Button;
 			index = i;
 			value = 0;
 			need_save = true;
@@ -64,6 +66,7 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 			if (j < 0) 
 				throw_ex(("invalid hat value (%d)", j));
 
+			type = Hat;
 			index = i;
 			value = j;
 			need_save = true;
@@ -77,10 +80,14 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 void SimpleJoyBindings::set(int idx, const State &s) {
 	if (idx < 0 || idx >= 8)
 		throw_ex(("invalid state index %d", idx));
+	
+	if (state[idx] == s)
+		return;
+	
 	LOG_DEBUG(("setting %d to %s", idx, s.get_name().c_str()));
 	
 	for(int i = 0; i < 8; ++i) {
-		if (state[i] == s)
+		if (i != idx && state[i] == s)
 			state[i].clear();
 	}
 	
@@ -122,11 +129,14 @@ void SimpleJoyBindings::save() {
 
 void SimpleJoyBindings::reload() {
 	for(int i = 0; i < 8; ++i) {
-		if (Config->has(config_base + names[i])) {
+		std::string key = config_base + names[i];
+		if (Config->has(key)) {
+			LOG_DEBUG(("found config key %s", key.c_str()));
 			std::string value; 
-			Config->get(config_base + names[i], value, std::string());
+			Config->get(key, value, std::string());
 			try {
 				state[i].from_string(value);
+				LOG_DEBUG(("loaded %d -> %s", i, state[i].to_string().c_str()));
 			} CATCH("reload", continue);
 		} else {
 			state[i].clear();

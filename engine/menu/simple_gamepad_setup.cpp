@@ -120,6 +120,7 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 
 void SimpleGamepadSetup::reload() {
 	bindings = SimpleJoyBindings(profile, joy);	
+	refresh();
 }
 
 void SimpleGamepadSetup::save() {
