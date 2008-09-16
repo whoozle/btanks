@@ -57,7 +57,7 @@ if os.environ.has_key('CXXFLAGS'):
 if os.environ.has_key('LDFLAGS'):
 	env['LINKFLAGS'] += SCons.Util.CLVar(os.environ['LDFLAGS'])
 
-if (env['gcc_visibility']): 
+if (sys.platform != "win32" and env['gcc_visibility']): 
 	env.Append(CCFLAGS=['-fvisibility=hidden', '-DGCC_HASCLASSVISIBILITY'])
 	env.Append(CXXFLAGS=['-fvisibility-inlines-hidden', '-fvisibility=hidden', '-DGCC_HASCLASSVISIBILITY'])
 
