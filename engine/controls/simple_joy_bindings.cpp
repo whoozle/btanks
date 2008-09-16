@@ -141,11 +141,13 @@ void SimpleJoyBindings::set_opposite(State &dst, const State &src) {
 			dst.type = src.type;
 			dst.value = -src.value;
 			dst.index = src.index;
+			dst.need_save |= src.need_save;
 			break;
 		case State::Hat:
 			dst.type = src.type;
 			dst.index = src.index;
 			dst.value = ((~src.value) & (SDL_HAT_UP | SDL_HAT_DOWN | SDL_HAT_LEFT | SDL_HAT_RIGHT));
+			dst.need_save |= src.need_save;
 			break;
 		default: 
 			break;
