@@ -76,6 +76,13 @@ void SimpleJoyBindings::State::from_string(const std::string &str) {
 void SimpleJoyBindings::set(int idx, const State &s) {
 	if (idx < 0 || idx >= 8)
 		throw_ex(("invalid state index %d", idx));
+	LOG_DEBUG(("setting %d to %s", idx, s.get_name().c_str()));
+	
+	for(int i = 0; i < 8; ++i) {
+		if (state[idx] == s)
+			state[idx].clear();
+	}
+	
 	state[idx] = s;
 	state[idx].need_save = true;
 	switch(idx) {
@@ -155,7 +162,6 @@ bool SimpleJoyBindings::valid() const {
 }
 
 void SimpleJoyBindings::validate() {
-	return;
 	std::set<State> used_controls;
 	
 	for(int i = 0; i < 8; ++i) {
