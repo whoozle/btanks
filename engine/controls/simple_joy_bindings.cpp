@@ -79,8 +79,8 @@ void SimpleJoyBindings::set(int idx, const State &s) {
 	LOG_DEBUG(("setting %d to %s", idx, s.get_name().c_str()));
 	
 	for(int i = 0; i < 8; ++i) {
-		if (state[idx] == s)
-			state[idx].clear();
+		if (state[i] == s)
+			state[i].clear();
 	}
 	
 	state[idx] = s;
