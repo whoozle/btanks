@@ -244,9 +244,9 @@ const std::string SimpleJoyBindings::get_name(int idx) const {
 const std::string SimpleJoyBindings::State::get_name() const {
 	switch(type) {
 	case Button:
-		return mrt::format_string("(%d)", index);
+		return mrt::format_string("(%d)", index + 1);
 	case Axis:
-		return mrt::format_string("Axis %d %c", index, value > 0? '+': '-');
+		return mrt::format_string("Axis %d %c", index + 1, value > 0? '+': '-');
 	case Hat: {
 			std::string ctrls;
 			std::vector<std::string> c;
@@ -259,7 +259,7 @@ const std::string SimpleJoyBindings::State::get_name() const {
 			if (value & SDL_HAT_DOWN)
 				c.push_back("down");
 			mrt::join(ctrls, c, "+");
-			return mrt::format_string("Hat %d %s", index, ctrls.c_str());
+			return mrt::format_string("Hat %d %s", index + 1, ctrls.c_str());
 		}
 	default: 
 		return std::string();

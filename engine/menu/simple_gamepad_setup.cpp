@@ -118,6 +118,15 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 	}
 }
 
+void SimpleGamepadSetup::reload() {
+	bindings = SimpleJoyBindings(profile, joy);	
+}
+
+void SimpleGamepadSetup::save() {
+	bindings.save();
+}
+
+
 bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;

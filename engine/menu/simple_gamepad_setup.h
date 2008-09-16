@@ -16,8 +16,8 @@ class SimpleGamepadSetup : public Container {
 public:
 	SimpleGamepadSetup();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	void reload() {}
-	void save() {}
+	void reload();
+	void save();
 	void hide(const bool hide = true);
 	
 	void init(const int idx);
