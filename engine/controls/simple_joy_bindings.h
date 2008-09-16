@@ -15,7 +15,9 @@ public:
 		bool need_save;
 		
 		inline State() : type(None), index(-1), value(0), need_save(false) {}
+		inline State(Type type, int index, int value) : type(type), index(index), value(value), need_save(false) {}
 		
+		const std::string get_name() const;
 		const std::string to_string() const;
 		void from_string(const std::string &value);
 		inline void clear() {
@@ -38,6 +40,8 @@ public:
 	void reload();
 	void set(int idx, const State &state);
 	bool valid() const;
+	
+	const std::string get_name(int idx) const;
 
 private: 
 	void validate();

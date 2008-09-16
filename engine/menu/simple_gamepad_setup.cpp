@@ -32,7 +32,7 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 
 	bg_table_pos = v2<int>((bw - bg_table->get_width()) / 2, my + ch + my);
 	
-	const char * labels[] = {"up", "down", "left", "right", "fire", "alt-fire", "disembark", "hint-ctrl"};
+	const char * labels[] = {"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"};
 	size_t n = sizeof(labels) / sizeof(labels[0]);
 	ch = (bg_table->get_height() - 46) / n;
 	for(size_t i = 0; i < n; ++i) {
@@ -71,33 +71,29 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			int v = math::abs(je.value);
 			if (v < (int)(32767 * dead_zone->get())) 
 				break;
-			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
+			//LOG_DEBUG(("axis %d: %d", je.axis, je.value));
+		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, v > 0? 1: -1));
 			break;
 		}
-#if 0
-		case SDL_JOYBALLMOTION: {
-			const SDL_JoyBallEvent &je = event.jball;
-			int dx = math::abs(je.xrel), dy = math::abs(je.yrel);
-			LOG_DEBUG(("ball %d: %s", je.ball, dx > dy? "X": "Y"));
-			break;
-		}
-#endif
 		case SDL_JOYHATMOTION: {
 			const SDL_JoyHatEvent &je = event.jhat;
 			if (je.value == SDL_HAT_CENTERED)
 				break;
 			
-			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
+			//LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
+			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Hat, je.hat, je.value));
 			break;
 		}
 
 		case SDL_JOYBUTTONDOWN: {
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			LOG_DEBUG(("button %d", je.button));
+			//LOG_DEBUG(("button %d", je.button));
+			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Button, je.button, 0));
 			break;
 		}
 
-		default:; 
+		default: 
+			return;
 	}
 }
 

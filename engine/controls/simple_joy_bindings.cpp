@@ -209,3 +209,34 @@ void SimpleJoyBindings::validate() {
 		}
 	}
 }
+
+const std::string SimpleJoyBindings::get_name(int idx) const {
+	if (idx < 0 || idx >= 8) 
+		throw_ex(("invalid control index %d", idx));
+	return state[idx].get_name();
+}
+
+const std::string SimpleJoyBindings::State::get_name() const {
+	switch(type) {
+	case Button:
+		return mrt::format_string("(%d)", index);
+	case Axis:
+		return mrt::format_string("Axis %d %c", index, value > 0? '+': '-');
+	case Hat: {
+			std::string ctrls;
+			std::vector<std::string> c;
+			if (value & SDL_HAT_LEFT)
+				c.push_back("left");
+			if (value & SDL_HAT_RIGHT)
+				c.push_back("right");
+			if (value & SDL_HAT_UP)
+				c.push_back("up");
+			if (value & SDL_HAT_DOWN)
+				c.push_back("down");
+			mrt::join(ctrls, c, "+");
+			return mrt::format_string("Hat %d %s", index, ctrls.c_str());
+		}
+	default: 
+		return std::string();
+	}
+}
