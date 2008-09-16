@@ -49,9 +49,9 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 		case SDL_JOYAXISMOTION: {
 			const SDL_JoyAxisEvent &je = event.jaxis;
 			int v = math::abs(je.value);
-			if (v < 32767 / 3) 
+			if (v < 26214) 
 				break;
-			LOG_DEBUG(("axis %d", je.axis));
+			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
 			break;
 		}
 #if 0
