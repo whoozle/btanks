@@ -80,7 +80,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			if (v < (int)(32767 * dead_zone->get())) 
 				break;
 			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
-		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, v > 0? 1: -1));
+		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, je.value > 0? 1: -1));
 		 	refresh();
 			break;
 		}
