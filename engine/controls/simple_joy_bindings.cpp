@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "sdlx/sdlx.h"
 #include "sdlx/joystick.h"
+#include "mrt/logger.h"
 #include <set>
 
 const std::string SimpleJoyBindings::State::to_string() const {
@@ -98,8 +99,9 @@ void SimpleJoyBindings::set(int idx, const State &s) {
 	validate();
 }
 
-SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) : 
+SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) :
 	config_base("player.controls." + profile + ".") { 
+	LOG_DEBUG(("loading binding for the '%s'", profile.c_str()));
 	
 	axis = joy.get_axis_num();
 	buttons = joy.get_buttons_num();
@@ -162,6 +164,7 @@ bool SimpleJoyBindings::valid() const {
 }
 
 void SimpleJoyBindings::validate() {
+	//LOG_DEBUG(("validate"));
 	std::set<State> used_controls;
 	
 	for(int i = 0; i < 8; ++i) {

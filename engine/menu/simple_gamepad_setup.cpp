@@ -79,7 +79,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			int v = math::abs(je.value);
 			if (v < (int)(32767 * dead_zone->get())) 
 				break;
-			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
+			//LOG_DEBUG(("axis %d: %d", je.axis, je.value));
 		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, je.value > 0? 1: -1));
 		 	refresh();
 			break;
@@ -89,7 +89,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			if (je.value == SDL_HAT_CENTERED)
 				break;
 			
-			LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
+			//LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Hat, je.hat, je.value));
 		 	refresh();
 			break;
@@ -97,7 +97,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 
 		case SDL_JOYBUTTONDOWN: {
 			const SDL_JoyButtonEvent &je = event.jbutton;
-			LOG_DEBUG(("button %d", je.button));
+			//LOG_DEBUG(("button %d", je.button));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Button, je.button, 0));
 		 	refresh();
 			break;
@@ -176,8 +176,8 @@ void SimpleGamepadSetup::hide(const bool hide) {
 
 void SimpleGamepadSetup::tick(const float dt) {
 	if (joy_list->changed()) {
-		joy_list->reset();
 		init(joy_list->get());
+		joy_list->reset();
 	}
 	if (dead_zone->changed()) {
 		dead_zone->reset();
