@@ -8,6 +8,7 @@
 
 class Box;
 class Chooser;
+class Slider;
 
 class SimpleGamepadSetup : public Container {
 public:
@@ -16,6 +17,8 @@ public:
 	void reload() {}
 	void save() {}
 	void hide(const bool hide = true);
+	
+	void init(const int idx);
 
 private: 
 	virtual void tick(const float dt);
@@ -30,11 +33,13 @@ private:
 	const sdlx::Surface *bg_table; 
 	mutable const sdlx::Surface *selection;
 	Chooser *joy_list;
+	Slider * dead_zone;
 	
 	v2<int> bg_table_pos;
 	int active_row;
 
 	sdlx::Joystick joy;
+	std::string profile;
 };
 
 

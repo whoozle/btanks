@@ -7,6 +7,8 @@
 #include "menu.h"
 #include "chooser.h"
 #include "math/unary.h"
+#include "slider.h"
+#include "config.h"
 
 SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")), selection(NULL) {
 	int joys = joy.getCount();
@@ -18,17 +20,17 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	bg->get_size(bw, bh);
 	bg->getMargins(mx, my);
 	
-	bg_table_pos = v2<int>((bw - bg_table->get_width()) / 2, (bh - bg_table->get_height()) / 2);
 	
 	std::vector<std::string> jlist;
 	for(int i = 0; i < joys; ++i) 
 		jlist.push_back(joy.getName(i));
 	joy_list = new Chooser("small", jlist);
-	joy.open(0);
 
 	int cw, ch;
 	joy_list->get_size(cw, ch);
 	add((bw - cw) / 2, my, joy_list);
+
+	bg_table_pos = v2<int>((bw - bg_table->get_width()) / 2, my + ch + my);
 	
 	const char * labels[] = {"up", "down", "left", "right", "fire", "alt-fire", "disembark", "hint-ctrl"};
 	size_t n = sizeof(labels) / sizeof(labels[0]);
@@ -36,8 +38,25 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	for(size_t i = 0; i < n; ++i) {
 		add(bg_table_pos.x + 8, bg_table_pos.y + 47 + i * ch, new Label("medium", I18n->get("menu", labels[i])));
 	}
+	
+	int ybase = bg_table_pos.y + bg_table->get_height() + my; 
+	dead_zone = new Slider(1);
+
+	init(0);
+	dead_zone->get_size(cw, ch);
+	add((bw - cw) / 2, ybase, dead_zone);
+	ybase += ch;
 
 	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
+}
+
+void SimpleGamepadSetup::init(const int idx) {
+	joy.open(idx);
+	profile = joy.getName(idx);
+	joy_list->set(idx);
+	float dz;
+	Config->get(std::string("player.controls.") + profile + ".dead_zone", dz, 0.8f);
+	dead_zone->set(dz);
 }
 
 void SimpleGamepadSetup::on_event(const SDL_Event &event) {
@@ -49,7 +68,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 		case SDL_JOYAXISMOTION: {
 			const SDL_JoyAxisEvent &je = event.jaxis;
 			int v = math::abs(je.value);
-			if (v < 26214) 
+			if (v < (int)(32767 * dead_zone->get())) 
 				break;
 			LOG_DEBUG(("axis %d: %d", je.axis, je.value));
 			break;
@@ -89,6 +108,9 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 }
 
 bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
+	if (Container::onKey(sym))
+		return true;
+	
 	switch(sym.sym) {
 	case SDLK_ESCAPE: 
 		reload();
@@ -106,11 +128,22 @@ bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
 }
 
 bool SimpleGamepadSetup::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (Container::onMouse(button, pressed, x, y))
+		return true;
+	//blah blah
+
 	return true;
 }
 
 bool SimpleGamepadSetup::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-	active_row = (y - bg_table_pos.y - 44) / 30;
+	if (Container::onMouseMotion(state, x, y, xrel, yrel))
+		return true;
+	
+	active_row = y - bg_table_pos.y - 44;
+	if (active_row < 0) 
+		return true;
+
+	active_row /= 30;
 	return true;
 }
 
@@ -122,6 +155,10 @@ void SimpleGamepadSetup::hide(const bool hide) {
 void SimpleGamepadSetup::tick(const float dt) {
 	if (joy_list->changed()) {
 		joy_list->reset();
-		joy.open(joy_list->get());
+		init(joy_list->get());
+	}
+	if (dead_zone->changed()) {
+		dead_zone->reset();
+		Config->set(std::string("player.controls.") + profile + ".dead_zone", dead_zone->get());
 	}
 }
