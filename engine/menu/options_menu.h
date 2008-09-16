@@ -68,7 +68,7 @@ private:
 	int _bx, _by;
 	Button *_b_ok, *_b_back;
 	Slider *_fx, *_music, *_ambient;
-	Button *_b_redefine;
+	Button *_b_redefine, *_b_setup_gamepad;
 	Chooser *_c_res;
 	Checkbox *_fsmode, *_donate, *_fog_of_war;
 

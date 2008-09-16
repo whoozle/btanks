@@ -45,6 +45,7 @@
 
 OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false), _gamepad(NULL) {
 	Mixer->loadSample("shot.ogg");
+	bool has_gamepad = sdlx::Joystick::getCount() > 0;
 	
 	_background.init("menu/background_box.png", w - 100, h - 100);
 	int bw, bh;
@@ -102,7 +103,15 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	
 	_b_redefine = new Button("medium_dark", I18n->get("menu", "redefine-keys"));
 	_b_redefine->get_size(sw, sh);
-	add((w - sw) / 2, yp + 6, _b_redefine);
+	add(has_gamepad? w / 2 - sw - my: (w - sw) / 2, yp + 6, _b_redefine);
+
+	if (has_gamepad) {
+		_b_setup_gamepad = new Button("medium_dark", I18n->get("menu", "setup-gamepad"));
+		_b_setup_gamepad->get_size(sw, sh);
+		add(w / 2, yp + 6, _b_setup_gamepad);
+	} else {
+		_b_setup_gamepad = NULL;
+	}
 
 	yp += sh + 20;
 	//volume controls 
@@ -247,7 +256,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	add((w - sw) / 2, (h - sh) / 2, _keys);
 	_keys->hide();
 	
-	if (sdlx::Joystick::getCount() > 0) {
+	if (has_gamepad) {
 		_gamepad = new SimpleGamepadSetup();
 		_gamepad->get_size(sw, sh);
 	
@@ -428,6 +437,11 @@ void OptionsMenu::tick(const float dt) {
 	if (_b_redefine->changed()) {
 		_b_redefine->reset();
 		_keys->hide(false);
+	} 
+	if (_b_setup_gamepad != NULL && _b_setup_gamepad->changed()) {
+		_b_setup_gamepad->reset();
+		if (_gamepad != NULL) //does not really needed
+			_gamepad->hide(false);
 	}
 	Container::tick(dt);
 }
