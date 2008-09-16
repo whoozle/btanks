@@ -82,7 +82,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			//LOG_DEBUG(("axis %d: %d", je.axis, je.value));
 		 	bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Axis, je.axis, je.value > 0? 1: -1));
 		 	refresh();
-		 	++active_row;
+		 	//++active_row;
 			break;
 		}
 		case SDL_JOYHATMOTION: {
@@ -93,7 +93,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			//LOG_DEBUG(("hat %d: %04x", je.hat, (unsigned)je.value));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Hat, je.hat, je.value));
 		 	refresh();
-		 	++active_row;
+		 	//++active_row;
 			break;
 		}
 
@@ -102,7 +102,7 @@ void SimpleGamepadSetup::on_event(const SDL_Event &event) {
 			//LOG_DEBUG(("button %d", je.button));
 			bindings.set(active_row, SimpleJoyBindings::State(SimpleJoyBindings::State::Button, je.button, 0));
 		 	refresh();
-		 	++active_row;
+			//++active_row;
 			break;
 		}
 
