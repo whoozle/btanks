@@ -342,21 +342,14 @@
 		<string id="of" lang="fr">de</string>
 		<string id="of" lang="de">von</string>
 		<string id="of" lang="it">di</string>
-		            
-		<string id="test-gamepad">Test your gamepad. If it behaves different that you expected click [setup] button. During setup press ESC to skip current control. </string>
-		<string id="test-gamepad" lang="ru">Попробуйте свой геймпад. Если он ведёт себя не так как ожидалось, нажмите кнопку [настроить]. Нажимайте ESC чтобы пропустить кнопку, ось или d-pad.</string>
-		<string id="test-gamepad" lang="uk">Спробуйте свій геймпад. Якщо він поводить себе не так, як того очікували ви, натисніть кнопку [налаштувати]. Натискайте ESC, щоб пропустити кнопку, вісь або d-pad.</string>
-		<string id="test-gamepad" lang="fr">Testez votre manette de jeu. Si elle ne se comporte pas comme voulu, cliquez sur le bouton [Configurer].</string>
-		<string id="test-gamepad" lang="de">Testen Sie Ihr Joystick. Falls es nicht richtig funkzioniert, drücken Sie bitte die Taste [Einstellen].</string>
-		<string id="test-gamepad" lang="it">Prova il joystick. Se non funziona correttamente premi [setup].</string>
-		               
+               
 		<string id="setup-gamepad">setup gamepad</string>
-		<string id="setup-gamepad" lang="ru">настроить</string>
-		<string id="setup-gamepad" lang="uk">Налаштувати</string>
-		<string id="setup-gamepad" lang="fr">Configurer</string>
-		<string id="setup-gamepad" lang="de">Einstellen</string>
-		<string id="setup-gamepad" lang="it">Configurazione</string>
-                              
+		<string id="setup-gamepad" lang="ru">настроить джойстик</string>
+		<string id="setup-gamepad" lang="uk">Налаштувати геймпад</string>
+		<string id="setup-gamepad" lang="fr">Gamepad Configurer</string>
+		<string id="setup-gamepad" lang="de">Gamepad Einstellen</string>
+		<string id="setup-gamepad" lang="it">Gamepad Configurazione</string>
+        
 		<string id="screen-resolution">screen size</string>
 		<string id="screen-resolution" lang="ru">Размер окна/Разрешение</string>
 		<string id="screen-resolution" lang="uk">Розмір вікна</string>
