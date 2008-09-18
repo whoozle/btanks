@@ -63,7 +63,6 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_labels.push_back("hint-ctrl");
 	
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
-	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
 	_b_default = new Button("medium_dark", I18n->get("menu", "default-keys"));
 	
 	int w, h;
@@ -75,10 +74,6 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	int yp = _background.h - h - ym;
 	add (_background.w - mx - w, yp, _b_ok);
 
-	_b_back->get_size(w, h);
-	yp = _background.h - h - ym;
-	add (mx, yp, _b_back);
-
 	_b_default->get_size(w, h);
 	yp = _background.h - h - ym;
 	add (_background.w / 2 - w / 2, yp, _b_default);
@@ -89,12 +84,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 
 void RedefineKeys::tick(const float dt) {
 	Container::tick(dt);
-	if (_b_back->changed()) {
-		_b_back->reset();
-		reload();
-		hide();
-	}
-	
+
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		save();
@@ -165,6 +155,7 @@ void RedefineKeys::get_size(int &w, int &h) const {
 bool RedefineKeys::onKey(const SDL_keysym sym) {
 	switch(sym.sym) {
 
+	case SDLK_RETURN:
 	case SDLK_ESCAPE: 
 		hide(true);
 		return true;
@@ -173,7 +164,6 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 	case SDLK_F12:
 	case SDLK_m:
 	case SDLK_KP_ENTER:
-	case SDLK_RETURN:
 		return true;
 		
 	default: ;

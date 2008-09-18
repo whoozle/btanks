@@ -73,7 +73,7 @@ private:
 	
 	int _keys[3][8];
 	
-	Button *_b_ok, *_b_default, *_b_back;
+	Button *_b_ok, *_b_default;
 };
 
 #endif
