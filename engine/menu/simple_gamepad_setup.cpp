@@ -49,6 +49,7 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	ybase += ch;
 
 	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
+	_modal = true;
 }
 
 void SimpleGamepadSetup::init(const int idx) {

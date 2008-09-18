@@ -84,6 +84,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	add (_background.w / 2 - w / 2, yp, _b_default);
 	
 	reload();
+	_modal = true;
 }
 
 void RedefineKeys::tick(const float dt) {
