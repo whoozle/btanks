@@ -300,7 +300,7 @@ void OptionsMenu::load() {
 	Config->get("engine.sound.volume.ambience", volume, 0.5f);
 	_ambient->set(volume);
 	
-	_keys->reload();
+	_keys->load();
 	
 	std::string lang;
 	if (Config->has("engine.language"))

@@ -16,7 +16,7 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	if (joys <= 0)
 		throw_ex(("no gamepad found"));
 	
-	add(0, 0, bg = new Box("menu/background_box_dark.png", bg_table->get_width() + 96, bg_table->get_height() + 140, 24));
+	add(0, 0, bg = new Box("menu/background_box_dark.png", bg_table->get_width() + 96, bg_table->get_height() + 180, 24));
 	int bw, bh, mx, my;
 	bg->get_size(bw, bh);
 	bg->getMargins(mx, my);
@@ -47,15 +47,15 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	init(0);
 	dead_zone->get_size(cw, ch);
 	add((bw - cw) / 2, ybase, dead_zone);
-	ybase += ch;
+	ybase += ch + my;
 
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->get_size(cw, ch);
-	add(3 * bw / 4 - cw / 2, ybase, _b_ok);
+	add(bw - cw - mx * 2, ybase, _b_ok);
 
 	_b_revert = new Button("medium_dark", I18n->get("menu", "revert-to-defaults"));
 	_b_revert->get_size(cw, ch);
-	add(bw / 4 - cw / 2, ybase, _b_revert);
+	add(mx * 2, ybase, _b_revert);
 	
 	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
 	_modal = true;

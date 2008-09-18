@@ -49,7 +49,7 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 
-	_background.init("menu/background_box_dark.png", _bg_table->get_width() + 96, _bg_table->get_height() + 140, 24);
+	_background.init("menu/background_box_dark.png", _bg_table->get_width() + 96, _bg_table->get_height() + 180, 24);
 	
 	initDefaults();
 	
@@ -72,13 +72,13 @@ RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
 	_b_ok->get_size(w, h);
 	int ym = 32;
 	int yp = _background.h - h - ym;
-	add (_background.w - mx - w, yp, _b_ok);
+	add (_background.w - 2 * mx - w, yp, _b_ok);
 
 	_b_default->get_size(w, h);
 	yp = _background.h - h - ym;
-	add (_background.w / 2 - w / 2, yp, _b_default);
+	add (mx * 2, yp, _b_default);
 	
-	reload();
+	load();
 	_modal = true;
 }
 
@@ -98,7 +98,7 @@ void RedefineKeys::tick(const float dt) {
 }
 
 
-void RedefineKeys::reload() {
+void RedefineKeys::load() {
 	_actions.clear();
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		_actions.push_back(Actions::value_type(I18n->get("menu", _labels[i]), sdlx::Rect()));
@@ -106,6 +106,15 @@ void RedefineKeys::reload() {
 			Config->get("player.controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
 		}
 	}
+}
+
+void RedefineKeys::revert_to_defaults() {
+	for(size_t i = 0; i < _labels.size(); ++i) {
+		for(size_t j = 0; j < 3; ++j) {
+			Config->remove("player.controls." + variants[j] + "." + _labels[i]);
+		}
+	}
+	load();
 }
 
 void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) const {

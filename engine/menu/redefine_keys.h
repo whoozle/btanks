@@ -54,7 +54,8 @@ public:
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
-	void reload();
+	void load();
+	void revert_to_defaults();
 	void save(); 
 
 private: 
