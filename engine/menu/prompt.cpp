@@ -52,6 +52,7 @@ Prompt::Prompt(const int w, const int h, TextControl * text) : _text(text), valu
 	_text_rect.h -= bh;
 
 	add(3 * w / 4 - bw / 2, h/2, _b_ok);
+	_modal = true;
 }
 
 void Prompt::set(const std::string &value) {
