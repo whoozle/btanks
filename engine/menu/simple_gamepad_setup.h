@@ -17,7 +17,7 @@ class SimpleGamepadSetup : public Container {
 public:
 	SimpleGamepadSetup();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	void revert_to_default();
+	void revert_to_defaults();
 	void save();
 	void hide(const bool hide = true);
 	
@@ -47,7 +47,7 @@ private:
 	std::string profile;
 	SimpleJoyBindings bindings;
 
-	Button *_b_ok, *_b_default;
+	Button *_b_ok, *_b_revert;
 };
 
 

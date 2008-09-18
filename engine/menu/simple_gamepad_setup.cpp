@@ -53,9 +53,9 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	_b_ok->get_size(cw, ch);
 	add(3 * bw / 4 - cw / 2, ybase, _b_ok);
 
-	_b_default = new Button("medium_dark", I18n->get("menu", "revert-to-defaults"));
-	_b_default->get_size(cw, ch);
-	add(bw / 4 - cw / 2, ybase, _b_default);
+	_b_revert = new Button("medium_dark", I18n->get("menu", "revert-to-defaults"));
+	_b_revert->get_size(cw, ch);
+	add(bw / 4 - cw / 2, ybase, _b_revert);
 	
 	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
 	_modal = true;
@@ -129,7 +129,7 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 	}
 }
 
-void SimpleGamepadSetup::revert_to_default() {
+void SimpleGamepadSetup::revert_to_defaults() {
 	bindings.clear();
 	refresh();
 }
@@ -188,5 +188,14 @@ void SimpleGamepadSetup::tick(const float dt) {
 	if (dead_zone->changed()) {
 		dead_zone->reset();
 		bindings.set_dead_zone(dead_zone->get());
+	}
+	if (_b_revert->changed()) {
+		_b_revert->reset();
+		revert_to_defaults();
+	}
+	if (_b_ok->changed()) {
+		_b_ok->reset();
+		save();
+		hide();
 	}
 }
