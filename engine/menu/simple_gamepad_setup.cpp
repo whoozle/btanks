@@ -130,6 +130,14 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 }
 
 void SimpleGamepadSetup::revert_to_defaults() {
+	Config->remove("player.controls.joystick." + profile + ".left");
+	Config->remove("player.controls.joystick." + profile + ".right");
+	Config->remove("player.controls.joystick." + profile + ".up");
+	Config->remove("player.controls.joystick." + profile + ".down");
+	Config->remove("player.controls.joystick." + profile + ".fire");
+	Config->remove("player.controls.joystick." + profile + ".alt-fire");
+	Config->remove("player.controls.joystick." + profile + ".disembark");
+	Config->remove("player.controls.joystick." + profile + ".hint-ctrl");
 	bindings.clear();
 	refresh();
 }
