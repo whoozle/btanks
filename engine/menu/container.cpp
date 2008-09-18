@@ -94,6 +94,7 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 		Control *c = (*i);
 		if (c->hidden())
 			continue;
+		
 		int bw, bh, base_x, base_y;
 		c->get_size(bw, bh);
 		c->get_base(base_x, base_y);
@@ -105,11 +106,13 @@ bool Container::onMouse(const int button, const bool pressed, const int x, const
 				//LOG_DEBUG(("%p: focus passed to %p", (void *)this,  (void *)_focus));
 				_focus = c;
 			}
-			if (c->onMouse(button, pressed, x - dst.x, y - dst.y) || c->_modal) {
+			if (c->onMouse(button, pressed, x - dst.x, y - dst.y)) {
 				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)(*i)));
 				return true;
 			}
 		}
+		if (c->_modal)
+			return true;
 	}
 	return false;
 }
@@ -132,9 +135,11 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 			c->_mouse_in = false;
 			c->on_mouse_enter(false);
 		}
-		if (in && (c->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel) || c->_modal)) {
+		if (in && c->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
 			return true;
 		}
+		if (c->_modal)
+			return true;
 	}
 	return false;
 }
