@@ -66,7 +66,7 @@ private:
 	bool _changed;
 	bool _mouse_in;
 protected: 
-	bool _hidden;
+	bool _hidden, _modal;
 };
 
 #endif

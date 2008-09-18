@@ -78,10 +78,11 @@ bool Container::onKey(const SDL_keysym sym) {
 		return true;
 	
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if ((*i)->hidden() || (*i) == _focus)
+		Control *c = (*i);
+		if (c->hidden() || c == _focus)
 			continue;
 
-		if ((*i)->onKey(sym))
+		if (c->onKey(sym) | c->_modal)
 			return true;
 	}
 	return false;
@@ -90,20 +91,21 @@ bool Container::onKey(const SDL_keysym sym) {
 bool Container::onMouse(const int button, const bool pressed, const int x, const int y) {
 	//LOG_DEBUG(("%p: entering onMouse handler. (%d, %d)", (void *)this, x , y));
 	for(ControlList::reverse_iterator i = _controls.rbegin(); i != _controls.rend(); ++i) {
-		if ((*i)->hidden())
+		Control *c = (*i);
+		if (c->hidden())
 			continue;
 		int bw, bh, base_x, base_y;
-		(*i)->get_size(bw, bh);
-		(*i)->get_base(base_x, base_y);
+		c->get_size(bw, bh);
+		c->get_base(base_x, base_y);
 		
 		const sdlx::Rect dst(base_x, base_y, bw, bh);
 		//LOG_DEBUG(("%p: checking control %p (%d, %d, %d, %d)", (void *)this, (void *)(*i), dst.x, dst.y, dst.w, dst.h));
 		if (dst.in(x, y)) {
 			if (pressed) {
 				//LOG_DEBUG(("%p: focus passed to %p", (void *)this,  (void *)_focus));
-				_focus = (*i);
+				_focus = c;
 			}
-			if ((*i)->onMouse(button, pressed, x - dst.x, y - dst.y)) {
+			if (c->onMouse(button, pressed, x - dst.x, y - dst.y) || c->_modal) {
 				//LOG_DEBUG(("%p: control %p returning true", (void *)this, (void *)(*i)));
 				return true;
 			}
@@ -130,7 +132,7 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 			c->_mouse_in = false;
 			c->on_mouse_enter(false);
 		}
-		if (in && c->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel)) {
+		if (in && (c->onMouseMotion(state, x - dst.x, y - dst.y, xrel, yrel) || c->_modal)) {
 			return true;
 		}
 	}
