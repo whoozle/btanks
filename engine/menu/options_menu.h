@@ -54,6 +54,7 @@ public:
 	void tick(const float dt);
 	
 	void load();
+	void revert_to_defaults();
 	void save();
 	
 	virtual bool onKey(const SDL_keysym sym);

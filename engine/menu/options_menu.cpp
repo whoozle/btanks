@@ -271,6 +271,19 @@ void OptionsMenu::get_size(int &w, int &h) const {
 	h = _background.h;
 }
 
+void OptionsMenu::revert_to_defaults() {
+	Config->remove("engine.sound.volume.music");
+	Config->remove("engine.sound.volume.fx");
+	Config->remove("engine.sound.volume.ambience");
+	Config->remove("engine.language");
+	Config->remove("engine.window.width");
+	Config->remove("engine.window.height");
+	Config->remove("engine.window.fullscreen");
+	Config->remove("engine.donate-screen-duration");
+	Config->remove("engine.fog-of-war.enabled");
+	load();
+}
+
 void OptionsMenu::load() {
 	LOG_DEBUG(("loading options..."));
 	sp->reload();
@@ -424,10 +437,14 @@ void OptionsMenu::tick(const float dt) {
 		_ambient->reset();
 		Mixer->setAmbienceVolume(_ambient->get());
 	}
+	if (_b_revert->changed()) {
+		_b_revert->reset();
+		revert_to_defaults();
+	}
 	if (_b_ok->changed()) {
 		_b_ok->reset();
-		_parent->back();
 		save();
+		_parent->back();
 	} 
 	if (_b_redefine->changed()) {
 		_b_redefine->reset();
@@ -455,8 +472,8 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
 	case SDLK_ESCAPE: 
-		_parent->back();
 		save();
+		_parent->back();
 		return true;
 
 	case SDLK_j: 
