@@ -9,6 +9,7 @@
 #include "math/unary.h"
 #include "slider.h"
 #include "config.h"
+#include "button.h"
 
 SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface("menu/gamepad_table.png")), selection(NULL) {
 	int joys = joy.getCount();
@@ -48,6 +49,14 @@ SimpleGamepadSetup::SimpleGamepadSetup() : bg_table(ResourceManager->loadSurface
 	add((bw - cw) / 2, ybase, dead_zone);
 	ybase += ch;
 
+	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
+	_b_ok->get_size(cw, ch);
+	add(3 * bw / 4 - cw / 2, ybase, _b_ok);
+
+	_b_default = new Button("medium_dark", I18n->get("menu", "revert-to-defaults"));
+	_b_default->get_size(cw, ch);
+	add(bw / 4 - cw / 2, ybase, _b_default);
+	
 	on_event_slot.assign(this, &SimpleGamepadSetup::on_event, Window->event_signal);
 	_modal = true;
 }
@@ -120,8 +129,8 @@ void SimpleGamepadSetup::render(sdlx::Surface &surface, const int x, const int y
 	}
 }
 
-void SimpleGamepadSetup::reload() {
-	bindings = SimpleJoyBindings(profile, joy);	
+void SimpleGamepadSetup::revert_to_default() {
+	bindings.clear();
 	refresh();
 }
 
@@ -135,14 +144,8 @@ bool SimpleGamepadSetup::onKey(const SDL_keysym sym) {
 		return true;
 	
 	switch(sym.sym) {
-	case SDLK_ESCAPE: 
-		reload();
-		hide();
-		return true;
-
 	case SDLK_RETURN:
-		if (!bindings.valid())
-			return true;
+	case SDLK_ESCAPE:
 		save();
 		hide();
 		return true;

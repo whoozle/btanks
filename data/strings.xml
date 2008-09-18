@@ -322,6 +322,9 @@
 		<string id="default-keys" lang="de">Tasten neu einstellen</string>
 		<string id="default-keys" lang="it">Tasti di default</string>
 		
+		<string id="revert-to-defaults">Defaults</string>
+		<string id="revert-to-defaults" lang="ru">Вернуть как было</string>
+		
 		<string id="view-map">[click here to view tactics map]</string>
 		<string id="view-map" lang="ru">[клик - тактическая карта]</string>
 		<string id="view-map" lang="uk">[Клік - тактична мапа]</string>

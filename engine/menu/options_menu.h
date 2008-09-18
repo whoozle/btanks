@@ -53,7 +53,7 @@ public:
 	void get_size(int &w, int &h) const;
 	void tick(const float dt);
 	
-	void reload();
+	void load();
 	void save();
 	
 	virtual bool onKey(const SDL_keysym sym);
@@ -66,7 +66,7 @@ private:
 
 	Box _background;
 	int _bx, _by;
-	Button *_b_ok, *_b_back;
+	Button *_b_ok, *_b_revert;
 	Slider *_fx, *_music, *_ambient;
 	Button *_b_redefine, *_b_setup_gamepad;
 	Chooser *_c_res;

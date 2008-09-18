@@ -11,12 +11,13 @@ class Box;
 class Chooser;
 class Slider;
 class Label;
+class Button;
 
 class SimpleGamepadSetup : public Container {
 public:
 	SimpleGamepadSetup();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	void reload();
+	void revert_to_default();
 	void save();
 	void hide(const bool hide = true);
 	
@@ -45,6 +46,8 @@ private:
 	sdlx::Joystick joy;
 	std::string profile;
 	SimpleJoyBindings bindings;
+
+	Button *_b_ok, *_b_default;
 };
 
 

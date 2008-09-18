@@ -42,7 +42,8 @@ public:
 	SimpleJoyBindings() : config_base(), axis(0), buttons(0), hats(0) {}
 	SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy);
 	void save();
-	void reload();
+	void load();
+	void clear();
 	void set(int idx, const State &state);
 	const State &get(int idx) const;
 	bool valid() const;

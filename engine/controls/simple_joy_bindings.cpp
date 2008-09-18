@@ -123,7 +123,7 @@ SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joy
 	buttons = joy.get_buttons_num();
 	hats = joy.get_hats_num();
 	
-	reload();
+	load();
 }
 
 static const char * names[] = {"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"};
@@ -136,7 +136,7 @@ void SimpleJoyBindings::save() {
 	}	
 }
 
-void SimpleJoyBindings::reload() {
+void SimpleJoyBindings::load() {
 	Config->get(config_base + "dead-zone", dead_zone, 0.8f);
 
 	for(int i = 0; i < 8; ++i) {
@@ -155,6 +155,14 @@ void SimpleJoyBindings::reload() {
 	}
 	validate();
 }
+
+void SimpleJoyBindings::clear() {
+	for(int i = 0; i < 8; ++i) {
+		state[i].clear();
+	}
+	validate();	
+}
+
 
 void SimpleJoyBindings::set_opposite(State &dst, const State &src) {
 	switch(src.type) {

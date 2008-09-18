@@ -56,15 +56,14 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 	_by = ( h - _background.h ) / 2;
 	int base_x = _bx + 3 * _background.w / 4;
 
-	_b_back = new Button("medium_dark", I18n->get("menu", "back"));
-	_b_back->get_size(bw, bh);
-
-	add(_bx + mx + _background.w / 4 - bw / 2, h -  my - bh - _by, _b_back);
-	
 	_b_ok = new Button("medium_dark", I18n->get("menu", "ok"));
 	_b_ok->get_size(bw, bh);
 	add(_by + my + 3 * _background.w / 4 - bw / 2, h -  my - bh - _by, _b_ok);
-	
+
+	_b_revert = new Button("medium_dark", I18n->get("menu", "revert-to-defaults"));
+	_b_revert->get_size(bw, bh);
+	add(_by + my + _background.w / 4 - bw / 2, h -  my - bh - _by, _b_revert);
+
 	int width = _background.w - 2 * mx;
 
 	int sw, sh;
@@ -264,7 +263,7 @@ OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(p
 		_gamepad->hide();
 	}
 		
-	reload();
+	load();
 }
 
 void OptionsMenu::get_size(int &w, int &h) const {
@@ -272,8 +271,8 @@ void OptionsMenu::get_size(int &w, int &h) const {
 	h = _background.h;
 }
 
-void OptionsMenu::reload() {
-	LOG_DEBUG(("reloading options..."));
+void OptionsMenu::load() {
+	LOG_DEBUG(("loading options..."));
 	sp->reload();
 	sp1->reload();
 	sp2->reload();
@@ -429,11 +428,7 @@ void OptionsMenu::tick(const float dt) {
 		_b_ok->reset();
 		_parent->back();
 		save();
-	} else if (_b_back->changed()) {
-		_b_back->reset();
-		_parent->back();
-		reload();
-	}
+	} 
 	if (_b_redefine->changed()) {
 		_b_redefine->reset();
 		_keys->hide(false);
@@ -459,19 +454,14 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
-		_parent->back();
-		save();
-		return true;
-
 	case SDLK_ESCAPE: 
 		_parent->back();
-		reload();
+		save();
 		return true;
 
 	case SDLK_j: 
 	case SDLK_g: 
 		if (_gamepad != NULL && _keys->hidden()) {
-			_gamepad->reload();
 			_gamepad->hide(false);
 		}
 			
