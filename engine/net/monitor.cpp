@@ -262,9 +262,9 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 			m.unlock();
 			TRY { 
 				id = task->id;
-				data = task->data;
+				data.move(task->data);
 				//LOG_DEBUG(("recv-ed %u bytes dgram", (unsigned)data.get_size()));
-			} CATCH("recv", { delete task; throw; });
+			} CATCH("recv(dgram)", { delete task; throw; });
 			delete task;
 			return true;
 		}
@@ -278,7 +278,7 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	m.unlock();
 	TRY { 
 		id = task->id;
-		data = task->data;
+		data.move(task->data);
 		//LOG_DEBUG(("recv-ed %u bytes", (unsigned)data.get_size()));
 	} CATCH("recv", { delete task; throw; });
 	delete task;
