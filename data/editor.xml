@@ -228,6 +228,9 @@
 	</class>
 	<class id="invader-bullet">
 	</class>
+	<class id="invader-teleport">
+		<animation id="invader-teleport" />
+	</class>
 	<class id="invaders-defender">
 	</class>
 	<class id="invulnerability-item">
