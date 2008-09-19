@@ -51,6 +51,17 @@ const Chunk& Chunk::operator=(const Chunk& c) {
 	return *this;
 }
 
+void Chunk::move(Chunk &other) {
+	if (this == &other)
+		return;
+	free();
+	ptr = other.ptr;
+	size = other.size;
+	other.ptr = NULL;
+	other.size = 0;
+}
+
+
 void Chunk::set_size(size_t s) {
 	if (s == size)
 		return;
