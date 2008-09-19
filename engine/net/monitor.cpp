@@ -257,8 +257,8 @@ const bool Monitor::recv(int &id, mrt::Chunk &data) {
 	{
 		sdlx::AutoMutex m(_result_dgram_mutex);
 		if (!_result_q_dgram.empty()) {
-			Task *task = _result_q.front();
-			_result_q.pop_front();
+			Task *task = _result_q_dgram.front();
+			_result_q_dgram.pop_front();
 			m.unlock();
 			TRY { 
 				id = task->id;
