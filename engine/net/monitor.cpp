@@ -140,7 +140,7 @@ Monitor::Task::~Task() { data.free(); pos = len = 0; }
 
 Monitor::Monitor(const int cl) : 
 	_running(false), 
-	_send_q(), _recv_q(), _result_q(), 
+	_send_q(), _recv_q(), _result_q(), _result_q_dgram(), 
 	_disconnections(), _connections(), 
 	_connections_mutex(), _result_mutex(), _send_q_mutex(), 
 	_comp_level(0), _dgram_sock(NULL), _server_sock(NULL) {
@@ -254,6 +254,21 @@ Monitor::TaskQueue::iterator Monitor::findTask(TaskQueue &queue, const int conn_
 
 
 const bool Monitor::recv(int &id, mrt::Chunk &data) {
+	{
+		sdlx::AutoMutex m(_result_dgram_mutex);
+		if (!_result_q_dgram.empty()) {
+			Task *task = _result_q.front();
+			_result_q.pop_front();
+			m.unlock();
+			TRY { 
+				id = task->id;
+				data = task->data;
+				//LOG_DEBUG(("recv-ed %u bytes dgram", (unsigned)data.get_size()));
+			} CATCH("recv", { delete task; throw; });
+			delete task;
+			return true;
+		}
+	}
 	sdlx::AutoMutex m(_result_mutex);
 	if (_result_q.empty())
 		return false;
@@ -422,8 +437,8 @@ TRY {
 					
 					//LOG_DEBUG(("recv(%d, %u)", t->id, (unsigned)t->data->get_size()));
 
-					sdlx::AutoMutex m2(_result_mutex);
-					_result_q.push_back(t);
+					sdlx::AutoMutex m2(_result_dgram_mutex);
+					_result_q_dgram.push_back(t);
 				} else {
 					bool ok = false;
 
@@ -617,6 +632,9 @@ Monitor::~Monitor() {
 	for(TaskQueue::iterator i = _result_q.begin(); i != _result_q.end(); ++i) {
 		delete *i;
 	}
+	for(TaskQueue::iterator i = _result_q_dgram.begin(); i != _result_q_dgram.end(); ++i) {
+		delete *i;
+	}
 }
 
 void Monitor::setCompressionLevel(const int level) {
@@ -644,6 +662,11 @@ Connection *Monitor::pop() {
 	{
 		sdlx::AutoMutex m(_result_mutex);
 		eraseTasks(_result_q, cid);
+	}
+
+	{
+		sdlx::AutoMutex m(_result_dgram_mutex);
+		eraseTasks(_result_q_dgram, cid);
 	}
 	
 	return r;

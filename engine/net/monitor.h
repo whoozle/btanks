@@ -99,12 +99,12 @@ private:
 	Task * createTask(const int id, const mrt::Chunk &data);
 	
 	typedef std::list<Task *> TaskQueue;
-	TaskQueue _send_q, _send_dgram, _recv_q, _result_q;
+	TaskQueue _send_q, _send_dgram, _recv_q, _result_q, _result_q_dgram;
 	std::list<mrt::TCPSocket *> _new_connections;
 	std::list<int> _disconnections;
 	
 	ConnectionMap _connections;
-	sdlx::Mutex _connections_mutex, _result_mutex, _send_q_mutex, _send_dgram_mutex;
+	sdlx::Mutex _connections_mutex, _result_mutex, _result_dgram_mutex, _send_q_mutex, _send_dgram_mutex;
 	
 	TaskQueue::iterator findTask(TaskQueue &queue, const int conn_id);
 	void eraseTask(TaskQueue &q, const TaskQueue::iterator &i);
