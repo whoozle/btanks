@@ -24,6 +24,7 @@
 #include "tmx/map.h"
 #include "rt_config.h"
 #include "menu/grid.h"
+#include "medals.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -123,12 +124,20 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	_b_shop = new Button("medium", I18n->get("menu", "shop"));
 	_b_shop->get_size(bw, bh);
 
-	add(2 * mx, h - bh - 2 * my, _b_shop);
+	ybase = h - bh - 2 * my;
+	add(2 * mx, ybase, _b_shop);
+
+	_b_medals = new Button("medium", I18n->get("menu", "medals"));
+	add(3 * mx + bw, ybase, _b_medals);
 	
 	_shop = new Shop(w, h);
 	add(0, 0, _shop);
 	_shop->hide();
 	
+	medals = new Medals(w, h);
+	medals->get_size(bw, bh);
+	add((w - bw) / 2, (h - bh) / 2, medals);
+	medals->hide();
 	
 	init();
 }
@@ -231,7 +240,11 @@ void CampaignMenu::tick(const float dt) {
 
 	if (!Map->loaded() && _b_shop->hidden())
 		_b_shop->hide(false);
-	
+
+	if (_b_medals->changed()) {
+		_b_medals->reset();
+		medals->hide(false);
+	}
 	
 	if (_b_shop->changed()) {
 		_b_shop->reset();

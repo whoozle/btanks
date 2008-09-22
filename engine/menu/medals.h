@@ -6,6 +6,7 @@
 class Medals : public Container {
 public: 
 	Medals(int w, int h); 
+	bool onKey(const SDL_keysym sym);
 };
 
 #endif

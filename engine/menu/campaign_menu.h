@@ -15,6 +15,7 @@ class Button;
 class Shop;
 class ImageView;
 class Grid;
+class Medals;
 
 class CampaignMenu : public BaseMenu {
 public: 
@@ -50,9 +51,10 @@ private:
 	bool _invalidate_me;
 	Shop *_shop;
 
-	Button * _b_shop;
+	Button * _b_shop, *_b_medals;
 	Chooser *_c_difficulty;
 	ImageView * _map_view;
+	Medals * medals;
 };
 
 #endif
