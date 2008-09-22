@@ -36,16 +36,20 @@ class MRTAPI XMLParser {
 public:
 	struct Attrs : public std::map<const std::string, std::string> {
 		inline bool get(const std::string &name, bool defv) const {
-			const_iterator i;
-			return (i = find(name)) != end()? i->second == "true": defv;
+			const_iterator i = find(name);
+			return i != end()? (bool)(i->second == "true"): defv;
 		}
 		inline int get(const std::string &name, int defv) const {
-			const_iterator i;
-			return (i = find(name)) != end()? atoi(i->second.c_str()): defv;
+			const_iterator i = find(name);
+			return i != end()? (int)atoi(i->second.c_str()): defv;
 		}
 		inline float get(const std::string &name, float defv) const {
-			const_iterator i;
-			return (i = find(name)) != end()? (float)atof(i->second.c_str()): defv;
+			const_iterator i = find(name);
+			return i != end()? (float)atof(i->second.c_str()): defv;
+		}
+		inline const std::string get(const std::string &name, const std::string &defv) const {
+			const_iterator i = find(name);
+			return i != end()? i->second: defv;
 		}
 	};
 
