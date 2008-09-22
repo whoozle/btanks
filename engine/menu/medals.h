@@ -5,6 +5,7 @@
 
 class Medals : public Container {
 public: 
+	Medals(int w, int h); 
 };
 
 #endif
