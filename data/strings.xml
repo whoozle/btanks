@@ -400,12 +400,15 @@
 		<string id="best-time">Best time: </string>
 		<string id="best-time" lang="ru">Лучшее время: </string>
 		           
-		<string id="shop">shop</string>
-		<string id="shop" lang="ru">магазин</string>
+		<string id="shop">Shop</string>
+		<string id="shop" lang="ru">Магазин</string>
 		<string id="shop" lang="uk">Магазин</string>
 		<string id="shop" lang="fr">Magasin</string>
 		<string id="shop" lang="de">Geschäft</string>
 		<string id="shop" lang="it">Negozio</string>
+		
+		<string id="medals">Medals</string>
+		<string id="medals" lang="ru">Медали</string>
 		
 		<string id="player-name-1">Player name: </string>
 		<string id="player-name-1" lang="ru">Имя игрока: </string>
