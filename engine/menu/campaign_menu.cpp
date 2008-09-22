@@ -223,6 +223,7 @@ void CampaignMenu::tick(const float dt) {
 	
 	const Campaign &campaign = _campaigns[ci];
 	_score->set(mrt::format_string("%d", campaign.getCash()));
+	medals->set(&campaign);
 
 	if (_active_campaign->changed()) {
 		_active_campaign->reset();
