@@ -46,6 +46,7 @@ public:
 	virtual void tick(const float dt);
 
 	void set(const std::string &label);
+	void set(const std::string &base, const std::string &id);
 	const std::string get() const;
 	
 	void setFont(const std::string &font);

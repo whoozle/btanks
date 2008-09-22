@@ -30,6 +30,7 @@
 #include "sdlx/surface.h"
 #include "sdlx/rect.h"
 #include "resource_manager.h"
+#include "i18n.h"
 
 #define LABEL_SPEED (30)
 
@@ -53,6 +54,11 @@ void Label::setFont(const std::string &font) {
 
 void Label::set(const std::string &label) {
 	_label = label;
+	_label_size = _font->render(0, 0, 0, _label);
+}
+
+void Label::set(const std::string &base, const std::string &id) {
+	_label = I18n->get(base, id);
 	_label_size = _font->render(0, 0, 0, _label);
 }
 
