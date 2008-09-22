@@ -16,9 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "utf8_utils.h"
+#ifdef CURRENCY_SYMBOL
+#	undef CURRENCY_SYMBOL
+#endif
 
 #include "tclUniData.c"
+
+#include "utf8_utils.h"
+
 
 #define WCHAR_T_SIZE 4
 
