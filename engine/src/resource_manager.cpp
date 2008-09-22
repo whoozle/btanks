@@ -355,6 +355,14 @@ const sdlx::Surface *IResourceManager::get_surface(const std::string &id) const 
 	return i->second;
 }
 
+void IResourceManager::unload_surface(const std::string &id) {
+	SurfaceMap::iterator i = _surfaces.find(id);
+	if (i == _surfaces.end())
+		return;
+	delete i->second;
+	_surfaces.erase(i);
+}
+
 const sdlx::Surface *IResourceManager::load_surface(const std::string &id) {
 	SurfaceMap::iterator i = _surfaces.find(id);
 	if (i != _surfaces.end() && i->second != NULL)
