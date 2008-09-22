@@ -684,7 +684,7 @@ void IGameMonitor::get_waypoint(v2<float> &wp, const std::string &classname, con
 }
 
 void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src, const sdlx::Rect &dst) {
-	const sdlx::Surface *s = ResourceManager->loadSurface("car-waypoint.png");
+	const sdlx::Surface *s = ResourceManager->load_surface("car-waypoint.png");
 	
 	for(WaypointClassMap::const_iterator i = _waypoints.begin(); i != _waypoints.end(); ++i) {
 		//const std::string &classname = i->first;
@@ -696,7 +696,7 @@ void IGameMonitor::renderWaypoints(sdlx::Surface &surface, const sdlx::Rect &src
 		}
 	}
 	
-	s = ResourceManager->loadSurface("edge.png");
+	s = ResourceManager->load_surface("edge.png");
 	int w = s->get_width() / 3, h = s->get_height();
 	sdlx::Rect normal(0, 0, w, h), out(w, 0, w, h), in(2 * w, 0, w, h);
 	

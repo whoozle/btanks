@@ -44,8 +44,8 @@ void RedefineKeys::initDefaults() {
 
 
 RedefineKeys::RedefineKeys() : _active_row(-1), _active_col(-1) {
-	_bg_table = ResourceManager->loadSurface("menu/keys_table.png");
-	_selection = ResourceManager->loadSurface("menu/keys_selection.png");
+	_bg_table = ResourceManager->load_surface("menu/keys_table.png");
+	_selection = ResourceManager->load_surface("menu/keys_selection.png");
 	_font = ResourceManager->loadFont("medium", true);
 	_small_font = ResourceManager->loadFont("small", true);
 

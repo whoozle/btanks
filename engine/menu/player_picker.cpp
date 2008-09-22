@@ -155,7 +155,7 @@ private:
 };
 
 PlayerPicker::PlayerPicker(const int w, const int h) {
-	_vehicles = ResourceManager->loadSurface("menu/vehicles.png");
+	_vehicles = ResourceManager->load_surface("menu/vehicles.png");
 }
 
 const std::string PlayerPicker::getVariant() const {

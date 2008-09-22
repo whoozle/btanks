@@ -8,7 +8,7 @@
 NumberControl::NumberControl(const std::string &font, const int min, const int max, const int step) : 
 	min(min), max(max), step(step), value(min), 
 	mouse_pressed(0), mouse_button(0), direction(false), 
-	_number(ResourceManager->loadSurface("menu/number.png")), 
+	_number(ResourceManager->load_surface("menu/number.png")), 
 	_font(ResourceManager->loadFont(font, true)), 
 	r_up(0, 0, _number->get_width(), _number->get_height() / 2), 
 	r_down(0, _number->get_height() / 2, _number->get_width(), _number->get_height() - _number->get_height() / 2) {}

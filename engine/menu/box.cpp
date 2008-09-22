@@ -69,7 +69,7 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 		return;
 	}
 		
-	_surface = ResourceManager->loadSurface(tile);
+	_surface = ResourceManager->load_surface(tile);
 	x1 = _surface->get_width() / 3;
 	x2 = _surface->get_width() - x1;
 

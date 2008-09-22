@@ -12,7 +12,7 @@
 #define SQUARE_SPACING 16
 
 JoinTeamControl::JoinTeamControl(): 
-current_team(0), join_logo(ResourceManager->loadSurface("menu/team_chooser.png")) , _font(ResourceManager->loadFont("medium", true))
+current_team(0), join_logo(ResourceManager->load_surface("menu/team_chooser.png")) , _font(ResourceManager->loadFont("medium", true))
 	{
 	teams = RTConfig->teams;
 	if (teams < 2 || teams > 4) 

@@ -51,7 +51,7 @@ void ShopItem::revalidate(const Campaign &campaign, const Campaign::ShopItem &it
 	
 	if (!item.object.empty() && !item.animation.empty() && !item.pose.empty()) {
 		_animation = ResourceManager.get_const()->getAnimation(item.animation);
-		_surface = ResourceManager->loadSurface(_animation->surface);
+		_surface = ResourceManager->load_surface(_animation->surface);
 		_animation_model = ResourceManager->get_animation_model(_animation->model);
 		_pose = _animation_model->getPose(item.pose);
 	} else {

@@ -732,7 +732,7 @@ void IGame::quit() {
 		return;
 	}
 	_donate_timer = dsd;
-	_donate = ResourceManager->loadSurface("donate.jpg");
+	_donate = ResourceManager->load_surface("donate.jpg");
 }
 
 void IGame::tick(const float dt) {

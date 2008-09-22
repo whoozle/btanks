@@ -82,7 +82,7 @@ void Hud::initMap() {
 	_pointer = NULL;
 	_pointer_dir = -1;
 	if (RTConfig->game_type == GameTypeRacing) {
-		_pointer = ResourceManager->loadSurface("pointer.png");
+		_pointer = ResourceManager->load_surface("pointer.png");
 	}
 }
 
@@ -682,12 +682,12 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	init_map_slot.assign(this, &Hud::initMap, Map->load_map_final_signal);
 	on_destroy_map_slot.assign(this, &Hud::on_destroy_map, Map->destroyed_cells_signal);
 
-	_background = ResourceManager->loadSurface("hud/hud_line.png");
-	_loading_border = ResourceManager->loadSurface("hud/loading_border.png");
-	_loading_item = ResourceManager->loadSurface("hud/loading_item.png");
-	_icons = ResourceManager->loadSurface("hud/hud_icons.png");
-	_splitter = ResourceManager->loadSurface("hud/hud_splitter.png");
-	_screen_splitter = ResourceManager->loadSurface("hud/split_line.png");
+	_background = ResourceManager->load_surface("hud/hud_line.png");
+	_loading_border = ResourceManager->load_surface("hud/loading_border.png");
+	_loading_item = ResourceManager->load_surface("hud/loading_item.png");
+	_icons = ResourceManager->load_surface("hud/hud_icons.png");
+	_splitter = ResourceManager->load_surface("hud/hud_splitter.png");
+	_screen_splitter = ResourceManager->load_surface("hud/split_line.png");
 	
 	_font = ResourceManager->loadFont("medium", true);
 	_big_font = ResourceManager->loadFont("big", true);
@@ -710,7 +710,7 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	}
 	
 	if (!files.empty()) {
-		_splash = ResourceManager->loadSurface(files[mrt::random(files.size())]);
+		_splash = ResourceManager->load_surface(files[mrt::random(files.size())]);
 	} else {
 		_splash = NULL;
 	}

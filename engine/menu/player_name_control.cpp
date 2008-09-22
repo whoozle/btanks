@@ -8,8 +8,8 @@
 
 PlayerNameControl::PlayerNameControl(const std::string &label, const std::string &config_key, const int w) : 
 	_font(ResourceManager->loadFont("small", true)), _config_key(config_key), _edit_flag(false), width(w) {
-	_dice = ResourceManager->loadSurface("menu/dice.png");
-	_edit = ResourceManager->loadSurface("menu/edit.png");
+	_dice = ResourceManager->load_surface("menu/dice.png");
+	_edit = ResourceManager->load_surface("menu/edit.png");
 
 	std::string name;
 	Config->get(config_key, name, Nickname::generate());

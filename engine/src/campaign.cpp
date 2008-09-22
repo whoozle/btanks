@@ -11,7 +11,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		title = I18n->get("campaign", this->name);
 		if (attr["map"].empty())
 			throw_ex(("campaign must have map attr"));
-		map = ResourceManager->loadSurface(attr["map"]);
+		map = ResourceManager->load_surface(attr["map"]);
 	} else if (name == "map") {
 		if (attr["id"].empty())
 			throw_ex(("map must have id attr"));
@@ -24,7 +24,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		map.position.fromString(attr["position"]);
 		map.map_frame = NULL;
 		TRY {
-			map.map_frame = ResourceManager->loadSurface(map.id + "_frame.png");
+			map.map_frame = ResourceManager->load_surface(map.id + "_frame.png");
 		} CATCH("loading map frame", );
 
 		LOG_DEBUG(("map: %s, visible: '%s'", map.id.c_str(), map.visible_if.c_str()));

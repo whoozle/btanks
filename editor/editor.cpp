@@ -330,7 +330,7 @@ void Editor::render(sdlx::Surface &surface, const float dt) {
 	if (_brush == NULL && _highlight_object) {
 		static const sdlx::Surface *hl;
 		if (hl == NULL) 
-			hl = ResourceManager->loadSurface("object.png");
+			hl = ResourceManager->load_surface("object.png");
 		
 		v2<float> pos;
 		_highlight_object->get_center_position(pos);

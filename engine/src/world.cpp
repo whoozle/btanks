@@ -82,7 +82,7 @@ void IWorld::setTimeSlice(const float ts) {
 
 void IWorld::initMap() {
 	if (_hp_bar == NULL)
-		_hp_bar = ResourceManager->loadSurface("hud/hp.png");
+		_hp_bar = ResourceManager->load_surface("hud/hp.png");
 
 	GET_CONFIG_VALUE("engine.grid-fragment-size", int, gfs, 128);
 	_grid.set_size(Map->get_size(), gfs, Map->torus());
@@ -345,7 +345,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 			const Animation *a = ResourceManager.get_const()->getAnimation("waypoint-16");
 			assert(a != NULL);
 		
-			const sdlx::Surface * wp_surface = ResourceManager->loadSurface(a->surface);
+			const sdlx::Surface * wp_surface = ResourceManager->load_surface(a->surface);
 
 			for(Way::const_iterator wi = way.begin(); wi != way.end(); ++wi) {
 				const v2<int> &wp = *wi;
@@ -366,7 +366,7 @@ void IWorld::render(sdlx::Surface &surface, const sdlx::Rect& src, const sdlx::R
 	if (show_waypoints) 
 		GameMonitor->renderWaypoints(surface, src, dst);
 	if (fog) {
-		static const sdlx::Surface * fog_surface = ResourceManager->loadSurface("fog_of_war.png");
+		static const sdlx::Surface * fog_surface = ResourceManager->load_surface("fog_of_war.png");
 		int tw = fog_surface->get_width() / 3, th = fog_surface->get_height() / 3;
 		
 		int fog_tw = (fog_rect.w - 1) / tw + 1, fog_th = (fog_rect.h - 1) / th + 1;

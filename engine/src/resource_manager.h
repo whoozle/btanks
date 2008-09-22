@@ -49,7 +49,7 @@ class Animation;
 class AnimationModel;
 class Pose;
 
-#define AUTOLOAD_SURFACE(surface, filename) if ((surface) == NULL) surface = ResourceManager->loadSurface(filename)
+#define AUTOLOAD_SURFACE(surface, filename) if ((surface) == NULL) surface = ResourceManager->load_surface(filename)
 
 class BTANKSAPI IResourceManager : public NotifyingXMLParser {
 public:
@@ -70,7 +70,8 @@ public:
 	const Animation *getAnimation(const std::string &id) const;
 	const bool hasAnimation(const std::string &id) const;
 
-	const sdlx::Surface *loadSurface(const std::string &id);
+	const sdlx::Surface *load_surface(const std::string &id);
+	void unload_surface(const std::string &id);
 	const sdlx::Surface *get_surface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	const sdlx::Font *loadFont(const std::string &id, const bool alpha);

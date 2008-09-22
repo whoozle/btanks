@@ -9,7 +9,7 @@ screenshot(NULL)
 {
 	std::string fname = "maps/" + name + "_disabled.jpg";
 	if (Finder->exists(base, fname)) {
-		screenshot = ResourceManager->loadSurface("../" + fname);
+		screenshot = ResourceManager->load_surface("../" + fname);
 	} else 
 		throw_ex(("no disabled version of the screenshot found"));
 }

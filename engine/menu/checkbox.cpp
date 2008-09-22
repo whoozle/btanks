@@ -3,7 +3,7 @@
 #include "sdlx/surface.h"
 
 Checkbox::Checkbox(const bool state) : 
-	_state(state) , _checkbox(ResourceManager->loadSurface("menu/checkbox.png")) {
+	_state(state) , _checkbox(ResourceManager->load_surface("menu/checkbox.png")) {
 }
 
 const bool Checkbox::get() const {

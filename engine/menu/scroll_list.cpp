@@ -43,7 +43,7 @@ _client_w(64), _client_h(64), _align(AlignLeft),
 _pos(0), _vel(0), _grab(false), _current_item(0), _spacing(spacing) {
 	_background.init(background, w, h, hl_h);
 	_font = ResourceManager->loadFont(font, true);
-	_scrollers = ResourceManager->loadSurface("menu/v_scroller.png");
+	_scrollers = ResourceManager->load_surface("menu/v_scroller.png");
 }
 
 void ScrollList::set(const int idx) {

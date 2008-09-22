@@ -355,7 +355,7 @@ const sdlx::Surface *IResourceManager::get_surface(const std::string &id) const 
 	return i->second;
 }
 
-const sdlx::Surface *IResourceManager::loadSurface(const std::string &id) {
+const sdlx::Surface *IResourceManager::load_surface(const std::string &id) {
 	SurfaceMap::iterator i = _surfaces.find(id);
 	if (i != _surfaces.end() && i->second != NULL)
 		return i->second;
@@ -672,7 +672,7 @@ void IResourceManager::preload() {
 		const std::string &name = *i;
 		if (hasAnimation(name)) {
 			Animation *a = getAnimation(name);
-			loadSurface(a->surface);
+			load_surface(a->surface);
 		}
 		notify_progress.emit(1, "animation");
 	}

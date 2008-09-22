@@ -17,9 +17,9 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 	
 	std::string fname = "maps/" + name + ".jpg";
 	if (Finder->exists(base, fname)) {
-		screenshot = ResourceManager->loadSurface("../" + fname);
+		screenshot = ResourceManager->load_surface("../" + fname);
 	} else 
-		screenshot = ResourceManager->loadSurface("../maps/null_video.png");
+		screenshot = ResourceManager->load_surface("../maps/null_video.png");
 
 	GET_CONFIG_VALUE("engine.disable-video", bool, edv, false);
 	if (edv)

@@ -40,9 +40,9 @@ Chooser::Chooser(const std::string &font, const std::vector<std::string> &option
 _options(options), _i(0), _n(options.size()), _surface(NULL), _w(0), _background(NULL) {
 	_disabled.resize(_n);
 	if (!surface.empty())
-		_surface = ResourceManager->loadSurface(surface);
+		_surface = ResourceManager->load_surface(surface);
 	
-	_left_right = ResourceManager->loadSurface("menu/left_right.png");
+	_left_right = ResourceManager->load_surface("menu/left_right.png");
 	_font = ResourceManager->loadFont(font, true);
 	for(int i = 0; i < _n; ++i) {
 		int w = _font->render(NULL, 0, 0, options[i]);

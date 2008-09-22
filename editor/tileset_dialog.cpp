@@ -275,7 +275,7 @@ void TilesetDialog::set(const int tileset) {
 	_current_tileset_idx = tileset;
 	_current_tileset_gid = _tilesets[tileset].second;
 
-	_current_tileset = ResourceManager->loadSurface("../tilesets/" + name);
+	_current_tileset = ResourceManager->load_surface("../tilesets/" + name);
 	_tileset_bg->init("transparent_background_box.png", _current_tileset->get_width(), _current_tileset->get_height());
 }
 

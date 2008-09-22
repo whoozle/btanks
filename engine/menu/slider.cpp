@@ -35,7 +35,7 @@
 Slider::Slider(const float value) : _n(10), _value(value), _grab(false) {
 	if (value > 1.0f) 
 		throw_ex(("slider accepts only values between 0 and 1 (inclusive)"));
-	_tiles = ResourceManager->loadSurface("menu/slider.png");
+	_tiles = ResourceManager->load_surface("menu/slider.png");
 
 	mm_slot.assign(this, &Slider::onMouseMotion, Window->mouse_motion_signal);
 }

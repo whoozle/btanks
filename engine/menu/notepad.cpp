@@ -5,7 +5,7 @@
 #include "i18n.h"
 
 Notepad::Notepad(const int w, const std::string &font) : width(0),
-tabbg(ResourceManager->loadSurface("menu/background_tab.png")), 
+tabbg(ResourceManager->load_surface("menu/background_tab.png")), 
 font(ResourceManager->loadFont(font, true)), current_page(0) {
 	tab_w = tabbg->get_width() / 5;
 	tab_x1 = 2 * tab_w;
