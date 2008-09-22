@@ -5,23 +5,31 @@
 #include "campaign.h"
 #include "label.h"
 #include "tooltip.h"
+#include "image.h"
 #include <assert.h>
 
 Medals::Medals(int w, int h) : campaign(NULL), active(0) {
 	_modal = true;
 	add(0, 0, new Box("menu/background_box_dark.png", w, h));
+	
+	image = new Image(); 
+	add(0, 0, image);
+	
 	title = new Label("big", std::string());
 	add(0, 0, title);
+
 	hint = NULL;
 }
 
 void Medals::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
+	/*
 	const sdlx::Surface * s = tiles[active];
 	assert(s != NULL);
 	int w, h;
 	get_size(w, h);
 	surface.blit(*s, (w - s->get_width()) / 2, (h - s->get_height()) / 2);
+	*/
 }
 
 void Medals::hide(const bool hide) {
@@ -33,6 +41,7 @@ void Medals::hide(const bool hide) {
 				ResourceManager->unload_surface(campaign->medals[i].tile);
 			}
 			tiles.clear();
+			image->set(NULL);
 		}
 		return;
 	}
@@ -46,16 +55,37 @@ void Medals::hide(const bool hide) {
 	update();
 }
 
+void Medals::set(const Campaign * c) { 
+	if (campaign == c)
+		return;
+	
+	campaign = c;
+	update();
+}
+
+
 void Medals::update() {
+	if (tiles.empty())
+		return;
+
 	assert(campaign != NULL);
 	
 	int idx = active;
 	if (idx >= (int)tiles.size()) {
 		idx = tiles.size() - 1;
 	}
-	
 	const Campaign::Medal &medal = campaign->medals[idx];
 	title->set("campaign/medals", medal.id);
+	image->set(tiles[idx]);
+
+	int w, h, bw, bh, iw, ih;
+	get_size(w, h);
+
+	image->get_size(iw, ih);
+	image->set_base((w - iw) / 2, (h - ih) / 2);
+
+	title->get_size(bw, bh);
+	title->set_base((w - bw) / 2, h / 2 - ih / 2 - bh);
 	
 	invalidate();
 }
