@@ -3,10 +3,24 @@
 #include "game_monitor.h"
 #include "resource_manager.h"
 #include "campaign.h"
+#include <assert.h>
 
-Medals::Medals(int w, int h) : campaign(NULL) {
+Medals::Medals(int w, int h) : campaign(NULL), active(0) {
 	_modal = true;
 	add(0, 0, new Box("menu/background_box_dark.png", w, h));
+}
+
+void Medals::render(sdlx::Surface &surface, const int x, const int y) const {
+	Container::render(surface, x, y);
+	int idx = active;
+	if (idx >= (int)tiles.size()) {
+		idx = tiles.size() - 1;
+	}
+	const sdlx::Surface * s = tiles[idx];
+	assert(s != NULL);
+	int w, h;
+	get_size(w, h);
+	surface.blit(*s, (w - s->get_width()) / 2, (h - s->get_height()) / 2);
 }
 
 void Medals::hide(const bool hide) {
