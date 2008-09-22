@@ -11,7 +11,7 @@ bool Medals::onKey(const SDL_keysym sym) {
 		return true;
 
 	switch(sym.sym) {
-	case SDLK_ESCAPE: 	
+	case SDLK_ESCAPE: 
 		hide();
 		return true;
 	default: 
