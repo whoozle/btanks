@@ -53,6 +53,16 @@ bool Medals::onKey(const SDL_keysym sym) {
 	case SDLK_RETURN: 
 		hide();
 		return true;
+
+	case SDLK_LEFT: 
+		active -= 2;
+	case SDLK_RIGHT: 
+		++active;
+		if (active < 0)
+			active += tiles.size();
+		if (active >= (int)tiles.size())
+			active -= tiles.size();
+		return true;
 	default: 
 		return true;
 	}
