@@ -58,6 +58,12 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			item.amount = am;
 		}
 		item.validate();
+	} else if (name == "medal") {
+		Medal medal;
+		medal.id = attr.get("id", std::string());
+		medal.tile = attr.get("id", std::string());
+		if (medal.id.empty() || medal.tile.empty())
+			throw_ex(("medal id and tile must not be empty"));
 	}
 }
 

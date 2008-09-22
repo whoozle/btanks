@@ -32,8 +32,13 @@ public:
 		ShopItem() : amount(0), price(0), max_amount(0), dir_speed(0) {}
 	};
 	
+	struct Medal {
+		std::string id, tile;
+	};
+	
 	std::vector<Map> maps;
 	std::vector<ShopItem> wares;
+	std::vector<Medal> medals;
 	
 	void init(const std::string &base, const std::string &file);
 	const bool visible(const Map &map_id) const;
