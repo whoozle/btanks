@@ -116,26 +116,39 @@ Grid::ControlDescriptor * Grid::find(int& x, int& y) {
 			ControlDescriptor &d = row[j];
 			if (d.c != NULL && !d.c->hidden()) {
 				int xc, yc;
-				int cw = -1, ch = -1;
+				int cw, ch;
 				d.c->get_size(cw, ch);
-				assert(cw >= 0 && ch >= 0);
 
-				if (d.align & Center) {
-					xc = (_split_w[j] - cw) / 2;
-				} else if (d.align & Right) {
-					xc = _split_w[j] - cw - _spacing;
+				if (d.align & (Center | Right)) {
+					int w = 0;
+					for(size_t jj = j; jj < j + d.colspan && jj < row.size(); ++jj) 
+						w += _split_w[jj];
+					xc = w - cw;
+					if (d.align & Center) {
+						xc /= 2;
+					} else {
+						xc -= _spacing;
+					}
+					//xc = (_split_w[j] - cw) / 2; //center
+					//xc = _split_w[j] - cw - _spacing; //right
 				} else {
 					xc = _spacing;
 				}
 
-				if (d.align & Middle) {
-					yc = (_split_h[i] - ch) / 2;
-				} else if (d.align & Bottom) {
-					yc = _split_h[i] - ch - _spacing;
+				if (d.align & (Middle | Bottom)) {
+					int h = 0;
+					for(size_t ii = i; ii < i + d.rowspan && ii < _controls.size(); ++ii) 
+						h += _split_h[ii];
+					yc = h - ch;
+					if (d.align & Middle) {
+						yc /= 2;
+					} else {
+						yc -= _spacing;
+					}
 				} else {
 					yc = _spacing;
 				}
-				
+
 				//LOG_DEBUG(("%u,%u: x: %d y: %d, xp: %d, yp: %d, xc: %d, yc: %d, cw: %d, ch: %d", i, j, x, y, xp, yp, xc, yc, cw, ch));
 				sdlx::Rect rect(0, 0, cw, ch);
 				if (rect.in(x - xp - xc, y - yp - yc)) {
