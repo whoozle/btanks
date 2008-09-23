@@ -557,7 +557,6 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	
 	if (pressed && Map->loaded() && !_main_menu->isActive()) {
 		if (_net_talk->hidden() && key.sym == SDLK_RETURN) {
-			KeyPlayer::disable();
 			_net_talk->hide(false);
 		} else if (!_net_talk->hidden()) {
 			_net_talk->onKey(key);
@@ -566,7 +565,6 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 				
 				_net_talk->reset();
 				_net_talk->hide();
-				KeyPlayer::enable();
 				TRY {
 					if (!message.empty())
 						PlayerManager->say(message);

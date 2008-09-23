@@ -32,19 +32,20 @@
 #include "player_state.h"
 #include "sdlx/sdlx.h"
 #include <string>
+#include "sl08/sl08.h"
 
 class KeyPlayer : public ControlMethod {
 public:
 	KeyPlayer(const std::string &variant);
 
-	static void disable() { _disabled = true; }
-	static void enable() { _disabled = false; }
-
 private:
+	sl08::slot2<bool, const SDL_keysym, const bool, KeyPlayer> on_key_slot;
+	bool on_key(const SDL_keysym sym, const bool pressed);
+	
 	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
 	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
-	static bool _disabled;
+	PlayerState _state;
 };
 
 #endif

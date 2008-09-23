@@ -28,17 +28,13 @@
 
 #include <string.h>
 #include <assert.h>
-
-#include "mrt/logger.h"
-
 #include "keyplayer.h"
-#include "object.h"
-#include "world.h"
 #include "config.h"
-
-bool KeyPlayer::_disabled;
+#include "window.h"
 
 KeyPlayer::KeyPlayer(const std::string &variant) {
+	on_key_slot.assign(this, &KeyPlayer::on_key, Window->key_signal);
+	
 	int up, down, left, right, fire, alt_fire, leave, hint_control;
 
 #include "controls/default_keys.cpp"
@@ -71,18 +67,22 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 }
 
 void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
-	if (_disabled)
-		return;
-	
-	static const Uint8 *keys = SDL_GetKeyState(0);
-	state.left = keys[_left] != 0;
-	state.right = keys[_right] != 0;
-	state.up = keys[_up] != 0;
-	state.down = keys[_down] != 0;
-	state.fire = keys[_fire] != 0;
-	state.alt_fire = keys[_alt_fire] != 0;
-	state.leave = keys[leave] != 0;
-	state.hint_control = keys[_hint_control] != 0;
+	state = _state;
+}
+
+#define SETSTATE(name, member) if (sym.sym == member) { _state.name = pressed? 1: 0; return true; }
+
+bool KeyPlayer::on_key(const SDL_keysym sym, const bool pressed) {
+	LOG_DEBUG(("on_key!"));
+	SETSTATE(left, _left);
+	SETSTATE(right, _right);
+	SETSTATE(up, _up);
+	SETSTATE(down, _down);
+	SETSTATE(fire, _fire);
+	SETSTATE(alt_fire, _alt_fire);
+	SETSTATE(leave, leave);
+	SETSTATE(hint_control, _hint_control);
+	return false;
 }
 
 #define CHECKSTATE(name, member) if (state.name) {\

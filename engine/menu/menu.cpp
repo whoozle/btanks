@@ -320,15 +320,12 @@ void MainMenu::render(sdlx::Surface &dst) const {
 }
 
 #include "sdlx/cursor.h"
-#include "controls/keyplayer.h"
 
 void MainMenu::setActive(const bool a) {
 	_active = a;
 	if (a) {
-		KeyPlayer::disable();
 		sdlx::Cursor::Enable();
 	} else {
-		KeyPlayer::enable();
 		sdlx::Cursor::Disable();
 	}
 }
