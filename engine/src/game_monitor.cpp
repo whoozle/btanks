@@ -1206,10 +1206,10 @@ void IGameMonitor::saveCampaign() {
 		_campaign->clearBonuses();
 	} 
 
-	float best_time;
-	Config->get(mname + ".best-time", best_time, total_time);
-
 	if (_win && total_time > 0) {
+		float best_time;
+		Config->get(mname + ".best-time", best_time, total_time);
+
 		if (total_time < best_time) 
 			Config->set(mname + ".best-time", total_time);
 		Config->set(mname + ".last-time", total_time);
