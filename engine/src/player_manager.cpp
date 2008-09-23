@@ -685,9 +685,7 @@ void IPlayerManager::update_players(const float dt) {
 	
 TRY {
 
-	size_t n = _players.size();
-
-	for(size_t i = 0; i < n; ++i) {
+	for(size_t i = 0; i < _players.size(); ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.empty())
 			continue;
@@ -714,6 +712,9 @@ TRY {
 					
 					LOG_DEBUG(("player[%u] zone %u reached.", (unsigned)i, (unsigned)c));
 					zone.onEnter(i);
+					if (_players.empty()) //hack to avoid crashes on lua exception
+						return;
+					
 					slot.zones_reached.insert(c);
 					if (zone.global())
 						_global_zones_reached.insert(c);
@@ -792,7 +793,7 @@ TRY {
 	Config->get("map.spawn-limit", spawn_limit, 0);
 
 	
-	for(size_t i = 0; i < n; ++i) {
+	for(size_t i = 0; i < _players.size(); ++i) {
 		PlayerSlot &slot = _players[i];
 		if (slot.spectator) {
 			if (slot.control_method != NULL) {
@@ -830,7 +831,7 @@ TRY {
 					int max = 1;
 					int max_slot = -1;
 				
-					for(size_t j = 0; j < n; ++j) {
+					for(size_t j = 0; j < _players.size(); ++j) {
 						if (i == j)
 							continue;
 						PlayerSlot &slot = _players[j];
@@ -878,7 +879,7 @@ TRY {
 	if (_client && _players.size() != 0 && updated) {
 		mrt::Serializator s;
 
-		for(size_t i = 0; i < n; ++i) {
+		for(size_t i = 0; i < _players.size(); ++i) {
 			PlayerSlot &slot = _players[i];
 			if (slot.remote == -1 || !slot.need_sync)
 				continue;
@@ -907,7 +908,7 @@ TRY {
 		bool send = false;
 		mrt::Serializator s;
 
-		for(size_t j = 0; j < n; ++j) {
+		for(size_t j = 0; j < _players.size(); ++j) {
 
 			PlayerSlot &slot = _players[j];
 			if (!slot.empty() && slot.need_sync) {
