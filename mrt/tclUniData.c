@@ -852,6 +852,7 @@ static int groups[] = {
 
 #define UNICODE_CATEGORY_MASK 0X1F
 
+#if 0
 enum {
     UNASSIGNED,
     UPPERCASE_LETTER,
@@ -884,6 +885,7 @@ enum {
     MODIFIER_SYMBOL,
     OTHER_SYMBOL
 };
+#endif
 
 /*
  * The following macros extract the fields of the character info.  The
