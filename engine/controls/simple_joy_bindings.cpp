@@ -313,29 +313,49 @@ const std::string SimpleJoyBindings::State::get_name() const {
 
 //"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"
 
-void SimpleJoyBindings::update(PlayerState &dst, const sdlx::Joystick &joy) const {
-	if (!joy.opened())
-		throw_ex(("joystick was not opened"));
-	
+void SimpleJoyBindings::update(PlayerState &dst, const SDL_Event &event) const {
 	for(int i = 0; i < 8; ++i) {
 		int vi = 0;
 		const State &s = state[i];
 		switch(s.type) {
 
-			case State::Button: 
-				vi = joy.get_button(s.index)? 1:0;
-			break;
+			case State::Button: {
+				if (event.type != SDL_JOYBUTTONDOWN && event.type != SDL_JOYBUTTONUP)
+					continue;
+				const SDL_JoyButtonEvent &je = event.jbutton;
+				if (je.button != s.index) 
+					continue;
+				vi = je.state == SDL_PRESSED? 1:0;
+				break;
+			}
 
-			case State::Axis: 
-				vi = (joy.get_axis(s.index) * s.value >= (int)(dead_zone * 32767))? 1:0;
-			break;
+			case State::Axis: {
+				if (event.type != SDL_JOYAXISMOTION)
+					continue;
+				const SDL_JoyAxisEvent &je = event.jaxis;
+				if (je.axis != s.index)
+					continue;
+				
+				vi = (je.value * s.value >= (int)(dead_zone * 32767))? 1:0;
+				break;
+			}
 
-			case State::Hat: 
-				vi = ((joy.get_hat(s.index) & s.value) == s.value)? 1:0;
-			break;
+			case State::Hat: {
+				if (event.type != SDL_JOYHATMOTION)
+					continue;
+				const SDL_JoyHatEvent &je = event.jhat;
+				if (je.hat != s.index)
+					continue;
+				
+				vi = ((je.value & s.value) == s.value)? 1:0;
+				break;
+			}
 			
-			case State::None: break;
+			case State::None: 
+				continue;
+			
 		}
+		
 		switch(i) {
 		case 0: dst.left = vi; break;
 		case 1: dst.right = vi; break;

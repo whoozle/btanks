@@ -32,46 +32,28 @@
 #include "player_slot.h"
 #include "mrt/logger.h"
 #include "config.h"
+#include "window.h"
 
 JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
+	event_slot.assign(this, &JoyPlayer::on_event, Window->event_signal);
 	_name = sdlx::Joystick::getName(idx);
 	_bindings = SimpleJoyBindings(_name, _joy);
 }
 
 #define THRESHOLD 16384
 
-void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &_state, const float dt) {
-	SDL_JoystickUpdate();
-	
-	_bindings.update(_state, _joy);
-/*	
-	if (x >= THRESHOLD) _state.right = true;
-	if (x <= -THRESHOLD) _state.left = true;
-	if (y >= THRESHOLD) _state.down = true;
-	if (y <= -THRESHOLD) _state.up = true;
-	
-	_state.fire = _joy.get_button(_bindings.get(tButton, 0)) || _joy.get_button(_bindings.get(tButton, 5));
-	_state.alt_fire = _joy.get_button(_bindings.get(tButton, 1))  || _joy.get_button(_bindings.get(tButton, 6));
-	_state.leave = _joy.get_button(_bindings.get(tButton, 3));
-	_state.hint_control = _joy.get_button(_bindings.get(tButton, 4));
-
-	int r;
-	Config->get("player.controls.maximum-camera-slide", r, 200);
-	
-	bool im2x;
-	Config->get(mrt::format_string("player.controls.joystick.%s.ignore-more-than-two-axis", _name.c_str()), im2x, false);
-	if (im2x)
-		return;
-	
-	int n = _joy.get_axis_num();
-	if (n >= 4) {
-		int xa = _joy.get_axis(_bindings.get(tAxis, 2));
-		int ya = _joy.get_axis(_bindings.get(tAxis, 3));
-
-		slot.map_dpos.x = (xa * r) / 32767;
-		slot.map_dpos.y = (ya * r) / 32767;
+void JoyPlayer::on_event(const SDL_Event &event) {
+	if (
+		((event.type == SDL_JOYBUTTONDOWN | event.type == SDL_JOYBUTTONUP) && event.jbutton.which == _idx) ||
+		(event.type == SDL_JOYAXISMOTION && event.jaxis.which == _idx) ||
+		(event.type == SDL_JOYHATMOTION && event.jhat.which == _idx)
+	) {
+		_bindings.update(_state, event);
 	}
-*/
+}
+
+void JoyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float dt) {
+	state = _state;
 }
 
 void JoyPlayer::get_name(std::vector<std::string> &controls, const PlayerState &state) const {

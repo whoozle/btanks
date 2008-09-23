@@ -2,6 +2,7 @@
 #define BTANKS_SIMPLE_JOY_BINDINGS
 
 #include <string>
+#include "sdlx/sdlx.h"
 
 namespace sdlx {
 	class Joystick;
@@ -52,7 +53,7 @@ public:
 	
 	const std::string get_name(int idx) const;
 	
-	void update(PlayerState &state, const sdlx::Joystick &joy) const;
+	void update(PlayerState &state, const SDL_Event &event) const;
 	
 	void set_dead_zone(const float dz);
 	const float get_dead_zone() const { return dead_zone; }
