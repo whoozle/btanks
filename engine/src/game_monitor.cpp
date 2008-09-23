@@ -476,7 +476,9 @@ void IGameMonitor::tick(const float dt) {
 			_timer = 0;
 		}
 	}
-	total_time += dt;
+
+	if (!_game_over)
+		total_time += dt;
 
 	std::string game_state = popState(dt);
 	if (_game_over && !game_state.empty()) {
@@ -1216,16 +1218,12 @@ void IGameMonitor::saveCampaign() {
 }
 
 void IGameMonitor::startGameTimer(const std::string &name, const float period, const bool repeat) {
-#ifdef ENABLE_LUA
 	LOG_DEBUG(("starting timer '%s', %g sec., repeat: %s", name.c_str(), period, repeat?"yes":"no"));
 	timers.insert(Timers::value_type(name, Timer(period, repeat)));
-#endif
 }
 
 void IGameMonitor::stopGameTimer(const std::string &name) {
-#ifdef ENABLE_LUA
 	timers.erase(name);
-#endif
 }
 
 void IGameMonitor::processGameTimers(const float dt) {
