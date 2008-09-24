@@ -25,8 +25,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		map.position.fromString(attr["position"]);
 		map.map_frame = NULL;
 		
-		if (attr.find("medals") != attr.end())
-			map.no_medals = attr.get("medals", false);
+		map.no_medals = !attr.get("medals", true);
 		map.secret = attr.get("secret", false);
 
 		map.time = attr.get("time", 0);
