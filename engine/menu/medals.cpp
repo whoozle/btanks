@@ -75,7 +75,7 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			if (map.no_medals || map.score <= 0)
 				continue;
 
-			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".best-score";
+			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".maximum-score";
 			if (!Config->has(mname))
 				continue;
 
