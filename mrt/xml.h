@@ -37,7 +37,7 @@ public:
 	struct Attrs : public std::map<const std::string, std::string> {
 		inline bool get(const std::string &name, bool defv) const {
 			const_iterator i = find(name);
-			return i != end()? (bool)(i->second == "true"): defv;
+			return i != end()? (i->second == "true" || i->second == "yes"): defv;
 		}
 		inline int get(const std::string &name, int defv) const {
 			const_iterator i = find(name);
