@@ -21,6 +21,10 @@ public:
 		std::string visible_if;
 		const sdlx::Surface *map_frame;
 		v2<int> position;
+		
+		bool no_medals;
+		int time; 
+		Map() : id(), visible_if(), map_frame(NULL), position(), no_medals(false), time(0) {}
 	};
 	
 	struct ShopItem {
