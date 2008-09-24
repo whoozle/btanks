@@ -8,7 +8,7 @@
 #include "image.h"
 #include <assert.h>
 
-Medals::Medals(int w, int h) : campaign(NULL), active(0) {
+Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
 	_modal = true;
 	add(0, 0, new Box("menu/background_box_dark.png", w, h));
 	
@@ -78,16 +78,15 @@ void Medals::update() {
 	title->set("campaign/medals", medal.id);
 	image->set(tiles[idx]);
 
-	int w, h, bw, bh, iw, ih;
-	get_size(w, h);
+	int bw, bh, iw, ih;
 
 	image->get_size(iw, ih);
-	image->set_base((w - iw) / 2, (h - ih) / 2);
+	image->set_base((_w - iw) / 2, (_h - ih) / 2);
 
 	title->get_size(bw, bh);
-	title->set_base((w - bw) / 2, h / 2 - ih / 2 - bh);
+	title->set_base((_w - bw) / 2, _h / 2 - ih / 2 - bh);
 	
-	invalidate();
+	invalidate(true);
 }
 
 bool Medals::onKey(const SDL_keysym sym) {

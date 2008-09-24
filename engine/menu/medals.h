@@ -23,6 +23,8 @@ public:
 private: 
 	void update();
 	
+	int _w, _h;
+
 	const Campaign * campaign;
 	std::vector<const sdlx::Surface *> tiles;
 	int active;
