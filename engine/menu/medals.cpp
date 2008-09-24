@@ -75,6 +75,7 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			if (map.no_medals || map.score <= 0)
 				continue;
 
+			++total;
 			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".maximum-score";
 			if (!Config->has(mname))
 				continue;
@@ -83,7 +84,6 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			Config->get(mname, bs, 0);
 			if (bs <= map.score)
 				++now;
-			++total;
 		}		
 	} else if (id == "speedrun") {
 		for(size_t i = 0; i < campaign->maps.size(); ++i) {
@@ -91,6 +91,7 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			if (map.no_medals || map.time <= 0)
 				continue;
 
+			++total;
 			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".best-time";
 			if (!Config->has(mname))
 				continue;
@@ -99,7 +100,6 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			Config->get(mname, bt, 3600);
 			if (bt <= map.time)
 				++now;
-			++total;
 		}
 	} else if (id == "secrets") {
 		for(size_t i = 0; i < campaign->maps.size(); ++i) {
