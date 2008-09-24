@@ -17,7 +17,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			throw_ex(("map must have id attr"));
 		if (attr["position"].empty())
 			throw_ex(("map must have position attr"));
-		std::string medals = attr.get("medals", "yes");
+		std::string medals = attr.get("medals", std::string("yes"));
 		if (medals.empty())
 			throw_ex(("medals must be yes or no"));
 		
