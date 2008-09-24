@@ -22,6 +22,7 @@ public:
 
 private: 
 	void update();
+	void get_medals(const std::string &id, int &now, int &total) const;
 	
 	int _w, _h;
 
@@ -29,7 +30,7 @@ private:
 	std::vector<const sdlx::Surface *> tiles;
 	int active;
 	
-	Label * title;
+	Label * title, *numbers;
 	Image * image;
 	Tooltip * hint;
 };

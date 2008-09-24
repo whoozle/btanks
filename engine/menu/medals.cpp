@@ -7,6 +7,7 @@
 #include "tooltip.h"
 #include "image.h"
 #include <assert.h>
+#include "config.h"
 
 Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
 	_modal = true;
@@ -17,6 +18,9 @@ Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
 	
 	title = new Label("big", std::string());
 	add(0, 0, title);
+
+	numbers = new Label("big", "?/?");
+	add(0, 0, numbers);
 
 	hint = NULL;
 }
@@ -63,6 +67,29 @@ void Medals::set(const Campaign * c) {
 	update();
 }
 
+void Medals::get_medals(const std::string &id, int &now, int &total) const {
+	now = 0; total = 0;
+	if (id == "elimination") {
+		
+	} else if (id == "speedrun") {
+		for(size_t i = 0; i < campaign->maps.size(); ++i) {
+			const Campaign::Map &map = campaign->maps[i];
+			if (map.no_medals || map.time <= 0)
+				continue;
+			float bt;
+			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".best-time";
+			if (!Config->has(mname))
+				continue;
+			
+			Config->get(mname, bt, 3600);
+			if (bt <= map.time)
+				++now;
+			++total;
+		}
+	} else if (id == "secrets") {
+		
+	}
+}
 
 void Medals::update() {
 	if (tiles.empty())
@@ -85,6 +112,13 @@ void Medals::update() {
 
 	title->get_size(bw, bh);
 	title->set_base((_w - bw) / 2, _h / 2 - ih / 2 - bh);
+
+	int now, total;
+	get_medals(medal.id, now, total);
+	numbers->set(mrt::format_string("%d/%d", now, total));
+
+	numbers->get_size(bw, bh);
+	numbers->set_base((_w - bw) / 2, _h / 2 + ih / 2 - bh);
 	
 	invalidate(true);
 }
