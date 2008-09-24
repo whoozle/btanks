@@ -291,6 +291,9 @@ bool CampaignMenu::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	switch(sym.sym) {
+	case SDLK_m: 
+		medals->hide(false);
+		return true;
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 
 		start();
