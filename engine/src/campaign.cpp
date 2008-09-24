@@ -17,12 +17,20 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			throw_ex(("map must have id attr"));
 		if (attr["position"].empty())
 			throw_ex(("map must have position attr"));
-
+		std::string medals = attr.get("medals", "yes");
+		if (medals.empty())
+			throw_ex(("medals must be yes or no"));
+		
 		Map map;
+		
 		map.id = attr["id"];
 		map.visible_if = attr["visible"];
 		map.position.fromString(attr["position"]);
 		map.map_frame = NULL;
+		
+		map.no_medals = medals[0] == 'n' || medals[0] == 'f';
+		map.time = attr.get("time", 0);
+		
 		TRY {
 			map.map_frame = ResourceManager->load_surface("../maps/" + map.id + "_frame.png");
 		} CATCH("loading map frame", );
