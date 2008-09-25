@@ -27,13 +27,6 @@ Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
 
 void Medals::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
-	/*
-	const sdlx::Surface * s = tiles[active];
-	assert(s != NULL);
-	int w, h;
-	get_size(w, h);
-	surface.blit(*s, (w - s->get_width()) / 2, (h - s->get_height()) / 2);
-	*/
 }
 
 void Medals::hide(const bool hide) {
@@ -141,6 +134,14 @@ void Medals::update() {
 
 	numbers->get_size(bw, bh);
 	numbers->set_base((_w - bw) / 2, _h / 2 + ih / 2 - bh);
+	
+	if (hint != NULL) {
+		remove(hint);
+	}
+
+	hint = new Tooltip("campaign/medals", medal.id + "-hint", true, 320);
+	hint->get_size(bw, bh);
+	add((_w - bw) / 2, _h / 2 + ih / 2 + 32, hint);
 	
 	invalidate(true);
 }
