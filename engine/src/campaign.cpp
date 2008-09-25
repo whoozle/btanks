@@ -97,7 +97,7 @@ void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) con
 #include <vector>
 
 const bool Campaign::visible(const Map &map) const {
-	LOG_DEBUG(("visible('%s')", map.id.c_str()));
+	//LOG_DEBUG(("visible('%s')", map.id.c_str()));
 	if (minimal_score > 0) {
 		if (minimal_score > getCash())
 			return false;
@@ -105,7 +105,7 @@ const bool Campaign::visible(const Map &map) const {
 	if (map.visible_if.empty()) 
 		return true;
 
-	LOG_DEBUG(("visible attr : %s", map.visible_if.c_str()));
+	//LOG_DEBUG(("visible attr : %s", map.visible_if.c_str()));
 	
 	std::vector<std::string> ors;
 	mrt::split(ors, map.visible_if, "|");
