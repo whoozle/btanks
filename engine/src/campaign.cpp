@@ -255,10 +255,7 @@ bool Campaign::Map::got_medal(const Campaign &campaign, const Medal &medal) cons
 		Config->get(mname, bt, 3600);
 		return bt <= time;
 	} else if (medal.id == "secrets") {
-		if (!secret)
-			return false;
-
-		return campaign.visible(*this);
+		return secret && campaign.visible(*this);
 	}
 
 	return false;
