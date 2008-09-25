@@ -305,7 +305,7 @@ void CampaignMenu::update_map() {
 			continue;
 		Image *image = new Image(medal.icon);
 		medalx -= medal.icon->get_width();
-		add(medalx, medaly - medal.icon->get_height(), image);
+		add(medalx, medaly - medal.icon->get_height(), image, score_grid);
 		medal_icons.push_back(image);
 	}
 }
