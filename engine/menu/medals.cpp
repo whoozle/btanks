@@ -76,7 +76,7 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 
 			int bs;
 			Config->get(mname, bs, 0);
-			if (bs <= map.score)
+			if (bs >= map.score)
 				++now;
 		}		
 	} else if (id == "speedrun") {
@@ -122,8 +122,16 @@ void Medals::update() {
 
 	int iw, ih;
 	for(int i = 0; i < (int)tiles.size(); ++i) {
+		int now, total;
+		get_medals(campaign->medals[i].id, now, total); 
+
 		Image * image = tiles[i];
 		image->get_size(iw, ih);
+		iw /= 2;
+
+		sdlx::Rect src(now > 0? 0: iw, 0, iw, ih);
+		image->set_source(src);
+		
 		int d = (i - idx + tiles.size()) % tiles.size();
 		if (d > (int)tiles.size() / 2)
 			d -= tiles.size();
