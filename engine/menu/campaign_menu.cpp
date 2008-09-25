@@ -112,7 +112,7 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	levels.push_back(I18n->get("menu/difficulty", "hard"));
 	levels.push_back(I18n->get("menu/difficulty", "nightmare"));
 	
-	grid->set(5, 0, _c_difficulty = new Chooser("medium", levels), Grid::Center | Grid::Middle);
+	grid->set(5, 0, _c_difficulty = new Chooser("medium", levels), Grid::Middle);
 	grid->set_span(5, 0, 1, 2);
 	grid->set_spacing(2);
 	
@@ -287,10 +287,12 @@ void CampaignMenu::update_map() {
 	
 	score_box->getMargins(mx, my);
 	score_box->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
+	score_box->get_size(bw, bh);
 	
 	int medalx, medaly;
-	score_grid->get_base(medalx, medaly);
+	score_box->get_base(medalx, medaly);
 	medalx += bw - mx;
+	medaly += bh - my / 2;
 	
 	for(size_t i = 0; i < medal_icons.size(); ++i) {
 		remove(medal_icons[i]);
@@ -303,7 +305,7 @@ void CampaignMenu::update_map() {
 			continue;
 		Image *image = new Image(medal.icon);
 		medalx -= medal.icon->get_width();
-		add(medalx, medaly, image);
+		add(medalx, medaly - medal.icon->get_height(), image);
 		medal_icons.push_back(image);
 	}
 }
