@@ -227,3 +227,39 @@ void Campaign::clearBonuses() {
 		}
 	}
 }
+
+bool Campaign::Map::got_medal(const Campaign &campaign, const Medal &medal) const {
+	if (no_medals)
+		return false;
+	
+	if (medal.id == "elimination") {
+		if (score <= 0)
+			return false;
+
+		std::string mname = "campaign." + campaign.name + ".maps." + id + ".maximum-score";
+		if (!Config->has(mname))
+			return false;
+
+		int bs;
+		Config->get(mname, bs, 0);
+		return bs >= score;
+	} else if (medal.id == "speedrun") {
+		if (time <= 0)
+			return false;
+
+		std::string mname = "campaign." + campaign.name + ".maps." + id + ".best-time";
+		if (!Config->has(mname))
+			return false;
+			
+		float bt;
+		Config->get(mname, bt, 3600);
+		return bt <= time;
+	} else if (medal.id == "secrets") {
+		if (!secret)
+			return false;
+
+		return campaign.visible(*this);
+	}
+
+	return false;
+}

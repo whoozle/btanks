@@ -25,6 +25,7 @@
 #include "rt_config.h"
 #include "menu/grid.h"
 #include "medals.h"
+#include "image.h"
 
 void CampaignMenu::start() {
 	int ci = _active_campaign->get();
@@ -283,8 +284,28 @@ void CampaignMenu::update_map() {
 
 	int bw, bh, mx, my;
 	score_grid->get_size(bw, bh);
+	
 	score_box->getMargins(mx, my);
 	score_box->init("menu/background_box_dark.png", bw + 2 * mx, bh + my);
+	
+	int medalx, medaly;
+	score_grid->get_base(medalx, medaly);
+	medalx += bw - mx;
+	
+	for(size_t i = 0; i < medal_icons.size(); ++i) {
+		remove(medal_icons[i]);
+	}
+	medal_icons.clear();
+	
+	for(size_t i = 0; i < campaign.medals.size(); ++i) {
+		const Campaign::Medal & medal = campaign.medals[i];
+		if (medal.icon == NULL || !map.got_medal(campaign, medal))
+			continue;
+		Image *image = new Image(medal.icon);
+		medalx -= medal.icon->get_width();
+		add(medalx, medaly, image);
+		medal_icons.push_back(image);
+	}
 }
 
 bool CampaignMenu::onKey(const SDL_keysym sym) {

@@ -16,6 +16,12 @@ public:
 	
 	const sdlx::Surface *map;
 	
+	struct Medal {
+		std::string id, tile;
+		Medal() : icon(NULL) {}
+		const sdlx::Surface *icon;
+	};
+
 	struct Map {
 		std::string id;
 		std::string visible_if;
@@ -25,6 +31,7 @@ public:
 		bool no_medals, secret;
 		int time, score;
 		Map() : id(), visible_if(), map_frame(NULL), position(), no_medals(false), secret(false), time(0), score(0) {}
+		bool got_medal(const Campaign &campaign, const Medal &medal) const;
 	};
 	
 	struct ShopItem {
@@ -34,12 +41,6 @@ public:
 		
 		void validate();
 		ShopItem() : amount(0), price(0), max_amount(0), dir_speed(0) {}
-	};
-	
-	struct Medal {
-		std::string id, tile;
-		Medal() : icon(NULL) {}
-		const sdlx::Surface *icon;
 	};
 	
 	std::vector<Map> maps;

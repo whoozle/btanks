@@ -16,6 +16,7 @@ class Shop;
 class ImageView;
 class Grid;
 class Medals;
+class Image;
 
 class CampaignMenu : public BaseMenu {
 public: 
@@ -55,6 +56,7 @@ private:
 	Chooser *_c_difficulty;
 	ImageView * _map_view;
 	Medals * medals;
+	std::vector<Image *> medal_icons;
 };
 
 #endif
