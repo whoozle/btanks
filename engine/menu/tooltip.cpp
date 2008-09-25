@@ -57,7 +57,7 @@ void Tooltip::init(const std::string &_text, const bool use_background, const in
 	bool space = true;
 	size_t i;
 	for(i = 0; i < _text.size(); ++i) {
-		const int c = _text[i];
+		const char c = _text[i];
 		const bool c_space = c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f';
 		//LOG_DEBUG(("%d '%c': %s %s", c, c, space?"true":"false", c_space?"true":"false"));
 		if (space) {
@@ -130,7 +130,7 @@ void Tooltip::init(const std::string &_text, const bool use_background, const in
 		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
 		_surface.create_rgb(_background.w, _background.h, 32, SDL_SRCALPHA);
 	} else {
-		_surface.create_rgb(w, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
+		_surface.create_rgb(w != 0? w: width, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
 	}
 	_surface.display_format_alpha();
 	
