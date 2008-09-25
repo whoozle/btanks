@@ -72,6 +72,9 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		medal.tile = attr.get("tile", std::string());
 		if (medal.id.empty() || medal.tile.empty())
 			throw_ex(("medal id and tile must not be empty"));
+		std::string icon = attr.get("icon", std::string());
+		if (!icon.empty())
+			medal.icon = ResourceManager->load_surface(icon);
 		medals.push_back(medal);
 	}
 }

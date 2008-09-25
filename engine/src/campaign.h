@@ -38,6 +38,8 @@ public:
 	
 	struct Medal {
 		std::string id, tile;
+		Medal() : icon(NULL) {}
+		const sdlx::Surface *icon;
 	};
 	
 	std::vector<Map> maps;
