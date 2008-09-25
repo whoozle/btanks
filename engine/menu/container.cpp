@@ -145,7 +145,7 @@ bool Container::onMouseMotion(const int state, const int x, const int y, const i
 }
 
 
-void Container::add(const int x, const int y, Control *ctrl) {
+void Container::add(const int x, const int y, Control *ctrl, Control *after) {
 	assert(ctrl != NULL);
 	ctrl->set_base(x, y);
 #ifdef DEBUG
@@ -153,6 +153,18 @@ void Container::add(const int x, const int y, Control *ctrl) {
 		assert(ctrl != (*i)); //double add! 
 	}
 #endif
+
+	if (after != NULL) {
+		for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+			if (*i == after) {
+				++i;
+				if (i != _controls.end()) {
+					_controls.insert(i, ctrl);
+					return;
+				}
+			}
+		}
+	}
 	_controls.push_back(ctrl);
 }
 

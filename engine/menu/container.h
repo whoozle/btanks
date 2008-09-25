@@ -44,7 +44,7 @@ public:
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 	virtual void activate(const bool active);
 
-	void add(const int x, const int y, Control *ctrl);
+	void add(const int x, const int y, Control *ctrl, Control *after = NULL);
 	void remove(Control *ctrl);
 
 	virtual void clear();
