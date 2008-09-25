@@ -4,6 +4,10 @@
 Image::Image(const sdlx::Surface *image) : image(image) {
 }
 
+void Image::set_source(const sdlx::Rect &rect) {
+	src = rect;
+}
+
 void Image::set(const sdlx::Surface *image) {
 	this->image = image;
 }
@@ -11,7 +15,11 @@ void Image::set(const sdlx::Surface *image) {
 void Image::render(sdlx::Surface &surface, const int x, const int y) const {
 	if (image == NULL)
 		return;
-	surface.blit(*image, x, y);
+
+	if (src.w != 0) 
+		surface.blit(*image, src, x, y);
+	else
+		surface.blit(*image, x, y);
 }
 
 void Image::get_size(int &w, int &h) const {
