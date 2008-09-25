@@ -11,10 +11,7 @@
 
 Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
 	_modal = true;
-	add(0, 0, new Box("menu/background_box_dark.png", w, h));
-	
-	image = new Image(); 
-	add(0, 0, image);
+	add(0, 0, background = new Box("menu/background_box_dark.png", w, h));
 	
 	title = new Label("big", std::string());
 	add(0, 0, title);
@@ -37,8 +34,10 @@ void Medals::hide(const bool hide) {
 			for(size_t i = 0; i < campaign->medals.size(); ++i) {
 				ResourceManager->unload_surface(campaign->medals[i].tile);
 			}
+			for(size_t i = 0; i < tiles.size(); ++i) {
+				remove(tiles[i]);
+			}
 			tiles.clear();
-			image->set(NULL);
 		}
 		return;
 	}
@@ -47,7 +46,9 @@ void Medals::hide(const bool hide) {
 
 	tiles.resize(campaign->medals.size());
 	for(size_t i = 0; i < tiles.size(); ++i) {
-		tiles[i] = ResourceManager->load_surface(campaign->medals[i].tile);
+		tiles[i] = new Image;
+		tiles[i]->set(ResourceManager->load_surface(campaign->medals[i].tile));
+		add(0, 0, tiles[i], background);
 	}
 	update();
 }
@@ -118,13 +119,19 @@ void Medals::update() {
 	}
 	const Campaign::Medal &medal = campaign->medals[idx];
 	title->set("campaign/medals", medal.id);
-	image->set(tiles[idx]);
 
-	int bw, bh, iw, ih;
+	int iw, ih;
+	for(int i = 0; i < (int)tiles.size(); ++i) {
+		Image * image = tiles[i];
+		image->get_size(iw, ih);
+		int d = (i - idx + tiles.size()) % tiles.size();
+		if (d > (int)tiles.size() / 2)
+			d -= tiles.size();
+		//LOG_DEBUG(("%d: %d", d, _w / 2 + d * _w / 2));
+		image->set_base(_w / 2 + d * _w / 2 - iw / 2, _h / 2 - ih / 2);
+	}
 
-	image->get_size(iw, ih);
-	image->set_base((_w - iw) / 2, (_h - ih) / 2);
-
+	int bw, bh;
 	title->get_size(bw, bh);
 	title->set_base((_w - bw) / 2, _h / 2 - ih / 2 - bh);
 

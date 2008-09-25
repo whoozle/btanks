@@ -11,6 +11,7 @@ class Campaign;
 class Label;
 class Tooltip;
 class Image;
+class Box;
 
 class Medals : public Container {
 public: 
@@ -27,11 +28,11 @@ private:
 	int _w, _h;
 
 	const Campaign * campaign;
-	std::vector<const sdlx::Surface *> tiles;
+	std::vector<Image *> tiles;
 	int active;
-	
+
+	Box *background;
 	Label * title, *numbers;
-	Image * image;
 	Tooltip * hint;
 };
 
