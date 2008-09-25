@@ -156,6 +156,16 @@ void Container::add(const int x, const int y, Control *ctrl) {
 	_controls.push_back(ctrl);
 }
 
+void Container::remove(Control *ctrl) {
+	for(ControlList::iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		if (*i == ctrl) {
+			delete *i;
+			_controls.erase(i);
+			return;
+		}
+	}
+}
+
 Container::~Container() {
 	clear();
 }

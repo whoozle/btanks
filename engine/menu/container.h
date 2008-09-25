@@ -45,6 +45,8 @@ public:
 	virtual void activate(const bool active);
 
 	void add(const int x, const int y, Control *ctrl);
+	void remove(Control *ctrl);
+
 	virtual void clear();
 	
 	~Container();
