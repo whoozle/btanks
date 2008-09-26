@@ -20,6 +20,8 @@ public:
 	virtual void hide(const bool hide = true);
 	void set(const Campaign * c);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
+	
+	void tick(const float dt);
 
 private: 
 	void update();

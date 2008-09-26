@@ -161,6 +161,10 @@ void Medals::update() {
 	invalidate(true);
 }
 
+void Medals::tick(const float dt) {
+	Container::tick(dt);
+}
+
 bool Medals::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
