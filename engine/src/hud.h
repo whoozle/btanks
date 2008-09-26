@@ -84,6 +84,7 @@ private:
 	IconMap _icons_map;
 
 	enum MapMode {MapNone, MapSmall, MapFull} _map_mode;
+	bool _enable_radar;
 };
 
 

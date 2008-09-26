@@ -77,6 +77,9 @@ static Uint32 team2color(const sdlx::Surface &surface, const unsigned idx, const
 void Hud::initMap() {
 	_radar.free();
 	_radar_bg.free();
+
+	Config->get("hud.radar.enable", _enable_radar, true);
+	
 	_map_mode = MapSmall;
 	
 	_pointer = NULL;
@@ -257,7 +260,8 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 		_radar_bg.free();
 		return;
 	}
-	if (_map_mode == MapNone)
+
+	if (_map_mode == MapNone || !_enable_radar)
 		return;
 		
 	if (!_radar.isNull() && !_update_radar.tick(dt)) {
