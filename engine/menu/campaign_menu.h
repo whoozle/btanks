@@ -52,7 +52,7 @@ private:
 	bool _invalidate_me;
 	Shop *_shop;
 
-	Button * _b_shop, *_b_medals;
+	Button * _b_shop, *_b_medals, *_b_start;
 	Chooser *_c_difficulty;
 	ImageView * _map_view;
 	Medals * medals;

@@ -135,6 +135,10 @@ CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent
 	add(0, 0, _shop);
 	_shop->hide();
 	
+	_b_start = new Button("medium", I18n->get("menu", "start"));
+	_b_start->get_size(bw, bh);
+	add(w - bw - 2 * mx, ybase, _b_start);
+	
 	medals = new Medals(w, h);
 	medals->get_size(bw, bh);
 	add((w - bw) / 2, (h - bh) / 2, medals);
@@ -255,6 +259,10 @@ void CampaignMenu::tick(const float dt) {
 	if (_c_difficulty->changed()) {
 		_c_difficulty->reset();
 		Config->set("campaign." + campaign.name + ".difficulty", _c_difficulty->get());
+	}
+	if (_b_start->changed()) {
+		_b_start->reset();
+		start();
 	}
 }
 
