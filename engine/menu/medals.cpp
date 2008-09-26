@@ -9,6 +9,9 @@
 #include <assert.h>
 #include "config.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #define EFFECT_LEN (0.5f)
 
 Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0), length(0), dir_x(0) {
@@ -185,6 +188,7 @@ void Medals::tick(const float dt) {
 
 	int n = tiles.size();
 	int pos_x = (int)(dir_x * sin(M_PI_2 * length / EFFECT_LEN));
+	int pos_y = (int)(100 * sin(M_PI * length / EFFECT_LEN));
 	for(int j = -2; j <= 2; ++j) {
 		int i = (active + j + n) % n;
 		Image * image = tiles[i];
@@ -197,7 +201,7 @@ void Medals::tick(const float dt) {
 			continue;
 		
 		image->hide(false);		
-		image->set_base(x, _h / 2 - ih / 2);
+		image->set_base(x, _h / 2 - ih / 2 + pos_y);
 	}
 }
 
