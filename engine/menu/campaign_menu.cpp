@@ -251,6 +251,8 @@ void CampaignMenu::tick(const float dt) {
 		_b_medals->reset();
 		medals->hide(false);
 	}
+	if (medals->changed()) 
+		medals->reset();
 	
 	if (_b_shop->changed()) {
 		_b_shop->reset();
