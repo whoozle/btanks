@@ -36,6 +36,9 @@ private:
 	Box *background;
 	Label * title, *numbers;
 	Tooltip * hint;
+	
+	float length;
+	float dir_x;
 };
 
 #endif

@@ -9,7 +9,9 @@
 #include <assert.h>
 #include "config.h"
 
-Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0) {
+#define EFFECT_LEN (0.5f)
+
+Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0), length(0), dir_x(0) {
 	_modal = true;
 	add(0, 0, background = new Box("menu/background_box_dark.png", w, h));
 	
@@ -114,29 +116,36 @@ void Medals::update() {
 	assert(campaign != NULL);
 	
 	int idx = active;
-	if (idx >= (int)tiles.size()) {
-		idx = tiles.size() - 1;
-	}
+	int n = tiles.size();
+	idx %= n;
+	if (idx < 0)
+		idx += n;
+	
 	const Campaign::Medal &medal = campaign->medals[idx];
 	title->set("campaign/medals", medal.id);
 
 	int iw, ih;
-	for(int i = 0; i < (int)tiles.size(); ++i) {
+
+	for(int i = 0; i < n; ++i) {
+		tiles[i]->hide();
+	}
+	
+	for(int j = -1; j <= 1; ++j) {
+		int i = (idx + j + n) % n;
+		
 		int now, total;
 		get_medals(campaign->medals[i].id, now, total); 
 
 		Image * image = tiles[i];
+		image->hide(false);
 		image->get_size(iw, ih);
 		iw /= 2;
 
 		sdlx::Rect src(now > 0? 0: iw, 0, iw, ih);
 		image->set_source(src);
 		
-		int d = (i - idx + tiles.size()) % tiles.size();
-		if (d > (int)tiles.size() / 2)
-			d -= tiles.size();
 		//LOG_DEBUG(("%d: %d", d, _w / 2 + d * _w / 2));
-		image->set_base(_w / 2 + d * _w / 2 - iw / 2, _h / 2 - ih / 2);
+		image->set_base(_w / 2 + j * _w / 2 - iw / 2, _h / 2 - ih / 2);
 	}
 
 	int bw, bh;
@@ -163,6 +172,33 @@ void Medals::update() {
 
 void Medals::tick(const float dt) {
 	Container::tick(dt);
+	if (tiles.empty() || length <= 0)
+		return;
+
+	length -= dt;	
+	if (length <= 0) {
+		length = 0;
+		dir_x = 0;
+		update();
+		return;
+	}
+
+	int n = tiles.size();
+	int pos_x = (int)(dir_x * sin(M_PI_2 * length / EFFECT_LEN));
+	for(int j = -2; j <= 2; ++j) {
+		int i = (active + j + n) % n;
+		Image * image = tiles[i];
+		int iw, ih;
+		image->get_size(iw, ih);
+		iw /= 2;
+	
+		int x = (int)pos_x + _w / 2 + j * _w / 2 - iw / 2;
+		if (x < -iw || x >= _w)
+			continue;
+		
+		image->hide(false);		
+		image->set_base(x, _h / 2 - ih / 2);
+	}
 }
 
 bool Medals::onKey(const SDL_keysym sym) {
@@ -177,13 +213,15 @@ bool Medals::onKey(const SDL_keysym sym) {
 
 	case SDLK_LEFT: 
 		active -= 2;
+		dir_x = -_w;
 	case SDLK_RIGHT: 
+		dir_x += _w / 2;
+		length = EFFECT_LEN;
 		++active;
 		if (active < 0)
 			active += tiles.size();
 		if (active >= (int)tiles.size())
 			active -= tiles.size();
-		update();
 		return true;
 	default: 
 		return true;
