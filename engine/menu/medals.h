@@ -22,9 +22,13 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	
 	void tick(const float dt);
+	
+	void left();
+	void right();
 
 private: 
 	void update();
+	void validate();
 	void get_medals(const std::string &id, int &now, int &total) const;
 	
 	int _w, _h;

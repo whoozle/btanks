@@ -204,6 +204,31 @@ void Medals::tick(const float dt) {
 	}
 }
 
+void Medals::left() {
+	if (length > 0)
+		update();
+
+	--active;
+	dir_x = -_w / 2;
+	validate();
+}
+void Medals::right() {
+	if (length > 0)
+		update();
+
+	++active;
+	dir_x = _w / 2;
+	validate();
+}
+
+void Medals::validate() {
+	length = EFFECT_LEN;
+	if (active < 0)
+		active += tiles.size();
+	if (active >= (int)tiles.size())
+		active -= tiles.size();
+}
+
 bool Medals::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
@@ -214,18 +239,14 @@ bool Medals::onKey(const SDL_keysym sym) {
 		hide();
 		return true;
 
-	case SDLK_LEFT: 
-		active -= 2;
-		dir_x = -_w;
 	case SDLK_RIGHT: 
-		dir_x += _w / 2;
-		length = EFFECT_LEN;
-		++active;
-		if (active < 0)
-			active += tiles.size();
-		if (active >= (int)tiles.size())
-			active -= tiles.size();
+		right();
 		return true;
+
+	case SDLK_LEFT: 
+		left();
+		return true;
+
 	default: 
 		return true;
 	}
