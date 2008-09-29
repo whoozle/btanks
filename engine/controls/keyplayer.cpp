@@ -73,7 +73,6 @@ void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float d
 #define SETSTATE(name, member) if (sym.sym == member) { _state.name = pressed? 1: 0; return true; }
 
 bool KeyPlayer::on_key(const SDL_keysym sym, const bool pressed) {
-	LOG_DEBUG(("on_key!"));
 	SETSTATE(left, _left);
 	SETSTATE(right, _right);
 	SETSTATE(up, _up);
