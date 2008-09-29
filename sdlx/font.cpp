@@ -309,14 +309,14 @@ void Font::render_multiline(int &max_w, int &max_h, sdlx::Surface *window, int x
 	if (window == NULL) {
 		max_w = 0, max_h = 0;
 		for(size_t i = 0; i < lines.size(); ++i) {
-			int w = render(NULL, x, y, str);
+			int w = render(NULL, x, y, lines[i]);
 			if (w > max_w)
 				max_w = w;
 			max_h += get_height();
 		}
 	} else {
 		for(size_t i = 0; i < lines.size(); ++i) {
-			int w = align != Left? render(NULL, x, y, str): 0;
+			int w = align != Left? render(NULL, x, y, lines[i]): 0;
 
 			int xp;
 			switch(align) {
@@ -325,7 +325,7 @@ void Font::render_multiline(int &max_w, int &max_h, sdlx::Surface *window, int x
 				default: 
 					xp = 0;
 			}
-			render(window, x + xp, y, str);
+			render(window, x + xp, y, lines[i]);
 			y += get_height();
 		}
 	}
