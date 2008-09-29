@@ -40,6 +40,7 @@ private:
 	Box *background;
 	Label * title, *numbers;
 	Tooltip * hint;
+	Image *b_left, *b_right;
 	
 	float length;
 	float dir_x;

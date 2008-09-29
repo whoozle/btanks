@@ -24,6 +24,15 @@ Medals::Medals(int w, int h) : _w(w), _h(h), campaign(NULL), active(0), length(0
 	numbers = new Label("big", "?/?");
 	add(0, 0, numbers);
 
+	int bw, bh;
+	b_left = new Image(ResourceManager->load_surface("medals/arrow-left.png"));
+	b_left->get_size(bw, bh);
+	add(0, h / 2 - bh / 2, b_left);
+
+	b_right = new Image(ResourceManager->load_surface("medals/arrow-right.png"));
+	b_right->get_size(bw, bh);
+	add(w - bw, h / 2 - bh / 2, b_right);
+
 	hint = NULL;
 }
 
