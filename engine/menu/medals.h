@@ -17,6 +17,7 @@ class Medals : public Container {
 public: 
 	Medals(int w, int h); 
 	bool onKey(const SDL_keysym sym);
+	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual void hide(const bool hide = true);
 	void set(const Campaign * c);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;

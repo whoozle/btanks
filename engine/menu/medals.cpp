@@ -260,3 +260,26 @@ bool Medals::onKey(const SDL_keysym sym) {
 		return true;
 	}
 }
+
+bool Medals::onMouse(const int button, const bool pressed, const int x, const int y) {
+	int lx, ly, lw, lh;
+	b_left->get_base(lx, ly);
+	b_left->get_size(lw, lh);
+	sdlx::Rect rleft(lx, ly, lw, lh);
+	if (rleft.in(x, y)) {
+		if (!pressed)
+			left();
+		return true;
+	}
+	
+	int rx, ry, rw, rh;
+	b_right->get_base(rx, ry);
+	b_right->get_size(rw, rh);
+	sdlx::Rect rright(rx, ry, rw, rh);
+	if (rright.in(x, y)) {
+		if (!pressed)
+			right();
+		return true;
+	}
+	return Container::onMouse(button, pressed, x, y);
+}
