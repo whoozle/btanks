@@ -85,7 +85,8 @@ void Tooltip::init(const std::string &_text, const bool use_background, int widt
 				text += c;
 		}
 	}
-	
+	if (text.empty())
+		throw_ex(("tooltip with empty text is not allowed"));
 	//LOG_DEBUG(("trimmed string : '%s'", text.c_str()));
 	
 	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
@@ -113,28 +114,41 @@ void Tooltip::init(const std::string &_text, const bool use_background, int widt
 		lens[i] = font->render(NULL, 0, 0, word + " ");
 		total += lens[i] * line_h;
 	}
-	
+	bool hard;
 	if (width == 0) {
 		width = (int)round(sqrt(total * 2 / 3.0f + nl_n * nl_n / 4.0f));
+		hard = false;
+	} else {
+		hard = !_use_background;
 	}
 	
 	std::vector<std::string> lines;
 
-	int line_w = 0, real_width = 0;
+	int line_w = 0, real_width = 1;
 	std::string line;
 	for(size_t i = 0; i < words.size(); ++i) {
 		const std::string &word = words[i];
 		const int len = lens[i];
 		line_w += len;
 		
-		bool nl = line_w >= width || word == "\n" || i + 1 == words.size();
+		bool last = i + 1 == words.size();
+		bool nl = line_w >= width || word == "\n" || last;
 		
 		if (nl) {
-			lines.push_back(line + word);
-			if (line_w > real_width)
-				real_width = line_w;
-			line_w = 0;
-			line.clear();
+			if (hard && !line.empty() && !last) { //hard edge
+				line_w -= len;
+				if (line_w > real_width)
+					real_width = line_w;
+				lines.push_back(line);
+				line = word + " ";
+				line_w = len;
+			} else {
+				if (line_w > real_width)
+					real_width = line_w;
+				lines.push_back(line + word);
+				line.clear();
+				line_w = 0;
+			}
 		} else {
 			line += word + " ";
 		}
