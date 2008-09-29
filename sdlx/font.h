@@ -35,6 +35,7 @@ class Surface;
 class SDLXAPI Font {
 public:
 	enum Type { Undefined, AZ09, Ascii };
+	enum Align { Center, Left, Right };
 	Font();
 	~Font();
 	
@@ -45,10 +46,15 @@ public:
 	const int get_height() const;
 	const int get_width() const; //fixme! returns height ;)
 
-	const int render(sdlx::Surface *window, const int x, const int y, const std::string &str) const;
-	inline const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
+	const int render(sdlx::Surface *window, int x, int y, const std::string &str) const;
+	inline const int render(sdlx::Surface &window, int x, int y, const std::string &str) const {
 		return render(&window, x, y, str);
 	}
+	
+	//extend it with maximum_width argument and spacing
+	//window == NULL, output in w/h
+	//window != NULL: you must provide w/h (align == Center / Right)
+	void render_multiline(int &w, int &h, sdlx::Surface *window, int x, int y, const std::string &str, Align align = Center) const;
 
 	//frees window!
 	const int render(sdlx::Surface &window, const std::string &str) const;

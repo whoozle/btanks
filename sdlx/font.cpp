@@ -165,7 +165,7 @@ const int Font::get_width() const {
 }
 
 
-const int Font::render(sdlx::Surface *window, const int x, const int y, const std::string &str) const {
+const int Font::render(sdlx::Surface *window, int x, int y, const std::string &str) const {
 	int w = 0;
 	
 	std::deque<unsigned> tokens;
@@ -301,6 +301,34 @@ const int Font::render(sdlx::Surface *window, const int x, const int y, const st
 		w += x2 - x1 + 1;
 	}
 	return (w > 0)?w:1;
+}
+
+void Font::render_multiline(int &max_w, int &max_h, sdlx::Surface *window, int x, int y, const std::string &str, Align align) const {
+	std::vector<std::string> lines;
+	mrt::split(lines, str, "\\n");
+	if (window == NULL) {
+		max_w = 0, max_h = 0;
+		for(size_t i = 0; i < lines.size(); ++i) {
+			int w = render(NULL, x, y, str);
+			if (w > max_w)
+				max_w = w;
+			max_h += get_height();
+		}
+	} else {
+		for(size_t i = 0; i < lines.size(); ++i) {
+			int w = align != Left? render(NULL, x, y, str): 0;
+
+			int xp;
+			switch(align) {
+				case Right: xp = max_w - w; break;
+				case Center: xp = (max_w - w) / 2; break;
+				default: 
+					xp = 0;
+			}
+			render(window, x + xp, y, str);
+			y += get_height();
+		}
+	}
 }
 
 const int Font::render(sdlx::Surface &window, const std::string &str) const {
