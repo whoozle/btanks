@@ -53,5 +53,6 @@ const std::string ControlMethod::get_name(PlayerState& state) const {
 	get_name(c, state);
 	std::string r;
 	mrt::join(r, c, "+");
+	mrt::replace(r, " ", "\\s");
 	return r;
 }

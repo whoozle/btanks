@@ -93,6 +93,9 @@ void Tooltip::init(const std::string &_text, const bool use_background, int widt
 
 	std::vector<std::string> words;
 	mrt::split(words, text, " ");
+	for(size_t i = 0; i < words.size(); ++i) {
+		mrt::replace(words[i], "\\s", " ");
+	}
 	std::vector<int> lens;
 	lens.resize(words.size());
 
