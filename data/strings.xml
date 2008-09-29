@@ -746,8 +746,8 @@
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
 
 		<string id="paintball" lang="en">Various weapons at the same place.</string>
-		<string id="paintball" lang="ru">Если ты плюнешь дальше - я тебе полчатла. Вот этой плюкой. Если я - ты мне две спички, понял? Давай плюй, сынок. </string>
-		<string id="paintball" lang="uk">Якщо ти цвіркнеш далеко - я тобі півчатлу. Ось цією плюкою. Якщо ж я - ти мені два сірники, зрозумів? Цвіркай, синку. </string>
+		<string id="paintball" lang="ru">Если ты плюнешь дальше\s- я тебе полчатла. Вот этой плюкой. Если я\s- ты мне две спички, понял? Давай плюй, сынок. </string>
+		<string id="paintball" lang="uk">Якщо ти цвіркнеш далеко\s- я тобі півчатлу. Ось цією плюкою. Якщо ж я\s- ти мені два сірники, зрозумів? Цвіркай, синку. </string>
 		<string id="paintball" lang="fr">De nombreuses armes au même endroit.</string>
 
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
@@ -954,7 +954,7 @@
 		<string id="minimap" lang="it">Puoi nascondere/visualizzare la minimappa usando il tasto 'M'.</string>
 		        
 		<string id="suicide">Getting stuck in some tricky place?
-			Usually it's not possible, but there's 'F12' key - commit a suicide. Sorry. </string>
+			Usually it's not possible, but there's 'F12' key\s- commit a suicide. Sorry. </string>
 		<string id="suicide" lang="ru">Застряли в каком-нибудь месте? Нажмите &lt;F12&gt; чтобы покончить с собой.</string>
 		<string id="suicide" lang="uk">Застрягли? Натисніть &lt;F12&gt; щоб покінчити із собою.</string>
 		<string id="suicide" lang="fr">Coincé dans un endroit bizarre ? Pressez la touche 'F12' pour vous suicider. Désolé.</string>
@@ -969,8 +969,8 @@
 		<string id="leaving" lang="it">Puoi abbandora il tuo veicolo in ogni momento premendo il bottone 'leave'.</string>
                         
 		<string id="mortar">Every (!) map has a hidden "mortar" vehicle on it.</string>
-		<string id="mortar" lang="ru">На каждой карте (!) можно найти секретную машинку - мортиру.</string>
-		<string id="mortar" lang="uk">На кожній мапі (!) можна знайти секретну машинку - мортиру.</string>
+		<string id="mortar" lang="ru">На каждой карте (!) можно найти секретную машинку\s- мортиру.</string>
+		<string id="mortar" lang="uk">На кожній мапі (!) можна знайти секретну машинку\s- мортиру.</string>
 		<string id="mortar" lang="fr">Toutes (!) les cartes on un véhicule « mortier » caché quelque part.</string>
 		<string id="mortar" lang="de">Auf jeder (!) Karte können Sie einen versteckten Mörser finden.</string>
 		<string id="mortar" lang="it">Ogni mappa ha un "mortar" nascosto.</string>
