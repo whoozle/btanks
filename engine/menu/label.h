@@ -56,7 +56,8 @@ public:
 private: 
 	const sdlx::Font * _font;
 	std::string _label;
-	int _label_w, _label_h, _max_width, _max_height;
+	mutable int _label_w, _label_h;
+	int _max_width, _max_height;
 	float x_pos, x_vel;
 };
 

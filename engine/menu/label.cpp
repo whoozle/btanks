@@ -71,14 +71,14 @@ const std::string Label::get() const {
 
 void Label::render(sdlx::Surface& surface, int x, int y) const {
 	if (_max_width <= 0) {
-		_font->render(surface, x, y, _label);
+		_font->render_multiline(_label_w, _label_h, &surface, x, y, _label);
 		return;
 	} 
 	//smooth scrolling
 	sdlx::Rect clip;
 	surface.get_clip_rect(clip);
 	surface.set_clip_rect(sdlx::Rect(x, y, _max_width, _max_height));
-	_font->render(surface, x - (int)x_pos, y, _label);
+	_font->render_multiline(_label_w, _label_h, &surface, x - (int)x_pos, y, _label);
 	surface.set_clip_rect(clip);
 }
 
