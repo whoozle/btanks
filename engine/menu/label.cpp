@@ -35,31 +35,34 @@
 #define LABEL_SPEED (30)
 
 Label::Label(const sdlx::Font *font, const std::string &label) : 
-	_font(font), _label(label), _label_size(_font->render(0, 0, 0, _label)), 
-	_max_width(0), _max_height(0),  x_pos(0), x_vel(LABEL_SPEED) {}
+	_font(font), _label(label), _max_width(0), _max_height(0),  x_pos(0), x_vel(LABEL_SPEED) {
+		_font->render_multiline(_label_w, _label_h, NULL, 0, 0, label);
+	}
 
 Label::Label(const std::string &font, const std::string &label) : 
-	_font(ResourceManager->loadFont(font, true)), _label(label), _label_size(_font->render(0, 0, 0, _label)), 
-	_max_width(0), _max_height(0), x_pos(0), x_vel(LABEL_SPEED) {}
+	_font(ResourceManager->loadFont(font, true)), _label(label), 
+	_max_width(0), _max_height(0), x_pos(0), x_vel(LABEL_SPEED) {
+		_font->render_multiline(_label_w, _label_h, NULL, 0, 0, label);
+	}
 
 void Label::get_size(int &w, int &h) const {
-	w = _max_width <= 0? _label_size: (_label_size < _max_width? _label_size: _max_width);
-	h = _font->get_height();
+	w = (_max_width == 0 || _label_w < _max_width) ? _label_w: _max_width;
+	h = _label_h;
 }
 
 void Label::setFont(const std::string &font) {
 	_font = ResourceManager->loadFont(font, true);
-	_label_size = _font->render(0, 0, 0, _label);
+	_font->render_multiline(_label_w, _label_h, NULL, 0, 0, _label);
 }
 
 void Label::set(const std::string &label) {
 	_label = label;
-	_label_size = _font->render(0, 0, 0, _label);
+	_font->render_multiline(_label_w, _label_h, NULL, 0, 0, _label);
 }
 
 void Label::set(const std::string &base, const std::string &id) {
 	_label = I18n->get(base, id);
-	_label_size = _font->render(0, 0, 0, _label);
+	_font->render_multiline(_label_w, _label_h, NULL, 0, 0, _label);
 }
 
 const std::string Label::get() const { 
@@ -90,19 +93,17 @@ void Label::set_size(const int w, const int h) {
 
 void Label::tick(const float dt) {
 	TextualControl::tick(dt);
-	if (_max_width <= 0)
-		return;
-	if (_label_size <= _max_width) {
+	if (_max_width <= 0 || _label_w <= _max_width) {
 		x_pos = 0;
 		return;
 	}
-	int delta =  _label_size - _max_width;
+	int delta =  _label_w - _max_width;
 	//LOG_DEBUG(("%d",delta));
 	float m = delta >= MARGIN? 1.0f: 1.0f * (delta + MARGIN / 2) / (MARGIN + MARGIN / 2);
 	
 	x_pos += x_vel * dt * m;
-	if (x_pos + _max_width - OVERLAP > _label_size) {
-		x_pos = _label_size - _max_width + OVERLAP;
+	if (x_pos + _max_width - OVERLAP > _label_w) {
+		x_pos = _label_w - _max_width + OVERLAP;
 		x_vel = -LABEL_SPEED;
 	}
 	if (x_pos < - OVERLAP) {
