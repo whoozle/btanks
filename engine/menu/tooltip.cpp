@@ -41,17 +41,17 @@
 #include <assert.h>
 #include <deque>
 
-Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w)  : 
+Tooltip::Tooltip(const std::string &area, const std::string &message, const bool use_background, int w)  : 
 area(area), message(message) {
 	init(I18n->get(area, message), use_background, w);
 }
 
-Tooltip::Tooltip(const std::string &area, const std::string &message, const std::string &text, const bool use_background, const int w) : 
+Tooltip::Tooltip(const std::string &area, const std::string &message, const std::string &text, const bool use_background, int w) : 
 area(area), message(message) {
 	init(text, use_background, w);
 }
 
-void Tooltip::init(const std::string &_text, const bool use_background, const int w) {
+void Tooltip::init(const std::string &_text, const bool use_background, int width) {
 	_use_background = use_background;
 	std::string text;
 	bool space = true;
@@ -59,6 +59,18 @@ void Tooltip::init(const std::string &_text, const bool use_background, const in
 	for(i = 0; i < _text.size(); ++i) {
 		const char c = _text[i];
 		const bool c_space = c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\v' || c == '\f';
+		if (c == '\\' && i + 1 < _text.size() && _text[i + 1] == 'n') {
+			//\n hack :)
+			++i;
+			if (space) {
+				text += "\n ";
+			} else {
+				text += " \n ";
+				space = true;
+			}
+			continue;
+		}
+		
 		//LOG_DEBUG(("%d '%c': %s %s", c, c, space?"true":"false", c_space?"true":"false"));
 		if (space) {
 			if (c_space)
@@ -75,76 +87,73 @@ void Tooltip::init(const std::string &_text, const bool use_background, const in
 	}
 	
 	//LOG_DEBUG(("trimmed string : '%s'", text.c_str()));
-		
-	std::vector<int> lens;
+	
+	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
+	_time = ((float)mrt::utf8_length(text)) / td;
+
 	std::vector<std::string> words;
 	mrt::split(words, text, " ");
+	std::vector<int> lens;
 	lens.resize(words.size());
 
-	//std::string lens_dump;
-	size_t sum = 0;
-	for(i = 0; i < words.size(); ++i) {
-		unsigned int l = mrt::utf8_length(words[i]);
-		lens[i] = l;
-		sum += l;
-		//lens_dump += mrt::format_string("%s<<%s>>%u", (i == 0)?"":", ", words[i].c_str(), l);
-	}
-	//LOG_DEBUG(("sum: %u, words: %s", sum, lens_dump.c_str()));
-	GET_CONFIG_VALUE("engine.tooltip-speed", float, td, 20);
-	_time = ((float)mrt::utf8_length(_text)) / td;
+	const sdlx::Font * font = ResourceManager->loadFont("small", false);
+	int line_h = font->get_height();
 
-	int cell = (int)(sqrt(sum / 2.0) + 0.5);
-	int xsize = cell * 2;
-	//LOG_DEBUG(("approx size : %dx%d", xsize, cell * 3));
-
-	const sdlx::Font *font = ResourceManager->loadFont("small", false);
-	assert(font != NULL);
-
-	int mx = 0, my = 0;
-	if (_use_background) {
-		_background.init("menu/background_box.png", 200, 60);
-		_background.getMargins(mx, my);
+	int total = 0, nl_n = 0;
+	for(size_t i = 0; i < words.size(); ++i) {
+		const std::string &word = words[i];
+		if (word == "\n") {
+			nl_n += line_h;
+			continue;
+		}
+			
+		lens[i] = font->render(NULL, 0, 0, word + " ");
+		total += lens[i] * line_h;
 	}
 	
-	int line_h = font->get_height() + 2;
-
-	int width = 0;
-	std::deque<size_t> lines;
-
-	for(i = 0; i < words.size(); ) {
-		int l, line_size = 0;
-		for(l = 0; (w != 0?line_size < w: l < xsize) && i < words.size(); l += lens[i], ++i) {
-			int lw = font->render(NULL, 0, 0, words[i] + " ");
-			if (w != 0 && lw + line_size > w) 
-				break;
-			line_size += lw;
-		}
-		if (line_size > width)
-			width = line_size;
-		lines.push_back(i);
+	if (width == 0) {
+		width = (int)round(sqrt(total * 2 / 3.0f + nl_n * nl_n / 4.0f));
 	}
+	
+	std::vector<std::string> lines;
 
-
+	int line_w = 0, real_width = 0;
+	std::string line;
+	for(size_t i = 0; i < words.size(); ++i) {
+		const std::string &word = words[i];
+		const int len = lens[i];
+		line_w += len;
+		
+		bool nl = line_w >= width || word == "\n" || i + 1 == words.size();
+		
+		if (nl) {
+			lines.push_back(line + word);
+			if (line_w > real_width)
+				real_width = line_w;
+			line_w = 0;
+			line.clear();
+		} else {
+			line += word + " ";
+		}
+	}
+	
 	//LOG_DEBUG(("line width: %d, lines: %u", width, lines.size()));
+	int xp = 0, yp = 0;
+	int height = line_h * lines.size();
 	if (_use_background) {
-		_background.init("menu/background_box.png", width +  mx, line_h * lines.size() +  my);
+		const sdlx::Surface *bg = ResourceManager->load_surface("menu/background_box.png");
+		int mx = bg->get_width() / 3, my =  bg->get_height() / 3;
+		_background.init("menu/background_box.png", real_width + mx * 2, height + my * 2);
 		_surface.create_rgb(_background.w, _background.h, 32, SDL_SRCALPHA);
+		xp = (_background.w - real_width) / 2;
+		yp = (_background.h - height) / 2;
 	} else {
-		_surface.create_rgb(w != 0? w: width, line_h * (lines.size() + 2/*magic! */), 32, SDL_SRCALPHA);
+		_surface.create_rgb(real_width, height, 32, SDL_SRCALPHA);
 	}
 	_surface.display_format_alpha();
 	
-	int yp = my - (use_background? 2:0);
-	i = 0;
-	while(!lines.empty()) {
-		int xp = mx - (use_background? 2:0);
-		size_t n = lines.front();
-		while(i < n) {
-			xp += font->render(_surface, xp, yp, words[i] + " ");
-			++i;
-		} 
-		yp += line_h;
-		lines.pop_front();
+	for(size_t i = 0; i < lines.size(); ++i) {
+		font->render(_surface, xp, yp + i * line_h, lines[i]);
 	}
 }
 

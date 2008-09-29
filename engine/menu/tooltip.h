@@ -37,8 +37,8 @@
 class BTANKSAPI Tooltip : public Control {
 public: 
 	const std::string area, message;
-	Tooltip(const std::string &area, const std::string &message, const bool use_background, const int w = 0);
-	Tooltip(const std::string &area, const std::string &message, const std::string &text, const bool use_background, const int w = 0);
+	Tooltip(const std::string &area, const std::string &message, const bool use_background, int w = 0);
+	Tooltip(const std::string &area, const std::string &message, const std::string &text, const bool use_background, int w = 0);
 	void render(sdlx::Surface &surface, const int x, const int y) const;
 	void get_size(int &w, int &h) const;
 	const float getReadingTime() const { return _time; }
