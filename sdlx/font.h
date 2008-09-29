@@ -44,8 +44,11 @@ public:
 	void load(const std::string &file, const Type type, const bool alpha = true);
 	const int get_height() const;
 	const int get_width() const; //fixme! returns height ;)
+
 	const int render(sdlx::Surface *window, const int x, const int y, const std::string &str) const;
-	const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const;
+	inline const int render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
+		return render(&window, x, y, str);
+	}
 
 	//frees window!
 	const int render(sdlx::Surface &window, const std::string &str) const;

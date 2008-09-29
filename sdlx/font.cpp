@@ -157,10 +157,6 @@ const int Font::get_width() const {
 	return get_height();
 }
 
-const int Font::render(sdlx::Surface &window, const int x, const int y, const std::string &str) const {
-	return render(&window, x, y, str);
-}
-
 #include <deque>
 
 #define CHECK_SIZE(i) if ((i) >= str.size()) { \
