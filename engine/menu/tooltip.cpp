@@ -116,7 +116,7 @@ void Tooltip::init(const std::string &_text, const bool use_background, int widt
 	}
 	bool hard;
 	if (width == 0) {
-		width = (int)round(sqrt(total * 2 / 3.0f + nl_n * nl_n / 4.0f));
+		width = (int)(sqrt(total * 2 / 3.0f + nl_n * nl_n / 4.0f) + 0.5f);
 		hard = false;
 	} else {
 		hard = !_use_background;
