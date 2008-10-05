@@ -48,14 +48,14 @@
 		<string id="ping" lang="uk">пінг</string>
 		<string id="ping" lang="fr">ping</string>
 		<string id="ping" lang="es">ping</string>
-		<string id="ping" lang="ca">ping</sring>
+		<string id="ping" lang="ca">ping</string>
 		
 		<string id="game-type">type</string>
 		<string id="game-type" lang="ru">тип</string>
 		<string id="game-type" lang="uk">тип</string>
 		<string id="game-type" lang="fr">type</string>
 		<string id="game-type" lang="es">tipo</string>
-		<string id="game-type" lang="ca">tipus</sring>
+		<string id="game-type" lang="ca">tipus</string>
 		
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
