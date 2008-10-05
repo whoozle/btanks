@@ -5,41 +5,57 @@
 		<string id="network-status" lang="ru">К вам подключено несколько пользователей. Нажмите на кнопку с крестиком чтобы отключить их.</string>
 		<string id="network-status" lang="uk">До вас під'єднано кілька користувачів. Натисніть на кнопку із хрестиком щоб від'єднати їх.</string>
 		<string id="network-status" lang="fr">Un ou plusieurs utilisateurs sont connectés. Cliquez sur le bouton ci-dessous pour les déconnecter tous.</string>
+		<string id="network-status" lang="es">Tienes uno o más usuarios conectados. Haz clic en el siguiente botón para desconectarlos a todos.</string>
+		<string id="network-status" lang="ca">Tens un o més usuaris connectats. Fes clic en el següent botó per a desconnectar-los a tots.</string>
 
 		<string id="choose-team">Join team:</string>
 		<string id="choose-team" lang="ru">Выберите команду:</string>
 		<string id="choose-team" lang="uk">Оберіть команду:</string>
 		<string id="choose-team" lang="fr">Rejoindre l'équipe :</string>
+		<string id="choose-team" lang="es">Unirse a equipo:</string>
+		<string id="choose-team" lang="ca">Unir-se al equip:</string>
 
 		<string id="time-limit">Time limit</string>
 		<string id="time-limit" lang="ru">Ограничение времени</string>
 		<string id="time-limit" lang="uk">Обмеження часу</string>
 		<string id="time-limit" lang="fr">Limite de temps</string>
+		<string id="time-limit" lang="es">Límite de tiempo</string>
+		<string id="time-limit" lang="ca">Límit de temps</string>
 		
 		<string id="teams">Teams</string>
 		<string id="teams" lang="ru">Выбор количества команд</string>
 		<string id="teams" lang="uk">Вибір кількості команд</string>
 		<string id="teams" lang="fr">Équipes</string>
+		<string id="teams" lang="es">Equipos</string>
+		<string id="teams" lang="ca">Equips</string>
 
 		<string id="capture-the-flag">Capture the flag</string>
 		<string id="capture-the-flag" lang="ru">Захват флага</string>
 		<string id="capture-the-flag" lang="uk">За прапор</string>
 		<string id="capture-the-flag" lang="fr">Capture de drapeau</string>
-		
+		<string id="capture-the-flag" lang="es">Captura la bandera</string>
+		<string id="capture-the-flag" lang="ca">Captura la bandera</string>
+
 		<string id="map">map</string>
 		<string id="map" lang="ru">карта</string>
-		<string id="map" lang="uk">мапа</string>		
+		<string id="map" lang="uk">мапа</string>
 		<string id="map" lang="fr">carte</string>
-		
+		<string id="map" lang="es">mapa</string>
+		<string id="map" lang="ca">mapa</string>
+
 		<string id="ping">ping</string>
 		<string id="ping" lang="ru">звон</string>
 		<string id="ping" lang="uk">пінг</string>
 		<string id="ping" lang="fr">ping</string>
+		<string id="ping" lang="es">ping</string>
+		<string id="ping" lang="ca">ping</sring>
 		
 		<string id="game-type">type</string>
 		<string id="game-type" lang="ru">тип</string>
 		<string id="game-type" lang="uk">тип</string>
 		<string id="game-type" lang="fr">type</string>
+		<string id="game-type" lang="es">tipo</string>
+		<string id="game-type" lang="ca">tipus</sring>
 		
 		<string id="back">BACK</string>
 		<string id="back" lang="ru">НАЗАД</string>
@@ -47,6 +63,8 @@
 		<string id="back" lang="fr">RETOUR</string>
 		<string id="back" lang="de">ZURÜCK</string>
 		<string id="back" lang="it">USCITA</string>
+		<string id="back" lang="es">VOLVER</string>
+		<string id="back" lang="ca">TORNAR</string>
 		
 		<string id="ok">OK</string>
 		<string id="ok" lang="ru">ОК</string>
@@ -54,6 +72,8 @@
 		<string id="ok" lang="fr">OK</string>
 		<string id="ok" lang="de">ОК</string>
 		<string id="ok" lang="it">ОК</string>
+		<string id="ok" lang="es">OK</string>
+		<string id="ok" lang="ca">OK</string>
 		
 		<string id="mode">Mode</string>
 		<string id="mode" lang="ru">Режим игры</string>
@@ -61,6 +81,8 @@
 		<string id="mode" lang="fr">Mode</string>
 		<string id="mode" lang="de">Mode</string>
 		<string id="mode" lang="it">Mode</string>
+		<string id="mode" lang="es">Modo</string>
+		<string id="mode" lang="ca">Mode</string>
 		
 		<string id="split-screen">SPLIT SCREEN</string>
 		<string id="split-screen" lang="ru">ДВОЕ ИГРОКОВ</string>
@@ -68,6 +90,8 @@
 		<string id="split-screen" lang="fr">ÉCRAN DIVISÉ</string>
 		<string id="split-screen" lang="de">ZWEI SPIELER</string>
 		<string id="split-screen" lang="it">SCHERMO DIVISO</string>
+		<string id="split-screen" lang="es">PANTALLA DIVIDIDA</string>
+		<string id="split-screen" lang="ca">PANTALLA DIVIDIDA</string>
 
 		<string id="on">ON</string>
 		<string id="on" lang="ru">ДА</string>
@@ -75,6 +99,8 @@
 		<string id="on" lang="fr">OUI</string>
 		<string id="on" lang="de">EIN</string>
 		<string id="on" lang="it">ACCESO</string>
+		<string id="on" lang="es">ENCENDIDO</string>
+		<string id="on" lang="ca">ENCES</string>
 
 		<string id="off">OFF</string>
 		<string id="off" lang="ru">НЕТ</string>
@@ -82,12 +108,16 @@
 		<string id="off" lang="fr">NON</string>
 		<string id="off" lang="de">AUS</string>
 		<string id="off" lang="it">SPENTO</string>
+		<string id="off" lang="es">APAGADO</string>
+		<string id="off" lang="ca">APAGAT</string>
 
 		<area id="modes">
 			<string id="racing">RACING</string>
 			<string id="racing" lang="ru">ГОНКИ</string>
 			<string id="racing" lang="uk">ГОНИТВА</string>
 			<string id="racing" lang="fr">COURSE</string>
+			<string id="racing" lang="es">CURSA</string>
+			<string id="racing" lang="ca">CURSA</string>
 			
 			<string id="deathmatch">DEATHMATCH</string>
 			<string id="deathmatch" lang="ru">ДЕСМАТЧ</string>
@@ -95,6 +125,8 @@
 			<string id="deathmatch" lang="fr">COMBAT À MORT</string>
 			<string id="deathmatch" lang="de">DEATHMATCH</string>
 			<string id="deathmatch" lang="it">COMBATTIMENTO MORTALE</string>
+			<string id="deathmatch" lang="es">DUELO A MUERTE</string>
+			<string id="deathmatch" lang="ca">DUEL A MORT</string>
 
 			<string id="cooperative">COOPERATIVE</string>
 			<string id="cooperative" lang="ru">КООПЕРАТИВ</string>
@@ -102,16 +134,22 @@
 			<string id="cooperative" lang="fr">COOPÉRATION</string>
 			<string id="cooperative" lang="de">KOOPERATION</string>
 			<string id="cooperative" lang="it">SQUADRE</string>
+			<string id="cooperative" lang="es">COOPERATIVO</string>
+			<string id="cooperative" lang="ca">COOPERATIU</string>
 
 			<string id="capture-the-flag">CTF</string>
 			<string id="capture-the-flag" lang="ru">ЗАХВАТ ФЛАГА</string>
 			<string id="capture-the-flag" lang="uk">ЗА ПРАПОР</string>
 			<string id="capture-the-flag" lang="fr">DRAPEAUX</string>
+			<string id="capture-the-flag" lang="es">CAPTURAR LA BANDERA</string>
+			<string id="capture-the-flag" lang="ca">CAPTURAR LA BANDERA</string>
 
 			<string id="team-deathmatch">TEAM DEATHMATCH</string>
 			<string id="team-deathmatch" lang="ru">ТИМ ДЕСМАТЧ</string>
 			<string id="team-deathmatch" lang="uk">КОМАНДНИЙ ДЕСМАТЧ</string>
 			<string id="team-deathmatch" lang="fr">PAR ÉQUIPES</string>
+			<string id="team-deathmatch" lang="es">A MUERTE POR EQUIPOS</string>
+			<string id="team-deathmatch" lang="ca">A MORT PER EQUIPS</string>
 		</area>
 
 		<string id="add">ADD</string>
@@ -120,7 +158,8 @@
 		<string id="add" lang="fr">AJOUTER</string>
 		<string id="add" lang="de">HINZUFÜGEN</string>
 		<string id="add" lang="it">AGGIUNGI</string>
-
+		<string id="add" lang="es">AGREGAR</string>
+		<string id="add" lang="ca">AFEGIR</string>
 		
 		<string id="scan">SCAN</string>
 		<string id="scan" lang="ru">ИСКАТЬ</string>
@@ -128,6 +167,8 @@
 		<string id="scan" lang="fr">CHERCHER</string>
 		<string id="scan" lang="de">SUCHEN</string>
 		<string id="scan" lang="it">CERCA</string>
+		<string id="scan" lang="es">BUSCAR</string>
+		<string id="scan" lang="ca">BUSCAR</string>
 					
 		<string id="join">JOIN</string>
 		<string id="join" lang="ru">ВОЙТИ</string>
@@ -135,6 +176,8 @@
 		<string id="join" lang="fr">REJOINDRE</string>
 		<string id="join" lang="de">ANSCHLIESSEN</string>
 		<string id="join" lang="it">COLLEGATI</string>
+		<string id="join" lang="es">UNIRSE</string>
+		<string id="join" lang="ca">UNIR-SE</string>
 		                       
 		<string id="start">START</string>
 		<string id="start" lang="ru">НАЧАТЬ</string>
@@ -142,6 +185,8 @@
 		<string id="start" lang="fr">DÉMARRER</string>
 		<string id="start" lang="de">START</string>
 		<string id="start" lang="it">START</string>
+		<string id="start" lang="es">EMPEZAR</string>
+		<string id="start" lang="ca">COMENÇAR</string>
 		                     
 		<string id="delete">DELETE</string>
 		<string id="delete" lang="ru">УДАЛИТЬ</string>
@@ -149,6 +194,8 @@
 		<string id="delete" lang="fr">EFFACER</string>
 		<string id="delete" lang="de">LÖSCHEN</string>
 		<string id="delete" lang="it">CANCELLA</string>
+		<string id="delete" lang="es">ELIMINAR</string>
+		<string id="delete" lang="es">ELIMINAR</string>
 	                    
 		<string id="start-game">START GAME</string>
 		<string id="start-game" lang="ru">НАЧАТЬ ИГРУ</string>
@@ -156,11 +203,15 @@
 		<string id="start-game" lang="fr">CRÉER UNE PARTIE</string>
 		<string id="start-game" lang="de">NETZSPIEL STARTEN</string>
 		<string id="start-game" lang="it">NUOVO GIOCO</string>
+		<string id="start-game" lang="es">EMPEZAR JUEGO</string>
+		<string id="start-game" lang="ca">COMENÇAR JOC</string>
 		
 		<string id="random-respawn">Random respawn</string>
 		<string id="random-respawn" lang="ru">Случайный респаун</string>
 		<string id="random-respawn" lang="uk">Випадковий респаун</string>
 		<string id="random-respawn" lang="fr">Point de départ aléatoire</string>
+		<string id="random-respawn" lang="es">Reaparición aleatoria</string>
+		<string id="random-respawn" lang="ca">Reaparició aleatòria</string>
 		          
 		<string id="start-campaign">CAMPAIGN</string>
 		<string id="start-campaign" lang="ru">КАМПАНИЯ</string>
@@ -168,6 +219,8 @@
 		<string id="start-campaign" lang="fr">MENER UNE CAMPAGNE</string>
 		<string id="start-campaign" lang="de">CAMPAIGNSPIEL</string>
 		<string id="start-campaign" lang="it">CAMPAGNA</string>
+		<string id="start-campaign" lang="es">CAMPAÑA</string>
+		<string id="start-campaign" lang="ca">CAMPANYA</string>
 		             
 		<string id="join-game">JOIN GAME</string>
 		<string id="join-game" lang="ru">ПРИСОЕДИНИТЬСЯ К ИГРЕ</string>
@@ -175,6 +228,8 @@
 		<string id="join-game" lang="fr">REJOINDRE UNE PARTIE</string>
 		<string id="join-game" lang="de">ANSCHLUSS ZUM NETZSPIEL</string>
 		<string id="join-game" lang="it">UNISCITI AL GIOCO</string>
+		<string id="join-game" lang="es">UNIRSE AL JUEGO</string>
+		<string id="join-game" lang="ca">UNIR-SE AL JOC</string>
 		           
 		<string id="options">OPTIONS</string>
 		<string id="options" lang="ru">НАСТРОЙКИ</string>
@@ -182,6 +237,8 @@
 		<string id="options" lang="fr">OPTIONS</string>
 		<string id="options" lang="de">EINSTELLUNGEN</string>
 		<string id="options" lang="it">OPZIONI</string>
+		<string id="options" lang="es">OPCIONES</string>
+		<string id="options" lang="ca">OPCIONS</string>
 		            
 		<string id="credits">CREDITS</string>
 		<string id="credits" lang="ru">АВТОРЫ</string>
@@ -189,6 +246,8 @@
 		<string id="credits" lang="fr">CRÉDITS</string>
 		<string id="credits" lang="de">AUTOREN</string>
 		<string id="credits" lang="it">AUTORI</string>
+		<string id="credits" lang="es">CREDITOS</string>
+		<string id="credits" lang="ca">CREDITS</string>
 		            
 		<string id="quit">QUIT</string>
 		<string id="quit" lang="ru">ВЫЙТИ</string>
@@ -196,6 +255,8 @@
 		<string id="quit" lang="fr">QUITTER</string>
 		<string id="quit" lang="de">SPIEL VERLASSEN</string>
 		<string id="quit" lang="it">USCITA</string>
+		<string id="quit" lang="es">SALIR</string>
+		<string id="quit" lang="ca">SORTIR</string>
 		            
 		<string id="no-slots-in-map">No slots in map</string>
 		<string id="no-slots-in-map" lang="ru">Нет свободных слотов</string>
@@ -203,6 +264,8 @@
 		<string id="no-slots-in-map" lang="fr">Aucune place libre pour cette carte</string>
 		<string id="no-slots-in-map" lang="de">Server voll. Kein freier Platz vorhanden</string>
 		<string id="no-slots-in-map" lang="it">Server pieno. Nessun posto disponibile!</string>
+		<string id="no-slots-in-map" lang="es">Sin casillas libres en el mapa</string>
+		<string id="no-slots-in-map" lang="ca">Sense caselles lliures en el mapa</string>
 		           
 		<string id="connection-failed">Connection failed</string>
 		<string id="connection-failed" lang="ru">Ошибка соединения</string>
@@ -210,6 +273,8 @@
 		<string id="connection-failed" lang="fr">Échec de la connexion</string>
 		<string id="connection-failed" lang="de">Fehler der Verbindung</string>
 		<string id="connection-failed" lang="it">Errore di connessione</string>
+		<string id="connection-failed" lang="es">Conexión fallida</string>
+		<string id="connection-failed" lang="ca">Connexió fallida</string>
 		               
 		<string id="single-player">Single player</string>
 		<string id="single-player" lang="ru">Один игрок</string>
@@ -217,6 +282,8 @@
 		<string id="single-player" lang="fr">Un seul joueur</string>
 		<string id="single-player" lang="de">Ein Spieler</string>
 		<string id="single-player" lang="it">Giocatore Singolo</string>
+		<string id="single-player" lang="es">Un jugador</string>
+		<string id="single-player" lang="ca">Un jugador</string>
 		             
 		<string id="split-player-1">Split screen player 1</string>
 		<string id="split-player-1" lang="ru">Игрок 1 (из 2-х)</string>
@@ -224,13 +291,17 @@
 		<string id="split-player-1" lang="fr">Joueur 1 (écran divisé)</string>
 		<string id="split-player-1" lang="de">Spieler 1 (von 2)</string>
 		<string id="split-player-1" lang="it">Giocatore 1 (schermo diviso)</string>
+		<string id="split-player-1" lang="es">Jugador 1 (pantalla dividida)</string>
+		<string id="split-player-1" lang="ca">Jugador 1 (pantalla dividida)</string>
 		                
 		<string id="split-player-2">Split screen player 2</string>
 		<string id="split-player-2" lang="ru">Игрок 2 (из 2-х)</string>
 		<string id="split-player-2" lang="uk">Гравець 2 (із 2-х)</string>
 		<string id="split-player-2" lang="fr">Joueur 2 (écran divisé)</string>
 		<string id="split-player-2" lang="de">Spieler 2 (von 2)</string>
-		<string id="split-player-1" lang="it">Giocatore 2 (schermo diviso)</string>
+		<string id="split-player-2" lang="it">Giocatore 2 (schermo diviso)</string>
+		<string id="split-player-2" lang="es">Jugador 2 (pantalla dividida)</string>
+		<string id="split-player-2" lang="ca">Jugador 2 (pantalla dividida)</string>
 		                
 		<string id="fx-volume">Effects volume</string>
 		<string id="fx-volume" lang="ru">Громкость спецэффектов</string>
@@ -238,6 +309,8 @@
 		<string id="fx-volume" lang="fr">Volume des bruitages</string>
 		<string id="fx-volume" lang="de">Lautstärke der Effekte </string>
 		<string id="fx-volume" lang="it">Volume Effetti </string>
+		<string id="fx-volume" lang="es">Volumen Efectos</string>
+		<string id="fx-volume" lang="ca">Volum Efectes</string>
 
 		<string id="music-volume">Music volume</string>
 		<string id="music-volume" lang="ru">Громкость музыки</string>
@@ -245,12 +318,16 @@
 		<string id="music-volume" lang="fr">Volume de la musique</string>
 		<string id="music-volume" lang="de">Lautstärke der Musik</string>
 		<string id="music-volume" lang="it">Volume Musica</string>
+		<string id="music-volume" lang="es">Volumen Música</string>
+		<string id="music-volume" lang="ca">Volum Música</string>
 
 		<string id="ambience-volume">Ambience volume</string>
 		<string id="ambience-volume" lang="ru">Громкость шума</string>
 		<string id="ambience-volume" lang="uk">Гучність шуму</string>
 		<string id="ambience-volume" lang="fr">Volume général</string>
 		<string id="ambience-volume" lang="de">Lautstärke des Umgebungslärmes</string>
+		<string id="ambience-volume" lang="es">Volumen Ambiental</string>
+		<string id="ambience-volume" lang="ca">Volum Ambiental</string>
 
 		<string id="redefine-keys">Redefine keys</string>
 		<string id="redefine-keys" lang="ru">Настроить клавиши</string>
@@ -258,6 +335,8 @@
 		<string id="redefine-keys" lang="fr">Changer les touches</string>
 		<string id="redefine-keys" lang="de">Tasten einstellen</string>
 		<string id="redefine-keys" lang="it">Configurazione Tasti</string>
+		<string id="redefine-keys" lang="es">Re-definir teclas</string>
+		<string id="redefine-keys" lang="ca">Re-definir tecles</string>
 		
 		<string id="up">UP</string>
 		<string id="up" lang="ru">ВВЕРХ</string>
@@ -265,6 +344,8 @@
 		<string id="up" lang="fr">HAUT</string>
 		<string id="up" lang="it">ALTO</string>
 		<string id="up" lang="de">oben</string>
+		<string id="up" lang="es">ARRIBA</string>
+		<string id="up" lang="ca">A DALT</string>
 		
 		<string id="down">DOWN</string>
 		<string id="down" lang="ru">ВНИЗ</string>
@@ -272,6 +353,8 @@
 		<string id="down" lang="it">BASSO</string>
 		<string id="down" lang="fr">BAS</string>
 		<string id="down" lang="de">unten</string>
+		<string id="down" lang="es">ABAJO</string>
+		<string id="down" lang="ca">A BAIX</string>
 		
 		<string id="left">LEFT</string>
 		<string id="left" lang="ru">ВЛЕВО</string>
@@ -279,6 +362,8 @@
 		<string id="left" lang="it">SINISTRA</string>
 		<string id="left" lang="fr">GAUCHE</string>
 		<string id="left" lang="de">links</string>
+		<string id="left" lang="es">IZQUIERDA</string>
+		<string id="left" lang="ca">ESQUERRA</string>
 		
 		<string id="right">RIGHT</string>
 		<string id="right" lang="ru">ВПРАВО</string>
@@ -286,6 +371,8 @@
 		<string id="right" lang="fr">DROITE</string>
 		<string id="right" lang="de">rechts</string>
 		<string id="right" lang="it">DESTRA</string>
+		<string id="right" lang="es">DERECHA</string>
+		<string id="right" lang="ca">DRETA</string>
 
 		<string id="fire">FIRE</string>
 		<string id="fire" lang="ru">ВЫСТРЕЛ</string>
@@ -293,6 +380,8 @@
 		<string id="fire" lang="fr">TIR</string>
 		<string id="fire" lang="de">Schuss</string>
 		<string id="fire" lang="it">FUOCO</string>
+		<string id="fire" lang="es">FUEJO</string>
+		<string id="fire" lang="ca">FOC</string>
 		
 		<string id="alt-fire">ALT FIRE</string>
 		<string id="alt-fire" lang="ru">ВЫСТРЕЛ-2</string>
@@ -300,6 +389,8 @@
 		<string id="alt-fire" lang="fr">TIR ALT</string>
 		<string id="alt-fire" lang="de">Alt-Schuss</string>
 		<string id="alt-fire" lang="it">FUOCO 2</string>
+		<string id="alt-fire" lang="es">FUEJO ALT.</string>
+		<string id="alt-fire" lang="ca">FOC ALT.</string>
 		
 		<string id="disembark">DISEMBARK</string>
 		<string id="disembark" lang="ru">ВЫЙТИ</string>
@@ -307,6 +398,8 @@
 		<string id="disembark" lang="fr">DÉBARQUER</string>
 		<string id="disembark" lang="de">Aussteigen</string>
 		<string id="disembark" lang="it">DISIMPEGNO</string>
+		<string id="disembark" lang="es">DESEMBARCAR</string>
+		<string id="disembark" lang="ca">DESEMBARCAR</string>
 		
 		<string id="hint-ctrl">HINTS CTRL</string>
 		<string id="hint-ctrl" lang="ru">ПОДСКАЗКИ</string>
@@ -314,6 +407,8 @@
 		<string id="hint-ctrl" lang="fr">CONSEILS</string>
 		<string id="hint-ctrl" lang="de"> Tips</string>
 		<string id="hint-ctrl" lang="it">SUGGERIMENTI</string>
+		<string id="hint-ctrl" lang="es">CONSEJOS</string>
+		<string id="hint-ctrl" lang="ca">CONSELLS</string>
                   
 		<string id="default-keys">Default keys</string>
 		<string id="default-keys" lang="ru">Клавиши по умолчанию</string>
@@ -321,6 +416,8 @@
 		<string id="default-keys" lang="fr">Touches par défaut</string>
 		<string id="default-keys" lang="de">Tasten neu einstellen</string>
 		<string id="default-keys" lang="it">Tasti di default</string>
+		<string id="default-keys" lang="es">Teclas por defecto</string>
+		<string id="default-keys" lang="ca">Tecles per defecte</string>
 		
 		<string id="revert-to-defaults">Defaults</string>
 		<string id="revert-to-defaults" lang="ru">Вернуть как было</string>
@@ -331,6 +428,8 @@
 		<string id="view-map" lang="fr">[Cliquez ici pour le schéma tactique]</string>
 		<string id="view-map" lang="de">[Hier clicken, um die taktische Karte anzuschauen]</string>
 		<string id="view-map" lang="it">[clicca qui per vedere la mappa tattica]</string>
+		<string id="view-map" lang="es">[Click aquí para ver el mapa táctico]</string>
+		<string id="view-map" lang="ca">[Clic aquí per veure el mapa tàctic]
 		            
 		<string id="joystick">Joystick</string>
 		<string id="joystick" lang="ru">Джойстик</string>
@@ -338,6 +437,8 @@
 		<string id="joystick" lang="fr">Manette</string>
 		<string id="joystick" lang="de">Joystick</string>
 		<string id="joystick" lang="it">Joystick</string>
+		<string id="joystick" lang="es">Joystick</string>
+		<string id="joystick" lang="ca">Joystick</string>
 		                
 		<string id="of">of</string>
 		<string id="of" lang="ru">из</string>
@@ -345,6 +446,8 @@
 		<string id="of" lang="fr">de</string>
 		<string id="of" lang="de">von</string>
 		<string id="of" lang="it">di</string>
+		<string id="of" lang="es">de</string>
+		<string id="of" lang="ca">de</string>
                
 		<string id="setup-gamepad">setup gamepad</string>
 		<string id="setup-gamepad" lang="ru">настроить джойстик</string>
@@ -352,6 +455,8 @@
 		<string id="setup-gamepad" lang="fr">Gamepad Configurer</string>
 		<string id="setup-gamepad" lang="de">Gamepad Einstellen</string>
 		<string id="setup-gamepad" lang="it">Gamepad Configurazione</string>
+		<string id="setup-gamepad" lang="es">Configurar mando</string>
+		<string id="setup-gamepad" lang="ca">Configurar comandament</string>
         
 		<string id="screen-resolution">screen size</string>
 		<string id="screen-resolution" lang="ru">Размер окна/Разрешение</string>
@@ -359,13 +464,17 @@
 		<string id="screen-resolution" lang="fr">Résolution</string>
 		<string id="screen-resolution" lang="de">Auflösung</string>
 		<string id="screen-resolution" lang="it">Risoluzione</string>
-		              
+		<string id="screen-resolution" lang="es">Tamaño de pantalla</string>
+		<string id="screen-resolution" lang="ca">Grandària de pantalla</string>
+
 		<string id="fullscreen-mode">fullscreen</string>
 		<string id="fullscreen-mode" lang="ru">во весь экран</string>
 		<string id="fullscreen-mode" lang="uk">На весь екран</string>
 		<string id="fullscreen-mode" lang="fr">Plein écran</string>
 		<string id="fullscreen-mode" lang="de">Vollanzeige</string>
 		<string id="fullscreen-mode" lang="it">Schermo intero</string>
+		<string id="fullscreen-mode" lang="es">Pantalla completa</string>
+		<string id="fullscreen-mode" lang="ca">Pantalla complerta</string>
 		              
 		<string id="do-not-show-donation-screen">do not show donation screen at exit</string>
 		<string id="do-not-show-donation-screen" lang="ru">не показывать экран попрошаек</string>
@@ -373,6 +482,8 @@
 		<string id="do-not-show-donation-screen" lang="fr">Masquer l'appel aux dons en quittant</string>
 		<string id="do-not-show-donation-screen" lang="de">Bitte das "Spenderbild" nicht anzeigen</string>
 		<string id="do-not-show-donation-screen" lang="it">Non mostrare lo schermo "donazione" all'uscita</string>
+		<string id="do-not-show-donation-screen" lang="es">No mostrar pantalla de donación al salir</string>
+		<string id="do-not-show-donation-screen" lang="ca">No mostrar pantalla de donació al sortir</string>
 		             
 		<string id="enable-fog-of-war">enable fog of war (hardcore difficulty)</string>
 		<string id="enable-fog-of-war" lang="ru">ограничение видимости (суперсложность)</string>
@@ -380,6 +491,8 @@
 		<string id="enable-fog-of-war" lang="fr">Activer le brouillard de guerre (difficile)</string>
 		<string id="enable-fog-of-war" lang="de">Nebel des Krieges (schwer)</string>
 		<string id="enable-fog-of-war" lang="it">Abilita nebbia di guerra (solo massima difficolta')</string>
+		<string id="enable-fog-of-war" lang="es">Habilitar niebla de guerra (dificultad masiva)</string>
+		<string id="enable-fog-of-war" lang="ca">Habilitar boira de guerra (dificultat massiva)</string>
 		             
 		<string id="score">Score: </string>
 		<string id="score" lang="ru">Счёт: </string>
@@ -387,6 +500,8 @@
 		<string id="score" lang="fr">Score :</string>
 		<string id="score" lang="de">Punkte: </string>
 		<string id="score" lang="it">Punteggio: </string>
+		<string id="score" lang="es">Puntuación: </string>
+		<string id="score" lang="ca">Puntuació: </string>
 
 		<string id="last-score">Last score: </string>
 		<string id="last-score" lang="ru">Последний счёт: </string>
@@ -406,6 +521,8 @@
 		<string id="shop" lang="fr">Magasin</string>
 		<string id="shop" lang="de">Geschäft</string>
 		<string id="shop" lang="it">Negozio</string>
+		<string id="shop" lang="es">Tienda</string>
+		<string id="shop" lang="ca">Botiga</string>
 		
 		<string id="medals">Medals</string>
 		<string id="medals" lang="ru">Медали</string>
@@ -415,12 +532,16 @@
 		<string id="player-name-1" lang="uk">Ім'я гравця: </string>
 		<string id="player-name-1" lang="fr">Nom du joueur 1 : </string>
 		<string id="player-name-1" lang="de">Name des Spielers 1: </string>
+		<string id="player-name-1" lang="es">Nombre Jugador 1: </string>
+		<string id="player-name-1" lang="ca">Nom Jugador 1: </string>
 
 		<string id="player-name-2">Second player name: </string>
 		<string id="player-name-2" lang="ru">Имя второго игрока: </string>
 		<string id="player-name-2" lang="uk">Ім'я другого гравця: </string>
 		<string id="player-name-2" lang="fr">Nom du joueur 2 : </string>
 		<string id="player-name-2" lang="de">Name des Spielers 2: </string>
+		<string id="player-name-2" lang="es">Nombre Jugador 2: </string>
+		<string id="player-name-2" lang="ca">Nom Jugador 2: </string>
 
 		<area id="language">
 			<string id="language">Language:</string>
@@ -429,6 +550,8 @@
 			<string id="language" lang="fr">Langue :</string>
 			<string id="language" lang="de">Sprache:</string>	
 			<string id="language" lang="it">Lingua :</string>
+			<string id="language" lang="es">Lengua:</string>
+			<string id="language" lang="ca">Llengua:</string>
 
 			<string id="default">System Default</string>
 			<string id="default" lang="ru">Системный</string>
@@ -436,6 +559,8 @@
 			<string id="default" lang="fr">Par défaut</string>
 			<string id="default" lang="de">Systemsprache</string>
 			<string id="default" lang="it">Default</string>
+			<string id="default" lang="es">Por defecto</string>
+			<string id="default" lang="ca">Per defecte</string>
 			
 			<string id="en">English</string>
 			<string id="ru">Русский</string>
@@ -443,6 +568,8 @@
 			<string id="fr">Français</string>
 			<string id="de">Deutsch</string>
 			<string id="it">Italiano</string>
+			<string id="es">Español</string>
+			<string id="ca">Català</string>
 		</area>
 
 		<area id="difficulty">
@@ -450,26 +577,36 @@
 			<string id="difficulty" lang="ru">Сложность</string>
 			<string id="difficulty" lang="uk">Складність</string>
 			<string id="difficulty" lang="fr">Difficulté</string>
+			<string id="difficulty" lang="es">Dificultad</string>
+			<string id="difficulty" lang="ca">Dificultat</string>
 			
 			<string id="easy">Easy</string>
 			<string id="easy" lang="ru">Легко</string>
 			<string id="easy" lang="uk">Легко</string>
 			<string id="easy" lang="fr">Facile</string>
+			<string id="easy" lang="es">Fácil</string>
+			<string id="easy" lang="ca">Fàcil</string>
 			
 			<string id="normal">Normal</string>
 			<string id="normal" lang="ru">Нормально</string>
 			<string id="normal" lang="uk">Нормально</string>
 			<string id="normal" lang="fr">Normal</string>
+			<string id="normal" lang="es">Normal</string>
+			<string id="normal" lang="ca">Normal</string>
 			
 			<string id="hard">Hard</string>
 			<string id="hard" lang="ru">Тяжело</string>
 			<string id="hard" lang="uk">Важко</string>
 			<string id="hard" lang="fr">Difficile</string>
+			<string id="hard" lang="es">Difícil</string>
+			<string id="hard" lang="ca">Difícil</string>
 			
 			<string id="nightmare">Nightmare</string>
 			<string id="nightmare" lang="ru">Кошмар!</string>
 			<string id="nightmare" lang="uk">Жах!</string>
 			<string id="nightmare" lang="fr">Cauchemar !</string>
+			<string id="nightmare" lang="es">Pesadilla</string>
+			<string id="nightmare" lang="ca">Malson</string>
 		</area>
 	</area>
 	
@@ -668,11 +805,15 @@
 		<string id="four_rooms" lang="ru">На оживленном городском перекрестке встретились представители четырех районов. Сотни убитых, покалеченных нет.</string>
 		<string id="four_rooms" lang="uk">На жвавому міському перехресті зустрілись представники чотирьох районів. Сотні вбитих, скалічених немає.</string>
 		<string id="four_rooms" lang="fr">Quatre gangs locaux se battent pour le contrôle du centre-ville. Aucun blessé n'est à déplorer, mais les morts se comptent par centaines.</string>
+		<string id="four_rooms" lang="es">Cuatro bandas locales están haciendo ruido en el centro de la ciudad. Cientos de muertos, sin heridos.</string>
+		<string id="four_rooms" lang="ca">Quatre bandes locals estan fent soroll en el centre de la ciutat. Centenars de morts, sense ferits.</string>
 		
 		<string id="arena">Battle Tanks Arena: check your Battle Tanks skill. Kill all opponents to win. (NEW!)</string>
 		<string id="arena" lang="ru">Танковая Арена: проверь своё умение убивать. (Новая карта!)</string>
 		<string id="arena" lang="uk">Танкова Арена: Перевір свої вміння вбивати. (Нова мапа!)</string>
 		<string id="arena" lang="fr">Arène Battle Tanks : Mesurez votre habileté à Battle Tans. Tuez tous les adversaires pour gagner. (Nouveau !)</string>
+		<string id="arena" lang="es">Battle Tanks Arena: prueba tus dotes de Battle Tanks. Mata a todos los oponentes para ganar. (¡NUEVO!)</string>
+		<string id="arena" lang="ca">Battle Tanks Arena: prova els teus dots de Battle Tanks. Mata a tots els oponents per guanyar (NOU!)</string>
 		
 		<string id="baykonur">Huge cooperative map with tons of troopers, very defensive military base and big boss inside(tm)</string>
 		<string id="baykonur" lang="ru">Захват укрепрайона близ космодрома Байконур.</string>
@@ -680,6 +821,8 @@
 		<string id="baykonur" lang="fr">Énorme carte en mode coopératif avec des tonnes de soldats, une base militaire très bien défendue et un grand balèze dedans.</string>
 		<string id="baykonur" lang="de">Reisige Karte im Kooperatifmodus mit einer Menge Soldaten, einer sehr gut geschützten Militärbasis und derer Boss drin. </string>
 		<string id="baykonur" lang="it">Enorme mappa zeppa di Truppe, basi ben difese e pezzi grossi all'interno..</string>
+		<string id="baykonur" lang="es">Enorme mapa cooperativo con grandes cantidades de tropas, base militar muy defendible y con un gran jefe dentro(tm)</string>
+		<string id="baykonur" lang="ca">Enorme mapa cooperatiu amb grans quantitats de tropes, base militar molt defensable i amb un gran capatàs a dins(tm)</string>
 
 		<string id="curfew">Very hot city multiplayer map with the lots of weapons and stuff.</string>
 		<string id="curfew" lang="ru">Руины города, остатки укреплений. Классическая карта для десматча.</string>
@@ -687,14 +830,17 @@
 		<string id="curfew" lang="fr">Carte multijoueur de ville très chaude avec plein de munitions et d'équipements qui traînent ici et là.</string>
 		<string id="curfew" lang="de">Stadtruinen, Reste der Festungen. Eine klassische Karte fürs Deathmatch.</string>
 		<string id="curfew" lang="it">Mappa multigiocatore piena di armi e cianfrusaglie...</string>
-		           
+		<string id="curfew" lang="es">Mapa multi-jugador muy caliente de ciudad con gran cantidad de armas y otras cosas.</string>
+		<string id="curfew" lang="ca">Mapa multi-jugador molt calent de ciutat amb grans quantitats d'armes y altres coses.</string>
 
 		<string id="gaddino">Country map with railway road.</string>
 		<string id="gaddino" lang="ru">Деревня с железной дорогой.</string>
 		<string id="gaddino" lang="uk">Село із залізницею.</string>
 		<string id="gaddino" lang="fr">Carte de cambrousse avec une voie de chemin de fer.</string>
 		<string id="gaddino" lang="de">Ein Dorf mit Eisenbahnschienen.</string>
-		<string id="gaddino" lang="it">Mappa con ferrovia.</string>	
+		<string id="gaddino" lang="it">Mappa con ferrovia.</string>
+		<string id="gaddino" lang="es">Mapa de país con ferrocarriles.</string>
+		<string id="gaddino" lang="ca">Mapa de país amb ferrocarrils.</string>
 		           
 		<string id="hell_swamp">Complex and tricky map with the endless rain.</string>
 		<string id="hell_swamp" lang="ru">Аццкие болота и вечный дождь.</string>
@@ -702,6 +848,8 @@
 		<string id="hell_swamp" lang="fr">Marécages labyrinthiques où il pleut tout le temps...</string>
 		<string id="hell_swamp" lang="de">Todessümpfe und ewiger Regen!  </string>
 		<string id="hell_swamp" lang="it">Mappa labirintica con pioggia continua</string>
+		<string id="hell_swamp" lang="es">Complejo y difícil mapa con lluvia sinfín.</string>
+		<string id="hell_swamp" lang="ca">Complex i difícil mapa amb pluja sense fi.</string>
 
 		<string id="lenin_square">Square with heli, kamikazes and city traffic.</string>
 		<string id="lenin_square" lang="ru">Тупые камикадзы напали на памятник В.И. Ленину</string>
@@ -709,6 +857,8 @@
 		<string id="lenin_square" lang="fr">Le square Lénine pourrait être tranquille, si il n'y avait pas toutes ces voitures, ces hélicoptères et ces kamikazes !</string>
 		<string id="lenin_square" lang="de">Die Hubschrauber und Kamikazes greifen den Lenin-Platz an.</string>
 		<string id="lenin_square" lang="it">Piazza Lenin con elicotteri, kamikaze e un traffico terribile!</string>
+		<string id="lenin_square" lang="es">Avenida con helicópteros, kamikazes y tráfico de ciudad.</string>
+		<string id="lenin_square" lang="ca">Avinguda amb helicòpters, kamikazes i tràfic de ciutat.</string>
 	          
 		<string id="wastes">Wastes. Nuclear desert.</string>
 		<string id="wastes" lang="ru">Выжженый ядерный полигон и мерзкий песчаный червяк. Карта для игры в захват флага. </string>
@@ -716,6 +866,8 @@
 		<string id="wastes" lang="fr">Dévastations. Désert nucléaire.</string>
 		<string id="wastes" lang="de">Ausgebranntes Kernwaffenversuchsgelände mit einem aufdringlichen Sandwurm.</string>
 		<string id="wastes" lang="it">Rifiuti. Deserto nucleare.</string>
+		<string id="wastes" lang="es">Residuos. Desierto nuclear.</string>
+		<string id="wastes" lang="ca">Residus. Desert nuclear.</string>
 		
 		<string id="aqua_world">Submerged desolated city. Rooftops and a lot of teleports around.</string>
 		<string id="aqua_world" lang="ru">Затопленный город, телепортаторы и беготня по крышам</string>
@@ -723,6 +875,8 @@
 		<string id="aqua_world" lang="fr">Ville désolée, submergée par les flots. De nombreux téléporteurs et parcours sur les toits.</string>
 		<string id="aqua_world" lang="de">Überflutete Stadt, Teleporter und Lauferei auf Dächern.</string>
 		<string id="aqua_world" lang="it">Citta' desolata e sommersa. Tetti e teletrasporti.</string>
+		<string id="aqua_world" lang="es">Desolada ciudad sumergida. Techos y un montón de tele-puertos alrededor.</string>
+		<string id="aqua_world" lang="ca">Desolada ciutat submergida. Teulats i un fotimer de tele-ports al voltant.</string>
 
 		<string id="dune">Save your very last fortification in desert from relinquishing. Enemy troops lured deadly sandworm and traitorously attacked. </string>
 		<string id="dune" lang="ru">Враги приманили песчаного червя(tm) остатками завтрака и не менее подло напали на ваш последний оплот в пустыне!</string>
@@ -730,6 +884,8 @@
 		<string id="dune" lang="fr">Défendez votre toute dernière base fortifiée dans le désert. Les vers géants des sables vous attaquent par traîtrise.</string>
 		<string id="dune" lang="de">Ihre Feinde haben den Sandwurm mit Resten des Frühstücks bestochen und auf die gemeinste Weise Ihre letzte Festung angegriffen. Verteidigen Sie sie.</string>
 		<string id="dune" lang="it">Salvate la vostra ultima fortezza.Occhio ai vermi!</string>
+		<string id="dune" lang="es">Salva nuestra última fortificación en el desierto de la renuncia. Las tropas enemigas atrajeron un mortal gusano de arena y atacaron traidoramente.</string>
+		<string id="dune" lang="ca">Salva la nostra ultima fortificació en el desert de la renuncia. Les tropes enemigues van atreure un mortal cuc de sorra i van atacar ràpidament.</string>
 
 		<string id="university">Save Battle Tanks University from the deadly helicopters. This is deathmatch map, so enjoy killing each other before destroying helis :)</string>
 		<string id="university" lang="ru">Университет BattleTanks. Злобные враги (вертолётчики) пытаются разбомбить всё при помощи бомб.</string>
@@ -737,6 +893,8 @@
 		<string id="university" lang="fr">Sauvez l'université Battle Tanks contre les hélicoptères de la mort. C'est une carte de combat à mort, donc entre-tuez vous joyeusement avant de détruire les hélicos.</string>
 		<string id="university" lang="de">Retten Sie die Battle Tanks Universität vor Hubschraubern des Todes. Dies ist eine Deathmatchkarte. Also, tötet euch untereinander bevor Sie mit den Hubschraubern anfangen. </string>
 		<string id="university" lang="it">Salvate l'universita Battle Tanks dagli elicotteri. Mappa deathmatch, sparatevi e POI distruggete gli elicotteri.</string>
+		<string id="university" lang="es">Salva la Universidad Battle Tanks de los mortíferos helicópteros. Éste es un mapa duelo a muerte, así que goza de matar a cada uno antes de destruir los helicópteros :)</string>
+		<string id="university" lang="ca">Salva l'Universitat Battle Tanks dels mortífers helicòpters. Aquest es un mapa duel a mort, així que gaudeix de matar a cadascú abans de destruir els helicòpters :)</string> 
 		
 		<string id="platform">Remains of the orbital city. Vivid rocks and platforms.</string>
 		<string id="platform" lang="ru">Живописные останки брошенного орбитального поселения. Летающие в космосе платформы и камни.</string>
@@ -744,11 +902,15 @@
 		<string id="platform" lang="fr">Les restes d'une ville en orbite spatiale. Vive les rochers et les plateformes !</string>
 		<string id="platform" lang="de">Reste einer verlassenen Orbitalstazion. Im Raum fliegen Steine und Plattformen rum.</string>
 		<string id="platform" lang="it">Rottami di una stazione spaziale...</string>
+		<string id="platform" lang="es">Restos de la ciudad orbital. Lleno de rocas y plataformas.</string>
+		<string id="platform" lang="ca">Restes de la ciutat orbital. Ple de rocs i plataformes.</string>
 
 		<string id="paintball" lang="en">Various weapons at the same place.</string>
 		<string id="paintball" lang="ru">Если ты плюнешь дальше\s- я тебе полчатла. Вот этой плюкой. Если я\s- ты мне две спички, понял? Давай плюй, сынок. </string>
 		<string id="paintball" lang="uk">Якщо ти цвіркнеш далеко\s- я тобі півчатлу. Ось цією плюкою. Якщо ж я\s- ти мені два сірники, зрозумів? Цвіркай, синку. </string>
 		<string id="paintball" lang="fr">De nombreuses armes au même endroit.</string>
+		<string id="paintball" lang="es">Varias armas en el mismo lugar.</string>
+		<string id="paintball" lang="ca">Varies armes en el mateix lloc.</string>
 
 		<string id="(default)">Sorry, no description was provided by the author of this map...</string>
 		<string id="(default)" lang="ru">У этой карты нет описания. Извините. :(</string>
@@ -756,6 +918,8 @@
 		<string id="(default)" lang="fr">Désolé, aucune description n'a été fournie par l'auteur de cette carte. :(</string>
 		<string id="(default)" lang="de">Es tut uns Leid, aber für diese Karte gibt es noch keine Beschreibung.</string>
 		<string id="(default)" lang="it">Spiacente, nessuna descrizione per questa mappa. :(</string>
+		<string id="(default)" lang="es">Lo siento, sin descripción proporcionada por el autor de éste mapa...</string>
+		<string id="(default)" lang="ca">Ho sento, sense descripció proporcionada per l'autor d'aquest mapa...</string>
 	</area>         
 
 	<area id="hints">
@@ -765,6 +929,8 @@
 		<string id="be-careful" lang="fr">Chuuut... Soyez prudent !</string>
 		<string id="be-careful" lang="de">Still! Seien Sie vorsichtig!</string>
 		<string id="be-careful" lang="it">Silenzio. Stai attento!</string>
+		<string id="be-careful" lang="es">Shhh... ¡Ten cuidado!</string>
+		<string id="be-careful" lang="ca">Shhh... Tingues compte!</string>
 
 		<string id="one">1</string>
 		<string id="two">2</string>
@@ -809,12 +975,26 @@
 				Quello e' lo spazioporto di Baïkonur. Devi distruggerlo in ogni modo.
 				Ora corri al garage e scegli il veicolo che preferisci.
 			</string>
+			<string id="start" lang="es">Esta es tu primera grande misión, camarada. :)
+				Mira tu mini-mapa (puedes alternar el mini-mapa con la tecla 'M') ,
+				hay una cruz roja por la esquina superior-izquierda del mapa.
+				Ese es el puerto espacial Baykonur. Has de destruirlo por cualquier medio.
+				Ahora rápidamente corre hacia el traspatio y coge cualquier vehículo que quieras.
+			</string>
+			<string id="start" lang="ca">Aquesta és la teva primera gran missió, camarada. :)
+				Mira el teu minimapa (pots alternar el minimapa amb la tecla 'M') ,
+				hi ha una creu vermella per la cantonada superior esquerra del mapa.
+				Aquest es el port espacial Baykonyr. Has de destruir-lo per qualsevol mitjà.
+				Ara ràpidament corre cap al traspati i agafa qualsevol vehicle que vulguis.
+			</string>
 			<string id="destroy-spaceport">DESTROY SPACEPORT</string>
 			<string id="destroy-spaceport" lang="ru">УБЕЙ БАЙКОНУР!</string>
 			<string id="destroy-spaceport" lang="uk">ЗНИЩ БАЙКОНУР!</string>
 			<string id="destroy-spaceport" lang="fr">DÉTRUIRE LE COSMODROME</string>
 			<string id="destroy-spaceport" lang="de">KOSMODROM ZERSTÖREN!</string>
 			<string id="destroy-spaceport" lang="it">DISTRUGGI LO SPAZIOPORTO!</string>
+			<string id="destroy-spaceport" lang="es">DESTRUYE EL PUERTO ESPACIAL</string>
+			<string id="destroy-spaceport" lang="ca">DESTRUEIX EL PORT ESPACIAL</string>
 		</area>
 		<area id="platform">
 			<string id="objectives">Destroy three rocket launchers!</string>
@@ -822,12 +1002,15 @@
 			<string id="objectives" lang="uk">Знищ усі три космопорти!</string>
 			<string id="objectives" lang="fr">Détruire trois lance-roquettes !</string>
 			<string id="objectives" lang="it">Distruggi tre lanciarazzi !</string>
+			<string id="objectives" lang="es">¡Destruye tres lanzadoras de cohetes!</string>
 			<string id="passage-needed">There's no escaping here! Let's try destroying this building.</string>
 			<string id="passage-needed" lang="ru">Дальше пути нет. Похоже придется прокладывать дорогу прямо сквозь этот дом.</string>
 			<string id="passage-needed" lang="uk">Далі шляху немає. Схоже прийдеться прокладати шлях прямо через цей дім.</string>
 			<string id="passage-needed" lang="fr">C'est un cul-de-sac ! Essayez de détruire ce bâtiment.</string>
 			<string id="passage-needed" lang="it">Non c'e' uscita ! Proviamo a distruggere il palazzo.</string>
 			<string id="passage-needed" lang="de">In die Sackgasse geraten! Versuchen Sie dieses Gebäude zu zerstören. </string>
+			<string id="passage-needed" lang="es">¡No hay escape aquí! Prueba a destruir esta construcción.</string>
+			<string id="passage-needed" lang="ca">No hi ha sortida aquí! Prova a destruir aquesta construcció.</string>
 		</area> 
                              
 		<area id="dune">
@@ -837,6 +1020,8 @@
 			<string id="defend-base" lang="fr">DÉFENDEZ VOTRE BASE !</string>
 			<string id="defend-base" lang="it">DIFENDI LA TUA BASE!</string>
 			<string id="defend-base" lang="de">VERTEIDIGEN SIE IHRE BASIS!</string>
+			<string id="defend-base" lang="es">¡DEFIENDE TU BASE!</string>
+			<string id="defend-base" lang="ca">DEFENSA LA TEVA BASE!</string>
 		</area> 
 	</area>
 
@@ -847,6 +1032,8 @@
 		<string id="new-map" lang="fr">Nouvelle carte</string>
 		<string id="new-map" lang="it">Nuova mappa</string>
 		<string id="new-map" lang="de">Neue Karte</string>
+		<string id="new-map" lang="es">Nuevo mapa</string>
+		<string id="new-map" lang="ca">Nou mapa</string>
 	</area>
 
 	<area id="messages">
@@ -856,6 +1043,8 @@
 		<string id="restart-game" lang="fr">Redémarrer le jeu.</string>
 		<string id="restart-game" lang="de">Spiel neu starten.</string>
 		<string id="restart-game" lang="it">Fai ripartire il gioco.</string>
+		<string id="restart-game" lang="es">Re-inicia el juego para ver los cambios.</string>
+		<string id="restart-game" lang="ca">Re-inicia el joc per veure els canvis.</string>
 		        
 		<string id="game-paused">GAME PAUSED</string>
 		<string id="game-paused" lang="ru">ПАУЗА</string>
@@ -863,6 +1052,8 @@
 		<string id="game-paused" lang="fr">PAUSE</string>
 		<string id="game-paused" lang="de">PAUSE</string>
 		<string id="game-paused" lang="it">PAUSA</string>
+		<string id="game-paused" lang="es">JUEGO PAUSADO</string>
+		<string id="game-paused" lang="ca">JOC EN PAUSA</string>
 		        
 		<string id="game-over">GAME OVER</string>
 		<string id="game-over" lang="ru">МИССИЯ ПРОВАЛЕНА</string>
@@ -870,6 +1061,8 @@
 		<string id="game-over" lang="fr">PARTIE TERMINÉE</string>
 		<string id="game-over" lang="de">EINSATZ VERLOREN</string>
 		<string id="game-over" lang="it">FINE PARTITA</string>
+		<string id="game-over" lang="es">JUEGO FINALIZADO</string>
+		<string id="game-over" lang="ca">JOC FINALITZAT</string>
 		        
 		<string id="mission-accomplished">MISSION ACCOMPLISHED</string>
 		<string id="mission-accomplished" lang="ru">МИССИЯ ВЫПОЛНЕНА</string>
@@ -877,6 +1070,8 @@
 		<string id="mission-accomplished" lang="fr">MISSION ACCOMPLIE</string>
 		<string id="mission-accomplished" lang="de">EINSATZ ERFOLGREICH</string>
 		<string id="mission-accomplished" lang="it">MISSIONE CONCLUSA</string>
+		<string id="mission-accomplished" lang="es">MISION REALIZADA</string>
+		<string id="mission-accomplished" lang="ca">MISSIO REALITZADA</string>
 
 		<string id="checkpoint-reached">CHECKPOINT REACHED</string>
 		<string id="checkpoint-reached" lang="ru">ТОЧКА СОХРАНЕНИЯ!</string>
@@ -884,11 +1079,15 @@
 		<string id="checkpoint-reached" lang="fr">SAUVEGARDE ATTEINTE !</string>
 		<string id="checkpoint-reached" lang="de">SPEICHERSTELLE!</string>
 		<string id="checkpoint-reached" lang="it">CHECKPOINT RAGGIUNTO!</string>
+		<string id="checkpoint-reached" lang="es">PUNTO DE CONTROL ALCANZADO</string>
+		<string id="checkpoint-reached" lang="ca">PUNT DE CONTROL ARXIVAT</string>
 		
 		<string id="wrong-checkpoint">WRONG CHECKPOINT!</string>
 		<string id="wrong-checkpoint" lang="ru">НЕ ТУДА!</string>
 		<string id="wrong-checkpoint" lang="uk">НЕ ТУДИ!</string>
 		<string id="wrong-checkpoint" lang="fr">MAUVAIS PASSAGE !</string>
+		<string id="wrong-checkpoint" lang="es">¡PUNTO DE CONTROL ERRONEO!</string>
+		<string id="wrong-checkpoint" lang="ca">PUNT DE CONTROL ERRONI!</string>
 		
 		<string id="combo">COMBO !</string>
 		<string id="combo" lang="ru">КОМБО!</string>
@@ -896,6 +1095,8 @@
 		<string id="combo" lang="fr">COMBO !</string>
 		<string id="combo" lang="de">KOMBO!</string>
 		<string id="combo" lang="it">COMBO !</string>
+		<string id="combo" lang="es">¡ COMBO !</string>
+		<string id="combo" lang="ca">COMBO !</string>
 		        
 		<string id="base-destroyed">YOUR BASE WAS DESTROYED. GAME OVER.</string>
 		<string id="base-destroyed" lang="ru">Ваша база была уничтожена, миссия провалена.</string>
@@ -903,12 +1104,16 @@
 		<string id="base-destroyed" lang="fr">VOTRE BASE A ÉTÉ DÉTRUITE, VOUS AVEZ PERDU.</string>
 		<string id="base-destroyed" lang="de">IHRE BASIS IST ZERSTÖRT WORDEN, EINSATZ VERLOREN.</string>
 		<string id="base-destroyed" lang="it">LA TUA BASE E' STATA DISTRUTTA. FINE PARTITA.</string>
+		<string id="base-destroyed" lang="es">TU BASE HA SIDO DESTRUIDA. JUEGO FINALIZADO.</string>
+		<string id="base-destroyed" lang="ca">LA TEVA BASE HA SIGUT DESTRUIDA. JOC FINALITZAT.</string>
 
 		<string id="time-limit-reached">TIME LIMIT WAS REACHED.</string>
 		<string id="time-limit-reached" lang="ru">ВРЕМЯ КОНЧИЛОСЬ.</string>
 		<string id="time-limit-reached" lang="uk">ЧАС СКІНЧИВСЯ</string>
 		<string id="time-limit-reached" lang="fr">LE TEMPS EST TERMINÉ.</string>
 		<string id="time-limit-reached" lang="de">DIE ZEIT IST UM.</string>
+		<string id="time-limit-reached" lang="es">LIMITE DE TIEMPO ALCANZADO</string>
+		<string id="time-limit-reached" lang="ca">LIMIT DE TEMPS ARXIVAT</string>
 		
 		<string id="ready">GET READY</string>
 		<string id="go">FIGHT!!</string>
@@ -918,6 +1123,10 @@
 		<string id="go" lang="uk">В АТАКУ!!!</string>
 		<string id="ready" lang="fr">PRÊTS...</string>
 		<string id="go" lang="fr">CHARGEZ !</string>
+		<string id="ready" lang="es">PREPARAOS</string>
+		<string id="go" lang="es">¡¡LUCHAD!!</string>
+		<string id="ready" lang="ca">PREPARATS</string>
+		<string id="go" lang="ca">LLUITEU!!</string>
 	</area>
 
 	<area id="errors">
@@ -927,6 +1136,8 @@
 		<string id="connection-failed" lang="fr">Échec de la connexion.</string>
 		<string id="connection-failed" lang="de">Fehler der Verbindung.</string>
 		<string id="connection-failed" lang="it">Connessione fallita.</string>
+		<string id="connection-failed" lang="es">Conexión fallida.</string>
+		<string id="connection-failed" lang="ca">Connexió fallida.</string>
 		        
 		<string id="multiplayer-exception">Multiplayer error. Look logs for details.</string>
 		<string id="multiplayer-exception" lang="ru">Ошибка сетевой игры.</string>
@@ -934,15 +1145,21 @@
 		<string id="multiplayer-exception" lang="fr">Erreur du mode multijoueur.</string>
 		<string id="multiplayer-exception" lang="de">Fehler des Netzspieles.</string>
 		<string id="multiplayer-exception" lang="it">Errore nel gioco multigiocatore. Guarda nei log per dettagli.</string>
+		<string id="multiplayer-exception" lang="es">Error multijugador. Mira los registros para detalles.</string>
+		<string id="multiplayer-exception" lang="ca">Error multijugador. Mira els registres per detalls.</string>
 
 		<string id="script-error">Script error.</string>
 		<string id="script-error" lang="ru">Ошибка в скрипте.</string>
 		<string id="script-error" lang="uk">Помилка в сценарії (скрипт).</string>
 		<string id="script-error" lang="fr">Erreur de script.</string>
+		<string id="script-error" lang="es">Error de script.</string>
+		<string id="script-error" lang="ca">Error de script.</string>
 		
 		<string id="obsolete-client">Please upgrade Battle Tanks.</string>
 		<string id="obsolete-client" lang="ru">Обновите танки!</string>
 		<string id="obsolete-client" lang="fr">Mettez Battle Tanks à jour.</string>
+		<string id="obsolete-client" lang="es">Por favor actualiza Battle Tanks.</string>
+		<string id="obsolete-client" lang="ca">Per favor actualitza Battle Tanks.</string>
 	</area>
 
 	<area id="tips">
@@ -952,6 +1169,8 @@
 		<string id="minimap" lang="fr">Vous pouvez afficher/masquer la minicarte avec la touche 'M'.</string>
 		<string id="minimap" lang="de">Karte anzeigen/verstecken mit der 'M' Taste.</string>
 		<string id="minimap" lang="it">Puoi nascondere/visualizzare la minimappa usando il tasto 'M'.</string>
+		<string id="minimap" lang="es">Puedes mostrar/ocultar el minimapa con la tecla 'M'.</string>
+		<string id="minimap" lang="ca">Pots mostrar/ocultar el minimapa amb la tecla 'M'.</string>
 		        
 		<string id="suicide">Getting stuck in some tricky place?
 			Usually it's not possible, but there's 'F12' key\s- commit a suicide. Sorry. </string>
@@ -960,13 +1179,19 @@
 		<string id="suicide" lang="fr">Coincé dans un endroit bizarre ? Pressez la touche 'F12' pour vous suicider. Désolé.</string>
 		<string id="suicide" lang="de">An irgendeiner Stelle steckengeblieben? Drücken Sie die 'F12' Taste um Selbstmord zu begehen.</string>
 		<string id="suicide" lang="it">Bloccato e disperato? Di dolito non si puo' ma premi 'F12' per suicidarti...</string>
-		        
+		<string id="suicide">¿Te atascas en algún lugar difícil?
+			Usualmente no es posible, pero hay la tecla 'F12' - cometer un suicidio. Lo siento. </string>
+		<string id="suicide">Et claves en algun lloc difícil?
+		        Usualment no és possible, però hi ha la tecla 'F12' - cometre un suïcidi. Ho sento. </string>
+
 		<string id="leaving">You can leave vehicle at any time by pressing 'leave' button.</string>
 		<string id="leaving" lang="ru">Вы можете покинуть боевую машину в любое время нажав соответствующую кнопку.</string>
 		<string id="leaving" lang="uk">Ви можете залишити бойову машину в будь-яку годину, натиснувши відповідну клавішу.</string>
 		<string id="leaving" lang="fr">Vous pouvez débarquer de votre véhicule avec la touche correspondante. Vous pouvez configurer cette touche dans les options.</string>
 		<string id="leaving" lang="de">Sie können das Fahrzeug jederzeit verlassen. Drücken Sie die dafür entsprechende Taste.</string>
 		<string id="leaving" lang="it">Puoi abbandora il tuo veicolo in ogni momento premendo il bottone 'leave'.</string>
+		<string id="leaving" lang="es">Puedes dejar el vehículo en cualquier momento pulsando el botón 'dejar'.</string>
+		<string id="leaving" lang="ca">Pots deixar el vehicle en qualsevol moment polsant el botó 'deixar'.</string>
                         
 		<string id="mortar">Every (!) map has a hidden "mortar" vehicle on it.</string>
 		<string id="mortar" lang="ru">На каждой карте (!) можно найти секретную машинку\s- мортиру.</string>
@@ -974,18 +1199,21 @@
 		<string id="mortar" lang="fr">Toutes (!) les cartes on un véhicule « mortier » caché quelque part.</string>
 		<string id="mortar" lang="de">Auf jeder (!) Karte können Sie einen versteckten Mörser finden.</string>
 		<string id="mortar" lang="it">Ogni mappa ha un "mortar" nascosto.</string>
-                        
+		<string id="mortar" lang="es">Cada (!) mapa tiene un vehículo "mortero" escondido en él.</string>
+
 		<string id="mines">Shilka could use mines. Grab nuke item to get special nuke mines</string>
 		<string id="mines" lang="ru">Шилка может брать мины. Если взять ядерную бомбу, то шилка сможет ставить чудовищные ядерные мины. </string>
 		<string id="mines" lang="uk">Шилка може брати міни. Якщо взяти ядерну бомбу, то шилка зможе ставити руйнівні ядерні міни.</string>
 		<string id="mines" lang="fr">Shilka peut aussi poser des mines.</string>
 		<string id="mines" lang="de">Schilka kann auch Minen benutzen.</string>
 		<string id="mines" lang="it">Schilka puo' usare anche le mine.</string>
+		<string id="mines" lang="es">El Shilka puede usar minas. Coge el ítem nuclear para obtener minas nucleares especiales.</string>
 
 		<string id="cars">Car is a quiet safe place. Enemy cannot see you while you in.</string>
 		<string id="cars" lang="ru">В машине достаточно безопасно. Враги по машинам не стреляют.</string>
 		<string id="cars" lang="uk">У машині достатньо безпечно. Вороги по машинах не стріляють.</string>
 		<string id="cars" lang="fr">La voiture est un endroit calme et sûr. L'ennemi ne peut pas vous voir lorsque vous êtes à l'intérieur.</string>
+		<string id="cars" lang="es">El coche es un lugar seguro y tranquilo. El enemigo no puede verte cuando estás dentro.</string>
 		        
 		<string id="sandworm">Sandworm could be killed with single mortar shot. </string>
 		<string id="sandworm" lang="ru">Мортира может убить червя одним попаданием своей банки (в рот).</string>
@@ -993,6 +1221,7 @@
 		<string id="sandworm" lang="fr">Les vers géants peuvent être tués d'un seul tir de mortier.</string>
 		<string id="sandworm" lang="de">Der Sandwurm kann mit einem einzigen Mörserschuss getötet werden.</string>
 		<string id="sandworm" lang="it">I vermi possono essere uccisi con un solo colpo di mortaio.</string>
+		<string id="sandworm" lang="es">El gusano de arena puede ser matado con un simple disparo de mortero.</string>
 		        
 		<string id="donation">You could improve this project and even push it to the desired features by donating.</string>
 		<string id="donation" lang="ru">Вы можете помочь проекту, сделав пожертвование.</string>
@@ -1000,6 +1229,7 @@
 		<string id="donation" lang="fr">Vous pouvez améliorer ce projet et même pousser une fonctionnalité en faisant un don.</string>
 		<string id="donation" lang="de">Sie können gerne das Projekt mit einer kleinen Spende unterstützen.</string>
 		<string id="donation" lang="it">Puoi migliorare questo progetto ed anche avere le modifiche che vuoi donando.</string>
+		<string id="donation" lang="es">Puedes mejorar éste proyecto e incluso empujarlo con las características deseadas con donaciones.</string>
 		        
 		<string id="tactic-map">Clicking on the map screenshot could reveal useless tactic map.</string>
 		<string id="tactic-map" lang="ru">Кликнув на картинку карты вы можете посмотреть бесполезную тактическую карту, на которой иногда нарисованы чекпоинты и прочая ерунда.</string>
@@ -1007,6 +1237,7 @@
 		<string id="tactic-map" lang="fr">Pour voir le schéma tactique, cliquez sur la carte.</string>
 		<string id="tactic-map" lang="de">Um das taktische Schema zu sehen, klicken Sie bitte auf das Bildchen "Karte".</string>
 		<string id="tactic-map" lang="it">Per vedere lo schema tattico clicca sulla mappa.</string>
+		<string id="tactic-map" lang="es">Haciendo clic en la captura de pantalla del mapa puede revelar un mapa de tácticas inútil.</string>
 		        
 		<string id="clouds">Smoke clouds are poisonous. You could kill troopers with it.</string>
 		<string id="clouds" lang="ru">Дымовые ракеты очень ядовиты. Они могут убивать солдат, женщин и людей :)))</string>
@@ -1014,14 +1245,14 @@
 		<string id="clouds" lang="fr">Les nuages sont empoisonnés. Vous pouvez tuer des soldats avec ça.</string>
 		<string id="clouds" lang="de">Die Rauchraketen sind sehr giftig. Damit können Sie die gegnerische Truppen neutralisieren.</string>
 		<string id="clouds" lang="it">Le nuvole di fumo sono velenose.Puoi usarle per uccidere le truppe.</string>
+		<string id="clouds" lang="es">Las nubes de humo son venenosas. Puedes matar tropas con ellas.</string>
 
 		<string id="screenshot">You can take screenshots with "Shift-S". "Shift-M" takes a screenshot of whole map.</string>
 		<string id="screenshot" lang="ru">Вы можете сделать скриншот игры, просто нажав "Shift-S". А нажав "Shift-M" вы сделаете снимок всей карты!</string>
 		<string id="screenshot" lang="uk">Ви можете зробити скріншот гри, просто натиснувши "Shift-S". Натиснувши "Shift-M" ви зробите знімок всієї мапи!</string>
 		<string id="screenshot" lang="fr">Vous pouvez prendre une photo de l'écran en pressant la touche 'Shift-S'. Pour une photo de toute la carte, pressez la touche 'Shift-M'.</string>
 		<string id="screenshot" lang="de">Falls Sie möchten, können Sie jederzeit mit "Shift-S" eine Aufnahme machen. Mit "Shift-M" machen Sie die Aufnahme der ganzen Karte. </string>
-                  
-		<string id="fog-of-war" lang="it">Puoi abilitare "nebbia di guerra" nel menu opzioni (difficolta' massima).Funziona solo con risoluzioni superiori a 800X600 </string>
+		<string id="screenshot" lang="es">Puedes tomar capturas de pantalla con "Shift-S". "Shift-M" toma una captura una pantalla de todo el mapa.</string> 
 		
                  <string id="fog-of-war">You can enable "fog of war" in option menu (hardcore difficulty).
 			Note that this option works only in resolutions larger than 800x600.</string>
@@ -1029,6 +1260,9 @@
 		<string id="fog-of-war" lang="uk">Ви можете ввімкнути обмеження видимості в меню налаштувань. Врахуйте, що воно працює тільки при розмірах екрана більше 800 на 600 пікселів. </string>
 		<string id="fog-of-war" lang="fr">Vous pouvez activer le « brouillard de guerre » (difficulté maximale) dans les options. Notez qu'il ne fonctionne que pour les résolutions plus supérieures à 800x600.</string>
 		<string id="fog-of-war" lang="de">Sie können die Option "Beschränkung der Sicht" im Einstellungsmenü aktivieren. Sie sollten aber im Kauf nehmen, dass diese Option eine grössere Auflösung als 800X600 verlangt.</string>
+		<string id="fog-of-war" lang="it">Puoi abilitare "nebbia di guerra" nel menu opzioni (difficolta' massima).Funziona solo con risoluzioni superiori a 800X600 </string>
+		<string id="fog-of-war" lang="es">Puedes habilitar la "niebla de guerra" en el menú de opciones (dificultad masiva).
+			Ten en cuenta que esta opción sólo funciona en resoluciones mayores de 800x600.</string>
 		         
 		<string id="stats">You can view multiplayer game stats with &lt;tab&gt; key.</string>
 		<string id="stats" lang="ru">Вы можете посмотреть статистику матча кнопкой &lt;tab&gt;.</string>
@@ -1036,6 +1270,7 @@
 		<string id="stats" lang="fr">Vous pouvez voir les scores pendant une partie multijoueur en pressant la touche 'TAB'.</string>
 		<string id="stats" lang="de">Mit der "TAB" Taste können Sie die Matchstatistik ansehen.</string>
 		<string id="stats" lang="it">Puoi vedere le statistiche del gioco premendo 'TAB'.</string>
+		<string id="stats" lang="es">Puedes ver las estadísticas de partida multi-jugador con la tecla &lt;TAB&gt;.</string>
                         
 		<string id="hint-control">You can skip or display again last tip with 'hint-control' key.</string>
 		<string id="hint-control" lang="ru">Кнопка контроля подсказок очень полезна. Ей можно прятать и повторять подсказки.</string>
@@ -1043,6 +1278,7 @@
 		<string id="hint-control" lang="fr">Vous pouvez afficher ou masquer la dernière astuce en pressant la touche de conseil. Vous pouvez configurer cette touche dans les options.</string>
 		<string id="hint-control" lang="de">Die Tip-Taste kann sehr nützlich sein. Anhand derer, können die Tips wiederholt bzw. versteckt werden.</string>
 		<string id="hint-control" lang="it">Puoi rivedere l'ultimo suggerimento col tasto 'hint-control'</string>
+		<string id="hint-control" lang="es">Puedes saltar o mostrar otra vez el último consejo con la tecla 'hint-control'.</string>
 		        
 		<string id="checkpoints">Cooperative maps usually have special places which automatically saves your progress. Look tactic map for the details.</string>
 		<string id="checkpoints" lang="ru">На кооперативных картах обычно есть специальные места: чекпоинты, которые сохраняют положения игрока.</string>
@@ -1050,6 +1286,7 @@
 		<string id="checkpoints" lang="fr">Les cartes en mode coopératif sauvegardent automatiquement votre progression lorsque vous passez à certains endroits. Regardez le schéma tactique pour plus de détails.</string>
 		<string id="checkpoints" lang="de">Auf den kooperativen Karten gibt es normalerweise einige spezielle Stellen: Speicherstellen, die die Lage des Spielers behalten.</string>
 		<string id="checkpoints" lang="it">Le mappe di squadra salvano automaticamente la partita al raggiungimento di un CHECKPOINT.</string>
+		<string id="checkpoints" lang="es">Los mapas cooperativos usualmente tienen lugares especiales dónde guardan automáticamente tu progreso. Mira el mapa táctico para los detalles.</string>
 		
 		<string id="deathmatch-bots">Have not planned to play with an opponent? Add some bots while playing deathmatch game.</string>
 		<string id="deathmatch-bots" lang="ru">Если вы не планируете играть с кем-то по сети в десматч, добавьте ботов (AI) в меню выбора машинок.</string>
@@ -1057,22 +1294,26 @@
 		<string id="deathmatch-bots" lang="fr">Vous n'avez pas d'adversaire contre qui jouer ? Ajoutez des robots (AI) pour les combats à mort.</string>
 		<string id="deathmatch-bots" lang="it">Non hai avversari? Aggiungi qualche BOT mentri giochi.</string>
 		<string id="deathmatch-bots" lang="de">Haben Sie keinen Rivalen? Fügen Sie einige Roboters zum Deathmatch-Spiel hinzu.</string>
+		<string id="deathmatch-bots" lang="es">¿No te has planteado jugar con oponentes? Añade algunos bots al jugar en partidas de duelo a muerte.</string>
 		
 		<string id="chat">You can press ENTER and chat with other players.</string>
 		<string id="chat" lang="ru">Вы можете разговаривать с другими игроками, нажав ENTER.</string>
 		<string id="chat" lang="uk">Ви можете розмовляти з іншими гравцями, натиснувши ENTER.</string>
 		<string id="chat" lang="fr">Vous pouvez contacter les autres joueurs avec la touche ENTRÉE.</string>
 		<string id="chat" lang="de">Mit der ENTER-Taste können Sie die anderen Spieler kontaktieren.</string>
+		<string id="chat" lang="es">Puedes pulsar ENTER y hablar con otros jugadores.</string>
 
 		<string id="nukeman">Machinegunner players can grab nuke missile items and become kamikaze.</string>
 		<string id="nukeman" lang="ru">Играя пулемётчиком можно брать ядерные бомбы и превращаться в ядерного камикадзе.</string>
 		<string id="nukeman" lang="uk">Грая кулеметником можна брати ядерні бомби та перетворюватися в ядерного камікадзе.</string>
 		<string id="nukeman" lang="fr">Les soldats joueurs peuvent ramasser des missiles nucléaires pour devenir des kamikazes.</string>
+		<string id="nukeman" lang="es">Los jugadores artilleros pueden coger misiles nucleares y volverse kamikazes.</string>
 		
 		<string id="buggy">Buggy can kill helicopters with its alternative fire.</string>
 		<string id="buggy" lang="ru">Багги может убивать вертолёты при помощи автоматической зенитной пушки. Зажмите кнопку альтернативного огня и ищите удобную позицию. </string>
 		<string id="buggy" lang="uk">Баггі може вбивати гелікоптери за допомогою автоматичної зенітної гармати. Затисніть клавішу альтернативного вогню та шукайте зручну позицію.</string>
 		<string id="buggy" lang="fr">Le buggy peut détruire les hélicoptères avec son arme secondaire.</string>
+		<string id="buggy" lang="es">El Buggy puede matar helicópteros con su fuego alternativo.</string>
 	</area>
 
 	<area id="multiplayer">
@@ -1081,16 +1322,19 @@
 			<string id="join1" lang="ru">К нам пришёл $1</string>
 			<string id="join1" lang="uk">До нас прийшов $1</string>
 			<string id="join1" lang="fr">$1 a rejoint le jeu</string>
+			<string id="join1" lang="es">$1 se une al juego</string>
 
 			<string id="join2">$1 connected.</string>
 			<string id="join2" lang="ru">$1 подключился к игре</string>
 			<string id="join2" lang="uk">$1 приєднався до гри</string>
 			<string id="join2" lang="fr">$1 s'est connecté</string>
+			<string id="join2" lang="es">$1 conectado.</string>
 			
 			<string id="leave">$1 left the game</string>
 			<string id="leave" lang="ru">$1 отключился</string>
 			<string id="leave" lang="uk">$1 від'єднався</string>
 			<string id="leave" lang="fr">$1 est parti</string>
+			<string id="leave" lang="es">$1 deja el juego</string>
 		</area>
 		
 		<area id="telefrag">
@@ -1098,11 +1342,13 @@
 			<string id="_1" lang="ru">$1 телефрагнул $2</string>
 			<string id="_1" lang="uk">$1 телефрагнув $2</string>
 			<string id="_1" lang="fr">$1 a télé-explosé $2</string>
+			<string id="_1" lang="es">$1 tele-rebentó a $2</string>
 			
 			<string id="_2">$1 split $2 into atoms</string>
 			<string id="_2" lang="ru">$1 распылил $2 на атомы</string>
 			<string id="_2" lang="uk">$1 розпилив $2 на атоми</string>
 			<string id="_2" lang="fr">$1 a atomisé $2</string>
+			<string id="_2" lang="es">$1 dividió a $2 en átomos</string>
 		</area>
 		
 		<area id="kill">
@@ -1110,21 +1356,25 @@
 			<string id="_1" lang="ru">$1 разнёс в клочья $2</string>
 			<string id="_1" lang="uk">$1 розніс на шматки $2</string>
 			<string id="_1" lang="fr">$1 a cramé $2</string>
+			<string id="_1" lang="es">$1 dejó frito a $2</string>
 
 			<string id="_2">$1 torn $2 down</string>
 			<string id="_2" lang="ru">$1 порвал как грелку $2</string>
 			<string id="_2" lang="uk">$1 розірвав як грілку $2</string>
 			<string id="_2" lang="fr">$1 a mis $2 en pièces</string>
+			<string id="_2" lang="es">$1 desgarró a $2</string>
 
 			<string id="missile1">$1 ate $2's missile</string>
 			<string id="missile1" lang="ru">$1 съел ракету $2</string>
 			<string id="missile1" lang="uk">$1 з'їв ракету $2</string>
 			<string id="missile1" lang="fr">$1 n'a pas aimé le missile de $2</string>
+			<string id="missile1" lang="es">$1 odia el misil de $2</string>
 			
 			<string id="missile2">$1 swallowed $2 missile</string>
 			<string id="missile2" lang="ru">$1 проглотил ракету $2</string>
 			<string id="missile2" lang="uk">$1 проковтнув ракету $2</string>
 			<string id="missile2" lang="fr">$1 a mangé un missile de $2</string>
+			<string id="missile2" lang="es">$1 tragó el misil de $2</string>
 		</area>
 
 		<area id="suicide">
@@ -1132,21 +1382,25 @@
 			<string id="_1" lang="ru">$1 прострелил себе ногу и умер</string>
 			<string id="_1" lang="uk">$1 прострілив собі ногу та помер</string>
 			<string id="_1" lang="fr">$1 s'est tiré une balle dans le pied !</string>
+			<string id="_1" lang="es">¡$1 se disparó en una pierna!</string>
 
 			<string id="_2">$1 said farewell to this cruel existence and killed himself</string>
 			<string id="_2" lang="ru">$1 попрощался с этим жестоким миром и убил себя</string>
 			<string id="_2" lang="uk">$1 попрощався з цим жорстоким світом та вбив себе</string>
 			<string id="_2" lang="fr">$1 a préféré quitter ce monde cruel !</string>
+			<string id="_2" lang="es">$1 dijo adiós a esta cruel existencia y se mató a si mismo</string>
 			
 			<string id="mine1">$1 heedlessly stepped on its own mine!</string>
 			<string id="mine1" lang="ru">$1 наступил на собственную мину</string>
 			<string id="mine1" lang="uk">$1 наступив на власну міну</string>
 			<string id="mine1" lang="fr">$1 a retrouvé une de ses mines !</string>
+			<string id="mine1" lang="es">¡$1 se ha topado con una de sus minas!</string>
 
 			<string id="mine2">$1 triggered its own mine!</string>
 			<string id="mine2" lang="ru">$1 взорвал себя на собственной мине</string>
 			<string id="mine2" lang="uk">$1 підірвав себе на власній міні</string>
 			<string id="mine2" lang="fr">$1 a sauté sur sa propre mine !</string>
+			<string id="mine2" lang="es">¡$1 accionó su propia mina!</string>
 		</area>
 
 		<area id="ctf">
@@ -1154,12 +1408,14 @@
 			<string id="_1" lang="ru">$1 выйграл ещё одно очко для своей команды!</string>
 			<string id="_1" lang="uk">$1 виграв щє одне очко для своєї команди!</string>
 			<string id="_1" lang="fr">$1 marque un point de plus !</string>
+			<string id="_1" lang="es">¡$1 ganó otro punto!</string>
 		</area>
 
 		<area id="environment">
 			<string id="sandworm-head1">$1 was eaten by sandworm</string>
 			<string id="sandworm-head1" lang="ru">$1 был безжалостно съеден песчаным червём</string>
 			<string id="sandworm-head1" lang="fr">$1 a été dévoré par un ver géant des sables.</string>
+			<string id="sandworm-head1" lang="es">$1 fue comido por un gusano de arena</string>
 		</area>
 		
 	</area>
@@ -1169,33 +1425,41 @@
 		<string id="model" lang="ru">погрузка моделей...</string>
 		<string id="model" lang="uk">завантаження моделей...</string>
 		<string id="model" lang="fr">chargement des modèles...</string>
+		<string id="model" lang="es">cargando modelos...</string>
 		<string id="animation">loading animations...</string>
 		<string id="animation" lang="ru">погрузка графики...</string>
 		<string id="animation" lang="uk">завантаження графіки...</string>
 		<string id="animation" lang="fr">chargement des animations...</string>
+		<string id="animation" lang="es">cargando animaciones...</string>
 		<string id="object">setting up objects...</string>
 		<string id="object" lang="ru">настройка объектов...</string>
 		<string id="object" lang="uk">налаштування об'єктів...</string>
 		<string id="object" lang="fr">création des objets...</string>
+		<string id="object" lang="es">estableciendo objetos...</string>
 		<string id="sound">loading sounds...</string>
 		<string id="sound" lang="ru">погрузка звуков...</string>
 		<string id="sound" lang="uk">завантаження звуків...</string>
 		<string id="sound" lang="fr">chargement des sons...</string>
+		<string id="sound" lang="es">cargando sonidos...</string>
 		<string id="layer">loading layers...</string>
 		<string id="layer" lang="ru">погрузка слоёв карты...</string>
 		<string id="layer" lang="uk">завантаження шарів мапи...</string>
 		<string id="layer" lang="fr">chargement des calques...</string>
+		<string id="layer" lang="es">cargando capas...</string>
 		<string id="tileset">loading tilesets...</string>
 		<string id="tileset" lang="ru">погрузка тайлсетов...</string>
 		<string id="tileset" lang="uk">завантаження тайлсетів...</string>
 		<string id="tileset" lang="fr">chargement des images...</string>
+		<string id="tileset" lang="es">cargando máscaras...</string>
 		<string id="menu">creating menu...</string>
 		<string id="menu" lang="ru">создание меню...</string>
 		<string id="menu" lang="uk">створення меню...</string>
 		<string id="menu" lang="fr">création du menu...</string>
+		<string id="menu" lang="es">creando menú...</string>
 		<string id="properties">reading map properties...</string>
 		<string id="properties" lang="ru">чтение свойств карты...</string>
 		<string id="properties" lang="uk">читання властивостей мапи...</string>
 		<string id="properties" lang="fr">lecture des propriétés de la carte...</string>
+		<string id="properties" lang="es">leyendo propiedades del mapa...</string>
 	</area>
 </strings>
