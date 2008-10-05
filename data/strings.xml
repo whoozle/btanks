@@ -429,7 +429,7 @@
 		<string id="view-map" lang="de">[Hier clicken, um die taktische Karte anzuschauen]</string>
 		<string id="view-map" lang="it">[clicca qui per vedere la mappa tattica]</string>
 		<string id="view-map" lang="es">[Click aquí para ver el mapa táctico]</string>
-		<string id="view-map" lang="ca">[Clic aquí per veure el mapa tàctic]
+		<string id="view-map" lang="ca">[Clic aquí per veure el mapa tàctic]</string>
 		            
 		<string id="joystick">Joystick</string>
 		<string id="joystick" lang="ru">Джойстик</string>
