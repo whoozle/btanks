@@ -1,3 +1,26 @@
+0.8.*: 
+	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
+	*) Added high-priority queue for datagram.
+	*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
+	*) Added mouse control. 
+	*) Added names for the control, buttons/mouse icons
+	*) Map could disable minimap.
+	
+	*) GUI improvements:
+		*) Gamepad setup had been rewritten from scratch. 
+		*) Added grid control with colspan/rowspan support.
+		*) Removed bogus "Back"/"Ok" buttons, added "reset to defaults" and "Ok" everywhere. Saving options instantly. 
+		*) Added modal mode for dialogs.
+		*) Added static image control.
+		*) Now it's possible to add controls after another control.
+		*) Added render_multiline() to sdlx::Font
+		*) Rewrite tooltip from scratch with better text placement and nbsp/newline support.
+
+	*) Campaign improvements: 
+		*) Added best/last score/time panel with medal icons.
+		*) Added medals support and nice hall of fame.
+		*) Map could provide best stats from developers for a competition
+	
 0.8.7689:
 	*) Fixed critical multiplayer bug.
 	*) Added proper language detection for MacOS X.
