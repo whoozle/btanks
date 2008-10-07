@@ -106,7 +106,7 @@ public:
 	*/
 	void set_fx_volume(float volume);
 	/*!
-		\\brief stops all sources.
+		\brief stops all sources.
 	*/
 	void stop_all();
 
