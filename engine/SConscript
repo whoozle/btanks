@@ -76,7 +76,7 @@ if debug and sys.platform == "win32":
 
 bt_libs = ['mrt', 'sdlx', smpeg_lib, 'SDL', vorbis, 'clunk']
 
-if sys.platform != 'win32' and env['enable_lua']:
+if sys.platform != 'win32':
 	got_lua = False
 	for lua in ['lua5.1', 'lua5.0', 'lua']: 
 		try: 
@@ -90,14 +90,12 @@ if sys.platform != 'win32' and env['enable_lua']:
 	if not got_lua: 
 		raise Exception("Cannot find lua5.1/lua5.0 or lua pkg-config information")
 
-if env['enable_lua']: 
-	env.Append(CPPDEFINES=['ENABLE_LUA'])
-	bt_sources.append('luaxx/state.cpp')
-	bt_sources.append('luaxx/lua_hooks.cpp')
-	if sys.platform == "win32":
-		bt_libs.append('lua')
+env.Append(CPPDEFINES=['ENABLE_LUA'])
+bt_sources.append('luaxx/state.cpp')
+bt_sources.append('luaxx/lua_hooks.cpp')
 
 if sys.platform == "win32":
+	bt_libs.append('lua')
 	bt_libs.append('Ws2_32')
 	bt_libs.append('user32')
 	#bt_libs.append('gdi32')

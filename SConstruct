@@ -34,7 +34,6 @@ if sys.platform != "win32":
 	opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'true'))
 
 opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
-opts.Add(BoolOption('enable_lua', 'enable lua support', 'true'))
 
 opts.Update(env)
 opts.Save('options.cache', env.Clone())
@@ -147,7 +146,7 @@ if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
 	Exit(1)
 
-if sys.platform == 'win32' and env['enable_lua']:
+if sys.platform == 'win32':
 	if not conf.CheckLibWithHeader('lua', 'lua.hpp', 'c++', "lua_newstate(NULL, NULL);", False):
 		Exit(1)
 
