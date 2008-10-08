@@ -8,7 +8,7 @@ namespace clunk {
 
 //!Distance model used in context.
 
-struct DistanceModel {
+struct CLUNKAPI DistanceModel {
 	//!Type of the distance model: inversed, linear or exponent.
 	enum Type { Inverse, Linear, Exponent };
 
