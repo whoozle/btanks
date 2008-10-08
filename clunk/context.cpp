@@ -35,7 +35,7 @@
 
 using namespace clunk;
 
-Context::Context() : period_size(0), listener(NULL), max_sources(8), fx_volume(1) {
+Context::Context() : period_size(0), listener(NULL), max_sources(8), fx_volume(1), distance_model(DistanceModel::Inverse, false) {
 }
 
 void Context::callback(void *userdata, Uint8 *bstream, int len) {
@@ -147,12 +147,16 @@ void Context::process(Sint16 *stream, int size) {
 	for(unsigned i = 0; i < lsources.size(); ++i ) {
 		v3<float> & position = lsources[i].first;
 		Source * source = lsources[i].second;
-		float volume = source->process(buf, spec.channels, position, fx_volume);
+
+		float volume = fx_volume * distance_model.gain(position.length());
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
-		//LOG_DEBUG(("%u: mixing source with volume %g (%d), distance^2: %g", i, volume, sdl_v, position.quick_length()));
-		if (volume <= 0)
+		if (sdl_v <= 0)
 			continue;
-		if (sdl_v == 0)
+		//check for 0
+		volume = source->process(buf, spec.channels, position, volume);
+		sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
+		//LOG_DEBUG(("%u: mixing source with volume %g (%d), distance^2: %g", i, volume, sdl_v, position.quick_length()));
+		if (sdl_v <= 0)
 			continue;
 		SDL_MixAudio((Uint8 *)stream, (Uint8 *)buf.get_ptr(), size, sdl_v);
 	}

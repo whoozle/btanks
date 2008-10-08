@@ -27,6 +27,7 @@
 #include <map>
 #include <deque>
 #include "buffer.h"
+#include "distance_model.h"
 
 namespace clunk {
 
@@ -123,6 +124,9 @@ public:
 	
 	///returns object associated to the current listener position
 	Object *get_listener() { return listener; }
+	
+	///Sets distance model
+	inline void set_distance_model(const DistanceModel &model) { distance_model = model; }
 
 private: 
 	SDL_AudioSpec spec;
@@ -152,6 +156,8 @@ private:
 	Object *listener;
 	unsigned max_sources;
 	float fx_volume;
+	
+	DistanceModel distance_model;
 };
 }
 
