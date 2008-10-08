@@ -41,6 +41,7 @@
 #include "config.h"
 #include "object.h"
 #include "math/v3.h"
+#include "tmx/map.h"
 #include "finder.h"
 
 #include "clunk/sample.h"
@@ -294,9 +295,9 @@ TRY {
 			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 
 		
-		v2<float> pos, vel;
-		o->get_position(pos);
+		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), o->get_position()), vel;
 		o->get_velocity(vel);
+		
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
 		clunk_object->update(clunk_pos, clunk_vel);
 	
@@ -356,8 +357,7 @@ void IMixer::updateObject(const Object *o) {
 	if (i == _objects.end())
 		return;
 	
-	v2<float> pos, vel;
-	o->get_position(pos);
+	v2<float> pos = Map->distance(v2<float>(listener_pos.x,listener_pos.y), o->get_position()), vel;
 	o->get_velocity(vel);
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
@@ -418,19 +418,9 @@ void IMixer::tick(const float dt) {
 void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float r) {
 	if (_nosound || _context == NULL)
 		return;
-	
-	clunk::Object *listener = _context->get_listener();
-	if (listener == NULL) {
-		LOG_WARN(("listener is not yet created, skipping setListener(...)"));
-		return;
-	}
-	//LOG_DEBUG(("setListener: %g %g", pos.x, pos.y));
-	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
-	clunk::v3<float> clunk_pos (pos.x / k, -pos.y / k, 0*pos.z / k);
-	clunk::v3<float> clunk_vel (vel.x / k, -vel.y / k, 0*vel.z / k);
-	//LOG_WARN(("ignoring setListener(%g,%g,%g)", pos.x, pos.y, pos.z));
-	assert(listener != NULL);
-	listener->update(clunk_pos, clunk_vel);
+
+	listener_pos = pos;
+	listener_vel = vel;	
 }
 
 void IMixer::cancelSample(const Object *o, const std::string &name) {

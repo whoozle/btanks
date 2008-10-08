@@ -114,6 +114,8 @@ private:
 	
 	clunk::Context *_context;
 	
+	v3<float> listener_pos, listener_vel;
+	
 	IMixer(const IMixer &);
 	const IMixer& operator=(const IMixer &);
 };
