@@ -27,9 +27,7 @@
 namespace clunk {
 class Context;
 
-/*! 
-	holds raw wave data. 
-*/
+//!Holds raw wave data. 
 class CLUNKAPI Sample {
 public: 
 	~Sample();

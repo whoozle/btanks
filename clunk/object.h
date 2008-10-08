@@ -31,6 +31,7 @@ class Context;
 class Source;
 
 /*! 
+	\brief Object containing sources.
 	Objects - class containing several playing sources and controlling its behaviour
 */
 

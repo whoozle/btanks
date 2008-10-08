@@ -33,6 +33,7 @@ namespace clunk {
 class Stream;
 
 /*! 
+	\brief Clunk context, main class for the audio output and mixing.
 	Main class for the clunk library. Holds audio callback and generates sound. 
 	Also, mantains audio streams.
 */

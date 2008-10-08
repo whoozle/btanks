@@ -28,6 +28,7 @@ class Context;
 class Buffer;
 
 /*! 
+	\brief Music/Ambient stream.
 	simple abstract class allowing you to play audio streams. Note that stream's methods will be called from the audio callback. 
 	Usually it's the different thread context and if you're using any global variables from the stream code, you need to protect it with mutex
 	or clunk::AudioLocker. 

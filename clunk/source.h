@@ -38,9 +38,7 @@ namespace clunk {
 class Sample;
 class Buffer;
 
-/*! 
-	class holding information about source. 
-*/
+//!class holding information about source. 
 class CLUNKAPI Source {
 public:
 	///pointer to the sample holding audio data

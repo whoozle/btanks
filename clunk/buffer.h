@@ -27,6 +27,7 @@
 namespace clunk {
 
 /*!
+	\brief Memory buffer
 	This class contains single memory buffer, allocated by malloc. 
 	It auto frees it when it goes out of scope.	
 */

@@ -22,7 +22,7 @@
 #include <math.h>
 namespace clunk {
 /*! 
-	3-d vector 
+	\brief 3d vector 
 	\tparam T type of the axis. usually int or float. 
 */
 template <typename T> class v3  {

@@ -24,6 +24,7 @@
 namespace clunk {
 
 /*! 
+	\brief Audio callback locker
 	This struct locks audio in ctor and releases lock from the dtor. 
 	This prevents audio callback from being called while clunk::AudioLocker is in the scope. 
 */
