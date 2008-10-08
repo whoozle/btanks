@@ -1,7 +1,7 @@
 #include "distance_model.h"
 #include <math.h>
 
-float DistanceModel::gain(float distance) {
+float clunk::DistanceModel::gain(float distance) {
 	float gain = 0;
 	switch(type) {
 	case Inverse: 
