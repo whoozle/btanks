@@ -83,6 +83,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		
 		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, true, 128);
 		dm.rolloff_factor = 0.5f;
+		dm.doppler_factor = 1.0f; //turn on doppler effect with defaut speed
 		_context->set_distance_model(dm);
 	} CATCH("clunk initialization", { delete _context; _context = NULL; _nomusic = _nosound = true; });
 	
