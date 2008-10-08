@@ -42,7 +42,6 @@ template <typename T> inline T clunk_max(T a, T b) {
 using namespace clunk;
 Source::Source(const Sample * sample, const bool loop, const v3<float> &delta, float gain, float pitch) : 
 	sample(sample), loop(loop), delta_position(delta), gain(gain), pitch(pitch), 
-	reference_distance(1), rolloff_factor(1), 
 	position(0), fadeout(0), fadeout_total(0),
 	fft_state(NULL), ffti_state(NULL) 
 	{
@@ -231,13 +230,7 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	unsigned src_ch = sample->spec.channels; 
 	unsigned src_n = sample->data.get_size() / src_ch / 2;
 
-	//LOG_DEBUG(("delta position: %g %g", delta_position.x, delta_position.y));
-	float r2 = delta_position.length();
-	if (r2 < reference_distance) 
-		r2 = reference_distance;
-	
-	//float vol = (r2 > 1)?fx_volume * gain / r2: fx_volume * gain;
-	float vol = fx_volume * gain / (1 + rolloff_factor * ((r2 - reference_distance) / reference_distance));
+	float vol = fx_volume * gain;
 	
 	if (vol > 1)
 		vol = 1;
@@ -251,7 +244,7 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	int angles;
 	get_kemar_data(kemar_data, angles, delta_position);
 
-	if (r2 < 1 || kemar_data == NULL) {
+	if (delta_position.is0() || kemar_data == NULL) {
 		//2d stereo sound! 
 		for(unsigned i = 0; i < dst_n; ++i) {
 			for(unsigned c = 0; c < dst_ch; ++c) {

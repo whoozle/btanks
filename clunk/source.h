@@ -52,10 +52,6 @@ public:
 	float gain;
 	///pitch, 2.0f - pitching up one octave
 	float pitch;
-	///minimal reference distance
-	float reference_distance;
-	///rolloff factor
-	float rolloff_factor;
 	/*! 
 		\brief constructs new source
 		\param[in] sample audio data
