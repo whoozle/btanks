@@ -127,6 +127,7 @@ public:
 	
 	///Sets distance model
 	inline void set_distance_model(const DistanceModel &model) { distance_model = model; }
+	DistanceModel &get_distance_model() { return distance_model; }
 
 private: 
 	SDL_AudioSpec spec;
