@@ -85,7 +85,7 @@ private:
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
 	static void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
-	void hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx);
+	void hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, int idt_offset, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position, fadeout, fadeout_total;
 	

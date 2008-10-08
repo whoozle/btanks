@@ -95,7 +95,7 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 
 #define CLUNK_ACTUAL_WINDOW (CLUNK_WINDOW_SIZE - CLUNK_WINDOW_OVERLAP)
 
-void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, const kemar_ptr& kemar_data, int kemar_idx) {
+void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, int idt_offset, const kemar_ptr& kemar_data, int kemar_idx) {
 	//const int lowpass_cutoff = 5000 * CLUNK_ACTUAL_WINDOW / sample->spec.freq;
 	//LOG_DEBUG(("using cutoff at %d", lowpass_cutoff));
 	assert(channel_idx < 2);
@@ -110,13 +110,23 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 
 	Sint16 *dst = (Sint16 *)result.get_ptr();
 
+	if (channel_idx <= 1) {
+		bool left = channel_idx == 0;
+		if (!left && idt_offset > 0) {
+			idt_offset = 0;
+		} else if (left && idt_offset < 0) {
+			idt_offset = 0;
+		}
+	} else 
+		idt_offset = 0;
+	
 	for(int i = 0; i < n; ++i) {
 		kiss_fft_scalar src_data[CLUNK_WINDOW_SIZE];
 		kiss_fft_cpx freq[CLUNK_WINDOW_SIZE / 2 + 1];
 		//printf("fft #%d\n", i);
 		for(int j = 0; j < CLUNK_WINDOW_SIZE; ++j) {
 			int idx = i * CLUNK_ACTUAL_WINDOW + j;
-			int p = (int)(position + idx * pitch);
+			int p = (int)(position + idx * pitch + idt_offset);
 
 			int v = 0;
 			if (fadeout_total > 0 && fadeout - idx <= 0) {
@@ -284,9 +294,9 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	int idt_offset = (int)(t_idt * sample->spec.freq);
 
 	clunk::Buffer sample3d_left, sample3d_right;
-	int idt_abs = idt_offset >= 0? idt_offset: -idt_offset;
-	hrtf(0, sample3d_left, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_left);
-	hrtf(1, sample3d_right, dst_n + idt_abs, src, src_ch, src_n, kemar_data, kemar_idx_right);
+
+	hrtf(0, sample3d_left, dst_n, src, src_ch, src_n, idt_offset, kemar_data, kemar_idx_left);
+	hrtf(1, sample3d_right, dst_n, src, src_ch, src_n, idt_offset, kemar_data, kemar_idx_right);
 	
 	//LOG_DEBUG(("angle: %g", angle_gr));
 	//LOG_DEBUG(("idt offset %d samples", idt_offset));
@@ -296,20 +306,7 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	
 	for(unsigned i = 0; i < dst_n; ++i) {
 		for(unsigned c = 0; c < dst_ch; ++c) {
-			int p = idt_abs + i;
-			
-			Sint16 v = 0;
-			if (c <= 1) {
-				bool left = c == 0;
-				if (!left && idt_offset > 0) {
-					p -= idt_offset;
-				} else if (left && idt_offset < 0) {
-					p += idt_offset;
-				}
-				if (p >= 0 && p * 2 < (int)sample3d_left.get_size())
-					v = src_3d[c][p];
-			}
-			dst[i * dst_ch + c] = v;
+			dst[i * dst_ch + c] = src_3d[c][i];
 		}
 	}
 	update_position((int)(dst_n * pitch));
