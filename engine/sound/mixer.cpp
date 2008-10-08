@@ -80,6 +80,10 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		//Config->get("engine.sound.period", period, 1024);
 
 		_context->init(sample_rate, 2, period);
+		
+		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, true, 128);
+		dm.rolloff_factor = 0.5f;
+		_context->set_distance_model(dm);
 	} CATCH("clunk initialization", { delete _context; _context = NULL; _nomusic = _nosound = true; });
 	
 	if (_context == NULL)
