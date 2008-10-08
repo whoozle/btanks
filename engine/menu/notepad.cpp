@@ -69,7 +69,7 @@ bool Notepad::onMouse(const int button, const bool pressed, const int x, const i
 		const Page &page = pages[i];
 		if (page.tab_rect.in(x, y)) {
 			current_page = i;
-			invalidate();
+			invalidate(true);
 			return true;
 		}
 	}
@@ -80,7 +80,7 @@ void Notepad::left() {
 	if (current_page <= 0)
 		return;
 	--current_page;
-	invalidate();
+	invalidate(true);
 }
 
 void Notepad::right() {
@@ -88,7 +88,7 @@ void Notepad::right() {
 		return;
 	
 	++current_page;
-	invalidate();
+	invalidate(true);
 }
 
 bool Notepad::onKey(const SDL_keysym sym) {
