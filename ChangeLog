@@ -1,10 +1,16 @@
 0.8.*: 
 	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
-	*) Added high-priority queue for datagram.
-	*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
-	*) Added mouse control. 
-	*) Added names for the control, buttons/mouse icons
-	*) Map could disable minimap.
+	*) Added spanish/catalanian translations.
+
+	*) Multiplayer changes: 
+		*) Added high-priority queue for datagram.
+		*) Added codenames for incompatible releases + user friendly error message. (last release was longcat)
+
+	*) Clunk - 3d sound library: 
+		*) Added three distance attenuations models: linear, inversed and exponent.
+		*) Less noise from hrtf. 
+		*) Doppler effect. 
+		*) More documentation.
 	
 	*) GUI improvements:
 		*) Gamepad setup had been rewritten from scratch. 
@@ -20,6 +26,12 @@
 		*) Added best/last score/time panel with medal icons.
 		*) Added medals support and nice hall of fame.
 		*) Map could provide best stats from developers for a competition
+
+	*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
+	*) Added mouse control. 
+	*) Added names for the control, buttons/mouse icons
+	*) Map could disable minimap.
+	*) Removed 'enable_lua' as it's completely useless and bogus.
 	
 0.8.7689:
 	*) Fixed critical multiplayer bug.
