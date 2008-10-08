@@ -23,6 +23,9 @@ struct DistanceModel {
 	//!Rolloff factor for distance models
 	float rolloff_factor;
 	
+	//!Dopple factor. 0 disables dopple effect
+	float doppler_factor;
+	
 	/*!
 		\brief Constructor
 		\param[in] type type of the distance model: inversed, linear or exponent.
@@ -30,7 +33,7 @@ struct DistanceModel {
 		\param[in] max_distance maximum distance for the model.
 	*/ 
 	DistanceModel(Type type, bool clamped, float max_distance = 0): type(type), clamped(clamped), 
-	reference_distance(1), max_distance(max_distance), rolloff_factor(1)
+	reference_distance(1), max_distance(max_distance), rolloff_factor(1), doppler_factor(0)
 	{}
 	
 	//! Computes gain by distance. Return values is in [0-1] range.
