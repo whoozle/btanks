@@ -1,7 +1,7 @@
 #include "distance_model.h"
 #include <math.h>
 
-float clunk::DistanceModel::gain(float distance) {
+float clunk::DistanceModel::gain(float distance) const {
 	float gain = 0;
 	switch(type) {
 	case Inverse: 
@@ -45,3 +45,7 @@ float clunk::DistanceModel::gain(float distance) {
 	return gain;
 }
 
+
+float clunk::DistanceModel::doppler_pitch(const v3<float> &sl, const v3<float> &s_vel, const v3<float> &l_vel) const {
+	return 1.0f;
+}

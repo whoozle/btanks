@@ -2,6 +2,7 @@
 #define CLUNK_DISTANCE_MODEL_H__
 
 #include "export_clunk.h"
+#include "v3.h"
 
 namespace clunk {
 
@@ -37,7 +38,9 @@ struct DistanceModel {
 	{}
 	
 	//! Computes gain by distance. Return values is in [0-1] range.
-	float gain(float distance);
+	float gain(float distance) const;
+	//! Computes doppler pitch.
+	float doppler_pitch(const v3<float> &sl, const v3<float> &s_vel, const v3<float> &l_vel) const;
 };
 
 }
