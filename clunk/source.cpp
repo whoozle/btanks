@@ -218,14 +218,16 @@ void Source::update_position(const int dp) {
 	}
 }
 
-float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, const float fx_volume) {
+float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, float fx_volume, float pitch) {
 	Sint16 * dst = (Sint16*) buffer.get_ptr();
 	unsigned dst_n = buffer.get_size() / dst_ch / 2;
 	const Sint16 * src = (Sint16*) sample->data.get_ptr();
 	if (src == NULL)
 		throw_ex(("uninitialized sample used (%p)", (void *)sample));
-	if (pitch < 0)
-		throw_ex(("pitch %g could not be negative", pitch));
+
+	pitch *= this->pitch;
+	if (pitch <= 0)
+		throw_ex(("pitch %g could not be negative or zero", pitch));
 		
 	unsigned src_ch = sample->spec.channels; 
 	unsigned src_n = sample->data.get_size() / src_ch / 2;

@@ -47,19 +47,28 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	} CATCH("callback", )
 }
 
-#include "mrt/timespy.h"
+//#include "mrt/timespy.h"
+struct source_t {
+	Source *source;
+	v3<float> s_vel;
+	v3<float> l_vel;
+
+	source_t(Source *source, v3<float> &s_vel, v3<float>& l_vel) : 
+		source(source), s_vel(s_vel), l_vel(l_vel) {}
+};
 
 void Context::process(Sint16 *stream, int size) {
 	//TIMESPY(("total"));
 
 	v3<float> listener = this->listener->position;
+	v3<float> l_vel = this->listener->velocity;
 	{
 		//TIMESPY(("sorting objects"));
 		std::sort(objects.begin(), objects.end(), Object::DistanceOrder(listener));
 	}
 	//LOG_DEBUG(("sorted %u objects", (unsigned)objects.size()));
 	
-	std::vector<std::pair<v3<float>, Source *> > lsources;
+	std::vector<std::pair<v3<float>, source_t> > lsources;
 	int n = size / 2 / spec.channels;
 	
 	for(objects_type::iterator i = objects.begin(); i != objects.end(); ) {
@@ -80,7 +89,7 @@ void Context::process(Sint16 *stream, int size) {
 				continue;
 			}
 			if (lsources.size() < max_sources) {
-				lsources.push_back(std::pair<v3<float>, Source *>(o->position + s->delta_position - listener, s));
+				lsources.push_back(std::pair<v3<float>, source_t>(o->position + s->delta_position - listener, source_t(s, o->velocity, l_vel)));
 			} else {
 				s->update_position(n);
 			}
@@ -146,14 +155,20 @@ void Context::process(Sint16 *stream, int size) {
 	//LOG_DEBUG(("mixing %u sources", (unsigned)lsources.size()));
 	for(unsigned i = 0; i < lsources.size(); ++i ) {
 		v3<float> & position = lsources[i].first;
-		Source * source = lsources[i].second;
+		const source_t& source_info = lsources[i].second;
+		Source * source = source_info.source;
+				
+		float dpitch = 1.0f;
+		if (distance_model.doppler_factor > 0) {
+			dpitch = distance_model.doppler_pitch(-position, source_info.s_vel, source_info.l_vel);
+		}
 
 		float volume = fx_volume * distance_model.gain(position.length());
 		int sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
 		if (sdl_v <= 0)
 			continue;
 		//check for 0
-		volume = source->process(buf, spec.channels, position, volume);
+		volume = source->process(buf, spec.channels, position, volume, dpitch);
 		sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
 		//LOG_DEBUG(("%u: mixing source with volume %g (%d), distance^2: %g", i, volume, sdl_v, position.quick_length()));
 		if (sdl_v <= 0)

@@ -65,7 +65,7 @@ public:
 		\brief for the internal use only. DO NOT USE IT. 
 		\internal for the internal use only. 
 	*/
-	float process(clunk::Buffer &buffer, unsigned ch, const v3<float> &position, const float fx_volume);
+	float process(clunk::Buffer &buffer, unsigned ch, const v3<float> &position, float fx_volume, float pitch);
 	///returns current source's status.
 	bool playing() const;
 
