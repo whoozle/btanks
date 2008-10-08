@@ -76,6 +76,11 @@ public:
 		z *= nlen / len;
 		return len;
 	}
+	
+	inline const T dot_product(const v3<T> &v) const {
+		return x * v.x + y * v.y + z * v.z;
+	}
+	
 	///returns length of this vector
 	inline const T length() const {
 		const T ql = x * x + y * y + z * z;
