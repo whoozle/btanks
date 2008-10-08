@@ -47,5 +47,22 @@ float clunk::DistanceModel::gain(float distance) const {
 
 
 float clunk::DistanceModel::doppler_pitch(const v3<float> &sl, const v3<float> &s_vel, const v3<float> &l_vel) const {
-	return 1.0f;
+	if (doppler_factor <= 0)
+		return 1.0f;
+	
+	float len = sl.length();
+	if (len <= 0)
+		return 1.0f;
+	
+	float max_speed = speed_of_sound / doppler_factor;
+	
+	float vls = sl.dot_product(l_vel) / len;
+	if (vls > max_speed)
+		vls = max_speed;
+
+	float vss = sl.dot_product(s_vel) / len;
+	if (vss > max_speed)
+		vss = max_speed;
+	
+	return (speed_of_sound - doppler_factor * vls) / (speed_of_sound - doppler_factor * vss);
 }
