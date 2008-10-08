@@ -31,6 +31,19 @@
 #	define log2f(x) (logf(x) / M_LN2)
 #endif
 
+#ifdef USE_SIMD
+#	ifdef _WINDOWS
+#		error unsupported
+#	else
+#		include <xmmintrin.h>
+#		define SIMD_LOAD(m, f) m = _mm_load_ss(&(f));
+#		define SIMD_STORE(f, m) _mm_store_ss(&(f), m);
+#	endif
+#else
+#	define	SIMD_LOAD(m, f)		m = (f)
+#	define	SIMD_STORE(f, m)	f = (m)
+#endif
+
 template <typename T> inline T clunk_min(T a, T b) {
 	return a < b? a: b;
 }
@@ -141,7 +154,8 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 				//LOG_DEBUG(("fadeout %d: %d -> %d", fadeout - idx, v, v * (fadeout - idx) / fadeout_total));
 				v = v * (fadeout - idx) / fadeout_total;
 			}
-			src_data[j] = (v / 32767.0); // * sin(M_PI * j / (CLUNK_WINDOW_SIZE - 1));
+			float vv = (v / 32767.0f); // * sin(M_PI * j / (CLUNK_WINDOW_SIZE - 1));
+			SIMD_LOAD(src_data[j], vv);
 		}
 		
 		kiss_fftr(fft_state, src_data, freq);
@@ -149,7 +163,10 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 		//LOG_DEBUG(("kemar angle index: %d\n", kemar_idx));
 		for(int j = 0; j <= CLUNK_WINDOW_SIZE / 2; ++j) {
 			//float * dst = (ch == 0)?tr_left + pos:tr_right + pos;
-			float len = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
+			kiss_fft_scalar mlen = freq[j].r * freq[j].r + freq[j].i * freq[j].i;
+			float len;
+			SIMD_STORE(len, mlen);
+			len = sqrt(len);
 			//LOG_DEBUG(("length: %g", len));
 			const int kemar_angle_idx = j * 512 / (CLUNK_WINDOW_SIZE / 2 + 1);
 			assert(kemar_angle_idx < 512);
@@ -161,8 +178,10 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 				//LOG_DEBUG(("%d -> %g", j, k);
 			}
 			*/
-			freq[j].r *= m;
-			freq[j].i *= m;
+			kiss_fft_scalar mm;
+			SIMD_LOAD(mm, m);
+			freq[j].r *= mm;
+			freq[j].i *= mm;
 			//float len2 = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
 			//LOG_DEBUG(("%d: multiplicator = %g, len: %g -> %g", j, m, len, len2));
 		}
@@ -178,7 +197,8 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 		//LOG_DEBUG(("last chunk : %d, overlap first %d, more: %d", jmax, jmin, more));
 
 		for(int j = 0; j < jmax + CLUNK_WINDOW_OVERLAP; ++j) {
-			float v = src_data[j];
+			float v;
+			SIMD_STORE(v, src_data[j]);
 			if (v > max) {
 				//LOG_DEBUG(("increased max to %g", v));
 				max = v;
