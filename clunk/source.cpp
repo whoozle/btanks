@@ -77,7 +77,7 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	float head_r = 0.09554140127388535032f;
 
 	float direction = M_PI_2;
-	float angle = direction - atan2f(delta.y, delta.x);
+	float angle = atan2f(delta.y, delta.x) - direction;
 	
 	angle_gr = angle * 180 / M_PI;
 	while (angle_gr < 0)
