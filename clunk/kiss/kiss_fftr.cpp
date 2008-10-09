@@ -14,6 +14,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #include "kiss_fftr.h"
 #include "_kiss_fft_guts.h"
+#include "clunk_simd_hacks.h"
 
 struct kiss_fftr_state{
     kiss_fft_cfg substate;
@@ -150,7 +151,7 @@ void kiss_fftri(kiss_fftr_cfg st,const kiss_fft_cpx *freqdata,kiss_fft_scalar *t
         C_ADD (st->tmpbuf[k],     fek, fok);
         C_SUB (st->tmpbuf[ncfft - k], fek, fok);
 #ifdef USE_SIMD        
-        st->tmpbuf[ncfft - k].i *= _mm_set1_ps(-1.0);
+        st->tmpbuf[ncfft - k].i = st->tmpbuf[ncfft - k].i * _mm_set1_ps(-1.0);
 #else
         st->tmpbuf[ncfft - k].i *= -1;
 #endif

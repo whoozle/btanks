@@ -31,22 +31,8 @@
 #	define log2f(x) (logf(x) / M_LN2)
 #endif
 
-#ifdef USE_SIMD
-#	include <xmmintrin.h>
-#	define SIMD_LOAD(m, f) m = _mm_load_ss(&(f));
-#	define SIMD_STORE(f, m) _mm_store_ss(&(f), m);
-#	ifdef _WINDOWS
-		__forceinline __m128 operator*(__m128 a, __m128 b) {
-			return _mm_mul_ss(a, b);
-		}
-		__forceinline __m128 operator+(__m128 a, __m128 b) {
-			return _mm_add_ss(a, b);
-		}
-#	endif
-#else
-#	define	SIMD_LOAD(m, f)		m = (f)
-#	define	SIMD_STORE(f, m)	f = (m)
-#endif
+#include "kiss/clunk_simd_hacks.h"
+
 
 template <typename T> inline T clunk_min(T a, T b) {
 	return a < b? a: b;

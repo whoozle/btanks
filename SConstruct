@@ -151,9 +151,9 @@ if sys.platform == 'win32':
 		Exit(1)
 
 if sys.platform != 'win32':
-	have_sse = conf.CheckLibWithHeader('m', "xmmintrin.h", 'c', '_mm_load_ss((float *)malloc(sizeof(float)));', False)
+	have_sse = conf.CheckLibWithHeader('m', "xmmintrin.h", 'c', '_mm_set_ss(1.0f);', False)
 else: 
-	have_sse = conf.CheckLibWithHeader('kernel32', "xmmintrin.h", 'c', '_mm_load_ss(0);', False) # hackish lib :(
+	have_sse = conf.CheckLibWithHeader('kernel32', "xmmintrin.h", 'c', '_mm_set_ss(1.0f);', False) # hackish lib :(
 
 conf.Finish()
 
