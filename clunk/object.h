@@ -48,12 +48,31 @@ public:
 	};
 	///dtor, do not forget to delete object if you do not need it anymore
 	~Object();
+
 	/*! 
-		\brief updates object's position and velocity
+		\brief updates object's position, velocity and direction at once.
 		\param[in] pos position
+	*/
+	void update(const v3<float> &pos, const v3<float> &vel, const v3<float> &dir);
+	
+	/*! 
+		\brief updates object's position
+		\param[in] pos position
+	*/
+	void set_position(const v3<float> &pos);
+
+	/*! 
+		\brief updates object's velocity
 		\param[in] vel velocity
 	*/
-	void update(const v3<float> &pos, const v3<float> &vel);
+	void set_velocity(const v3<float> &vel);
+	
+	/*! 
+		\brief updates object's direction
+		\param[in] dir velocity
+	*/
+	void set_direction(const v3<float> &dir);
+	
 	/*! 
 		\brief plays given source
 		\param[in] name any name you want, just for your confort :)
@@ -113,7 +132,7 @@ private:
 	
 	Object(Context *context);
 	Context *context;
-	v3<float> position, velocity;
+	v3<float> position, velocity, direction;
 
 	typedef std::multimap<const std::string, Source *> Sources;
 	Sources sources;

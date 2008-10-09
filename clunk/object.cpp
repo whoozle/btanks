@@ -25,10 +25,26 @@ using namespace clunk;
 
 Object::Object(Context *context) : context(context), dead(false) {}
 
-void Object::update(const v3<float> &pos, const v3<float> &vel) {
+void Object::update(const v3<float> &pos, const v3<float> &vel, const v3<float> &dir) {
 	AudioLocker l;
 	position = pos;
 	velocity = vel;
+	direction = dir;
+}
+
+void Object::set_position(const v3<float> &pos) {
+	AudioLocker l;
+	position = pos;
+}
+
+void Object::set_velocity(const v3<float> &vel) {
+	AudioLocker l;
+	velocity = vel;
+}
+
+void Object::set_direction(const v3<float> &dir) {
+	AudioLocker l;
+	direction = dir;
 }
 
 void Object::play(const std::string &name, Source *source) {
