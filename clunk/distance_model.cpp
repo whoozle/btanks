@@ -3,6 +3,7 @@
 
 float clunk::DistanceModel::gain(float distance) const {
 	float gain = 0;
+	distance /= distance_divisor;
 	switch(type) {
 	case Inverse: 
 		if (clamped) {

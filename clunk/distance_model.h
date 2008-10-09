@@ -21,6 +21,7 @@ struct CLUNKAPI DistanceModel {
 	float reference_distance;
 	//!Maximum distance for clamping distance models. MUST NOT BE DEFAULT
 	float max_distance; 
+
 	//!Rolloff factor for distance models
 	float rolloff_factor;
 	
@@ -30,6 +31,9 @@ struct CLUNKAPI DistanceModel {
 	//!Speed of sound
 	float speed_of_sound;
 	
+	//! distance_divisor
+	float distance_divisor;
+	
 	/*!
 		\brief Constructor
 		\param[in] type type of the distance model: inversed, linear or exponent.
@@ -38,7 +42,7 @@ struct CLUNKAPI DistanceModel {
 	*/ 
 	DistanceModel(Type type, bool clamped, float max_distance = 0): type(type), clamped(clamped), 
 	reference_distance(1), max_distance(max_distance), rolloff_factor(1), doppler_factor(0), 
-	speed_of_sound(343.3f) 
+	speed_of_sound(343.3f), distance_divisor(1) 
 	{}
 	
 	//! Computes gain by distance. Return values is in [0-1] range.
