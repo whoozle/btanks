@@ -77,7 +77,7 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	float head_r = 0.09554140127388535032f;
 
 	float direction = M_PI_2;
-	float angle = atan2f(delta.y, delta.x) - direction;
+	float angle = direction - atan2f(delta.y, delta.x);
 	
 	angle_gr = angle * 180 / M_PI;
 	while (angle_gr < 0)
@@ -130,6 +130,8 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 		} else if (left && idt_offset < 0) {
 			idt_offset = 0;
 		}
+		if (idt_offset < 0)
+			idt_offset = - idt_offset;
 	} else 
 		idt_offset = 0;
 	
