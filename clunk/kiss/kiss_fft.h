@@ -29,11 +29,14 @@ extern "C" {
 # define kiss_fft_scalar __m128
 #ifdef _WINDOWS
 #	define KISS_FFT_MALLOC(nbytes) _aligned_malloc(nbytes, 16)
+#	define kiss_fft_free _aligned_free
 #else 
 #	define KISS_FFT_MALLOC(nbytes) memalign(16,nbytes)
+#	define kiss_fft_free free
 #endif
 #else	
 #	define KISS_FFT_MALLOC malloc
+#	define kiss_fft_free free
 #endif	
 
 
@@ -100,9 +103,6 @@ void kiss_fft(kiss_fft_cfg cfg,const kiss_fft_cpx *fin,kiss_fft_cpx *fout);
  * */
 void kiss_fft_stride(kiss_fft_cfg cfg,const kiss_fft_cpx *fin,kiss_fft_cpx *fout,int fin_stride);
 
-/* If kiss_fft_alloc allocated a buffer, it is one contiguous 
-   buffer and can be simply free()d when no longer needed*/
-#define kiss_fft_free free
 
 /*
  Cleans up some memory that gets managed internally. Not necessary to call, but it might clean up 

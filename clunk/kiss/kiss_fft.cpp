@@ -28,7 +28,7 @@ static size_t ntmpbuf=0;
 #define CHECKBUF(buf,nbuf,n) \
     do { \
         if ( nbuf < (size_t)(n) ) {\
-            free(buf); \
+            kiss_fft_free(buf); \
             buf = (kiss_fft_cpx*)KISS_FFT_MALLOC(sizeof(kiss_fft_cpx)*(n)); \
             nbuf = (size_t)(n); \
         } \
@@ -406,10 +406,10 @@ void kiss_fft(kiss_fft_cfg cfg,const kiss_fft_cpx *fin,kiss_fft_cpx *fout)
  */ 
 void kiss_fft_cleanup(void)
 {
-    free(scratchbuf);
+    kiss_fft_free(scratchbuf);
     scratchbuf = NULL;
     nscratchbuf=0;
-    free(tmpbuf);
+    kiss_fft_free(tmpbuf);
     tmpbuf=NULL;
     ntmpbuf=0;
 }
