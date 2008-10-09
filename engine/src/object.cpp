@@ -235,7 +235,7 @@ void Object::tick(const float dt) {
 		v3<float> listener_pos, listener_len;
 		float r;
 		Mixer->get_listener(listener_pos, listener_len, r);
-		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), get_position());
+		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), get_center_position());
 		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, 0), clunk::v3<float>(_velocity.x, -_velocity.y, 0), clunk::v3<float>(0, 1, 0));
 	}
 	for(EffectMap::iterator ei = _effects.begin(); ei != _effects.end(); ) {

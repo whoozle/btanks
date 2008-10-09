@@ -77,11 +77,12 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		_context->init(sample_rate, 2, period);
 		
-		float k = 40;
-		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, true, 128 * k);
-		dm.rolloff_factor = 1 / k;
+		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, false);
 		Config->get("engine.sound.speed-of-sound", dm.speed_of_sound, 2000.0f);
 		Config->get("engine.sound.doppler-factor", dm.doppler_factor, 1.0f);
+		dm.distance_divisor = 40;
+		dm.reference_distance = 1;
+		dm.rolloff_factor = 0.5f;
 		
 		_context->set_distance_model(dm);
 	} CATCH("clunk initialization", { delete _context; _context = NULL; _nomusic = _nosound = true; });
@@ -275,7 +276,7 @@ TRY {
 			LOG_DEBUG(("playSample('%s', %s, %g)", name.c_str(), loop?"loop":"once", _volume_fx * gain));
 
 		
-		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), o->get_position()), vel;
+		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), o->get_center_position()), vel;
 		o->get_velocity(vel);
 		
 		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, 0), clunk::v3<float>(vel.x, -vel.y, 0), clunk::v3<float>(0, 1, 0));
