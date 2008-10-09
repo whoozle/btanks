@@ -299,7 +299,7 @@ TRY {
 		o->get_velocity(vel);
 		
 		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-		clunk_object->update(clunk_pos, clunk_vel);
+		clunk_object->update(clunk_pos, clunk_vel, clunk::v3<float>(0, 1, 0));
 	
 		double pitch = 1;
 		GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
@@ -362,7 +362,7 @@ void IMixer::updateObject(const Object *o) {
 	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
 	
 	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-	i->second->update(clunk_pos, clunk_vel);
+	i->second->update(clunk_pos, clunk_vel, clunk::v3<float>(0, 1, 0));
 }
 
 void IMixer::replace_id(const Object *o, const int new_id) {
