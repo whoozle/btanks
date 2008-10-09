@@ -72,6 +72,8 @@ Object * Object::clone() const {
 Object * Object::deep_clone() const {
 	Object *r = clone();
 	r->_fadeout_surface = NULL;
+	r->clunk_object = NULL;
+	
 	for(Group::iterator i = r->_group.begin(); i != r->_group.end(); ++i) {
 		i->second = i->second->deep_clone();
 		i->second->_parent = r;
@@ -1675,6 +1677,9 @@ const bool Object::attachVehicle(Object *vehicle) {
 	PlayerSlot *slot = PlayerManager->get_slot_by_id(get_id());
 	if (slot == NULL)
 		return false;
+	
+	if (clunk_object)
+		clunk_object->cancel_all();
 	
 	update_player_state(PlayerState());
 
