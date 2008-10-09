@@ -413,7 +413,7 @@ void Context::convert(clunk::Buffer &dst, const clunk::Buffer &src, int rate, co
 	Usually objects are positioning the some sort of ticking function called every frame or from the on_object_update callback. 
 	Positioning is really simple: 
 	\code
-		clunk_object->update(clunk::v3<float>(x, y, z), clunk::v3<float>(velocity_x, velocity_y, velocity_z));
+		clunk_object->update(clunk::v3<float>(x, y, z), clunk::v3<float>(velocity_x, velocity_y, velocity_z), clunk::v3<float>(direction_x, direction_y, direction_z));
 	\endcode
 	Moving listener is easy too, listener is regular clunk::Object, but it's stored in clunk::Context and holds information about your position
 	\code
