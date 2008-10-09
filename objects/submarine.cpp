@@ -57,7 +57,6 @@ protected:
 void Submarine::on_spawn() {
 	play("hold", true);
 	_wakeup.set(mrt::random(5) + 5);
-	play_sound("submarine", true);
 }
 
 
@@ -73,8 +72,8 @@ bool Submarine::spawnBallistic() {
 void Submarine::tick(const float dt) {
 	Object::tick(dt);
 
-	if (!playing_sound("vehicle-sound")) {
-		play_sound("vehicle-sound", true, 0.4f);
+	if (!playing_sound("submarine")) {
+		play_sound("submarine", true);
 	}
 
 	if (get_state().empty()) {

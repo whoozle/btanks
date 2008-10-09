@@ -95,6 +95,11 @@ void Buggy::calculate(const float dt) {
 
 void Buggy::tick(const float dt) {
 	Object::tick(dt);
+
+	if (!playing_sound("vehicle-sound")) {
+		play_sound("vehicle-sound", true, 0.4f);
+	}
+
 	if (_velocity.is0() && get_state() != "hold") {
 		cancel_all();
 		play("hold", true);
@@ -119,8 +124,6 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Buggy::deserialize(s);
 		ai::Waypoints::deserialize(s);
-		if (!playing_sound("vehicle-sound"))
-			play_sound("vehicle-sound", true, 0.4f);
 	}
 
 private:
