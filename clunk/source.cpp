@@ -32,12 +32,16 @@
 #endif
 
 #ifdef USE_SIMD
+#	include <xmmintrin.h>
+#	define SIMD_LOAD(m, f) m = _mm_load_ss(&(f));
+#	define SIMD_STORE(f, m) _mm_store_ss(&(f), m);
 #	ifdef _WINDOWS
-#		error unsupported
-#	else
-#		include <xmmintrin.h>
-#		define SIMD_LOAD(m, f) m = _mm_load_ss(&(f));
-#		define SIMD_STORE(f, m) _mm_store_ss(&(f), m);
+		__forceinline __m128 operator*(__m128 a, __m128 b) {
+			return _mm_mul_ss(a, b);
+		}
+		__forceinline __m128 operator+(__m128 a, __m128 b) {
+			return _mm_add_ss(a, b);
+		}
 #	endif
 #else
 #	define	SIMD_LOAD(m, f)		m = (f)
@@ -180,8 +184,8 @@ void Source::hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, 
 			*/
 			kiss_fft_scalar mm;
 			SIMD_LOAD(mm, m);
-			freq[j].r *= mm;
-			freq[j].i *= mm;
+			freq[j].r = freq[j].r * mm; //do not replace with *=, breaks compilation on windows
+			freq[j].i = freq[j].r * mm;
 			//float len2 = sqrt(freq[j].r * freq[j].r + freq[j].i * freq[j].i);
 			//LOG_DEBUG(("%d: multiplicator = %g, len: %g -> %g", j, m, len, len2));
 		}
