@@ -85,11 +85,9 @@ void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
 	
 	//LOG_DEBUG(("relative position = (%g,%g,%g), angle = %g (%g)", delta.x, delta.y, delta.z, angle, angle_gr));
 	
-	float idt_angle = angle;
-	while (idt_angle < 0)
-		idt_angle += 2 * M_PI;
-	while(idt_angle > 2 * M_PI)
-		idt_angle -= 2 * M_PI;
+	float idt_angle = fmodf(angle, 2 * (float)M_PI);
+	if (idt_angle < 0)
+		idt_angle += 2 * (float)M_PI;
 
 	if (idt_angle >= M_PI_2 && idt_angle < M_PI) {
 		idt_angle = M_PI - idt_angle;
@@ -344,7 +342,7 @@ void Source::get_kemar_data(kemar_ptr & kemar_data, int & elev_n, const v3<float
 	if (pos.is0())
 		return;
 
-	int elev_gr = (int)(180 * atan2(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) / M_PI);
+	int elev_gr = (int)(180 * atan2f(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) / M_PI);
 
 	if (elev_gr < -35) {
 		kemar_data = elev_m40;
