@@ -77,9 +77,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 
 		_context->init(sample_rate, 2, period);
 		
-		_context->set_sources_num(12);
-		
-		float k = 80;
+		float k = 40;
 		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, true, 128 * k);
 		dm.rolloff_factor = 1 / k;
 		Config->get("engine.sound.speed-of-sound", dm.speed_of_sound, 2000.0f);
