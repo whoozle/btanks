@@ -51,12 +51,14 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 namespace clunk {
 struct source_t {
 	Source *source;
+	
 	v3<float> s_pos;
 	v3<float> s_vel;
+	v3<float> s_dir;
 	v3<float> l_vel;
 
-	inline source_t(Source *source, const v3<float> &s_pos, const v3<float> &s_vel, const v3<float>& l_vel) : 
-		source(source), s_pos(s_pos), s_vel(s_vel), l_vel(l_vel) {}
+	inline source_t(Source *source, const v3<float> &s_pos, const v3<float> &s_vel, const v3<float>& s_dir, const v3<float>& l_vel) : 
+		source(source), s_pos(s_pos), s_vel(s_vel), s_dir(s_dir), l_vel(l_vel) {}
 };
 }
 
@@ -92,7 +94,7 @@ void Context::process(Sint16 *stream, int size) {
 				continue;
 			}
 			if (lsources.size() < max_sources) {
-				lsources.push_back(source_t(s, o->position + s->delta_position - listener, o->velocity, l_vel));
+				lsources.push_back(source_t(s, o->position + s->delta_position - listener, o->velocity, o->direction, l_vel));
 			} else {
 				s->update_position(n);
 			}
@@ -170,7 +172,7 @@ void Context::process(Sint16 *stream, int size) {
 		if (sdl_v <= 0)
 			continue;
 		//check for 0
-		volume = source->process(buf, spec.channels, source_info.s_pos, volume, dpitch);
+		volume = source->process(buf, spec.channels, source_info.s_pos, source_info.s_dir, volume, dpitch);
 		sdl_v = (int)floor(SDL_MIX_MAXVOLUME * volume + 0.5f);
 		//LOG_DEBUG(("%u: mixing source with volume %g (%d), distance^2: %g", i, volume, sdl_v, position.quick_length()));
 		if (sdl_v <= 0)

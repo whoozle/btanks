@@ -73,10 +73,10 @@ bool Source::playing() const {
 	return loop?true: position < (int)(sample->data.get_size() / sample->spec.channels / 2);
 }
 	
-void Source::idt(const v3<float> &delta, float &idt_offset, float &angle_gr) {
+void Source::idt(const v3<float> &delta, const v3<float> &dir_vec, float &idt_offset, float &angle_gr) {
 	float head_r = 0.09554140127388535032f;
 
-	float direction = M_PI_2;
+	float direction = dir_vec.is0()? M_PI_2: atan2f(dir_vec.y, dir_vec.x);
 	float angle = direction - atan2f(delta.y, delta.x);
 	
 	angle_gr = angle * 180 / M_PI;
@@ -248,7 +248,7 @@ void Source::update_position(const int dp) {
 	}
 }
 
-float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, float fx_volume, float pitch) {
+float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &delta_position, const v3<float> &direction, float fx_volume, float pitch) {
 	Sint16 * dst = (Sint16*) buffer.get_ptr();
 	unsigned dst_n = buffer.get_size() / dst_ch / 2;
 	const Sint16 * src = (Sint16*) sample->data.get_ptr();
@@ -306,7 +306,7 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	}
 
 	float t_idt, angle_gr;
-	idt(delta_position, t_idt, angle_gr);
+	idt(delta_position, direction, t_idt, angle_gr);
 
 	const int kemar_idx_right = ((((int)angle_gr  + 180 / (int)angles)/ (360 / (int)angles)) % (int)angles);
 	const int kemar_idx_left = (((360 - (int)angle_gr - 180 / (int)angles) / (360 / (int)angles)) % (int)angles);

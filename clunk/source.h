@@ -65,7 +65,7 @@ public:
 		\brief for the internal use only. DO NOT USE IT. 
 		\internal for the internal use only. 
 	*/
-	float process(clunk::Buffer &buffer, unsigned ch, const v3<float> &position, float fx_volume, float pitch);
+	float process(clunk::Buffer &buffer, unsigned ch, const v3<float> &position, const v3<float> &direction, float fx_volume, float pitch);
 	///returns current source's status.
 	bool playing() const;
 
@@ -84,7 +84,7 @@ private:
 	typedef const float (*kemar_ptr)[2][512];
 	void get_kemar_data(kemar_ptr & kemar_data, int & samples, const v3<float> &delta_position);
 
-	static void idt(const v3<float> &delta, float &idt_offset, float &angle_gr);
+	static void idt(const v3<float> &delta, const v3<float> &direction, float &idt_offset, float &angle_gr);
 	void hrtf(const unsigned channel_idx, clunk::Buffer &result, int dst_n, const Sint16 *src, int src_ch, int src_n, int idt_offset, const kemar_ptr& kemar_data, int kemar_idx);
 
 	int position, fadeout, fadeout_total;
