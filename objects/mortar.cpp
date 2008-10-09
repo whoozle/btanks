@@ -52,7 +52,6 @@ void Mortar::on_spawn() {
 	GET_CONFIG_VALUE("objects.mortar.fire-rate", float, fr, 0.7);
 	_fire.set(fr);
 	play("hold", true);
-	play_sound("vehicle-sound", true, 0.4f);
 }
 
 Object * Mortar::clone() const {
@@ -90,6 +89,10 @@ void Mortar::tick(const float dt) {
 
 	Object::tick(dt);
 
+	if (!playing_sound("vehicle-sound")) {
+		play_sound("vehicle-sound", true, 0.4f);
+	}
+
 	bool fire_possible = _fire.tick(dt);
 	
 	_velocity.normalize();
@@ -124,7 +127,5 @@ void Mortar::serialize(mrt::Serializator &s) const {
 void Mortar::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_fire);
-	if (!playing_sound("vehicle-sound"))
-		play_sound("vehicle-sound", true, 0.4f);
 }
 

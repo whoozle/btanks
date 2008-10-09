@@ -74,7 +74,6 @@ void Launcher::on_spawn() {
 	GET_CONFIG_VALUE("objects.launcher.fire-rate", float, fr, 0.3);
 	_fire.set(fr);
 	play("hold", true);
-	play_sound("vehicle-sound", true, 0.4f);
 }
 
 void Launcher::emit(const std::string &event, Object * emitter) {
@@ -98,6 +97,9 @@ void Launcher::calculate(const float dt) {
 
 void Launcher::tick(const float dt) {
 	Object::tick(dt);
+	if (!playing_sound("vehicle-sound")) {
+		play_sound("vehicle-sound", true, 0.4f);
+	}
 
 	bool fire_possible = _fire.tick(dt);
 	
@@ -168,7 +170,5 @@ void Launcher::serialize(mrt::Serializator &s) const {
 void Launcher::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_fire);
-	if (!playing_sound("vehicle-sound"))
-		play_sound("vehicle-sound", true, 0.4f);
 }
 

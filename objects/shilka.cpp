@@ -71,7 +71,6 @@ void Shilka::on_spawn() {
 	GET_CONFIG_VALUE("objects.shilka.special-fire-rate", float, sfr, 0.4f);
 	_special_fire.set(sfr);
 	play("hold", true);
-	play_sound("vehicle-sound", true, 0.4f);
 }
 
 Object * Shilka::clone() const {
@@ -132,6 +131,11 @@ void Shilka::tick(const float dt) {
 	}
 
 	Object::tick(dt);
+	
+	if (!playing_sound("vehicle-sound")) {
+		play_sound("vehicle-sound", true, 0.4f);
+	}
+	
 	{
 		PlayerState state = _state;
 		state.left = 0;
@@ -246,6 +250,4 @@ void Shilka::serialize(mrt::Serializator &s) const {
 void Shilka::deserialize(const mrt::Serializator &s) {
 	Object::deserialize(s);
 	s.get(_special_fire);
-	if (!playing_sound("vehicle-sound"))
-		play_sound("vehicle-sound", true, 0.4f);
 }

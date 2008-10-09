@@ -46,8 +46,6 @@ public:
 	virtual void deserialize(const mrt::Serializator &s) {
 		Object::deserialize(s);
 		s.get(_wakeup);
-		if (!playing_sound("vehicle-sound"))
-			play_sound("vehicle-sound", true, 0.4f);
 	}
 	
 	bool spawnBallistic();
@@ -74,6 +72,10 @@ bool Submarine::spawnBallistic() {
 
 void Submarine::tick(const float dt) {
 	Object::tick(dt);
+
+	if (!playing_sound("vehicle-sound")) {
+		play_sound("vehicle-sound", true, 0.4f);
+	}
 
 	if (get_state().empty()) {
 		_wakeup.set(mrt::random(5) + 5);
