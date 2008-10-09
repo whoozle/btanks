@@ -152,6 +152,8 @@ if sys.platform == 'win32':
 
 if sys.platform != 'win32':
 	have_sse = conf.CheckLibWithHeader('m', "xmmintrin.h", 'c', '_mm_load_ss((float *)malloc(sizeof(float)));', False)
+else: 
+	have_sse = conf.CheckLibWithHeader('m', "mmintrin.h", 'c', '_mm_load_ss((float *)malloc(sizeof(float)));', False)
 
 conf.Finish()
 
