@@ -4,12 +4,15 @@ Import('debug')
 Import('sdl_cflags')
 Import('sdl_libs')
 Import('lib_dir')
+Import('have_sse')
 
 env = env.Clone()
 env.Append(CPPPATH=['..', '.'])
 env.Append(LIBPATH=['../mrt'])
 env.Append(LIBPATH=['.'])
 env.Append(CPPDEFINES=['CLUNKAPI=DLLEXPORT'])
+if have_sse: 
+	env.Append(CPPDEFINES=['USE_SIMD'])
 
 clunk_libs = ['SDL', 'mrt']
 

@@ -150,6 +150,9 @@ if sys.platform == 'win32':
 	if not conf.CheckLibWithHeader('lua', 'lua.hpp', 'c++', "lua_newstate(NULL, NULL);", False):
 		Exit(1)
 
+if sys.platform != 'win32':
+	have_sse = conf.CheckLibWithHeader('m', "xmmintrin.h", 'c', '_mm_load_ss((float *)malloc(sizeof(float)));', False)
+
 conf.Finish()
 
 if sys.platform == "win32":
@@ -164,6 +167,7 @@ else:
 Export('env')
 install_targets = list()
 Export('install_targets')
+Export('have_sse')
 
 lib_dir = '.'
 plugins_dir = ''
