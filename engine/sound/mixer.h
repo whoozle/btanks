@@ -60,22 +60,17 @@ public:
 	void reset(); //stop playing custom music
 	
 	//sample part
-	void setListener(const v3<float> &pos, const v3<float> &vel, const float r);
+	void set_listener(const v3<float> &pos, const v3<float> &vel, const float r);
+	void get_listener(v3<float> &pos, v3<float> &vel, float& r);
 	
 	void loadSample(const std::string &filename, const std::string &classname = std::string());
-	void playSample(const Object *o, const std::string &name, const bool loop, const float gain = 1.0);
-	bool playingSample(const Object *o, const std::string &name) const;
-	void playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
-	void cancelSample(const Object *o, const std::string &name);
-	void fadeoutSample(const Object *o, const std::string &name);
-	void cancel_all(const Object *o);
+	void playSample(Object *o, const std::string &name, const bool loop, const float gain = 1.0);
+	void playRandomSample(Object *o, const std::string &classname, const bool loop, const float gain = 1.0);
+	
 	void cancel_all();
-	void replace_id(const Object *o, const int new_id);
+	//void replace(const Object *old_object, const Object *new_object);
 	
 	void tick(const float dt);
-	
-	void updateObject(const Object *o);
-	void deleteObject(const Object *o);
 	
 	void setFXVolume(const float volume);
 	void setAmbienceVolume(const float volume);
@@ -90,13 +85,10 @@ public:
 private:
 	sl08::slot1<void, const Object *, IMixer> update_object_slot;
 	sl08::slot1<void, const Object *, IMixer> delete_object_slot;
-	sl08::slot2<void, const Object *, const int, IMixer> replace_id_object_slot;
+	//sl08::slot2<void, const Object *, const Object *, IMixer> replace_id_object_slot;
 
 	bool _nosound, _nomusic;
 
-	typedef std::map<const int, clunk::Object *> Objects;
-	Objects _objects;
-	
 	typedef std::map<const std::string, clunk::Sample *> Sounds;
 	Sounds _sounds;
 	

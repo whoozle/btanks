@@ -43,6 +43,8 @@
 #include "game_monitor.h"
 #include "zbox.h"
 
+#include "clunk/object.h"
+
 const v2<float> Object::get_relative_position(const Object *obj) const {
 	return Map->distance(this->get_center_position(), obj->get_center_position());
 }
@@ -95,7 +97,8 @@ Object::Object(const std::string &classname) :
 	_way(), _next_target(), _next_target_rel(), 
 	_rotation_time(0), 
 	_dst_direction(-1), 
-	_group(), _slot_id(-1)
+	_group(), _slot_id(-1), 
+	clunk_object(NULL)
 	 { }
 	 
 
@@ -105,6 +108,16 @@ Object::~Object() {
 		delete i->second;
 	}
 	_group.clear();
+	
+	if (clunk_object != NULL) {
+		if (clunk_object->active()) {
+			clunk_object->autodelete();
+		} else {
+		//inactive object. can delete it right now.
+			delete clunk_object;
+		}
+		clunk_object = NULL; //just for fun 
+	}
 }
 
 Object* Object::spawn(const std::string &classname, const std::string &animation, const v2<float> &dpos, const v2<float> &vel, const int z) {
@@ -181,7 +194,10 @@ void Object::cancel() {
 	if (_events.empty()) 
 		return;
 
-	Mixer->cancelSample(this, _events.front().sound);
+	if (clunk_object != NULL) {
+		const std::string &sound = _events.front().sound;
+		clunk_object->cancel(sound);
+	}
 
 	_events.pop_front();
 	_pos = 0;
@@ -192,7 +208,10 @@ void Object::cancel_repeatable() {
 		if (i->repeat) {
 			if (i == _events.begin())
 				_pos = 0;
-			Mixer->cancelSample(this, i->sound);
+
+			if (clunk_object != NULL)
+				clunk_object->cancel(i->sound);
+
 			i = _events.erase(i);
 		} 
 		else ++i;
@@ -202,7 +221,8 @@ void Object::cancel_repeatable() {
 
 void Object::cancel_all() {
 	while(!_events.empty()) {
-		Mixer->cancelSample(this, _events.front().sound);
+		if (clunk_object != NULL)
+		clunk_object->cancel(_events.front().sound);
 		_events.pop_front();
 	}
 	_pos = 0;
@@ -211,6 +231,13 @@ void Object::cancel_all() {
 
 
 void Object::tick(const float dt) {
+	if (clunk_object != NULL) {
+		v3<float> listener_pos, listener_len;
+		float r;
+		Mixer->get_listener(listener_pos, listener_len, r);
+		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), get_position());
+		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, get_z()), clunk::v3<float>(_velocity.x, -_velocity.y, 0), clunk::v3<float>(0, 1, 0));
+	}
 	for(EffectMap::iterator ei = _effects.begin(); ei != _effects.end(); ) {
 		if (ei->second >= 0) {
 			ei->second -= dt;
@@ -359,12 +386,12 @@ void Object::play_sound(const std::string &name, const bool loop, const float ga
 }
 
 bool Object::playing_sound(const std::string &name) const {
-	return Mixer->playingSample(this, name + ".ogg");
+	return clunk_object != NULL && clunk_object->playing(name + ".ogg");
 }
 
-
 void Object::fadeout_sound(const std::string &name) {
-	Mixer->fadeoutSample(this, name + ".ogg");
+	if (clunk_object != NULL)
+		clunk_object->fade_out(name + ".ogg");
 }
 
 void Object::play_random_sound(const std::string &classname, const bool loop, const float gain) {
@@ -1780,3 +1807,4 @@ TRY {
 	}
 } CATCH("update_outline", throw;);
 }
+

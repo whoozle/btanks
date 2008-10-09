@@ -1166,7 +1166,6 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 					}
 
 					assert(cmd.id > 0);
-					on_object_replace_id.emit(cmd.object, cmd.id);
 					cmd.object->_id = cmd.id;
 					LOG_DEBUG(("pushing %d:%s", cmd.id, cmd.object->animation.c_str()));
 					

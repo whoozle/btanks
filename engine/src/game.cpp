@@ -325,6 +325,9 @@ void IGame::init(const int argc, char *argv[]) {
 			if (ds < 15)
 				Config->set("multiplayer.deltas-samples", 15);
 		}
+		if (revision < 7888) {
+			Config->remove("engine.sound.positioning-divisor");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}

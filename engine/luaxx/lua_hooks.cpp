@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include "var.h"
 #include "config.h"
+#include "clunk/object.h"
 
 #define LUA_TRY try
 #define LUA_CATCH(where) catch(const std::exception &e) {\
@@ -912,7 +913,7 @@ LUA_TRY {
 		return 0;
 	}
 	int object_id = lua_tointeger(L, 1);
-	const Object *o = NULL;
+	Object *o = NULL;
 	if (object_id > 0) {
 		o = World->getObjectByID(object_id);
 		if (o == NULL)
@@ -963,10 +964,15 @@ LUA_TRY {
 			return 0;
 		}
 	}
+
+	clunk::Object *co = o->get_clunk_object();
+	if (co == NULL)
+		return 0;
+	
 	if (name == NULL)
-		Mixer->cancel_all(o);
+		co->cancel_all();
 	else 
-		Mixer->cancelSample(o, name);
+		co->cancel(name);
 	
 } LUA_CATCH("stop_sound")	
 	return 0;

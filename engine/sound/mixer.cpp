@@ -1,4 +1,3 @@
-
 /* Battle Tanks Game
  * Copyright (C) 2006-2008 Battle Tanks team
  *
@@ -58,11 +57,7 @@ void IMixer::reset() {
 
 IMixer::IMixer() : _nosound(true), _nomusic(true), 
 	_volume_fx(1.0f), _volume_ambience(0.5f), _volume_music(1.0f), _debug(false), _loop(false), 
-	
 	_context(NULL) {
-		update_object_slot.assign(this, &IMixer::updateObject, World->on_object_update);
-		delete_object_slot.assign(this, &IMixer::deleteObject, World->on_object_delete);
-		replace_id_object_slot.assign(this, &IMixer::replace_id, World->on_object_replace_id);
 	}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -83,7 +78,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		_context->init(sample_rate, 2, period);
 		
 		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, true, 128);
-		dm.rolloff_factor = 0.5f;
+		dm.rolloff_factor = 0.01f;
 		Config->get("engine.sound.speed-of-sound", dm.speed_of_sound, 2000.0f);
 		Config->get("engine.sound.doppler-factor", dm.doppler_factor, 1.0f);
 		
@@ -123,8 +118,6 @@ void IMixer::deinit() {
 		delete _context;
 		_context = NULL;
 	}
-
-	_objects.clear();
 
 	_nosound = true;
 	_nomusic = true;
@@ -229,7 +222,7 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 		_classes[classname].insert(filename);
 }
 
-void IMixer::playRandomSample(const Object *o, const std::string &classname, const bool loop, const float gain) {
+void IMixer::playRandomSample(Object *o, const std::string &classname, const bool loop, const float gain) {
 	if (_nosound || classname.empty())
 		return;
 	
@@ -252,18 +245,7 @@ void IMixer::playRandomSample(const Object *o, const std::string &classname, con
 	playSample(o, *s, loop, gain);
 }
 
-bool IMixer::playingSample(const Object *o, const std::string &name) const {
-	if (_nosound || _context == NULL || name.empty())
-		return false;
-
-	Objects::const_iterator i = _objects.find(o->get_id());
-	if (i == _objects.end())
-		return false;
-	
-	return i->second->playing(name);
-}
-
-void IMixer::playSample(const Object *o, const std::string &name, const bool loop, const float gain) {
+void IMixer::playSample(Object *o, const std::string &name, const bool loop, const float gain) {
 	if (_nosound || _context == NULL || name.empty())
 		return;
 
@@ -276,14 +258,11 @@ TRY {
 	}
 	clunk::Sample *sample = i->second;
 
-	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
-
 	if (o) {
-		const int id = o->get_id();
-		
-		clunk::Object *clunk_object = _objects[id];
+		clunk::Object *clunk_object = o->get_clunk_object();
 		if (clunk_object == NULL) {
-			clunk_object = _objects[id] = _context->create_object();
+			clunk_object = _context->create_object();
+			o->set_clunk_object(clunk_object);
 		}
 		
 		if (loop && clunk_object->playing(name)) {
@@ -298,8 +277,7 @@ TRY {
 		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), o->get_position()), vel;
 		o->get_velocity(vel);
 		
-		const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-		clunk_object->update(clunk_pos, clunk_vel, clunk::v3<float>(0, 1, 0));
+		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, 0), clunk::v3<float>(vel.x, -vel.y, 0), clunk::v3<float>(0, 1, 0));
 	
 		double pitch = 1;
 		GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
@@ -347,66 +325,6 @@ void IMixer::setAmbienceVolume(const float volume) {
 	_volume_ambience = volume;	
 }
 
-
-void IMixer::updateObject(const Object *o) {
-	if (_nosound)
-		return;
-
-	const int id = o->get_id();
-	Objects::iterator i = _objects.find(id);
-	if (i == _objects.end())
-		return;
-	
-	v2<float> pos = Map->distance(v2<float>(listener_pos.x,listener_pos.y), o->get_position()), vel;
-	o->get_velocity(vel);
-	GET_CONFIG_VALUE("engine.sound.positioning-divisor", float, k, 40.0);
-	
-	const clunk::v3<float> clunk_pos( pos.x / k, -pos.y / k, 0*o->get_z() / k ), clunk_vel( vel.x / k, -vel.y / k, 0);
-	i->second->update(clunk_pos, clunk_vel, clunk::v3<float>(0, 1, 0));
-}
-
-void IMixer::replace_id(const Object *o, const int new_id) {
-	if (_nosound) 
-		return;
-	
-	int old_id = o->get_id();
-	Objects::iterator i = old_id > 0? _objects.find(old_id): _objects.end();
-	if (i == _objects.end())
-		return;
-	
-	clunk::Object *clunk_object = i->second;
-	_objects.erase(i);
-
-	i = _objects.find(new_id);
-	if (i == _objects.end()) {
-		_objects.insert(Objects::value_type(new_id, clunk_object));
-	} else {
-		delete i->second;
-		i->second = clunk_object;
-	}
-}
-
-
-void IMixer::deleteObject(const Object *o) {
-TRY {
-	if (_nosound)
-		return;
-
-	Objects::iterator i = _objects.find(o->get_id());
-	if (i == _objects.end())
-		return;
-
-	if (i->second->active()) {
-		i->second->autodelete();
-	} else {
-		//inactive object. can delete it right now.
-		delete i->second;
-	}
-
-	_objects.erase(i);
-} CATCH("deleteObject", );
-}
-
 void IMixer::tick(const float dt) {
 	if (_context != NULL && !_context->playing(0)) {
 		//LOG_DEBUG(("sound thread idle"));
@@ -415,70 +333,19 @@ void IMixer::tick(const float dt) {
 }
 
 
-void IMixer::setListener(const v3<float> &pos, const v3<float> &vel, const float r) {
-	if (_nosound || _context == NULL)
-		return;
-
+void IMixer::set_listener(const v3<float> &pos, const v3<float> &vel, const float r) {
 	listener_pos = pos;
 	listener_vel = vel;	
 }
 
-void IMixer::cancelSample(const Object *o, const std::string &name) {
-	if (_nosound || name.empty())
-		return;
-	
-	if (_debug)
-		LOG_DEBUG(("object %d cancels %s", o->get_id(), name.c_str()));
-
-	const int id = o->get_id();
-	Objects::iterator i = _objects.find(id);
-	if (i == _objects.end())
-		return;
-	
-	i->second->cancel(name);
+void IMixer::get_listener(v3<float> &pos, v3<float> &vel, float& r) {
+	pos = listener_pos;
+	vel = listener_vel;
+	r = 0;
 }
-
-void IMixer::fadeoutSample(const Object *o, const std::string &name) {
-	if (_nosound || name.empty())
-		return;
-	
-	if (_debug)
-		LOG_DEBUG(("object %d fadeouts %s", o->get_id(), name.c_str()));
-
-	const int id = o->get_id();
-	Objects::iterator i = _objects.find(id);
-	if (i == _objects.end())
-		return;
-	
-	i->second->fade_out(name);
-}
-
-
-void IMixer::cancel_all(const Object *o) {
-	if (_nosound)
-		return;
-	
-	const int id = o->get_id();
-
-	Objects::iterator i = _objects.find(id);
-	if (i == _objects.end())
-		return;
-
-	i->second->cancel_all();
-}
-
 
 void IMixer::cancel_all() {
 	stopAmbient();
-	
-	if (_nosound)
-		return;
-
-	for(Objects::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		i->second->cancel_all(true);
-		delete i->second;
-	}
-	_objects.clear();
 }
 
 void IMixer::startAmbient(const std::string &fname) {

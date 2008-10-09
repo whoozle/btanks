@@ -64,7 +64,6 @@ public:
 	sl08::signal1<void, const Object *> on_object_broke;
 	sl08::signal1<void, const Object *> on_object_delete;
 	sl08::signal2<void, const Object *, const Object *> on_object_death; //death emitted after collision handler
-	sl08::signal2<void, const Object *, const int> on_object_replace_id; //replacing id for the object
 
 	void clear();
 	~IWorld();

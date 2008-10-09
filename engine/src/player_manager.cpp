@@ -1209,7 +1209,7 @@ TRY {
 		listener_pos /= listeners;
 		listener_vel /= listeners;
 		listener_size /= listeners;
-		Mixer->setListener(listener_pos.convert2v3(0), listener_vel.convert2v3(0), listener_size.length());
+		Mixer->set_listener(listener_pos.convert2v3(0), listener_vel.convert2v3(0), listener_size.length());
 	}
 
 	for(size_t pi = 0; pi < _players.size(); ++pi) {

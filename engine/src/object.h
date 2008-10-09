@@ -46,6 +46,10 @@ namespace sdlx {
 	class CollisionMap;
 }
 
+namespace clunk {
+	class Object;
+} 
+
 class AnimationModel;
 class Animation;
 class Pose;
@@ -188,6 +192,10 @@ public:
 	void set_slot(const int id);
 	
 	void update_outline(const bool hidden);
+	
+	inline clunk::Object * get_clunk_object() { return clunk_object; }
+	inline clunk::Object * get_clunk_object() const { return clunk_object; }
+	inline void set_clunk_object(clunk::Object *co) { clunk_object = co; }
 
 protected:
 
@@ -305,6 +313,9 @@ private:
 	friend class ai::Waypoints;
 	friend class RotatingObject;
 	using BaseObject::_position;
+	
+	
+	clunk::Object *clunk_object;
 };
 
 
