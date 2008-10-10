@@ -217,11 +217,8 @@ void Bullet::emit(const std::string &event, Object * emitter) {
 			_velocity.fromDirection(dir, dirs);
 			_direction = _velocity;
 			_vel_backup = _velocity;
-
-			//GET_CONFIG_VALUE("objects.explosion-downwards-z-override", int, edzo, 180);
-			//int z = (_velocity.y >= 0) ? edzo : 0;
-			//spawn("explosion", "explosion", dpos, v2<float>(), z);
-			//LOG_DEBUG(("new velocity: %g %g", _velocity.x, _velocity.y));
+			
+			play_sound("boomerang-hit", false);
 			return;
 		} else if (event == "collision" && ( 
 			(_type == "ricochet" && emitter != NULL ) ||
