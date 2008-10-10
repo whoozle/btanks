@@ -22,13 +22,13 @@
 #include "context.h"
 #include <string.h>
 #include "sdl_ex.h"
-#include "mrt/logger.h"
-#include "mrt/chunk.h"
+#include "logger.h"
 #include "source.h"
 #include <assert.h>
 #include <math.h>
 #include <map>
 #include <algorithm>
+#include <vector>
 #include "locker.h"
 #include "stream.h"
 #include "object.h"
@@ -47,7 +47,6 @@ void Context::callback(void *userdata, Uint8 *bstream, int len) {
 	} CATCH("callback", )
 }
 
-//#include "mrt/timespy.h"
 namespace clunk {
 struct source_t {
 	Source *source;
@@ -280,7 +279,7 @@ void Context::stop(const int id) {
 	
 	TRY {
 		delete i->second.stream;
-	} CATCH(mrt::format_string("stop(%d)", id).c_str(), {
+	} CATCH(clunk::format_string("stop(%d)", id).c_str(), {
 		streams.erase(i);
 		throw;
 	})

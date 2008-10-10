@@ -1,3 +1,6 @@
+#ifndef CLUNK_LOGGER_H__
+#define CLUNK_LOGGER_H__
+
 /* libclunk - realtime 2d/3d sound render library
  * Copyright (C) 2007-2008 Netive Media Group
  *
@@ -16,12 +19,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "sdl_ex.h"
-#include <SDL.h>
+#include "export_clunk.h"
+#include <string>
+#include <exception>
 
-using namespace clunk;
+#if !(defined(__GNUC__) || defined(__GNUG__) || defined(__attribute__))
+#	define __attribute__(p) /* nothing */
+#endif
 
-void SDLException::add_custom_message() {
-	const char *err = SDL_GetError();
-	add_message(err? err: "(null)");
+namespace clunk {
+	void CLUNKAPI log_debug(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
+	const std::string CLUNKAPI format_string(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 }
+
+#ifdef DEBUG
+#	define LOG_DEBUG(fmt) clunk::log_debug fmt
+#	define LOG_ERROR(fmt) clunk::log_debug fmt
+#else
+#	define LOG_DEBUG(fmt) do {} while(0)
+#	define LOG_ERROR(fmt) clunk::log_debug fmt
+#endif
+
+#endif
+

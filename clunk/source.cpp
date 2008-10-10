@@ -21,7 +21,7 @@
 #include <math.h>
 #include "source.h"
 #include <SDL.h>
-#include "mrt/exception.h"
+#include "clunk_ex.h"
 #include "buffer.h"
 #include "sample.h"
 #include <assert.h>
@@ -291,7 +291,7 @@ float Source::process(clunk::Buffer &buffer, unsigned dst_ch, const v3<float> &d
 	update_position(0);
 	
 	if (position >= (int)src_n) {
-		LOG_WARN(("process called on inactive source"));
+		//LOG_WARN(("process called on inactive source"));
 		return 0;
 	}
 

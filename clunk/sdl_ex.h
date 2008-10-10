@@ -21,13 +21,16 @@
 
 
 
-#include "clunk/export_clunk.h"
-#include "mrt/exception.h"
+#include "export_clunk.h"
+#include "clunk_ex.h"
 
 namespace clunk {
-DERIVE_EXCEPTION(CLUNKAPI, Exception);
+	class CLUNKAPI SDLException : public Exception {
+	public: 
+		virtual void add_custom_message();
+	};
 }
 
-#define throw_sdl(s) throw_generic(clunk::Exception, s);
+#define throw_sdl(s) throw_generic(clunk::SDLException, s);
 
 #endif

@@ -19,9 +19,8 @@
 #include "buffer.h"
 #include <stdlib.h>
 #include <string.h>
-#include "mrt/ioexception.h"
+#include "clunk_ex.h"
 #include <assert.h>
-#include "mrt/fmt.h"
 
 using namespace clunk;
 
@@ -133,17 +132,17 @@ const std::string Buffer::dump() const {
 		return "empty memory buffer";
 	assert(ptr != 0);
 	
-	std::string result = mrt::format_string("-[memory dump]-[size: %u]---", (unsigned)size);
+	std::string result = clunk::format_string("-[memory dump]-[size: %u]---", (unsigned)size);
 	size_t n = (size - 1)/ 16 + 1;
 	for(size_t i = 0; i < n; ++i) {
-		result += mrt::format_string("\n%06x\t", (unsigned)(i * 16));
+		result += clunk::format_string("\n%06x\t", (unsigned)(i * 16));
 		size_t j, m = (size - i * 16);
 		if (m > 16) 
 			m = 16;
 		
 		for(j = 0; j < m; ++j) {
 			const unsigned char *p = ((unsigned char *)ptr) + i*16 + j;
-			result += mrt::format_string("%02x ", *p);
+			result += clunk::format_string("%02x ", *p);
 			if (j == 7) 
 				result += " ";
 		}
@@ -156,7 +155,7 @@ const std::string Buffer::dump() const {
 
 		for(j = 0; j < m; ++j) {
 			const unsigned char *p = ((unsigned char *)ptr) + i*16 + j;
-			result += mrt::format_string("%c", (*p>=32 && *p < 127)? *p: '.');
+			result += clunk::format_string("%c", (*p>=32 && *p < 127)? *p: '.');
 			if (j == 7) 
 				result += " ";
 		}
