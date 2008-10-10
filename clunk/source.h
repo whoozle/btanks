@@ -32,7 +32,7 @@ namespace clunk {
 #endif
 
 #ifndef CLUNK_WINDOW_OVERLAP
-#	define CLUNK_WINDOW_OVERLAP 64
+#	define CLUNK_WINDOW_OVERLAP 128
 #endif
 
 class Sample;
