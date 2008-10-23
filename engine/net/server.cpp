@@ -127,7 +127,6 @@ void Server::tick(const float dt) {
 	int id = -1;
 	TRY {
 		mrt::Chunk data;
-		unsigned recv_ts;
 		
 		while(_monitor->recv(id, data)) {
 			Message m;
