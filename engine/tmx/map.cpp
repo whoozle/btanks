@@ -54,6 +54,10 @@
 #include "generator.h"
 #include "mrt/scoped_ptr.h"
 
+#include "math/range_list.h"
+
+range_list<Uint32> tile_stats;
+
 IMPLEMENT_SINGLETON(Map, IMap);
 
 IMap::IMap() : _w(0), _h(0), _tw(0), _th(0), _ptw(0), _pth(0), _firstgid(0), _split(0), 
@@ -503,7 +507,10 @@ void IMap::load(const std::string &name) {
 
 	_name = name;
 	LOG_DEBUG(("loading completed"));
-
+	for(range_list<Uint32>::const_iterator i = tile_stats.begin(); i != tile_stats.end(); ++i) {
+		LOG_DEBUG(("%u-%u", i->first, i->second));
+	}
+	
 	{
 		PropertyMap::const_iterator p = properties.find("config:map.torus");
 		if (p != properties.end()) {
@@ -852,6 +859,17 @@ void IMap::end(const std::string &name) {
 		layer->hp = hp;
 
 		TRY { 
+			GET_CONFIG_VALUE("map.log-tile-stats", bool, lts, false);
+			if (lts) {
+				Uint32 n = w * h;
+				Uint32 *p = (Uint32 *)_data.get_ptr();
+				for(size_t i = 0; i < n; ++i) {
+					Uint32 t = SDL_SwapLE32(*p);
+					if (t > 0)
+						tile_stats.insert(t);
+				}
+			}
+
 			layer->init(w, h, _data); 
 		} CATCH(mrt::format_string("layer '%s'", _layer_name.c_str()).c_str(), 
 			{delete layer; layer = NULL; throw; }
@@ -1010,6 +1028,8 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 
 void IMap::clear() {
 	LOG_DEBUG(("cleaning up..."));
+
+	tile_stats.clear();
 	//LOG_DEBUG(("clearing layers..."));
 	for(LayerMap::iterator i = _layers.begin(); i != _layers.end(); ++i) {
 		delete i->second;
