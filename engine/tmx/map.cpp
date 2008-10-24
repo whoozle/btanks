@@ -56,7 +56,7 @@
 
 #include "math/range_list.h"
 
-range_list<Uint32> tile_stats;
+static range_list<Uint32> tile_stats;
 
 IMPLEMENT_SINGLETON(Map, IMap);
 
@@ -864,7 +864,7 @@ void IMap::end(const std::string &name) {
 				Uint32 n = w * h;
 				Uint32 *p = (Uint32 *)_data.get_ptr();
 				for(size_t i = 0; i < n; ++i) {
-					Uint32 t = SDL_SwapLE32(*p);
+					Uint32 t = SDL_SwapLE32(*p++);
 					if (t > 0)
 						tile_stats.insert(t);
 				}
