@@ -137,6 +137,7 @@ namespace sdlx {
 		//sdl_gfx
 		
 		void rotozoom(const sdlx::Surface &src, double angle, double zoom, bool smooth = true);
+		void zoom(double xfactor, double yfactor, bool smooth = true);
 		
 	private:
 		Surface(const Surface &x);

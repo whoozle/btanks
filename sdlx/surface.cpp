@@ -434,7 +434,7 @@ void Surface::set_color_key(Uint32 key, Uint32 flag) {
 
 void Surface::rotozoom(const sdlx::Surface &src, double angle, double zoom, bool smooth) {
 	if (src.isNull())
-		throw_ex(("null rotozoom source surface"));
+		throw_ex(("rotozooming null surface"));
 	
 	free();
 	int dstwidth = 0, dstheight = 0;
@@ -446,4 +446,14 @@ void Surface::rotozoom(const sdlx::Surface &src, double angle, double zoom, bool
 	if (r == NULL)
 		throw_sdl(("rotozoomSurface(%dx%d, %g, %g, %s)", src.get_width(), src.get_height(), angle, zoom, smooth?"true":"false"));
 	assign(r);
+}
+
+void Surface::zoom(double xfactor, double yfactor, bool smooth = true) {
+	if (surface == NULL)
+		throw_ex(("rotozooming null surface"));
+	SDL_Surface * r = zoomSurface(surface, xfactor, yfactor, smooth);
+	if (r == NULL)
+		throw_sdl(("zoomSurface"));
+	free();
+	surface = r;
 }
