@@ -699,7 +699,7 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	
 	LOG_DEBUG(("searching splash... %dx%d", w, h));
 	int sw = 0;
-	int splash_sizes[] = { 1280, 1152, 1024, 800 };
+	int splash_sizes[] = { 1280 };
 	for(unsigned si = 0; si < sizeof(splash_sizes) / sizeof(splash_sizes[0]); ++si) {
 		sw = splash_sizes[si];
 		if (w >= sw) {
@@ -714,7 +714,7 @@ Hud::Hud(const int w, const int h) :  _pointer(NULL), _pointer_dir(-1), _update_
 	}
 	
 	if (!files.empty()) {
-		_splash = ResourceManager->load_surface(files[mrt::random(files.size())]);
+		_splash = ResourceManager->load_surface(files[mrt::random(files.size())], w, 0);
 	} else {
 		_splash = NULL;
 	}
