@@ -448,7 +448,7 @@ void Surface::rotozoom(const sdlx::Surface &src, double angle, double zoom, bool
 	assign(r);
 }
 
-void Surface::zoom(double xfactor, double yfactor, bool smooth = true) {
+void Surface::zoom(double xfactor, double yfactor, bool smooth) {
 	if (surface == NULL)
 		throw_ex(("rotozooming null surface"));
 	SDL_Surface * r = zoomSurface(surface, xfactor, yfactor, smooth);
