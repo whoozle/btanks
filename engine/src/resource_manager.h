@@ -70,8 +70,8 @@ public:
 	const Animation *getAnimation(const std::string &id) const;
 	const bool hasAnimation(const std::string &id) const;
 
-	const sdlx::Surface *load_surface(const std::string &id);
-	void unload_surface(const std::string &id);
+	const sdlx::Surface *load_surface(const std::string &id, int scale_to_w = 0, int scale_to_h = 0);
+	void unload_surface(const std::string &id); //do not use it until you known what you're doing
 	const sdlx::Surface *get_surface(const std::string &id) const;
 	const sdlx::CollisionMap *getCollisionMap(const std::string &id) const;
 	const sdlx::Font *loadFont(const std::string &id, const bool alpha);

@@ -363,7 +363,7 @@ void IResourceManager::unload_surface(const std::string &id) {
 	_surfaces.erase(i);
 }
 
-const sdlx::Surface *IResourceManager::load_surface(const std::string &id) {
+const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int scale_to_w, int scale_to_h) {
 	SurfaceMap::iterator i = _surfaces.find(id);
 	if (i != _surfaces.end() && i->second != NULL)
 		return i->second;
@@ -377,6 +377,14 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id) {
 			s->load_image(data);
 			s->display_format_alpha();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
+			if (scale_to_w != 0 || scale_to_h != 0) {
+				if (scale_to_w == 0) 
+					scale_to_w = scale_to_h * s->get_width() / s->get_height();
+				if (scale_to_h == 0) 
+					scale_to_h = scale_to_w * s->get_height() / s->get_width();
+				LOG_DEBUG(("scaling surface to %dx%d", scale_to_w, scale_to_h));
+				s->zoom(1.0 * scale_to_w / s->get_width(), 1.0 * scale_to_h / s->get_height());
+			}
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	return s;
