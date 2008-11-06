@@ -964,7 +964,13 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 	/*
 	 * Lock source surface 
 	 */
-	SDL_LockSurface(rz_src);
+	if (SDL_LockSurface(rz_src) == -1)
+		return NULL;
+	
+	if (SDL_LockSurface(rz_dst) == -1) {
+		SDL_UnlockSurface(rz_src);
+		return NULL;
+	}
 	/*
 	 * Check which kind of surface we have 
 	 */
@@ -998,6 +1004,7 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 	/*
 	 * Unlock source surface 
 	 */
+	SDL_UnlockSurface(rz_dst);
 	SDL_UnlockSurface(rz_src);
 
     } else {
@@ -1040,7 +1047,13 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 	/*
 	 * Lock source surface 
 	 */
-	SDL_LockSurface(rz_src);
+	if (SDL_LockSurface(rz_src) == -1)
+		return NULL;
+	
+	if (SDL_LockSurface(rz_dst) == -1) {
+		SDL_UnlockSurface(rz_src);
+		return NULL;
+	}
 	/*
 	 * Check which kind of surface we have 
 	 */
@@ -1070,6 +1083,7 @@ SDL_Surface *rotozoomSurfaceXY(SDL_Surface * src, double angle, double zoomx, do
 	/*
 	 * Unlock source surface 
 	 */
+	SDL_UnlockSurface(rz_dst);
 	SDL_UnlockSurface(rz_src);
     }
 
@@ -1200,7 +1214,13 @@ SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smoo
     /*
      * Lock source surface 
      */
-    SDL_LockSurface(rz_src);
+	if (SDL_LockSurface(rz_src) == -1)
+		return NULL;
+	
+	if (SDL_LockSurface(rz_dst) == -1) {
+		SDL_UnlockSurface(rz_src);
+		return NULL;
+	}
     /*
      * Check which kind of surface we have 
      */
@@ -1230,6 +1250,7 @@ SDL_Surface *zoomSurface(SDL_Surface * src, double zoomx, double zoomy, int smoo
     /*
      * Unlock source surface 
      */
+    SDL_UnlockSurface(rz_dst);
     SDL_UnlockSurface(rz_src);
 
     /*
@@ -1314,7 +1335,13 @@ SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory)
     /*
      * Lock source surface 
      */
-    SDL_LockSurface(rz_src);
+	if (SDL_LockSurface(rz_src) == -1)
+		return NULL;
+	
+	if (SDL_LockSurface(rz_dst) == -1) {
+		SDL_UnlockSurface(rz_src);
+		return NULL;
+	}
     /*
      * Check which kind of surface we have 
      */
@@ -1344,6 +1371,7 @@ SDL_Surface *shrinkSurface(SDL_Surface * src, int factorx, int factory)
     /*
      * Unlock source surface 
      */
+    SDL_UnlockSurface(rz_dst);
     SDL_UnlockSurface(rz_src);
 
     /*
