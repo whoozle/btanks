@@ -90,7 +90,7 @@ private:
 	void preload(const std::string &animation);
 	Animation *getAnimation(const std::string &id);
 	
-	static sdlx::CollisionMap * create_cmap(const sdlx::Surface *s);
+	static sdlx::CollisionMap * create_cmap(const sdlx::Surface *s, const std::string &tile);
 
 	//xml stuff
 	std::string _base_dir;

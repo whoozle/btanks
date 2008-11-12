@@ -158,13 +158,14 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 			TRY { 		
 				if (real_load) {
 					mrt::Chunk data;
-					Finder->load(data, "tiles/" + tile);
+					std::string tname = "tiles/" + tile;
+					Finder->load(data, tname);
 					
 					s = new sdlx::Surface;
 					s->load_image(data);
 					s->display_format_alpha();
 					
-					cmap = create_cmap(s);
+					cmap = create_cmap(s, tname);
 			
 					LOG_DEBUG(("loaded animation '%s'", id.c_str()));
 				}
@@ -371,7 +372,8 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 		TRY {
 			GET_CONFIG_VALUE("engine.generate-alpha-tiles", bool, gat, false);
 			mrt::Chunk data;
-			Finder->load(data, "tiles/" + id);
+			std::string tname = "tiles/" + id;
+			Finder->load(data, tname);
 
 			s = new sdlx::Surface;
 			s->load_image(data);
@@ -613,6 +615,7 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 		return;
 
 	const Animation * a = getAnimation(animation);
+	std::string tname = "tiles/" + a->surface;
 	
 	sdlx::Surface *s = _surfaces[a->surface];
 	sdlx::CollisionMap *cmap = _cmaps[a->surface];
@@ -621,7 +624,7 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 	if (s == NULL) {
 		TRY {
 			mrt::Chunk data;
-			Finder->load(data, "tiles/" + a->surface);
+			Finder->load(data, tname);
 			s = new sdlx::Surface;
 			s->load_image(data);
 			s->display_format_alpha();
@@ -645,7 +648,7 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 	surface_ptr = s;
 	
 	if (cmap == NULL) {
-		cmap = create_cmap(s);
+		cmap = create_cmap(s, tname);
 		_cmaps[a->surface] = cmap;
 	}
 	cmap_ptr = cmap;
@@ -693,9 +696,31 @@ void IResourceManager::preload() {
 	}
 }
 
-sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s) {
+sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s, const std::string &name) {
 	sdlx::CollisionMap * cmap = new sdlx::CollisionMap;
-	cmap = new sdlx::CollisionMap;
+	GET_CONFIG_VALUE("engine.generate-static-collision-maps", bool, gscm, false);
+	if (!gscm) {
+		try {
+			mrt::Chunk data;
+			Finder->load(data, name + ".map");
+			if (cmap->load(s->get_width(), s->get_height(), data))
+				return cmap;
+		} CATCH("create_map(load)", );
+	}
 	cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+	if (gscm) {
+		LOG_DEBUG(("generating collision map for the %s", name.c_str()));
+		IFinder::FindResult r;
+		Finder->findAll(r, name);
+		if (r.empty()) {
+			return cmap;
+		}
+		const std::string &base = r[0].first;
+		try {
+			std::string fname = base + "/" + name + ".map";
+			LOG_DEBUG(("saving collision map in %s", fname.c_str()));
+			cmap->save(fname);
+		} CATCH("create_map(save)", )
+	}
 	return cmap;
 }
