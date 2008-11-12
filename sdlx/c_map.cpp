@@ -263,28 +263,9 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 
 void CollisionMap::save(const std::string &fname) const {
 	mrt::File f;
-	f.open(fname + ".raw", "wb");
+	f.open(fname + ".cmap", "wb");
 	f.write_all(_data);
 	f.close();
-	
-	sdlx::Surface s;
-	s.create_rgb(_w * 8, _h, 8, SDL_SWSURFACE);
-	s.lock();
-	unsigned char *ptr = (unsigned char *)_data.get_ptr();
-	unsigned int idx = 0;
-	for(unsigned y = 0; y < _h; ++y) {
-		for(unsigned x = 0; x < _w; ++x) {
-			assert(idx < _data.get_size());
-			unsigned int byte = ptr[idx++];
-			for(int b = 0; b < 8; ++b) {
-				bool c = (byte & (0x80 >> b)) != 0;
-				if (c)
-					s.put_pixel(x*8 + b, y, 0xffffffff);
-			}
-		}
-	}
-	s.unlock();
-	s.save_bmp(fname + ".bmp");
 }
 
 
