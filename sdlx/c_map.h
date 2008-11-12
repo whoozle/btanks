@@ -36,7 +36,7 @@ public:
 	CollisionMap();
 	void init(const Surface * surface, const Type type);
 	void create(const unsigned int w, const unsigned int h, const bool bit);
-	void load(unsigned int w, unsigned int h, const mrt::Chunk &data);
+	bool load(unsigned int w, unsigned int h, const mrt::Chunk &data);
 	void project(Matrix<bool> &result, const unsigned w, const unsigned h) const;
 	const bool collides(const sdlx::Rect &src,  const CollisionMap *other, const sdlx::Rect &other_src, const int x, const int y, const bool hidden_by_other) const;
 	void save(const std::string &fname) const;
