@@ -699,7 +699,7 @@ void IResourceManager::preload() {
 sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s, const std::string &name) {
 	sdlx::CollisionMap * cmap = new sdlx::CollisionMap;
 	GET_CONFIG_VALUE("engine.generate-static-collision-maps", bool, gscm, false);
-	if (!gscm) {
+	if (true || !gscm) {
 		try {
 			mrt::Chunk data;
 			Finder->load(data, name + ".map");
