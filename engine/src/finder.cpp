@@ -241,13 +241,14 @@ const std::string IFinder::find(const std::string &name_, const bool strict) con
 const std::string IFinder::find(const std::string &base, const std::string &name_, const bool strict) const {
 	mrt::Directory dir;
 
-	std::string prefix =  base + "/";
-	const std::string name = mrt::FSNode::normalize(prefix + name_);
+	
 	std::vector<std::string> files;
 	applyPatches(files, name_);
 
+	std::string prefix =  base + "/";
 	Packages::const_iterator p_i = packages.find(base);
 	for(size_t j = 0; j < files.size(); ++j) {
+		const std::string name = mrt::FSNode::normalize(prefix + files[j]);
 		//LOG_DEBUG(("looking for the file: %s:%s -> %s", base.c_str(), files[j].c_str(), name.c_str()));
 		if (dir.exists(name))
 			return name;
