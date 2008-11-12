@@ -398,8 +398,10 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 	
 	
-	if (xmas)
+	if (xmas) {
+		LOG_DEBUG(("xmas mode!"));
 		Finder->addPatchSuffix("_xmas");
+	}
 	
 	I18n->load(lang);
 	
