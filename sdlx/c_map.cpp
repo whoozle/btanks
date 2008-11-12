@@ -232,8 +232,10 @@ void CollisionMap::create(const unsigned int w, const unsigned int h, const bool
 
 bool CollisionMap::load(unsigned int w, unsigned int h, const mrt::Chunk &data) {
 	unsigned size = ((w - 1) / 8 + 1) * h;
-	if (size != data.get_size()) 
+	if (size != data.get_size()) {
+		LOG_WARN(("collision data size mismatch. %ux%u = %u, got %u", w, h, size, (unsigned)data.get_size()));
 		return false;
+	}
 	
 	_data = data;
 	return true;
