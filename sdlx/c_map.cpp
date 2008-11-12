@@ -238,6 +238,43 @@ bool CollisionMap::load(unsigned int w, unsigned int h, const mrt::Chunk &data) 
 	}
 	
 	_data = data;
+	_w = (w - 1) / 8 + 1;
+	_h = h;
+
+	_empty = _full = true;
+	bool e_set = false, f_set = false;
+	unsigned char * pdata = (unsigned char *)_data.get_ptr();
+	for(unsigned y = 0; y < h; ++y) {
+		unsigned x;
+		for(x = 0; x < w / 8; ++x) {
+			unsigned char b = pdata[y * _w + x];
+			if (b != 0) {
+				_empty = false;
+				e_set = true;
+			} else if (b != 0xff) {
+				_full = false;
+				f_set = true;
+			}
+			if (e_set && f_set)
+				return true;
+		}
+		unsigned w2 = w % 8;
+		if (w2 != 0) {
+			unsigned mask = ~((1 << (7 - w2)) - 1);
+			unsigned char b = pdata[y * _w + x] & mask;
+			if (b != 0) {
+				_empty = false;
+				e_set = true;
+			} else if (b != mask) {
+				_full = false;
+				f_set = true;
+			}
+			
+			if (e_set && f_set)
+				return true;
+		}
+	}
+	
 	return true;
 }
 
