@@ -270,7 +270,7 @@ void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 
 void CollisionMap::save(const std::string &fname) const {
 	mrt::File f;
-	f.open(fname + ".cmap", "wb");
+	f.open(fname + ".map", "wb");
 	f.write_all(_data);
 	f.close();
 }

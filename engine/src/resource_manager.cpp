@@ -163,9 +163,8 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					s = new sdlx::Surface;
 					s->load_image(data);
 					s->display_format_alpha();
-			
-					cmap = new sdlx::CollisionMap;
-					cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+					
+					cmap = create_cmap(s);
 			
 					LOG_DEBUG(("loaded animation '%s'", id.c_str()));
 				}
@@ -370,6 +369,7 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 	
 	sdlx::Surface *s = NULL;
 		TRY {
+			GET_CONFIG_VALUE("engine.generate-alpha-tiles", bool, gat, false);
 			mrt::Chunk data;
 			Finder->load(data, "tiles/" + id);
 
@@ -644,9 +644,8 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 	}
 	surface_ptr = s;
 	
-	if (cmap == NULL) {			
-		cmap = new sdlx::CollisionMap;
-		cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+	if (cmap == NULL) {
+		cmap = create_cmap(s);
 		_cmaps[a->surface] = cmap;
 	}
 	cmap_ptr = cmap;
@@ -692,4 +691,11 @@ void IResourceManager::preload() {
 		}
 		notify_progress.emit(1, "animation");
 	}
+}
+
+sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s) {
+	sdlx::CollisionMap * cmap = new sdlx::CollisionMap;
+	cmap = new sdlx::CollisionMap;
+	cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
+	return cmap;
 }
