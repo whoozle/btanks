@@ -230,6 +230,13 @@ void CollisionMap::create(const unsigned int w, const unsigned int h, const bool
 	_data.fill(bit?~0:0);
 }
 
+void CollisionMap::load(unsigned int w, unsigned int h, const mrt::Chunk &data) {
+	unsigned size = ((w - 1) / 8 + 1) * h;
+	if (size != data.get_size()) 
+		throw_ex(("load %u, expected %u", size, (unsigned)data.get_size()));
+	
+	_data = data;
+}
 
 void CollisionMap::init(const sdlx::Surface * surface, const Type type) {
 	_empty = true;
