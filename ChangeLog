@@ -1,12 +1,11 @@
 0.8.*: 
-	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
-	*) Added spanish/catalanian translations.
-
 	*) Multiplayer changes: 
 		*) Added high-priority queue for datagram.
 		*) Added codenames for incompatible releases + user friendly error message. (last release was longcat)
 
 	*) Clunk - 3d sound library: 
+		*) Clunk has moved to separate sourceforge project.
+		*) Port to SSE.
 		*) Added three distance attenuations models: linear, inversed and exponent.
 		*) Less noise from hrtf. 
 		*) Doppler effect. 
@@ -27,6 +26,10 @@
 		*) Added medals support and nice hall of fame.
 		*) Map could provide best stats from developers for a competition
 
+	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
+	*) Added spanish/catalanian translations.
+	*) Resample splash screens. Removed all duplicated splashes less than 1280x1024. 
+	*) Added static collision maps allowing tiles' alpha pixels optimizations.
 	*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
 	*) Added mouse control. 
 	*) Added names for the control, buttons/mouse icons
