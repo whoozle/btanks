@@ -377,7 +377,6 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 
 			s = new sdlx::Surface;
 			s->load_image(data);
-			s->display_format_alpha();
 			LOG_DEBUG(("loaded surface '%s'", id.c_str()));
 			if (scale_to_w != 0 || scale_to_h != 0) {
 				if (scale_to_w == 0) 
@@ -387,6 +386,7 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 				LOG_DEBUG(("scaling surface to %dx%d", scale_to_w, scale_to_h));
 				s->zoom(1.0 * scale_to_w / s->get_width(), 1.0 * scale_to_h / s->get_height());
 			}
+			s->display_format_alpha();
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	return s;
