@@ -522,7 +522,12 @@ void IWindow::run() {
 		int t_delta = _timer.microdelta();
 
 		//LOG_DEBUG(("tdelta: %d, max_delay: %d, delay: %d", t_delta, max_delay, max_delay - t_delta));
+#ifdef DEBUG
 		assert(t_delta >= 0);
+#else
+		if (t_delta < 0)
+			t_delta = 0;
+#endif
 		if (t_delta < max_delay) {
 			sdlx::Timer::microsleep("fps limit", max_delay - t_delta);
 		}
