@@ -8,7 +8,7 @@
 #include "resource_manager.h"
 #include "sdlx/font.h"
 #include "sound/mixer.h"
-
+#include "tmx/map.h"
 
 #include "network_status.h"
 #include "player_manager.h"
@@ -195,6 +195,9 @@ void MainMenu::onEvent(const SDL_Event &e) {
 }
 
 void MainMenu::hide(const bool hide) {
+	if (!Map->loaded() && !hidden())
+		return;
+	
 	Mixer->playSample(NULL, hide? "menu/return.ogg": "menu/select.ogg", false);
 	Menu::hide(hide);
 }
