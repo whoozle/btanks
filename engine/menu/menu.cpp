@@ -78,18 +78,20 @@ void Menu::render(sdlx::Surface &surface, const int x, const int y) const {
 	background.render(surface, x + dx, y + dy);
 	
 	const Control *c = get_current_item();
-	int cx, cy;
-	c->get_base(cx, cy);
-	int cw, ch;
-	const MenuItem * mi = dynamic_cast<const MenuItem *>(c);
-	if (mi != NULL) {
-		//optimization :)
-		ch = mi->get_font()->get_height();
-	} else {
-		c->get_size(cw, ch);
+	if (c != NULL) {
+		int cx, cy;
+		c->get_base(cx, cy);
+		int cw, ch;
+		const MenuItem * mi = dynamic_cast<const MenuItem *>(c);
+		if (mi != NULL) {
+			//optimization :)
+			ch = mi->get_font()->get_height();
+		} else {
+			c->get_size(cw, ch);
+		}
+		background.renderHL(surface, x + dx, y + cy + ch / 2 + 2);
 	}
 	
-	background.renderHL(surface, x + dx, y + cy + ch / 2 + 2);
 	
 	Container::render(surface, x, y);
 }
@@ -138,7 +140,7 @@ void Menu::down() {
 
 bool Menu::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (Container::onMouse(button, pressed, x, y)) {
-		int idx;
+		int idx = 0;
 		for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i, ++idx) {
 			Control * c = *i;
 			if (c->changed()) {
