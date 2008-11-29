@@ -29,11 +29,10 @@
 */
 
 #include "sdlx/rect.h"
-#include "base_menu.h"
+#include "container.h"
 #include "alarm.h"
 
 class Button;
-class MainMenu;
 class HostList;
 class MapDetails;
 class Prompt;
@@ -41,9 +40,9 @@ class Chooser;
 class UpperBox;
 class Scanner;
 
-class JoinServerMenu : public BaseMenu {
+class JoinServerMenu : public Container {
 public:
-	JoinServerMenu(MainMenu *parent, const int w, const int h);
+	JoinServerMenu(const int w, const int h);
 	~JoinServerMenu();
 
 	void tick(const float dt);
@@ -59,7 +58,6 @@ private:
 	void ping();
 	Alarm ping_timer;
 
-	MainMenu *_parent;
 	UpperBox *_upper_box;
 	HostList *_hosts;
 	//MapDetails *_details;

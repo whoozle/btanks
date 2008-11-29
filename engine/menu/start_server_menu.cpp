@@ -40,7 +40,7 @@
 #include "config.h"
 #include "box.h"
 
-StartServerMenu::StartServerMenu(MainMenu *parent, const int w, const int h) : _parent(parent)  {
+StartServerMenu::StartServerMenu(const int w, const int h)  {
 	_map_picker = new MapPicker(w, h);
 	int y1, y2;
 	_map_picker->getBaseSize(y1, y2);
@@ -133,7 +133,7 @@ void StartServerMenu::tick(const float dt) {
 	if (_back->changed()) {
 		LOG_DEBUG(("[back] clicked"));
 		_back->reset();
-		_parent->back();
+		hide();
 		MenuConfig->save();
 	}
 	if (_start->changed()) {
@@ -155,7 +155,7 @@ bool StartServerMenu::onKey(const SDL_keysym sym) {
 		return true;
 
 	case SDLK_ESCAPE: 
-		_parent->back();
+		hide();
 		MenuConfig->save();
 		return true;
 

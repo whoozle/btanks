@@ -108,8 +108,8 @@ private:
 	sl08::slot4<bool, const int, const bool, const int, const int, IGame> on_mouse_slot;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 
-	sl08::slot2<void, const std::string &, const std::string &, IGame> on_menu_slot;
-	void onMenu(const std::string &name, const std::string &value);
+	sl08::slot1<void, const std::string &, IGame> on_menu_slot;
+	void onMenu(const std::string &name);
 
 	sl08::slot0<void, IGame> on_map_slot;	
 	void onMap();

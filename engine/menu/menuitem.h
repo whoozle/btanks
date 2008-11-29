@@ -1,5 +1,5 @@
-#ifndef __BT_MENUITEM_H__
-#define __BT_MENUITEM_H__
+#ifndef __BT_MENU_MENUITEM_H__
+#define __BT_MENU_MENUITEM_H__
 
 /* Battle Tanks Game
  * Copyright (C) 2006 Battle Tanks team
@@ -28,41 +28,25 @@
  * from your version and license this file solely under the GPL without exception. 
 */
 
-#include "sdlx/color.h"
-#include "sdlx/surface.h"
-#include <string>
-#include <map>
+#include "control.h"
 
 namespace sdlx {
-class Font;
+	class Font;
 }
 
-class MenuItem {
+class MenuItem : public Control {
 public:
-	const std::string name;
-	const std::string type;
-	
-	MenuItem(const sdlx::Font *font, const std::string &name, const std::string &type, const std::string &text, const std::string &value = std::string());
-	virtual void render(sdlx::Surface &dst, const int x, const int y) const;
-	void get_size(int &w, int &h) const;
+	MenuItem(const std::string &font, const std::string &area, const std::string &msg);
 
-	virtual void onClick() {}
+	virtual void get_size(int&, int&) const;
+	virtual void render(sdlx::Surface&, int, int) const;
+	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
+	inline const std::string get_id() const { return id; }
 
-	virtual void onFocus();
-	virtual void onLeave();
-
-	virtual const bool onKey(const SDL_keysym sym);
-	virtual const std::string getValue() const;
-	virtual ~MenuItem() {}
-
-protected:
-	void render();
-		
-	std::string _text, _value;
-
-private:
-	const sdlx::Font * _font;
-	sdlx::Surface _normal;
+private: 
+	const sdlx::Font * font;
+	std::string id, text;
 };
 
 #endif

@@ -54,8 +54,11 @@ void Container::render(sdlx::Surface &surface, const int x, const int y) const {
 void Container::get_size(int &w, int &h) const {
 	w = h = 0;
 	for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i) {
+		const Control *c = *i;
+		if (c->hidden())
+			continue;
 		int cw = -1, ch = -1; //for a broken controls
-		(*i)->get_size(cw, ch);
+		c->get_size(cw, ch);
 		assert(cw != -1 && ch != -1);
 
 		int x2, y2;

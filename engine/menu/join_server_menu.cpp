@@ -44,7 +44,7 @@
 #include "net/scanner.h"
 #include "host_item.h"
 
-JoinServerMenu::JoinServerMenu(MainMenu *parent, const int w, const int h) : ping_timer(true), _parent(parent), _scanner(NULL) {
+JoinServerMenu::JoinServerMenu(const int w, const int h) : ping_timer(true), _scanner(NULL) {
 	ping_timer.set(60, false);
 	
 	_back = new Button("big", I18n->get("menu", "back"));
@@ -197,7 +197,7 @@ void JoinServerMenu::tick(const float dt) {
 		LOG_DEBUG(("[back] clicked"));
 		MenuConfig->save();
 		_back->reset();
-		_parent->back();
+		hide();
 	}
 	if (_add->changed()) {
 		_add->reset();
@@ -371,7 +371,7 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 	
 	case SDLK_ESCAPE: 
 		MenuConfig->save();
-		_parent->back();
+		hide();
 		return true;
 	default: ;
 	}

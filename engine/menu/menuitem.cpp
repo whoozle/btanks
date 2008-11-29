@@ -26,42 +26,45 @@
  * from your version and license this file solely under the GPL without exception. 
 */
 
-#include "menuitem.h"
 #include "sdlx/font.h"
-#include "mrt/logger.h"
-#include "math/binary.h"
+#include "resource_manager.h"
+#include "i18n.h"
+#include "menuitem.h"
+#include "sound/mixer.h"
 
-MenuItem::MenuItem(const sdlx::Font *font, const std::string &name, const std::string &type, const std::string &text, const std::string &value) : 
-	name(name), type(type), 
-	_text(text), _value(value),
-	_font(font)
-{
-	render();
+MenuItem::MenuItem(const std::string &font, const std::string &area, const std::string &msg) : 
+	font(ResourceManager->loadFont(font, true)),
+	id(msg)
+	{
+	text = I18n->get(area, msg);
 }
 
-const std::string MenuItem::getValue() const {
-	return _value;
+void MenuItem::get_size(int& x, int& y) const {
+	x = font->render(NULL, x, y, text);
+	y = font->get_height();
 }
 
-
-void MenuItem::render() {
-	_normal.free();
-
-	_font->render(_normal, (_text.empty())?" ":_text);
-}
-	
-void MenuItem::render(sdlx::Surface &dst, const int x, const int y) const {
-	dst.blit(_normal, x, y);
-}
-
-void MenuItem::get_size(int &w, int &h) const {
-	w = _normal.get_width();
-	h = _normal.get_height();
+bool MenuItem::onKey(const SDL_keysym sym) {
+	switch(sym.sym) {
+	case SDLK_RETURN:
+	case SDLK_SPACE:
+	case SDLK_KP_ENTER:
+		invalidate();
+		Mixer->playSample(NULL, "menu/select.ogg", false);
+		return true;
+	default: 
+		return false;
+	}
 }
 
-const bool MenuItem::onKey(const SDL_keysym sym) {
-	return false;
+bool MenuItem::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (!pressed) {
+		invalidate(true);
+		return true;
+	} else
+		return false;
 }
 
-void MenuItem::onFocus() {}
-void MenuItem::onLeave() {}
+void MenuItem::render(sdlx::Surface& window, int x, int y) const {
+	font->render(window, x, y, text);
+}

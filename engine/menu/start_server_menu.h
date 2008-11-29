@@ -29,15 +29,14 @@
 */
 
 #include "sdlx/rect.h"
-#include "base_menu.h"
+#include "container.h"
 
 class MapPicker;
 class Button;
-class MainMenu;
 
-class StartServerMenu : public BaseMenu {
+class StartServerMenu : public Container {
 public:
-	StartServerMenu(MainMenu *parent, const int w, const int h);
+	StartServerMenu(const int w, const int h);
 	~StartServerMenu();
 
 	void start();	
@@ -45,7 +44,6 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	
 private: 
-	MainMenu *_parent;
 	MapPicker *_map_picker;
 	Button *_back, *_start;
 };

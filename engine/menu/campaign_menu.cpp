@@ -42,7 +42,7 @@ void CampaignMenu::start() {
 	_invalidate_me = true;
 }
 
-CampaignMenu::CampaignMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _w(w), _h(h), _invalidate_me(false) {
+CampaignMenu::CampaignMenu(const int w, const int h) : _w(w), _h(h), _invalidate_me(false) {
 	IFinder::FindResult files;
 
 	Finder->findAll(files, "campaign.xml");
@@ -216,7 +216,7 @@ void CampaignMenu::update_score(Label *l, const std::string &name) {
 }
 
 void CampaignMenu::tick(const float dt) {
-	BaseMenu::tick(dt);
+	Container::tick(dt);
 	if (_invalidate_me) {
 		init();
 		_invalidate_me = false;
@@ -332,7 +332,7 @@ bool CampaignMenu::onKey(const SDL_keysym sym) {
 		start();
 		return true;	
 	case SDLK_ESCAPE:
-		_parent->back();
+		hide();
 		return true;	
 	default: 
 		return false;

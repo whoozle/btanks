@@ -29,7 +29,7 @@
 */
 
 #include "sdlx/rect.h"
-#include "base_menu.h"
+#include "container.h"
 #include "box.h"
 #include "alarm.h"
 #include <set>
@@ -37,7 +37,6 @@
 
 class Button;
 class Slider;
-class MainMenu;
 class ControlPicker;
 class Object;
 class RedefineKeys;
@@ -45,9 +44,9 @@ class SimpleGamepadSetup;
 class Chooser;
 class Checkbox;
 
-class OptionsMenu : public BaseMenu {
+class OptionsMenu : public Container {
 public:
-	OptionsMenu(MainMenu *parent, const int w, const int h);
+	OptionsMenu(const int w, const int h);
 	~OptionsMenu();
 	
 	void get_size(int &w, int &h) const;
@@ -61,7 +60,6 @@ public:
 	virtual void render(sdlx::Surface &dst, const int x, const int y) const;
 
 private: 
-	MainMenu *_parent;
 	Chooser *_lang;
 	ControlPicker *sp, *sp1, *sp2;
 

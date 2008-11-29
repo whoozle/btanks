@@ -43,7 +43,7 @@
 #include "window.h"
 #include "sdlx/joystick.h"
 
-OptionsMenu::OptionsMenu(MainMenu *parent, const int w, const int h) : _parent(parent), _shoot(0.5f, false), _gamepad(NULL) {
+OptionsMenu::OptionsMenu(const int w, const int h) : _shoot(0.5f, false), _gamepad(NULL) {
 	Mixer->loadSample("shot.ogg");
 	bool has_gamepad = sdlx::Joystick::getCount() > 0;
 	
@@ -444,7 +444,7 @@ void OptionsMenu::tick(const float dt) {
 	if (_b_ok->changed()) {
 		_b_ok->reset();
 		save();
-		_parent->back();
+		hide();
 	} 
 	if (_b_redefine->changed()) {
 		_b_redefine->reset();
@@ -473,7 +473,7 @@ bool OptionsMenu::onKey(const SDL_keysym sym) {
 	case SDLK_RETURN:
 	case SDLK_ESCAPE: 
 		save();
-		_parent->back();
+		hide();
 		return true;
 
 	case SDLK_j: 

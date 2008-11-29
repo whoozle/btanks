@@ -1,13 +1,12 @@
 #ifndef BTANKS_CAMPAIGN_MENU_H__
 #define BTANKS_CAMPAIGN_MENU_H__
 
-#include "menu/base_menu.h"
 #include "mrt/xml.h"
 #include "sdlx/rect.h"
 #include "campaign.h"
+#include "container.h"
 
 class Box;
-class MainMenu;
 class Chooser;
 class ScrollList;
 class Label;
@@ -18,9 +17,9 @@ class Grid;
 class Medals;
 class Image;
 
-class CampaignMenu : public BaseMenu {
+class CampaignMenu : public Container {
 public: 
-	CampaignMenu(MainMenu *parent, const int w, const int h);
+	CampaignMenu(const int w, const int h);
 	const bool empty() const;
 
 	virtual void tick(const float dt);
@@ -35,7 +34,6 @@ private:
 	static void update_time(Label *l, const std::string &name);
 	static void update_score(Label *l, const std::string &name);
 
-	MainMenu *_parent;
 	int _w, _h;
 	
 	typedef std::vector<Campaign> Compaigns;

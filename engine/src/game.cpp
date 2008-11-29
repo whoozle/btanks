@@ -73,7 +73,7 @@
 #include "window.h"
 
 #include "math/v3.h"
-#include "menu/menu.h"
+#include "menu/main_menu.h"
 #include "menu/chat.h"
 #include "menu/tooltip.h"
 #include "nickname.h"
@@ -150,7 +150,7 @@ void IGame::run() {
 }
 
 void IGame::pause() {
-	if (_main_menu->isActive())
+	if (!_main_menu->hidden())
 		return;
 	
 	if (_paused) {
@@ -423,39 +423,33 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	Mixer->play();
 
-if (!RTConfig->server_mode) {
-	LOG_DEBUG(("probing for joysticks"));
-	int jc = sdlx::Joystick::getCount();
-	if (jc > 0) {
-		LOG_DEBUG(("found %d joystick(s)", jc));
-		//sdlx::Joystick::sendEvents(true);
+	if (!RTConfig->server_mode) {
+		LOG_DEBUG(("probing for joysticks"));
+		int jc = sdlx::Joystick::getCount();
+		if (jc > 0) {
+			LOG_DEBUG(("found %d joystick(s)", jc));
+			//sdlx::Joystick::sendEvents(true);
 		
-		for(int i = 0; i < jc; ++i) {
-			sdlx::Joystick j;
-			j.open(i);
-			LOG_DEBUG(("%d: %s axes: %d, buttons: %d, hats: %d, balls: %d", 
-				i, sdlx::Joystick::getName(i).c_str(), 
-				j.get_axis_num(), j.get_buttons_num(), j.get_hats_num(), j.get_balls_num()
+			for(int i = 0; i < jc; ++i) {
+				sdlx::Joystick j;
+				j.open(i);
+				LOG_DEBUG(("%d: %s axes: %d, buttons: %d, hats: %d, balls: %d", 
+					i, sdlx::Joystick::getName(i).c_str(), 
+					j.get_axis_num(), j.get_buttons_num(), j.get_hats_num(), j.get_balls_num()
 				));
 			
-			j.close();
+				j.close();
+			}
 		}
+		Console->init();
+		on_console_slot.assign(this, &IGame::onConsole, Console->on_command);
+
+		LOG_DEBUG(("installing basic callbacks..."));
+		on_key_slot.assign(this, &IGame::onKey, Window->key_signal);
+		on_mouse_slot.assign(this, &IGame::onMouse, Window->mouse_signal);
+		on_joy_slot.assign(this, &IGame::onJoyButton, Window->joy_button_signal);
+		on_event_slot.assign(this, &IGame::onEvent, Window->event_signal);
 	}
-	Console->init();
-	on_console_slot.assign(this, &IGame::onConsole, Console->on_command);
-
-	LOG_DEBUG(("installing basic callbacks..."));
-	on_key_slot.assign(this, &IGame::onKey, Window->key_signal);
-	on_mouse_slot.assign(this, &IGame::onMouse, Window->mouse_signal);
-	on_joy_slot.assign(this, &IGame::onJoyButton, Window->joy_button_signal);
-	on_event_slot.assign(this, &IGame::onEvent, Window->event_signal);
-
-	
-	if (_main_menu == NULL && !RTConfig->server_mode) {
-		_main_menu = new MainMenu();
-	}
-
-}
 
 	_paused = false;
 
@@ -473,7 +467,6 @@ if (!RTConfig->server_mode) {
 	LOG_DEBUG(("installing callbacks..."));
 	
 	if (!RTConfig->server_mode) {
-		on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
 		on_map_slot.assign(this, &IGame::onMap, Map->load_map_signal);
 	}
 
@@ -493,6 +486,14 @@ if (!RTConfig->server_mode) {
 	
 	ResourceManager->init(files);
 	
+	if (_main_menu == NULL && !RTConfig->server_mode) {
+		LOG_DEBUG(("initializing main menu..."));
+		sdlx::Rect size = Window->get_size();
+		delete _main_menu;
+		_main_menu = new MainMenu(size.w, size.h);
+		on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
+	}
+	
 	if (_show_fps && !RTConfig->server_mode) {
 		LOG_DEBUG(("creating `digits' object..."));
 		_fps = ResourceManager->createObject("damage-digits", "damage-digits");
@@ -507,11 +508,6 @@ if (!RTConfig->server_mode) {
 		_log_lines->speed = 0;
 	} else _log_lines = NULL;
 
-	if (_main_menu != NULL) {
-		sdlx::Rect window_size = Window->get_size();
-		_main_menu->init(window_size.w, window_size.h);
-	}
-	
 	if (!RTConfig->server_mode) {
 		_net_talk = new Chat();
 		_net_talk->hide();
@@ -521,7 +517,7 @@ if (!RTConfig->server_mode) {
 			addr.parse(address);
 			PlayerManager->start_client(addr, 1);
 			if (_main_menu)
-				_main_menu->setActive(false);
+				_main_menu->hide();
 		}
 	} else {
 		_net_talk = NULL;
@@ -560,7 +556,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 	
-	if (pressed && Map->loaded() && !_main_menu->isActive()) {
+	if (pressed && Map->loaded() && _main_menu->hidden()) {
 		if (_net_talk->hidden() && key.sym == SDLK_RETURN) {
 			_net_talk->hide(false);
 		} else if (!_net_talk->hidden()) {
@@ -645,7 +641,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		return true;
 	}
 
-	if (key.sym == SDLK_m && !_main_menu->isActive()) {
+	if (key.sym == SDLK_m && _main_menu->hidden()) {
 		_hud->toggleMapMode();
 		return true;
 	}
@@ -665,24 +661,23 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 /*
 */
+	if (_main_menu && _main_menu->onKey(key))
+		return true;
 
 	if (key.sym == SDLK_ESCAPE) {
-		if (!_main_menu->isActive()) {
-			_main_menu->setActive(true);
+		if (_main_menu && _main_menu->hidden()) {
+			_main_menu->hide(false);
 			return true;
-		} else {
-			return false;
 		}
-		
+		/*
 		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
 		
 		if (PlayerManager->is_server() || PlayerManager->is_client()) {
 			_paused = false;
 		} else {
 			if (_main_menu)
-				_paused = _main_menu->isActive();
-		}
-		return true;
+				_paused = !_main_menu->hidden();
+		} */
 	}
 
 	return false;
@@ -694,6 +689,8 @@ bool IGame::onMouse(const int button, const bool pressed, const int x, const int
 			stopCredits();
 		return true;
 	}
+	if (_main_menu && _main_menu->onMouse(button, pressed, x, y));
+		return true;
 	return false;
 }
 
@@ -708,7 +705,7 @@ void IGame::onEvent(const SDL_Event &event) {
 		quit();
 }
 
-void IGame::onMenu(const std::string &name, const std::string &value) {
+void IGame::onMenu(const std::string &name) {
 	if (name == "quit") {
 		quit();
 		//Window->stop();
@@ -727,7 +724,7 @@ void IGame::stopCredits() {
 
 
 void IGame::quit() {
-	_main_menu->setActive(false);
+	_main_menu->hide();
 
 	GET_CONFIG_VALUE("engine.donate-screen-duration", float, dsd, 1.5f);
 	if (dsd <= 0) {
@@ -825,7 +822,7 @@ void IGame::onTick(const float dt) {
 			_hud->renderRadar(dt, window, GameMonitor->getSpecials(), GameMonitor->getFlags(), 
 				slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
 			
-			if (_main_menu && !_main_menu->isActive() && _show_stats) {
+			if (_main_menu && _main_menu->hidden() && _show_stats) {
 				_hud->renderStats(window);
 			}
 
@@ -836,10 +833,11 @@ void IGame::onTick(const float dt) {
 			_net_talk->render(window, 8, 32);
 		}
 
-		if (_main_menu)
-			_main_menu->render(window);
+		if (_main_menu) {
+			_main_menu->render(window, 0, 0);
+		}
 		
-		GameMonitor->render(window);		
+		GameMonitor->render(window);
 		Console->render(window);
 		
 flip:
@@ -876,15 +874,15 @@ void IGame::deinit() {
 	
 	delete _hud;
 	_hud = NULL;
-	
-	if (_main_menu)
-		_main_menu->deinit();
 
 	delete _credits;
 	_credits = NULL;
 	
 	delete _tip;
 	_tip = NULL;
+	
+	delete _main_menu;
+	_main_menu = NULL;
 
 	ResourceManager->clear();
 
@@ -919,7 +917,7 @@ void IGame::clear() {
 	_cheater = NULL;
 
 	if (_main_menu)
-		_main_menu->setActive(true);
+		_main_menu->hide(false);
 
 	if (_net_talk)
 		_net_talk->clear();
@@ -1087,7 +1085,8 @@ try {
 
 
 void IGame::onMap() {
-	_main_menu->setActive(false);
+	if (_main_menu != NULL) 
+		_main_menu->hide();
 
 	delete _cheater;
 	_cheater = NULL;

@@ -30,14 +30,14 @@ bt_sources = 	[
 #menu
 	'menu/checkbox.cpp', 'menu/shop.cpp', 'menu/image_view.cpp', 'menu/shop_item.cpp', 'menu/popup_menu.cpp', 
 	'menu/start_server_menu.cpp', 'menu/join_server_menu.cpp', 'menu/campaign_menu.cpp', 'menu/chat.cpp',
-	'menu/menu.cpp', 'menu/box.cpp', 'menu/upper_box.cpp', 'menu/base_menu.cpp', 'menu/container.cpp', 'menu/menuitem.cpp',
+	'menu/menu.cpp', 'menu/box.cpp', 'menu/upper_box.cpp', 'menu/container.cpp', 'menu/menuitem.cpp',
 	'menu/map_picker.cpp', 'menu/scroll_list.cpp', 'menu/control.cpp', 'menu/map_details.cpp', 'menu/player_picker.cpp', 
 	'menu/chooser.cpp', 'menu/label.cpp', 'menu/button.cpp', 'menu/menu_config.cpp', 'menu/map_desc.cpp', 
 	'menu/prompt.cpp', 'menu/text_control.cpp', 'menu/host_list.cpp', 'menu/options_menu.cpp', 'menu/control_picker.cpp',
 	'menu/slider.cpp', 'menu/redefine_keys.cpp', 'menu/tooltip.cpp', 'menu/player_name_control.cpp', 
 	'menu/host_item.cpp', 'menu/number_control.cpp', 'menu/video_control.cpp', 'menu/network_status.cpp', 
 	'menu/join_team.cpp', 'menu/mode_panel.cpp', 'menu/grid.cpp', 'menu/notepad.cpp', 'menu/video_control_disabled.cpp', 
-	'menu/simple_gamepad_setup.cpp', 'menu/medals.cpp', 'menu/image.cpp', 
+	'menu/simple_gamepad_setup.cpp', 'menu/medals.cpp', 'menu/image.cpp', 'menu/main_menu.cpp', 
 #end of menu
 
 	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp', 'src/netstats.cpp', 
