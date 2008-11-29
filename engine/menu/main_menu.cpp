@@ -9,10 +9,13 @@
 #include "sdlx/font.h"
 #include "sound/mixer.h"
 
+
+#include "network_status.h"
+#include "player_manager.h"
+
 bool MainMenu::generate_key_events_for_gamepad;
 
-MainMenu::MainMenu(int w, int h) : active(NULL) {
-	
+MainMenu::MainMenu(int w, int h) : active(NULL) , _netstat(new NetworkStatusControl) {
 	CampaignMenu * cm = new CampaignMenu(w, h);
 	if (cm->empty()) {
 		delete cm;
@@ -76,6 +79,9 @@ void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 		active->render(surface, x, y);
 	else
 		Menu::render(surface, x + dx, y + dy);
+		
+	if (PlayerManager->is_server_active())
+		_netstat->render(surface, 0, 0);
 }
 
 bool MainMenu::onKey(const SDL_keysym sym) {
@@ -91,6 +97,14 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (hidden())
 		return false;
+
+	if (_netstat != NULL && PlayerManager->is_server_active() && _netstat->onMouse(button, pressed, x, y)) {
+		if (_netstat->changed()) {
+			_netstat->reset();
+			PlayerManager->disconnect_all();
+		}
+		return true;
+	}
 	
 	if (active != NULL && !active->hidden())
 		return active->onMouse(button, pressed, x, y);
@@ -119,6 +133,7 @@ void MainMenu::on_mouse_enter(bool enter) {
 }
 
 MainMenu::~MainMenu() {
+	delete _netstat;
 	for(size_t i = 0; i < items.size(); ++i) {
 		delete items[i];
 	}

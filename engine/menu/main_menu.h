@@ -31,6 +31,8 @@
 #include "menu.h"
 #include "sl08/sl08.h"
 
+class NetworkStatusControl;
+
 class MainMenu : public Menu {
 public: 
 	sl08::signal1<void, const std::string &, MainMenu> menu_signal; //backward compatibility, remove later
@@ -55,6 +57,7 @@ private:
 	Control * active;
 	
 	int dx, dy;
+	NetworkStatusControl * _netstat;
 };
 
 #endif
