@@ -53,6 +53,7 @@ public:
 	~MainMenu();
 
 	void onEvent(const SDL_Event &e);
+	virtual void hide(const bool hide = true);
 
 private: 
 	std::vector<Control *> items;

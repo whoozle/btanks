@@ -193,3 +193,7 @@ void MainMenu::onEvent(const SDL_Event &e) {
 	
 	} //generate_key_events_for_gamepad
 }
+
+void MainMenu::hide(const bool hide) {
+	Mixer->playSample(NULL, hide? "menu/return.ogg": "menu/select.ogg", false);
+}
