@@ -129,7 +129,7 @@ void MainMenu::on_mouse_enter(bool enter) {
 	if (active != NULL && !active->hidden())
 		active->on_mouse_enter(enter);
 	else
-		Container::on_mouse_enter(enter);
+		Menu::on_mouse_enter(enter);
 }
 
 MainMenu::~MainMenu() {
