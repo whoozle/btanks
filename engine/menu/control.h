@@ -54,7 +54,7 @@ public:
 	inline void reset() { _changed = false; }
 	
 	virtual void hide(const bool hide = true);
-	inline const bool hidden() const { return _hidden; }
+	virtual bool hidden() const { return _hidden; }
 	
 	virtual void activate(const bool active);
 
