@@ -108,9 +108,9 @@ void Chooser::render(sdlx::Surface &surface, const int x, const int y) const {
 }
 
 bool Chooser::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (!pressed) 
-		return false;
-	//LOG_DEBUG(("click: %d %d", x, y));
+	if (pressed) 
+		return true;
+
 	if (_left_area.in(x, y)) {
 		left();
 		return true;
