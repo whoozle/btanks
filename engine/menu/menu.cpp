@@ -26,7 +26,7 @@
 */
 
 #include "menu.h"
-#include "menuitem.h"
+#include "menu_item.h"
 #include "sound/mixer.h"
 
 Menu::Menu() : spacing(4), current_item(0),  width(0), height(0) {}

@@ -29,7 +29,7 @@
 #include "sdlx/font.h"
 #include "resource_manager.h"
 #include "i18n.h"
-#include "menuitem.h"
+#include "menu_item.h"
 #include "sound/mixer.h"
 
 MenuItem::MenuItem(const std::string &font, const std::string &area, const std::string &msg) : 

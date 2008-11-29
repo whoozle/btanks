@@ -1,9 +1,9 @@
 #include "main_menu.h"
+#include "menu_item.h"
 #include "campaign_menu.h"
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"
-#include "menuitem.h"
 
 #include "resource_manager.h"
 #include "sdlx/font.h"
