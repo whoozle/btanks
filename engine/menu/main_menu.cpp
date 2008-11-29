@@ -51,7 +51,6 @@ void MainMenu::tick(const float dt) {
 		reset();
 		LOG_DEBUG(("changed %d", current_item));
 		if (current_item >=0 && current_item < (int)items.size() && (active = items[current_item]) != NULL) {
-			hide();
 			active->hide(false);
 		} else {
 			active = NULL;
