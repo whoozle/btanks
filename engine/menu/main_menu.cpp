@@ -139,3 +139,57 @@ MainMenu::~MainMenu() {
 	}
 }
 
+#include "math/unary.h"
+
+void MainMenu::onEvent(const SDL_Event &e) {
+	if (hidden())
+		return;
+
+	SDL_keysym sym;
+	memset(&sym, 0, sizeof(sym));
+	sym.mod = KMOD_NONE;
+
+	if (generate_key_events_for_gamepad) {	
+	
+	if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_JOYBUTTONUP) {
+		sym.sym = (e.jbutton.button == 0)?SDLK_RETURN:SDLK_ESCAPE;
+		if (e.type == SDL_JOYBUTTONDOWN)
+			onKey(sym);
+	} else if (e.type == SDL_JOYHATMOTION) {
+		if (e.jhat.value & SDL_HAT_UP) {
+			sym.sym = SDLK_UP;
+			onKey(sym);
+		} else if (e.jhat.value & SDL_HAT_DOWN) {
+			sym.sym = SDLK_DOWN;
+			onKey(sym);
+		} else if (e.jhat.value & SDL_HAT_LEFT) {
+			sym.sym = SDLK_LEFT;
+			onKey(sym);
+		} else if (e.jhat.value & SDL_HAT_RIGHT) {
+			sym.sym = SDLK_RIGHT;
+			onKey(sym);
+		}
+	} else if (e.type == SDL_JOYAXISMOTION && e.jaxis.axis < 4) {
+#define M (32768 - 3276)
+		static int value[4] = {0,0,0,0};
+		const int a = e.jaxis.axis;
+		const int v = e.jaxis.value;
+		if (a < 2) {
+			//LOG_DEBUG(("%d: %d %d", a, value[a], v));
+			if (math::abs(value[a]) <= M && math::abs(v) > M) {
+				sym.sym = v > 0 ? SDLK_DOWN: SDLK_UP;
+				onKey(sym);
+				value[a] = v;
+				_key_active = true;
+				//_key_emulated = sym;
+			} else if (math::abs(value[a]) > M && math::abs(v) <= M) {
+				sym.sym = value[a] > 0 ? SDLK_DOWN: SDLK_UP;
+				//onKey(sym, false);
+				value[a] = v;
+				_key_active = false;
+			}
+		}
+	}
+	
+	} //generate_key_events_for_gamepad
+}

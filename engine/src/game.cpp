@@ -701,6 +701,9 @@ void IGame::onJoyButton(const int joy, const int id, const bool pressed) {
 }
 
 void IGame::onEvent(const SDL_Event &event) {
+	if (_main_menu)
+		_main_menu->onEvent(event);
+
 	if (event.type == SDL_QUIT)
 		quit();
 }

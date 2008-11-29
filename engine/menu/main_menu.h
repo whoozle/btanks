@@ -52,12 +52,18 @@ public:
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	~MainMenu();
 
+	void onEvent(const SDL_Event &e);
+
 private: 
 	std::vector<Control *> items;
 	Control * active;
 	
 	int dx, dy;
 	NetworkStatusControl * _netstat;
+	
+	//keyboard emulation 
+	bool _key_active;
+	int value[2];
 };
 
 #endif
