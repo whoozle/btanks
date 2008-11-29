@@ -160,6 +160,7 @@ void JoinServerMenu::join() {
 		
 	Game->clear();
 	PlayerManager->start_client(addr, split?2:1);
+	hide();
 }
 
 void JoinServerMenu::activate(const bool active) {

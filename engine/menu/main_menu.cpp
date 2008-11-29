@@ -196,4 +196,5 @@ void MainMenu::onEvent(const SDL_Event &e) {
 
 void MainMenu::hide(const bool hide) {
 	Mixer->playSample(NULL, hide? "menu/return.ogg": "menu/select.ogg", false);
+	Menu::hide(hide);
 }
