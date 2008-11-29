@@ -235,12 +235,6 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 		add((w - cw) / 2, 0, _upper_box);
 	} CATCH("StartServerMenu", {delete _upper_box; throw; });
 
-	_details = NULL;	
-	TRY {
-		_details = new MapDetails(map_pos.w, map_pos.h);
-		_details->set(getCurrentMap());
-		add(map_pos.x, map_pos.y, _details);
-	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 
 	int ydummy;
 	_list->get_size(xdummy, ydummy);
@@ -248,6 +242,12 @@ MapPicker::MapPicker(const int w, const int h) : _index(0) {
 	ybase += ydummy + 4;
 	add(0, ybase, _mode_panel = new ModePanel(w));
 
+	_details = NULL;	
+	TRY {
+		_details = new MapDetails(map_pos.w, map_pos.h);
+		_details->set(getCurrentMap());
+		add(map_pos.x, map_pos.y, _details);
+	} CATCH("MapPicker::ctor", {delete _details; _details = NULL; throw; });
 }
 
 void MapPicker::fillSlots() const {
