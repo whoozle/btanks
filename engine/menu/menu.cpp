@@ -99,7 +99,7 @@ bool Menu::onKey(const SDL_keysym sym) {
 	if (item != NULL && item->onKey(sym)) {
 		if (item->changed()) {
 			item->reset();
-			invalidate(true);
+			invalidate();
 		}
 	}
 	switch(sym.sym) {
@@ -137,7 +137,19 @@ void Menu::down() {
 
 
 bool Menu::onMouse(const int button, const bool pressed, const int x, const int y) {
-	return Container::onMouse(button, pressed, x, y);
+	if (Container::onMouse(button, pressed, x, y)) {
+		int idx;
+		for(ControlList::const_iterator i = _controls.begin(); i != _controls.end(); ++i, ++idx) {
+			Control * c = *i;
+			if (c->changed()) {
+				c->reset();
+				current_item = idx;
+				invalidate();
+			}
+		}
+		return true;
+	}
+	return false;
 }
 
 bool Menu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
