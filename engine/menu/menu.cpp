@@ -102,6 +102,9 @@ bool Menu::onKey(const SDL_keysym sym) {
 	case SDLK_DOWN: 
 		down();
 		return true;
+	case SDLK_ESCAPE: 
+		hide();
+		return true;
 	default: 
 		return false;
 	}

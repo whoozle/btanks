@@ -1085,8 +1085,10 @@ try {
 
 
 void IGame::onMap() {
-	if (_main_menu != NULL) 
+	if (_main_menu != NULL) {
+		LOG_DEBUG(("hiding main menu"));
 		_main_menu->hide();
+	}
 
 	delete _cheater;
 	_cheater = NULL;

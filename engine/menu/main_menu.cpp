@@ -44,6 +44,9 @@ void MainMenu::add(MenuItem *item, Control *slave) {
 }
 
 void MainMenu::tick(const float dt) {
+	if (hidden())
+		return;
+
 	if (changed()) {
 		reset();
 		LOG_DEBUG(("changed %d", current_item));
@@ -67,6 +70,9 @@ void MainMenu::tick(const float dt) {
 }
 
 void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
+	if (hidden())
+		return;
+	
 	if (active != NULL && !active->hidden())
 		active->render(surface, x, y);
 	else
@@ -74,6 +80,9 @@ void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 }
 
 bool MainMenu::onKey(const SDL_keysym sym) {
+	if (hidden())
+		return false;
+	
 	if (active != NULL && !active->hidden()) 
 		return active->onKey(sym);
 	else 
@@ -81,6 +90,9 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 }
 
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (hidden())
+		return false;
+	
 	if (active != NULL && !active->hidden())
 		return active->onMouse(button, pressed, x, y);
 	else 
@@ -88,6 +100,9 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 }
 
 bool MainMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (hidden())
+		return false;
+	
 	if (active != NULL && !active->hidden())
 		return active->onMouseMotion(state, x, y, xrel, yrel);
 	else
@@ -95,6 +110,9 @@ bool MainMenu::onMouseMotion(const int state, const int x, const int y, const in
 }
 
 void MainMenu::on_mouse_enter(bool enter) {
+	if (hidden())
+		return;
+	
 	if (active != NULL && !active->hidden())
 		active->on_mouse_enter(enter);
 	else
