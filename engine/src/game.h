@@ -108,6 +108,9 @@ private:
 	sl08::slot4<bool, const int, const bool, const int, const int, IGame> on_mouse_slot;
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 
+	sl08::slot5<bool, const int, const int, const int, const int, const int, IGame> on_mouse_motion_slot;
+	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
+
 	sl08::slot1<void, const std::string &, IGame> on_menu_slot;
 	void onMenu(const std::string &name);
 

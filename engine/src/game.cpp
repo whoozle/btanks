@@ -447,6 +447,7 @@ void IGame::init(const int argc, char *argv[]) {
 		LOG_DEBUG(("installing basic callbacks..."));
 		on_key_slot.assign(this, &IGame::onKey, Window->key_signal);
 		on_mouse_slot.assign(this, &IGame::onMouse, Window->mouse_signal);
+		on_mouse_motion_slot.assign(this, &IGame::onMouseMotion, Window->mouse_motion_signal);
 		on_joy_slot.assign(this, &IGame::onJoyButton, Window->joy_button_signal);
 		on_event_slot.assign(this, &IGame::onEvent, Window->event_signal);
 	}
@@ -693,6 +694,13 @@ bool IGame::onMouse(const int button, const bool pressed, const int x, const int
 		return true;
 	return false;
 }
+
+bool IGame::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (_credits)
+		return true;
+	return _main_menu && _main_menu->onMouseMotion(state, x, y, xrel, yrel);
+}
+
 
 void IGame::onJoyButton(const int joy, const int id, const bool pressed) {
 	if (pressed && id == 9) {
