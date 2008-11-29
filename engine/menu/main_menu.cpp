@@ -107,9 +107,9 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 	}
 	
 	if (active != NULL && !active->hidden())
-		return active->onMouse(button, pressed, x, y);
+		return active->onMouse(button, pressed, x - dx , y - dy);
 	else 
-		return Menu::onMouse(button, pressed, x, y);
+		return Menu::onMouse(button, pressed, x - dx, y - dy);
 }
 
 bool MainMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
@@ -117,9 +117,9 @@ bool MainMenu::onMouseMotion(const int state, const int x, const int y, const in
 		return false;
 	
 	if (active != NULL && !active->hidden())
-		return active->onMouseMotion(state, x, y, xrel, yrel);
+		return active->onMouseMotion(state, x - dx, y - dy, xrel, yrel);
 	else
-		return Menu::onMouseMotion(state, x, y, xrel, yrel);
+		return Menu::onMouseMotion(state, x - dx, y - dy, xrel, yrel);
 }
 
 void MainMenu::on_mouse_enter(bool enter) {

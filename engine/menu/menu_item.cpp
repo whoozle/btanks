@@ -59,10 +59,12 @@ bool MenuItem::onKey(const SDL_keysym sym) {
 
 bool MenuItem::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (!pressed) {
-		invalidate(true);
-		return true;
-	} else
-		return false;
+		invalidate();
+		Mixer->playSample(NULL, "menu/select.ogg", false);
+	} else {
+		Mixer->playSample(NULL, "menu/change.ogg", false);
+	}
+	return true;
 }
 
 void MenuItem::render(sdlx::Surface& window, int x, int y) const {
