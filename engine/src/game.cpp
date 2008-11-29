@@ -670,15 +670,6 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 			_main_menu->hide(false);
 			return true;
 		}
-		/*
-		LOG_DEBUG(("escape hit, paused: %s", _paused?"true":"false"));
-		
-		if (PlayerManager->is_server() || PlayerManager->is_client()) {
-			_paused = false;
-		} else {
-			if (_main_menu)
-				_paused = !_main_menu->hidden();
-		} */
 	}
 
 	return false;
