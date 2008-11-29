@@ -83,6 +83,7 @@
 #include <math.h>
 #include "special_owners.h"
 #include "mrt/calendar.h"
+#include "sdlx/cursor.h"
 
 IMPLEMENT_SINGLETON(Game, IGame);
 
@@ -792,8 +793,16 @@ void IGame::onTick(const float dt) {
 		Mixer->tick(dt);
 
 		
-		if (_main_menu)
+		if (_main_menu) {
 			_main_menu->tick(dt);
+			bool cursor = sdlx::Cursor::enabled();
+			bool menu = !_main_menu->hidden();
+			if (!menu && cursor) {
+				sdlx::Cursor::Disable();
+			} else if (menu && !cursor) {
+				sdlx::Cursor::Enable();
+			}
+		}
 
 		window.fill(window.map_rgb(0x10, 0x10, 0x10));
 
