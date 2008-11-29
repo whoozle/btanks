@@ -43,6 +43,8 @@ public:
 	virtual bool onKey(const SDL_keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	inline const std::string get_id() const { return id; }
+	
+	inline const sdlx::Font * get_font() const { return font; }
 
 private: 
 	const sdlx::Font * font;

@@ -28,6 +28,7 @@
 #include "menu.h"
 #include "menu_item.h"
 #include "sound/mixer.h"
+#include "sdlx/font.h"
 
 Menu::Menu() : spacing(4), current_item(0),  width(0), height(0) {}
 
@@ -80,7 +81,13 @@ void Menu::render(sdlx::Surface &surface, const int x, const int y) const {
 	int cx, cy;
 	c->get_base(cx, cy);
 	int cw, ch;
-	c->get_size(cw, ch);
+	const MenuItem * mi = dynamic_cast<const MenuItem *>(c);
+	if (mi != NULL) {
+		//optimization :)
+		ch = mi->get_font()->get_height();
+	} else {
+		c->get_size(cw, ch);
+	}
 	
 	background.renderHL(surface, x + dx, y + cy + ch / 2 + 2);
 	
