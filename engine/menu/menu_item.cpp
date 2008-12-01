@@ -68,5 +68,5 @@ bool MenuItem::onMouse(const int button, const bool pressed, const int x, const 
 }
 
 void MenuItem::render(sdlx::Surface &surface, const int x, const int y) const {
-	font->render(window, x, y, text);
+	font->render(surface, x, y, text);
 }
