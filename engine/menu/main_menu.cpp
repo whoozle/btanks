@@ -36,7 +36,7 @@ MainMenu::MainMenu(int w, int h) : active(NULL) , _netstat(new NetworkStatusCont
 	
 	const sdlx::Font * font = ResourceManager->loadFont("big", true);
 
-	background.init("menu/background_box.png", w + 128, mh + 32, font->get_height() + 2);
+	background.init("menu/background_box.png", mw + 32, mh + 32, font->get_height() + 2);
 	dx = (w - mw) / 2;
 	dy = (h - mh) / 2;
 }
