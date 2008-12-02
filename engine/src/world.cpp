@@ -1505,10 +1505,9 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	typedef std::map<const int, Object *> LocalObjectMap;
 	LocalObjectMap local_objects;
 	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
-		local_objects.insert(LocalObjectMap::value_type(i->first, i->second));
+		if (i->first >= id0)
+			local_objects.insert(LocalObjectMap::value_type(i->first, i->second));
 	}
-	
-	LocalObjectMap::iterator i;
 
 #if 0
 	std::priority_queue<Object *, std::vector<Object *>, BaseObject::PriorityComparator<Object *> > priority_objects;
@@ -1547,10 +1546,9 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		LOG_DEBUG(("priorities: %d, total weight: %d, total: %u, wins: %d", pc, sum_w, (unsigned)_objects.size(), win_n));	
 	}
 #endif
+	LocalObjectMap::iterator i;
 	
-	for(i = local_objects.lower_bound(id0); i != local_objects.end() && i->first < id0; ++i);
-	
-	for( ; i != local_objects.end() && (sync_update || n < max_n); ++i) {
+	for(i = local_objects.begin(); i != local_objects.end() && (sync_update || n < max_n); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		assert(o->_id >= id0);
