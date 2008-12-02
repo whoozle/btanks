@@ -113,8 +113,8 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 		throw_ex(("invalid mode '%s'", mode.c_str()));
 }
 
-
-IWorld::IWorld() : _last_id(0), _max_id(0), _atatat(false), 
+//3000 objects seems to be reasonable default here (3000 * 4/8 byte)
+IWorld::IWorld() : _objects(3000), _last_id(0), _max_id(0), _atatat(false), 
 	_max_dt(1), _out_of_sync(-1), _out_of_sync_sent(-1), _current_update_id(-1), _hp_bar(NULL) {
 	
 	LOG_DEBUG(("world ctor"));
