@@ -26,7 +26,9 @@
 		*) Added medals support and nice hall of fame.
 		*) Map could provide best stats from developers for a competition
 
+	*) Optimize tiles and sounds - new release will be twice
 	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
+	*) Rewrote main menu / menu in a flexible and extensible way. 
 	*) Added spanish/catalanian translations.
 	*) Resample splash screens. Removed all duplicated splashes less than 1280x1024. 
 	*) Added static collision maps allowing tiles' alpha pixels optimizations.
@@ -35,6 +37,9 @@
 	*) Added names for the control, buttons/mouse icons
 	*) Map could disable minimap.
 	*) Removed 'enable_lua' as it's completely useless and bogus.
+	*) Fixed possible lua timers race. 
+	*) Do not play more than one boomerang sound.
+	*) Changed internal object map to hash_map. (unordered_map in a future)
 	
 0.8.7689:
 	*) Fixed critical multiplayer bug.
