@@ -142,7 +142,8 @@ void Missile::emit(const std::string &event, Object * emitter) {
 	if (event == "collision") {
 		if (type == "boomerang") {
 			if (emitter == NULL || emitter->hp == -1) {
-				play_sound("boomerang-hit", false);
+				if (!playing_sound("boomerang-hit"))
+					play_sound("boomerang-hit", false);
 				_velocity = -_velocity;
 				return;
 			}
