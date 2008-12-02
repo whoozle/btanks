@@ -28,6 +28,7 @@
 #include <string>
 #include <stdexcept>
 #include <stdlib.h>
+#include <math.h>
 
 #include "game_monitor.h"
 #include "object.h"
@@ -1230,6 +1231,8 @@ void IGameMonitor::processGameTimers(const float dt) {
 #ifdef ENABLE_LUA
 	if (lua_hooks == NULL)
 		return;
+
+	std::list<std::string> fired_timers;
 	for(Timers::iterator i = timers.begin(); i != timers.end(); ) {
 		Timer & timer = i->second;
 		timer.t += dt;
@@ -1238,21 +1241,24 @@ void IGameMonitor::processGameTimers(const float dt) {
 			std::string name = i->first;
 			
 			if (timer.repeat) {
-				while(timer.t >= timer.period) timer.t -= timer.period;
+				timer.t = fmodf(timer.t, timer.period);
 				++i;
 			} else {
 				//one shot
 				timers.erase(i++);
 			}
 
-			TRY {
-				LOG_DEBUG(("calling on_timer(%s)", name.c_str()));
-				lua_hooks->on_timer(name); //callback could add/delete timers!!
-			} CATCH("processGameTimers", );
-			
+			fired_timers.push_back(name);
 		} else {
 			++i; //continue;
 		}
+	}
+	for(std::list<std::string>::iterator i = fired_timers.begin(); i != fired_timers.end(); ++i) {
+		const std::string &name = *i;
+		TRY {
+			LOG_DEBUG(("calling on_timer(%s)", name.c_str()));
+			lua_hooks->on_timer(name); //callback could add/delete timers!!
+		} CATCH("processGameTimers", );
 	}
 #endif
 }
