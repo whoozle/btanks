@@ -1,0 +1,156 @@
+Index: engine/src/world.h
+===================================================================
+--- engine/src/world.h	(revision 7978)
++++ engine/src/world.h	(working copy)
+@@ -137,10 +137,16 @@
+ 	void updateObject(Object *o);
+ 	void deleteObject(Object *o);
+ 	
+-	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
++	struct collision_map_hash_func {
++		size_t operator() (const std::pair<int, int> & key) const {
++			return (key.first << 16) | key.second;
++		}
++	};
++	
++	typedef MRT_HASH_MAP <const std::pair<int, int>, bool, collision_map_hash_func> CollisionMap;
+ 	mutable CollisionMap _collision_map;
+ 
+-	typedef std::map<const std::pair<int, int>, ternary<int, int, bool> > StaticCollisionMap;
++	typedef MRT_HASH_MAP <const std::pair<int, int>, ternary<int, int, bool>, collision_map_hash_func > StaticCollisionMap;
+ 	mutable StaticCollisionMap _static_collision_map;
+ 	
+ 	const bool collides(Object *obj, const v2<int> &position, Object *other, const bool probe = false) const;
+@@ -165,7 +171,7 @@
+ 	Commands _commands;
+ 	
+ 	Grid<Object *> _grid;
+-	int _last_id;
++	int _last_id, _max_id;
+ 	bool _safe_mode, _atatat;
+ 	float _max_dt;
+ 	int _out_of_sync, _out_of_sync_sent, _current_update_id;
+Index: engine/src/object_grid.h
+===================================================================
+--- engine/src/object_grid.h	(revision 7978)
++++ engine/src/object_grid.h	(working copy)
+@@ -34,8 +34,8 @@
+ #include <algorithm>
+ #include "math/v2.h"
+ #include "math/binary.h"
++#include "mrt/hash_compat.h"
+ 
+-
+ template<typename T> 
+ class Grid {
+ public: 
+@@ -205,7 +205,13 @@
+ 	
+ 	GridMatrix _grid, _grid4;
+ 	
+-	typedef std::map<const T, Object> Index;
++	struct object_hash {
++		template<typename O>
++		size_t operator()(O *o) const { return (size_t)o; }
++	};
++	
++	typedef MRT_HASH_MAP <T, Object, object_hash > Index;
++	
+ 	Index _index;
+ 	bool _wrap;
+ };
+Index: engine/src/world.cpp
+===================================================================
+--- engine/src/world.cpp	(revision 7978)
++++ engine/src/world.cpp	(working copy)
+@@ -98,6 +98,7 @@
+ 	_static_collision_map.clear();
+ 	
+ 	_last_id = 0;
++	_max_id = 0;
+ 	_atatat = false;
+ 	profiler.dump();
+ 	_out_of_sync = -1;
+@@ -113,7 +114,7 @@
+ }
+ 
+ 
+-IWorld::IWorld() : _last_id(0), _atatat(false), 
++IWorld::IWorld() : _last_id(0), _max_id(0), _atatat(false), 
+ 	_max_dt(1), _out_of_sync(-1), _out_of_sync_sent(-1), _current_update_id(-1), _hp_bar(NULL) {
+ 	
+ 	LOG_DEBUG(("world ctor"));
+@@ -141,6 +142,9 @@
+ 
+ 
+ void IWorld::updateObject(Object *o) {
++	if (o->_id > _max_id)
++		_max_id = o->_id;
++	
+ 	if (o->size.is0())
+ 		return;
+ 	
+@@ -179,7 +183,7 @@
+ 			}
+ 
+ 			if (i == _objects.end()) {
+-				o->_id = _objects.rbegin()->first + 1;
++				o->_id = _max_id + 1;
+ 				assert(_objects.find(o->_id) == _objects.end());
+ 				_objects.insert(ObjectMap::value_type(o->_id, o));
+ 			}
+@@ -1160,7 +1164,7 @@
+ 			case Command::Push: {
+ 					assert(cmd.object != NULL);
+ 					if (cmd.id < 0) {
+-						cmd.id = 1 + math::max((_objects.empty()? 0: _objects.rbegin()->first), _last_id);
++						cmd.id = 1 + math::max((_objects.empty()? 0: _max_id), _last_id);
+ 						if (cmd.id > _last_id)
+ 							_last_id = cmd.id;
+ 					}
+@@ -1537,7 +1541,8 @@
+ 	}
+ #endif
+ 	
+-	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
++	for(i = _objects.begin(); i->first < id0; ++i); //sucks :(
++	for(; i != _objects.end() && i->first < id0; ++i);
+ 	
+ 	for( ; i != _objects.end() && (sync_update || n < max_n); ++i) {
+ 		Object *o = i->second;
+Index: engine/src/object_common.h
+===================================================================
+--- engine/src/object_common.h	(revision 7978)
++++ engine/src/object_common.h	(working copy)
+@@ -32,6 +32,7 @@
+ #include "math/v2.h"
+ #include <deque>
+ #include <map>
++#include "mrt/hash_compat.h"
+ 
+ typedef v2<int> WayPoint;
+ typedef std::deque<WayPoint> Way;
+@@ -40,7 +41,7 @@
+ 
+ class Object;
+ 
+-typedef std::map<const int, Object*> ObjectMap;
++typedef MRT_HASH_MAP <int, Object*> ObjectMap;
+ 
+ #endif
+ 
+Index: SConstruct
+===================================================================
+--- SConstruct	(revision 7978)
++++ SConstruct	(working copy)
+@@ -100,8 +100,8 @@
+ 		env.Append(CCFLAGS=['-O3'])
+ 		env.Append(CPPFLAGS=['-O3'])
+ 		
+-	env.Append(CPPFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
+-	env.Append(CCFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
++	env.Append(CPPFLAGS=['-Wall', '-Wno-deprecated', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
++	env.Append(CCFLAGS=['-Wall', '-Wno-deprecated', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
+ 
+ 
+ conf_env = env.Clone()

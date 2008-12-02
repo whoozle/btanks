@@ -98,6 +98,7 @@ void IWorld::clear() {
 	_static_collision_map.clear();
 	
 	_last_id = 0;
+	_max_id = 0;
 	_atatat = false;
 	profiler.dump();
 	_out_of_sync = -1;
@@ -113,7 +114,7 @@ void IWorld::setMode(const std::string &mode, const bool value) {
 }
 
 
-IWorld::IWorld() : _last_id(0), _atatat(false), 
+IWorld::IWorld() : _last_id(0), _max_id(0), _atatat(false), 
 	_max_dt(1), _out_of_sync(-1), _out_of_sync_sent(-1), _current_update_id(-1), _hp_bar(NULL) {
 	
 	LOG_DEBUG(("world ctor"));
@@ -141,6 +142,9 @@ void IWorld::deleteObject(Object *o) {
 
 
 void IWorld::updateObject(Object *o) {
+	if (o->_id > _max_id) 
+		_max_id = o->_id;
+	
 	if (o->size.is0())
 		return;
 	
@@ -179,7 +183,7 @@ void IWorld::addObject(Object *o, const v2<float> &pos, const int id) {
 			}
 
 			if (i == _objects.end()) {
-				o->_id = _objects.rbegin()->first + 1;
+				o->_id = _max_id + 1;
 				assert(_objects.find(o->_id) == _objects.end());
 				_objects.insert(ObjectMap::value_type(o->_id, o));
 			}
@@ -1160,7 +1164,7 @@ void IWorld::purge(ObjectMap &objects, const float dt) {
 			case Command::Push: {
 					assert(cmd.object != NULL);
 					if (cmd.id < 0) {
-						cmd.id = 1 + math::max((_objects.empty()? 0: _objects.rbegin()->first), _last_id);
+						cmd.id = 1 + math::max((_objects.empty()? 0: _max_id), _last_id);
 						if (cmd.id > _last_id)
 							_last_id = cmd.id;
 					}
@@ -1496,11 +1500,18 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	int id0 = sync_update? first_id: _current_update_id;
 	
 	int n = 0, max_n = _objects.size() / sync_div;
-		
-	std::priority_queue<Object *, std::vector<Object *>, BaseObject::PriorityComparator<Object *> > priority_objects;
-	ObjectMap::iterator i;
+
+	//slow O(N * log(N)~N) iteration/set filling
+	typedef std::map<const int, Object *> LocalObjectMap;
+	LocalObjectMap local_objects;
+	for(ObjectMap::iterator i = _objects.begin(); i != _objects.end(); ++i) {
+		local_objects.insert(LocalObjectMap::value_type(i->first, i->second));
+	}
+	
+	LocalObjectMap::iterator i;
 
 #if 0
+	std::priority_queue<Object *, std::vector<Object *>, BaseObject::PriorityComparator<Object *> > priority_objects;
 	if (!sync_update) {
 		//let's use distance stats to prioritize some objects: 
 		int pc = 0, sum_w = 0, win_n = 0;
@@ -1537,9 +1548,9 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 	}
 #endif
 	
-	for(i = _objects.lower_bound(id0); i != _objects.end() && i->first < id0; ++i);
+	for(i = local_objects.lower_bound(id0); i != local_objects.end() && i->first < id0; ++i);
 	
-	for( ; i != _objects.end() && (sync_update || n < max_n); ++i) {
+	for( ; i != local_objects.end() && (sync_update || n < max_n); ++i) {
 		Object *o = i->second;
 		assert(o != NULL);
 		assert(o->_id >= id0);
@@ -1558,19 +1569,21 @@ void IWorld::generateUpdate(mrt::Serializator &s, const bool clean_sync_flag, co
 		++n;
 	}
 	if (!sync_update) {
-		if (i != _objects.end()) {
+		if (i != local_objects.end()) {
 			_current_update_id = i->first;
 		} else {
 			_current_update_id = -1;
 		}
 	}
 	
+	//LOG_DEBUG(("current_update_id = %d", _current_update_id));
+	
 	{
 		int dummy = 0;
 		s.add(dummy); //end of stream marker
 	}
 	
-	bool crop = i == _objects.end();
+	bool crop = i == local_objects.end();
 	s.add(crop);
 	if (crop) {
 		std::set<int> ids;

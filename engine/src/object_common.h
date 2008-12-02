@@ -32,6 +32,7 @@
 #include "math/v2.h"
 #include <deque>
 #include <map>
+#include "mrt/hash_compat.h"
 
 typedef v2<int> WayPoint;
 typedef std::deque<WayPoint> Way;
@@ -40,7 +41,7 @@ enum GroupType { Fixed, Centered };
 
 class Object;
 
-typedef std::map<const int, Object*> ObjectMap;
+typedef MRT_HASH_MAP <int, Object*> ObjectMap;
 
 #endif
 

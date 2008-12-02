@@ -34,7 +34,7 @@
 #include <algorithm>
 #include "math/v2.h"
 #include "math/binary.h"
-
+#include "mrt/hash_compat.h"
 
 template<typename T> 
 class Grid {
@@ -205,7 +205,13 @@ private:
 	
 	GridMatrix _grid, _grid4;
 	
-	typedef std::map<const T, Object> Index;
+	struct object_hash {
+		template<typename O>
+		size_t operator()(O *o) const { return (size_t)o; }
+	};
+	
+	typedef MRT_HASH_MAP <T, Object, object_hash > Index;
+	
 	Index _index;
 	bool _wrap;
 };

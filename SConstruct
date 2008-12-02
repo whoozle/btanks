@@ -100,8 +100,8 @@ else:
 		env.Append(CCFLAGS=['-O3'])
 		env.Append(CPPFLAGS=['-O3'])
 		
-	env.Append(CPPFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
-	env.Append(CCFLAGS=['-Wall', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
+	env.Append(CPPFLAGS=['-Wall', '-Wno-deprecated', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
+	env.Append(CCFLAGS=['-Wall', '-Wno-deprecated', '-pedantic', '-Wno-long-long', '-pipe', '-pthread'])
 
 
 conf_env = env.Clone()

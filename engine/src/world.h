@@ -137,10 +137,16 @@ private:
 	void updateObject(Object *o);
 	void deleteObject(Object *o);
 	
-	typedef std::map<const std::pair<int, int>, bool> CollisionMap;
+	struct collision_map_hash_func {
+		size_t operator() (const std::pair<int, int> & key) const {
+			return (key.first << 16) | key.second;
+		}
+	};
+	
+	typedef MRT_HASH_MAP <const std::pair<int, int>, bool, collision_map_hash_func> CollisionMap;
 	mutable CollisionMap _collision_map;
 
-	typedef std::map<const std::pair<int, int>, ternary<int, int, bool> > StaticCollisionMap;
+	typedef MRT_HASH_MAP <const std::pair<int, int>, ternary<int, int, bool>, collision_map_hash_func > StaticCollisionMap;
 	mutable StaticCollisionMap _static_collision_map;
 	
 	const bool collides(Object *obj, const v2<int> &position, Object *other, const bool probe = false) const;
@@ -165,7 +171,7 @@ private:
 	Commands _commands;
 	
 	Grid<Object *> _grid;
-	int _last_id;
+	int _last_id, _max_id;
 	bool _safe_mode, _atatat;
 	float _max_dt;
 	int _out_of_sync, _out_of_sync_sent, _current_update_id;
