@@ -1,11 +1,11 @@
-0.8.*: 
+0.8.*:
 	*) Multiplayer changes: 
 		*) Added high-priority queue for datagram.
 		*) Added codenames for incompatible releases + user friendly error message. (last release was longcat)
 
 	*) Clunk - 3d sound library: 
 		*) Clunk has moved to separate sourceforge project.
-		*) Port to SSE.
+		*) Added SSE support
 		*) Added three distance attenuations models: linear, inversed and exponent.
 		*) Less noise from hrtf. 
 		*) Doppler effect. 
@@ -19,27 +19,31 @@
 		*) Added static image control.
 		*) Now it's possible to add controls after another control.
 		*) Added render_multiline() to sdlx::Font
-		*) Rewrite tooltip from scratch with better text placement and nbsp/newline support.
+		*) Rewrote tooltip from scratch with better text placement and nbsp/newline support.
+		*) Rewrote main menu / menu in a flexible and extensible way. 
+		*) Added names for the control, buttons/mouse icons
 
 	*) Campaign improvements: 
 		*) Added best/last score/time panel with medal icons.
 		*) Added medals support and nice hall of fame.
 		*) Map could provide best stats from developers for a competition
 
-	*) Optimize tiles and sounds - new release will be twice
-	*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
-	*) Rewrote main menu / menu in a flexible and extensible way. 
-	*) Added spanish/catalanian translations.
-	*) Resample splash screens. Removed all duplicated splashes less than 1280x1024. 
-	*) Added static collision maps allowing tiles' alpha pixels optimizations.
-	*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
-	*) Added mouse control. 
-	*) Added names for the control, buttons/mouse icons
-	*) Map could disable minimap.
-	*) Removed 'enable_lua' as it's completely useless and bogus.
-	*) Fixed possible lua timers race. 
-	*) Do not play more than one boomerang sound.
-	*) Changed internal object map to hash_map. (unordered_map in a future)
+	*) Engine improvements/fixes: 
+		*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
+		*) Resample splash screens. Removed all duplicated splashes less than 1280x1024. 
+		*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
+		*) Map could disable minimap.
+		*) Added mouse control. (sic)
+		*) Removed 'enable_lua' as it's completely useless and bogus.
+		*) Fixed possible lua timers race. 
+		*) Do not play more than one boomerang sound.
+		*) Changed internal object map to hash_map. (unordered_map in a future) [massive speedup]
+
+	*) Resource optimizations: 
+		*) Optimized tiles and sounds, new release will be real lightweight - about 35Mb
+		*) Added spanish/catalanian translations.
+		*) Added static collision maps allowing tiles' alpha pixels optimizations.
+	
 	
 0.8.7689:
 	*) Fixed critical multiplayer bug.
