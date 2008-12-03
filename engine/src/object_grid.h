@@ -206,8 +206,17 @@ private:
 	GridMatrix _grid, _grid4;
 	
 	struct object_hash {
-		template<typename O>
-		size_t operator()(O *o) const { return (size_t)o; }
+		inline size_t operator()(const ::Object *o) const { 
+			size_t x = (size_t)o;
+			x = ~x + (x << 15); 
+			x ^= (x >> 12);
+			x += (x << 2);
+			x ^= (x >> 4);
+			x *= 2057; 
+			x ^= (x * ~4357);
+			x ^= (x >> 16);
+			return x;
+		}
 	};
 	
 	typedef MRT_HASH_MAP <T, Object, object_hash > Index;
