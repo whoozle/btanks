@@ -208,14 +208,12 @@ private:
 	struct object_hash {
 		inline size_t operator()(const ::Object *o) const { 
 			size_t x = (size_t)o;
-			x = ~x + (x << 15); 
-			x ^= (x >> 12);
-			x += (x << 2);
-			x ^= (x >> 4);
-			x *= 2057; 
-			x ^= (x * ~4357);
-			x ^= (x >> 16);
-			return x;
+			size_t r = 0x1b766561;
+			for(int i = 0; i < 4; ++i) {
+				size_t c = (x >> (8 * i)) & 0xff;
+				r ^= ((r << 5) + c + (r >> 2));
+			}
+			return r;
 		}
 	};
 	
