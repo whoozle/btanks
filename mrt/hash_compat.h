@@ -1,7 +1,20 @@
 #ifndef MRT_HASH_COMPAT_H__
 #define MRT_HASH_COMPAT_H__
 
-#ifdef __GNUG__
+//fixme: find better way to determine stlport
+#include <string>
+
+#ifdef _STLP_BEGIN_NAMESPACE
+
+//stlport 
+
+#	include <hash_set>
+#	include <hash_map>
+
+#define MRT_HASH_MAP std::hash_map
+#define MRT_HASH_SET std::hash_set
+
+#elif defined(__GNUG__)
 
 #	include <ext/hash_set>
 #	include <ext/hash_map>
