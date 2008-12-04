@@ -43,10 +43,7 @@ struct quad_point {
 	inline bool operator<(const quad_point &other) const {
 		if (x != other.x)
 			return x < other.x;
-		if (y != other.y)
-			return y < other.y;
-
-		return value < other.value;
+		return y < other.y;
 	}
 };
 
@@ -55,7 +52,7 @@ struct quad_node {
 	enum { unsplit_capacity = capacity * 2 / 3 };
 	typedef quad_point<T, V> point_type;
 	typedef quad_node<T, V, capacity> node_type;
-	typedef std::set<point_type> points_type;
+	typedef std::multiset<point_type> points_type;
 	
 	int pos_x, pos_y, size_x, size_y;
 	node_type * child[4];
@@ -124,11 +121,19 @@ struct quad_node {
 		points.clear();
 	}
 
-	inline bool insert(const point_type & point) {
+	size_t insert(const point_type & point) {
 		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
 			return false;
 		
-		if (points.size() >= capacity) 
+		size_t n = 0; //points that shares one (x, y)
+		{
+			typename points_type::iterator b = points.lower_bound(point);
+			typename points_type::iterator e = points.upper_bound(point);
+			for(typename points_type::iterator i = b; i != e; ++i) {
+				++n;
+			}
+		}
+		if (n >= capacity) 
 			split();
 		
 		bool inc;
@@ -140,14 +145,15 @@ struct quad_node {
 			p.y -= dst_node->pos_y;
 			inc = dst_node->insert(p);
 		} else {
-			inc = points.insert(point).second;
+			typename points_type::iterator i = points.find(point);
+			inc = (i != points.end())?1: 0;
+			points.insert(point);
 		} 
-		if (inc)
-			++children_count;
+		children_count += inc;
 		return inc;
 	}
 
-	inline void search(std::set<V> & result, int x0, int y0, int x1, int y1) const {
+	void search(std::set<V> & result, int x0, int y0, int x1, int y1) const {
 		if (child[0] != NULL) {
 			assert(points.empty());
 			int i0 = index(x0, y0);
@@ -202,11 +208,11 @@ struct quad_node {
 		}
 	}
 	
-	bool erase(const point_type & point) {
+	size_t erase(const point_type & point) {
 		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
 			return false;
 		
-		bool dec;
+		size_t dec;
 		if (child[0] != NULL) {
 			node_type * dst_node = child[index(point)];
 			point_type p = point;
@@ -214,10 +220,19 @@ struct quad_node {
 			p.y -= dst_node->pos_y;
 			dec = dst_node->erase(p);
 		} else {
-			dec = points.erase(point) != 0;
+			typename points_type::iterator b = points.lower_bound(point);
+			typename points_type::iterator e = points.upper_bound(point);
+			dec = 0;
+			for(typename points_type::iterator i = b; i != e; ) {
+				if (i->value == point.value) {
+					points.erase(i++);
+					++dec;
+				} else 
+					++i;
+			}
+			
 		}
-		if (dec)
-			--children_count;
+		children_count -= dec;
 			
 		//if (children_count < unsplit_capacity) 
 		//	unsplit(points);
