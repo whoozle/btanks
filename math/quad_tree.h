@@ -125,7 +125,7 @@ struct quad_node {
 		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
 			return false;
 		
-		bool inc;
+		size_t inc;
 		if (child[0] != NULL) {
 			assert(points.empty());
 			node_type * dst_node = child[index(point)];
