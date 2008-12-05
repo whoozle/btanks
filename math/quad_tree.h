@@ -91,7 +91,6 @@ struct quad_node {
 	}
 	
 	void unsplit(points_type &parent) {
-		//implement me
 		if (child[0] != NULL) {
 			assert(points.empty());
 			for(int i = 0; i < 4; ++i) {
@@ -108,7 +107,7 @@ struct quad_node {
 		assert(child[0] == NULL);
 		int hx = (end_x - start_x - 1) / 2 + 1;
 		int hy = (end_y - start_y - 1) / 2 + 1;
-		//printf("splitting node position %d,%d size %d,%d\n", pos_x, pos_y, size_x, size_y);
+		//printf("splitting node position %d,%d,%d,%d\n", start_x, start_y, end_x, end_y);
 		child[0] = new node_type(start_x, start_y, start_x + hx, start_y + hy);
 		child[1] = new node_type(start_x + hx, start_y, end_x, start_y + hy);
 		child[2] = new node_type(start_x, start_y + hy, start_x + hx, end_y);
@@ -217,8 +216,8 @@ struct quad_node {
 		}
 		children_count -= dec;
 			
-		//if (children_count < unsplit_capacity) 
-		//	unsplit(points);
+		if (children_count < unsplit_capacity) 
+			unsplit(points);
 		return dec;
 	}
 	
