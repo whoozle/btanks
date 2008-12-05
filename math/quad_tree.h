@@ -125,17 +125,6 @@ struct quad_node {
 		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
 			return false;
 		
-		size_t n = 0; //points that shares one (x, y)
-		{
-			typename points_type::iterator b = points.lower_bound(point);
-			typename points_type::iterator e = points.upper_bound(point);
-			for(typename points_type::iterator i = b; i != e; ++i) {
-				++n;
-			}
-		}
-		if (n >= capacity) 
-			split();
-		
 		bool inc;
 		if (child[0] != NULL) {
 			assert(points.empty());
@@ -146,10 +135,14 @@ struct quad_node {
 			inc = dst_node->insert(p);
 		} else {
 			typename points_type::iterator i = points.find(point);
-			inc = (i != points.end())?1: 0;
+			inc = (i != points.end())?0: 1;
 			points.insert(point);
 		} 
 		children_count += inc;
+
+		if (child[0] == NULL && children_count > capacity) 
+			split();
+
 		return inc;
 	}
 
@@ -198,12 +191,9 @@ struct quad_node {
 			//printf("%d,%d: searching in %u points(%d,%d %d,%d)\n", pos_x, pos_y, (unsigned)points.size(), x0, y0, x1, y1);
 			for(typename points_type::const_iterator i = points.begin(); i != points.end(); ++i) {
 				const point_type &point = *i;
-				bool got = false;
 				if (point.x >= x0 && point.x < x1 && point.y >= y0 && point.y < y1)	{
 					result.insert(point.value);
-					got = true;
 				}
-				//printf("point %d, %d %c\n", point.x, point.y, got? '*': ' ');
 			}
 		}
 	}
@@ -220,17 +210,12 @@ struct quad_node {
 			p.y -= dst_node->pos_y;
 			dec = dst_node->erase(p);
 		} else {
-			typename points_type::iterator b = points.lower_bound(point);
-			typename points_type::iterator e = points.upper_bound(point);
+			typename points_type::iterator i = points.find(point);
 			dec = 0;
-			for(typename points_type::iterator i = b; i != e; ) {
-				if (i->value == point.value) {
-					points.erase(i++);
-					++dec;
-				} else 
-					++i;
+			if (i != points.end()) {
+				dec = 1;
+				points.erase(i);
 			}
-			
 		}
 		children_count -= dec;
 			
