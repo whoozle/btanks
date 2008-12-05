@@ -216,7 +216,7 @@ struct quad_node {
 		}
 		children_count -= dec;
 			
-		if (children_count < unsplit_capacity) 
+		if (child[0] != NULL && children_count < unsplit_capacity) 
 			unsplit(points);
 		return dec;
 	}
