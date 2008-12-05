@@ -54,14 +54,14 @@ struct quad_node {
 	typedef quad_node<T, V, capacity> node_type;
 	typedef std::multiset<point_type> points_type;
 	
-	int pos_x, pos_y, size_x, size_y;
+	int start_x, start_y, end_x, end_y;
 	node_type * child[4];
 	points_type points;
 	
 	size_t children_count;
 
-	inline quad_node(int pos_x, int pos_y, int size_x, int size_y): 
-		pos_x(pos_x), pos_y(pos_y), size_x(size_x), size_y(size_y), points(), children_count(0) {
+	inline quad_node(int start_x, int start_y, int end_x, int end_y): 
+		start_x(start_x), start_y(start_y), end_x(end_x), end_y(end_y), points(), children_count(0) {
 			for(int i = 0; i < 4; ++i)
 				child[i] = NULL;
 		}
@@ -69,7 +69,7 @@ struct quad_node {
 	inline void set_size(const T&w, const T&h) {
 		clear();
 		//printf("set_size(%d, %d)\n", w, h);
-		size_x = w; size_y = h;
+		end_x = start_x + w; end_y = start_y + h;
 	}
 		
 	inline int index(const point_type & point) const {
@@ -77,9 +77,13 @@ struct quad_node {
 	}
 
 	inline int index(int x, int y) const {
-		return (y * 2 < size_y)? 
-			((x * 2 < size_x)? 0: 1): 
-			((x * 2 < size_x)? 2: 3);
+		int w = (end_x - start_x - 1) / 2 + 1;
+		int h = (end_y - start_y - 1) / 2 + 1;
+		y -= start_y;
+		x -= start_x;
+		return (y < h)? 
+			((x < w)? 0: 1): 
+			((x < w)? 2: 3);
 	}
 	
 	inline bool empty() const {
@@ -102,37 +106,32 @@ struct quad_node {
 	
 	void split() {
 		assert(child[0] == NULL);
-		int hx = (size_x - 1) / 2 + 1;
-		int hy = (size_y - 1) / 2 + 1;
+		int hx = (end_x - start_x - 1) / 2 + 1;
+		int hy = (end_y - start_y - 1) / 2 + 1;
 		//printf("splitting node position %d,%d size %d,%d\n", pos_x, pos_y, size_x, size_y);
-		child[0] = new node_type(0, 0, hx, hy);
-		child[1] = new node_type(hx, 0, hx, hy);
-		child[2] = new node_type(0, hy, hx, hy);
-		child[3] = new node_type(hx, hy, hx, hy);
+		child[0] = new node_type(start_x, start_y, start_x + hx, start_y + hy);
+		child[1] = new node_type(start_x + hx, start_y, end_x, start_y + hy);
+		child[2] = new node_type(start_x, start_y + hy, start_x + hx, end_y);
+		child[3] = new node_type(start_x + hx, start_y + hy, end_x, end_y);
 		for(typename points_type::const_iterator i = points.begin(); i != points.end(); ++i) {
-			point_type point = *i;
+			const point_type &point = *i;
 			int idx = index(point);
 			node_type * dst_node = child[idx];
 			//printf("putting point into quad %d\n", idx);
-			point.x -= dst_node->pos_x;
-			point.y -= dst_node->pos_y;
 			dst_node->insert(point);
 		}
 		points.clear();
 	}
 
 	size_t insert(const point_type & point) {
-		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
+		if (point.x < start_x || point.x >= end_x || point.y < start_y || point.y >= end_y)
 			return false;
 		
 		size_t inc;
 		if (child[0] != NULL) {
 			assert(points.empty());
 			node_type * dst_node = child[index(point)];
-			point_type p = point;
-			p.x -= dst_node->pos_x;
-			p.y -= dst_node->pos_y;
-			inc = dst_node->insert(p);
+			inc = dst_node->insert(point);
 		} else {
 			typename points_type::iterator i = points.find(point);
 			inc = (i != points.end())?0: 1;
@@ -184,8 +183,7 @@ struct quad_node {
 				for(; x <= dx; ++x) {
 					node_type * dst_node = child[y * 2 + x];
 					//printf("search: node %d,%d %d,%d\n", dst_node->pos_x, dst_node->pos_y, dst_node->size_x, dst_node->size_y);
-					child[i0]->search(result, x0 - dst_node->pos_x, y0 - dst_node->pos_y, 
-						x1 - dst_node->pos_x, y1 - dst_node->pos_y);
+					dst_node->search(result, x0, y0, x1, y1);
 				}
 		} else {
 			//printf("%d,%d: searching in %u points(%d,%d %d,%d)\n", pos_x, pos_y, (unsigned)points.size(), x0, y0, x1, y1);
@@ -199,22 +197,22 @@ struct quad_node {
 	}
 	
 	size_t erase(const point_type & point) {
-		if (point.x < 0 || point.x >= size_x || point.y < 0 || point.y >= size_y)
+		if (point.x < start_x || point.x >= end_x || point.y < start_y || point.y >= end_y)
 			return false;
 		
 		size_t dec;
 		if (child[0] != NULL) {
 			node_type * dst_node = child[index(point)];
-			point_type p = point;
-			p.x -= dst_node->pos_x;
-			p.y -= dst_node->pos_y;
-			dec = dst_node->erase(p);
+			dec = dst_node->erase(point);
 		} else {
-			typename points_type::iterator i = points.find(point);
+			typename points_type::iterator i = points.lower_bound(point);
+			typename points_type::iterator e = points.upper_bound(point);
 			dec = 0;
-			if (i != points.end()) {
-				dec = 1;
-				points.erase(i);
+			while(i != e) {
+				if (i->value == point.value) {
+					dec = 1;
+					points.erase(i++);
+				} else ++i;
 			}
 		}
 		children_count -= dec;
@@ -225,10 +223,10 @@ struct quad_node {
 	}
 	
 	void clear() {
-		pos_x = 0;
-		pos_y = 0;
-		size_x = 0;
-		size_y = 0;
+		start_x = 0;
+		start_y = 0;
+		end_x = 0;
+		end_y = 0;
 		for(int i = 0; i < 4; ++i) {
 			delete child[i];
 			child[i] = NULL;
@@ -264,11 +262,11 @@ public:
 		root.search(result, x0, y0, x1, y1);
 	}
 	
-	inline bool insert(const point_type & point) {
+	inline size_t insert(const point_type & point) {
 		return root.insert(point);
 	}
 
-	bool erase(const point_type & point) {
+	size_t erase(const point_type & point) {
 		return root.erase(point);
 	}
 	
