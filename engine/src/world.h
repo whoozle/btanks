@@ -138,6 +138,7 @@ private:
 	void deleteObject(Object *o);
 	
 	struct collision_map_hash_func {
+		enum { bucket_size = 4, min_buckets = 8 };
 		size_t operator() (const std::pair<int, int> & key) const {
 			return (key.first << 16) | key.second;
 		}

@@ -128,6 +128,8 @@ private:
 	}
 
 	struct object_hash {
+		enum { bucket_size = 4, min_buckets = 8 };
+
 		inline size_t operator()(const ::Object *o) const { 
 			size_t x = (size_t)o;
 			size_t r = 0x1b766561;
