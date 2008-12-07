@@ -127,22 +127,7 @@ private:
 		}
 	}
 
-	struct object_hash {
-		enum { bucket_size = 4, min_buckets = 8 };
-
-		inline size_t operator()(const ::Object *o) const { 
-			size_t x = (size_t)o;
-			size_t r = 0x1b766561;
-			for(int i = 0; i < 4; ++i) {
-				size_t c = (x >> (8 * i)) & 0xff;
-				r ^= ((r << 5) + c + (r >> 2));
-			}
-			return r;
-		}
-	};
-	
-
-	typedef MRT_HASH_MAP <T, rect_type, object_hash > Index;
+	typedef std::map<T, rect_type> Index;
 	Index _index;
 	v2<int> _size;
 	bool _wrap;
