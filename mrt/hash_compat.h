@@ -12,7 +12,9 @@
 #	include <hash_map>
 
 #define MRT_HASH_MAP std::hash_map
+#define MRT_HASH_MMAP std::hash_multimap
 #define MRT_HASH_SET std::hash_set
+#define MRT_HASH_MSET std::hash_multiset
 
 #elif defined(__GNUG__)
 
@@ -20,7 +22,9 @@
 #	include <ext/hash_map>
 
 #define MRT_HASH_MAP __gnu_cxx::hash_map
+#define MRT_HASH_MMAP __gnu_cxx::hash_multimap
 #define MRT_HASH_SET __gnu_cxx::hash_set
+#define MRT_HASH_MSET __gnu_cxx::hash_multiset
 
 #elif  defined(_MSC_VER)
 
@@ -28,7 +32,9 @@
 #	include <hash_set>
 
 #define MRT_HASH_MAP stdext::hash_map
+#define MRT_HASH_MMAP stdext::hash_multimap
 #define MRT_HASH_SET stdext::hash_set
+#define MRT_HASH_MSET stdext::hash_multiset
 
 #else
 
