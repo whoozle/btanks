@@ -345,11 +345,6 @@ Surface::~Surface() {
     free();
 }
 
-#ifdef _WINDOWS
-#	define WIN32_LEAN_AND_MEAN
-#	include <windows.h>
-#endif
-
 void Surface::load_from_resource(const char * lpResName) {
 #if 0
 #ifdef _WINDOWS
