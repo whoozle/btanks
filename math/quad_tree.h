@@ -56,7 +56,7 @@ struct quad_rect {
 	}
 
 	inline bool valid() const {
-		return x0 <= x1 && y0 <= y1;
+		return x0 < x1 && y0 < y1;
 	}
 	
 	bool contains(const quad_rect & other) const {
@@ -233,22 +233,71 @@ public:
 	inline void search(std::set<V> & result, const rect_type &area) const {
 		if (!area.valid())
 			return;
-		root.search(result, area);
+
+		if (root.area.contains(area)) {
+			root.search(result, area);
+		} else {
+			rect_type child[4]; //splitting rectangle
+			int n = split(child, area);
+			for(int i = 0; i < n; ++i) {
+				root.search(result, child[i]);
+			}
+		}
 	}
 	
 	inline void insert(const rect_type & object) {
 		if (!object.valid())
 			return;
-		root.insert(object);
+		if (root.area.contains(object)) {
+			root.insert(object);
+		} else {
+			rect_type child[4]; //splitting rectangle
+			int n = split(child, object);
+			for(int i = 0; i < n; ++i) {
+				root.insert(child[i]);
+			}
+		}
 	}
 
 	inline void erase(const rect_type & object) {
 		if (!object.valid())
 			return;
-		root.erase(object);
+		if (root.area.contains(object)) {
+			root.erase(object);
+		} else {
+			rect_type child[4]; //splitting rectangle
+			int n = split(child, object);
+			for(int i = 0; i < n; ++i) {
+				root.erase(child[i]);
+			}
+		}
 	}
 	
 protected: 
+	inline int split(rect_type * child, const rect_type &rect) const {
+		bool has_x = rect.x1 > root.area.x1;
+		bool has_y = rect.y1 > root.area.y1;
+		if (has_x && has_y) {
+			child[0] = rect_type(rect.x0, rect.y0, root.area.x1, root.area.y1, rect.value);
+			child[1] = rect_type(0, rect.y0, rect.x1 - root.area.x1, root.area.y1, rect.value);
+
+			child[2] = rect_type(rect.x0, 0, root.area.x1, rect.y1 - root.area.y1, rect.value);
+			child[3] = rect_type(0, 0, rect.x1 - root.area.x1, rect.y1 - root.area.y1, rect.value); 
+			return 4;
+		} else if (has_x) {
+			child[0] = rect_type(rect.x0, rect.y0, root.area.x1, rect.y1, rect.value);
+			child[1] = rect_type(0, rect.y0, rect.x1 - root.area.x1, rect.y1, rect.value);
+			return 2;
+		} else if (has_y) {
+			child[0] = rect_type(rect.x0, rect.y0, rect.x1, root.area.y1, rect.value);
+			child[1] = rect_type(rect.x0, 0, rect.x1, rect.y1 - root.area.y1, rect.value);
+			return 2;
+		} else {
+			child[0] = rect;
+			return 1;
+		}
+	}
+
 	node_type root;
 };
 
