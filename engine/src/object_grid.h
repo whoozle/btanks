@@ -44,6 +44,7 @@ public:
 	void set_size(const v2<int> &size, const int step, const bool wrap) {
 		clear();
 		_wrap = wrap;
+		_size = size;
 		tree.set_size(size.x, size.y);
 	}
 
@@ -51,10 +52,12 @@ public:
 		tree.clear();
 		_index.clear();
 		_wrap = false;
+		_size.clear();
 	}
 
 	void update(T id, const v2<int> &pos, const v2<int> &size) {
 		rect_type rect(pos.x, pos.y, pos.x + size.x, pos.y + size.y, id);
+		validate(rect);
 		typename Index::iterator i = _index.find(id);
 		if (i != _index.end()) {
 			rect_type &old = i->second;
@@ -94,6 +97,35 @@ private:
 	typedef quad_tree<int, T, C> tree_type; 
 	typedef typename tree_type::rect_type rect_type;
 	tree_type tree;
+	
+	void validate(rect_type & rect) {
+		if (_wrap) {
+			int w = rect.x1 - rect.x0, h = rect.y1 - rect.y0;
+			rect.x0 = wrap(rect.x0, _size.x);
+			rect.y0 = wrap(rect.y0, _size.y);
+			rect.x1 = rect.x0 + w;
+			rect.y1 = rect.y0 + h;
+		} else {
+			if (rect.x0 < 0)
+				rect.x0 = 0;
+			if (rect.y0 < 0)
+				rect.y0 = 0;
+			if (rect.x0 > _size.x)
+				rect.x0 = _size.x;
+			if (rect.y0 > _size.y)
+				rect.y0 = _size.y;
+
+			//copy-paste ninja was here
+			if (rect.x1 < 0)
+				rect.x1 = 0;
+			if (rect.y1 < 0)
+				rect.y1 = 0;
+			if (rect.x1 > _size.x)
+				rect.x1 = _size.x;
+			if (rect.y1 > _size.y)
+				rect.y1 = _size.y;
+		}
+	}
 
 	struct object_hash {
 		inline size_t operator()(const ::Object *o) const { 
@@ -110,6 +142,7 @@ private:
 
 	typedef MRT_HASH_MAP <T, rect_type, object_hash > Index;
 	Index _index;
+	v2<int> _size;
 	bool _wrap;
 };
 
