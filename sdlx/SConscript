@@ -30,6 +30,7 @@ else:
 	libs.append('winmm')
 	libs.append('user32')
 	libs.append('gdi32')
+	libs.append('advapi32')
 
 sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joystick.cpp',
 	'thread.cpp', 'mutex.cpp', 'semaphore.cpp', 'color.cpp',
@@ -38,11 +39,13 @@ sdlx_sources = 	['cursor.cpp', 'sdl_ex.cpp', 'surface.cpp', 'system.cpp', 'joyst
 	] #  'ttf.cpp', 
 
 if sys.platform == 'win32': 
-	sdlx_sources.append('wrappers/d3dsdl.cpp')
-	env.Append(CPPPATH=[os.environ['DXSDK_DIR'] + 'Include'])
-	env.Append(LIBPATH=[os.environ['DXSDK_DIR'] + 'Lib\\x86'])
-	libs.append('d3d9')
-	libs.append('d3dx9')
+	sdlx_sources.append('wrappers/d3dsdl8.cpp')
+	env.Append(CPPPATH=[os.environ['DXSDK_DIR'] + '\\Include'])
+	env.Append(LIBPATH=[os.environ['DXSDK_DIR'] + '\\Lib'])
+	#libs.append('d3dx8')
+	#libs.append('d3dx9')
+	libs.append('d3d8')
+	libs.append('d3dx8')
 else: 
 	sdlx_sources.append('wrappers/glSDL.c')
 
