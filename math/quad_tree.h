@@ -118,15 +118,30 @@ struct quad_node {
 		children_count = NULL;
 	}
 	
+	void merge(std::set<V> &result) const {
+		if (child[0] != NULL)
+			for(int j = 0; j < 4; ++j) {
+				child[j]->merge(result);
+			}
+			
+		for(typename rects_type::const_iterator i = rects.begin(); i != rects.end(); ++i) {
+			const rect_type &r = *i;
+			result.insert(r.value);
+		}
+	}
+	
 	void search(std::set<V> & result, const rect_type &s_area) const {
 		if (!area.intersects(s_area))
 			return;
 
 		if (child[0] != NULL)
 		for(int j = 0; j < 4; ++j) {
-			//if (area.contains(child[j]->area))
+			if (s_area.contains(child[j]->area)) {
 				//move all area to result :)
-			child[j]->search(result, s_area);
+				child[j]->merge(result);
+			} else {
+				child[j]->search(result, s_area);
+			}
 		}
 
 		for(typename rects_type::const_iterator i = rects.begin(); i != rects.end(); ++i) {
@@ -161,11 +176,12 @@ struct quad_node {
 			split();
 
 		if (child[0] != NULL)
-		for(int i = 0; i < 4; ++i) 
+		for(int i = 0; i < 4; ++i) {
 			if (child[i]->insert(object)) {
 				++children_count;
 				return true;
 			}
+		}
 	
 		//printf("insert %d,%d,%d,%d into %d,%d,%d,%d [%d]\n", object.x0, object.y0, object.x1, object.y1, area.x0, area.y0, area.x1, area.y1, children_count);
 		rects.push_back(object);
