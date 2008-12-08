@@ -334,13 +334,8 @@ void IGame::init(const int argc, char *argv[]) {
 	}
 
 	Config->get("multiplayer.port", RTConfig->port, 27255);
+	Config->get("engine.show-fps", _show_fps, false);
 	
-	GET_CONFIG_VALUE("engine.show-fps", bool, show_fps, false);
-	GET_CONFIG_VALUE("engine.show-log-lines", bool, show_log_lines, false);
-	
-	_show_fps = show_fps;
-	_show_log_lines = show_log_lines;
-
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
@@ -496,21 +491,11 @@ void IGame::init(const int argc, char *argv[]) {
 		on_menu_slot.assign(this, &IGame::onMenu, _main_menu->menu_signal);
 	}
 	
-	if (_show_fps && !RTConfig->server_mode) {
-		LOG_DEBUG(("creating `digits' object..."));
-		_fps = ResourceManager->createObject("damage-digits", "damage-digits");
-		_fps->on_spawn();
-		_fps->speed = 0;
-	} else _fps = NULL;
-
-	if (_show_log_lines && !RTConfig->server_mode) {
-		LOG_DEBUG(("creating `digits' object..."));
-		_log_lines = ResourceManager->createObject("damage-digits", "damage-digits");
-		_log_lines->on_spawn();
-		_log_lines->speed = 0;
-	} else _log_lines = NULL;
-
 	if (!RTConfig->server_mode) {
+		if (_show_fps) {
+			small_font = ResourceManager->loadFont("small", true);
+		}
+	
 		_net_talk = new Chat();
 		_net_talk->hide();
 
@@ -852,15 +837,11 @@ void IGame::onTick(const float dt) {
 		Console->render(window);
 		
 flip:
-		float fr = Window->getFrameRate();
-		if (_show_fps) {
-			_fps->hp = (int)floor(fr);
-			_fps->render(window, window.get_width() - (int)(_fps->size.x * 3), window.get_height() - (int)_fps->size.y);
-		}
-		if (_show_log_lines) {
-			_log_lines->hp = mrt::Logger->get_lines_counter();
-			int size = (_log_lines->hp > 0)? (int)log10((double)_log_lines->hp) + 2:2;
-			_log_lines->render(window, window.get_width() - (int)(_log_lines->size.x * size), 20);
+		if (_show_fps && small_font) {
+			float fr = Window->getFrameRate();
+			std::string fps = mrt::format_string("%d", (int)fr);
+			int w = small_font->render(NULL, 0, 0, fps);
+			small_font->render(window, window.get_width() - w, window.get_height() - small_font->get_height(), fps);
 		}
 		
 		if (_paused) {
@@ -876,12 +857,6 @@ flip:
 void IGame::deinit() {
 	clear();
 	Mixer->deinit();
-	
-	delete _fps;
-	_fps = NULL;
-
-	delete _log_lines;
-	_log_lines = NULL;
 	
 	delete _hud;
 	_hud = NULL;

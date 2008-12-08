@@ -62,6 +62,7 @@ class Chat;
 namespace sdlx {
 	class Surface;
 	class Rect;
+	class Font;
 }
 
 class BTANKSAPI IGame {
@@ -131,8 +132,8 @@ private:
 
 	MainMenu *_main_menu;
 	
-	bool _show_fps, _show_log_lines;
-	Object *_fps, *_log_lines;
+	bool _show_fps;
+	const sdlx::Font * small_font;
 
 	bool _autojoin;
 
