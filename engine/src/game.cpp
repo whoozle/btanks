@@ -717,7 +717,7 @@ void IGame::stopCredits() {
 void IGame::quit() {
 	_main_menu->hide();
 
-	if (_donate_timer <= 0) {
+	if (_donate_timer <= 0 || RTConfig->disable_donations) {
 		_donate_timer = 0;
 		Window->stop();
 		return;
