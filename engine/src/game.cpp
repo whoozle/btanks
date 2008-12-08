@@ -89,7 +89,7 @@ IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), 
- _credits(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), 
+ _credits(NULL), _cheater(NULL), _donate(NULL), _donate_timer(0), _tip(NULL), _net_talk(NULL), 
  spawn_ai(0) {
 
 	std::string path;
@@ -163,11 +163,13 @@ void IGame::pause() {
 		_paused = true;
 }
 
+void IGame::reload_donate_timer() {
+	Config->get("engine.donate-screen-duration", _donate_timer, 1.5f);
+}
+
+
 void IGame::init(const int argc, char *argv[]) {
 	_donate = NULL;
-	_donate_timer = 0;
-
-	
 	{
 		//setup some defaults
 		
@@ -332,6 +334,8 @@ void IGame::init(const int argc, char *argv[]) {
 		
 		Config->set("engine.revision", getRevision());
 	}
+
+	reload_donate_timer();
 
 	Config->get("multiplayer.port", RTConfig->port, 27255);
 	Config->get("engine.show-fps", _show_fps, false);
@@ -714,13 +718,18 @@ void IGame::stopCredits() {
 void IGame::quit() {
 	_main_menu->hide();
 
-	GET_CONFIG_VALUE("engine.donate-screen-duration", float, dsd, 1.5f);
-	if (dsd <= 0) {
+	if (_donate_timer <= 0) {
+		_donate_timer = 0;
 		Window->stop();
 		return;
+	} else if (_donate == NULL) {
+		LOG_DEBUG(("donate_timer = %g", _donate_timer));
+		if (_donate_timer > 2) {
+			LOG_WARN(("donation_timer out of range, resetting to default value"));
+			_donate_timer = 1.5f;
+		}
+		_donate = ResourceManager->load_surface("donate.jpg");
 	}
-	_donate_timer = dsd;
-	_donate = ResourceManager->load_surface("donate.jpg");
 }
 
 void IGame::tick(const float dt) {
@@ -741,7 +750,7 @@ void IGame::onTick(const float dt) {
 	sdlx::Surface &window = Window->get_surface();
 	int vx = 0, vy = 0;
 	
-	if (_donate_timer > 0 && _donate) {
+	if (_donate_timer > 0 && _donate && Window->running()) {
 		_donate_timer -= dt;
 		if (_donate_timer <= 0) {
 			Window->stop();

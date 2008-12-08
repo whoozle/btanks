@@ -88,6 +88,8 @@ public:
 	Chat *getChat() { return _net_talk; }
 	
 	void stop();
+	
+	void reload_donate_timer();
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot;

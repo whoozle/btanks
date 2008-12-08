@@ -41,6 +41,7 @@
 #include "player_manager.h"
 #include "game_monitor.h"
 #include "window.h"
+#include "game.h"
 #include "sdlx/joystick.h"
 
 OptionsMenu::OptionsMenu(const int w, const int h) : _shoot(0.5f, false), _gamepad(NULL) {
@@ -413,6 +414,7 @@ void OptionsMenu::save() {
 	Config->set("engine.fog-of-war.enabled", _fog_of_war->get());
 	
 	PlayerManager->update_controls();
+	Game->reload_donate_timer();
 
 	if (need_restart) 
 		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
