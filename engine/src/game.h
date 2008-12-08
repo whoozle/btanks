@@ -90,6 +90,7 @@ public:
 	void stop();
 	
 	void reload_donate_timer();
+	void disable_donate_timer();
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot;
