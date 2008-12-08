@@ -167,11 +167,6 @@ void IGame::reload_donate_timer() {
 	Config->get("engine.donate-screen-duration", _donate_timer, 1.5f);
 }
 
-void IGame::disable_donate_timer() {
-	_donate_timer = 0;
-}
-
-
 void IGame::init(const int argc, char *argv[]) {
 	_donate = NULL;
 	{
