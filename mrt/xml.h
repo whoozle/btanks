@@ -47,6 +47,10 @@ public:
 			const_iterator i = find(name);
 			return i != end()? (float)atof(i->second.c_str()): defv;
 		}
+		inline const std::string get(const std::string &name, const char * defv) const {
+			const_iterator i = find(name);
+			return i != end()? i->second: std::string(defv);
+		}
 		inline const std::string get(const std::string &name, const std::string &defv) const {
 			const_iterator i = find(name);
 			return i != end()? i->second: defv;
