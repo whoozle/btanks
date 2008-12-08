@@ -51,10 +51,12 @@ CampaignMenu::CampaignMenu(const int w, const int h) : _w(w), _h(h), _invalidate
 
 	LOG_DEBUG(("found %u campaign(s)", (unsigned)files.size()));
 	std::vector<std::string> titles;
+
 	for(size_t i = 0; i < files.size(); ++i) {
 		LOG_DEBUG(("campaign[%u]: %s %s", (unsigned)i, files[i].first.c_str(), files[i].second.c_str()));
 		Campaign c;
 		c.init(files[i].first, files[i].second);
+		RTConfig->disable_donations |= c.disable_donations;
 		_campaigns.push_back(c);
 		titles.push_back(c.title);
 	}

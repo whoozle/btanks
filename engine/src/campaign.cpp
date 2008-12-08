@@ -7,6 +7,10 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	if (name == "campaign") {
 		if (attr["name"].empty())
 			throw_ex(("campaign must have title attr"));
+		
+		std::string donation = attr.get("donations", "true");
+		disable_donations = donation[0] == 'f';
+		
 		this->name = attr["name"];
 		title = I18n->get("campaign", this->name);
 		if (attr["map"].empty())
@@ -144,7 +148,7 @@ const bool Campaign::visible(const Map &map) const {
 	return false;
 }
 
-Campaign::Campaign() : minimal_score(0), map(NULL), _wares_section(false) {}
+Campaign::Campaign() : minimal_score(0), map(NULL), disable_donations(false), _wares_section(false) {}
 
 #include "game_monitor.h"
 #include "finder.h"

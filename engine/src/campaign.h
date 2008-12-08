@@ -16,6 +16,8 @@ public:
 	
 	const sdlx::Surface *map;
 	
+	bool disable_donations;
+	
 	struct Medal {
 		std::string id, tile;
 		Medal() : icon(NULL) {}

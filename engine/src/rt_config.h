@@ -51,6 +51,8 @@ public:
 	int port;
 	
 	const std::string release_name;
+	
+	bool disable_donations;
 
 	void serialize(mrt::Serializator &s) const;
 	void deserialize(const mrt::Serializator &s);
