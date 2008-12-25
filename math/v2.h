@@ -74,11 +74,7 @@ public:
 	}
 	
 	inline const T length() const {
-		const T ql = x * x + y * y;
-		if (ql == (T)0 || ql == (T)1) 
-			return ql;
-		
-		return (T)sqrt(ql);
+		return (T)hypot(x, y);
 	}
 
 	inline const T quick_length() const {
