@@ -74,7 +74,11 @@ public:
 	}
 	
 	inline const T length() const {
+#ifdef _WINDOWS
+		return (T)_hypot(x, y);
+#else
 		return (T)hypot(x, y);
+#endif
 	}
 
 	inline const T quick_length() const {
