@@ -5,7 +5,7 @@
 		<pose id="hold">0</pose>
 		<pose id="start" speed="10">0,1,2</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire" speed="10" sound="@cannon" gain="0.6">3,4</pose>
+		<pose id="fire" speed="10" sound="@cannon" gain="0.8">3,4</pose>
 	</animation-model>
 
 	<animation-model id="dead-vehicle-animation" speed="7">
