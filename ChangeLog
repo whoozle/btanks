@@ -5,11 +5,10 @@
 
 	*) Clunk - 3d sound library: 
 		*) Clunk has moved to separate sourceforge project.
-		*) Added SSE support
 		*) Added three distance attenuations models: linear, inversed and exponent.
-		*) Less noise from hrtf. 
 		*) Doppler effect. 
 		*) More documentation.
+		*) 3D attenuator's implementation changed from FFT to the MDCT. Less noise and distortion.
 	
 	*) GUI improvements:
 		*) Gamepad setup had been rewritten from scratch. 
@@ -27,8 +26,10 @@
 		*) Added best/last score/time panel with medal icons.
 		*) Added medals support and nice hall of fame.
 		*) Map could provide best stats from developers for a competition
+		*) Disable donation screen for the campaigns which require it.
 
 	*) Engine improvements/fixes: 
+		*) D3D SDL wrapper ported to DirectX 8.1
 		*) Fixed long stanging bug preventing user from getting into vehicles. Get into a vehicle much easier now.
 		*) Resample splash screens. Removed all duplicated splashes less than 1280x1024. 
 		*) All control methods were ported to events. Sticking keys on some laptops should be fixed now.
@@ -37,7 +38,7 @@
 		*) Removed 'enable_lua' as it's completely useless and bogus.
 		*) Fixed possible lua timers race. 
 		*) Do not play more than one boomerang sound.
-		*) Changed internal object map to hash_map. (unordered_map in a future) [massive speedup]
+		*) Changed collision grid to quad tree. 
 
 	*) Resource optimizations: 
 		*) Optimized tiles and sounds, new release will be real lightweight - about 35Mb
