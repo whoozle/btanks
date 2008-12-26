@@ -23,8 +23,8 @@
 	<animation-model id="shilka-turret-animation" speed="10">
 		<pose id="hold">0</pose>
 		<pose id="move">0,1,2</pose>
-		<pose id="fire-left" speed="10" sound="@cannon" gain="0.5">3</pose>
-		<pose id="fire-right" speed="10" sound="@cannon" gain="0.5">4</pose>
+		<pose id="fire-left" speed="10" sound="@cannon" gain="0.8">3</pose>
+		<pose id="fire-right" speed="10" sound="@cannon" gain="0.8">4</pose>
 	</animation-model>
 
 	<animation-model id="launcher-animation" speed="10">
