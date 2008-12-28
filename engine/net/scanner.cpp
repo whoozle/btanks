@@ -179,7 +179,7 @@ TRY {
 				std::string ip = addr.getAddr(false);
 				LOG_DEBUG(("found server: %s, players: %u, slots: %u", ip.c_str(), players, slots));
 				std::string name = get_name_by_addr(addr);
-				if (name == "netive.ru") {
+				if (name == "netive.ru" || name == "www.nips.ru" || name == "nips.ru") {
 					name = "btanks.media.netive.ru";
 				}
 				LOG_DEBUG(("found name: %s", name.c_str()));
@@ -227,7 +227,7 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 			} else {
 			check_ip: 
 				std::string new_host = get_name_by_addr(addr);
-				if (new_host == "netive.ru") {
+				if (name == "netive.ru" || name == "www.nips.ru" || name == "nips.ru") {
 					new_host = "btanks.media.netive.ru";
 				}
 				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), addr.getAddr().c_str()));
