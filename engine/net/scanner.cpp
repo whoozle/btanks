@@ -227,7 +227,7 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 			} else {
 			check_ip: 
 				std::string new_host = get_name_by_addr(addr);
-				if (name == "netive.ru" || name == "www.nips.ru" || name == "nips.ru") {
+				if (new_host == "netive.ru" || new_host == "www.nips.ru" || new_host == "nips.ru") {
 					new_host = "btanks.media.netive.ru";
 				}
 				LOG_DEBUG(("found name %s for address %s", new_host.c_str(), addr.getAddr().c_str()));
