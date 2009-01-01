@@ -825,6 +825,8 @@
 	
 	<!-- OBJECTS -->
 
+	<object class="damage-digits" speed="60" ttl="1" z="999" />
+	
 	<alias name="static-target" class="single-pose(no-directions)" />
 	<alias name="pond" class="single-pose" />
 	<alias name="tank-bullet" class="bullet(auto-aim)" />
