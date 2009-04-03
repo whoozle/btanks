@@ -46,7 +46,7 @@ public:
 	const char * get_log_level_name(const int level);
 
 	void log(const int level, const char *file, const int line, const std::string &str);
-	const unsigned get_lines_counter() const { return _lines; }
+	unsigned get_lines_counter() const { return _lines; }
 
 private:
 	int _level;
