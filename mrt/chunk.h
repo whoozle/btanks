@@ -53,6 +53,7 @@ public:
 	void *reserve(const int more);
 
 	const std::string dump() const;
+	void pop(size_t n);
 
 protected:
 	void *ptr;

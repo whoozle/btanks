@@ -140,6 +140,19 @@ void Chunk::free() {
 	}
 }
 
+void Chunk::pop(size_t n) {
+	if (ptr == NULL)
+		return;
+	
+	if (n >= size) {
+		free();
+		return;
+	}
+	
+	memmove(ptr, (unsigned char *)ptr + n, size - n);
+	set_size(size - n);
+}
+
 const std::string Chunk::dump() const {
 	if (ptr == NULL)
 		return "empty memory chunk";
