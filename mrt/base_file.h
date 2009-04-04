@@ -36,7 +36,7 @@ public:
 	void write_all(const std::string &str) const;
 
 	virtual void open(const std::string &fname, const std::string &mode) = 0;
-	virtual const bool opened() const = 0;
+	virtual bool opened() const = 0;
 	
 	virtual void seek(long offset, int whence) const = 0;
 	virtual long tell() const = 0;
@@ -46,9 +46,9 @@ public:
 	virtual const size_t read(void *buf, const size_t size) const = 0;
 	virtual void close();
 	
-	virtual const bool eof() const = 0;
+	virtual bool eof() const = 0;
 
-	virtual const bool readline(std::string &str, const size_t bufsize = 1024) const; //default 1-byte read implementation
+	virtual bool readline(std::string &str, const size_t bufsize = 1024) const; //default 1-byte read implementation
 
 	void readLE16(int &x) const;
 	void readLE32(int &x) const;

@@ -105,7 +105,7 @@ const int SocketSet::check(const unsigned int timeout) {
 	return r;
 }
 
-const bool SocketSet::check(const Socket &sock, const int how) {
+bool SocketSet::check(const Socket &sock, const int how) {
 	int fd = sock._sock;
 	if (fd == -1)
 		throw_ex(("check on uninitialized socket"));
@@ -119,7 +119,7 @@ const bool SocketSet::check(const Socket &sock, const int how) {
 	return false;
 }
 
-const bool SocketSet::check(const Socket *sock, const int how) {
+bool SocketSet::check(const Socket *sock, const int how) {
 	return check(*sock, how);
 }
 

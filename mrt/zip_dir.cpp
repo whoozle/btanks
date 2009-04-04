@@ -177,7 +177,7 @@ ZipDirectory::ZipDirectory(const std::string &zip) : fname(zip) {
 void ZipDirectory::open(const std::string &path_) {
 }
 
-const bool ZipDirectory::opened() const {
+bool ZipDirectory::opened() const {
 	return false;
 }
 

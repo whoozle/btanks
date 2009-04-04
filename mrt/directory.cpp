@@ -28,7 +28,7 @@ Directory::~Directory() {
 	close();
 }
 
-const bool Directory::opened() const {
+bool Directory::opened() const {
 	return _handle != 0;
 }
 

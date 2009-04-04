@@ -31,13 +31,13 @@ class Chunk;
 
 class MRTAPI File : public BaseFile, public FSNode {
 public: 
-	const bool readline(std::string &str, const size_t bufsize = 1024) const;
+	bool readline(std::string &str, const size_t bufsize = 1024) const;
 
 	File();
 	~File();
 
 	virtual void open(const std::string &fname, const std::string &mode);
-	virtual const bool opened() const;
+	virtual bool opened() const;
 	
 	virtual void seek(long offset, int whence) const;
 	virtual long tell() const;
@@ -47,7 +47,7 @@ public:
 	virtual const size_t read(void *buf, const size_t size) const;
 	virtual void close();
 	
-	virtual const bool eof() const;
+	virtual bool eof() const;
 
 	inline operator FILE*() const { return _f; }
 	FILE * unlink(); //unlinks FILE* structure from this object

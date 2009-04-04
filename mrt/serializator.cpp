@@ -78,7 +78,7 @@ Serializator::~Serializator() {
 	}
 }
 
-const bool Serializator::end() const {
+bool Serializator::end() const {
 	return _pos >= _data->get_size();
 }
 

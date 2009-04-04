@@ -35,7 +35,7 @@ public:
 	Directory();
 	virtual void create(const std::string &path, const bool recurse = false);
 	virtual void open(const std::string &path);
-	virtual const bool opened() const;
+	virtual bool opened() const;
 	virtual const std::string read() const;
 	virtual void close();
 	virtual ~Directory();

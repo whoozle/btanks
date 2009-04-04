@@ -106,7 +106,7 @@ void BaseFile::write_all(const std::string &str) const {
 	write_all(data);
 }
 
-const bool BaseFile::readline(std::string &str, const size_t bufsize) const {
+bool BaseFile::readline(std::string &str, const size_t bufsize) const {
 	//FIXME FIXME FIXME!!
 	//very stupid and sloooow implementation. consider it as a stub. 
 	str.clear();

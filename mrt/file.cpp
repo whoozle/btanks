@@ -36,7 +36,7 @@ void File::open(const std::string &fname, const std::string &mode) {
 		throw_io(("fopen(\"%s\", \"%s\")", fname.c_str(), mode.c_str()))
 }
 
-const bool File::opened() const {
+bool File::opened() const {
 	return _f != NULL;
 }
 
@@ -53,7 +53,7 @@ void File::write(const Chunk &ch) const {
 		throw_io(("fwrite"));
 }
 
-const bool File::readline(std::string &str, const size_t bufsize) const {
+bool File::readline(std::string &str, const size_t bufsize) const {
 	if (_f == NULL)
 		throw_ex(("readline on closed file"));
 	mrt::Chunk buf;
@@ -73,7 +73,7 @@ const size_t File::read(void *buf, const size_t size) const {
 }
 
 
-const bool File::eof() const {
+bool File::eof() const {
 	int r = feof(_f);
 	if (r == -1)
 		throw_io(("feof"));

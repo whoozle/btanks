@@ -45,7 +45,7 @@ public:
 	virtual void add(const bool b);
 	virtual void add(const Chunk &c);
 
-	virtual const bool end() const;
+	virtual bool end() const;
 	
 	virtual void get(int &n) const;
 	virtual void get(unsigned int &n) const;

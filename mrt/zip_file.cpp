@@ -18,7 +18,7 @@ void ZipFile::open(const std::string &fname, const std::string &mode) {
 	throw_ex(("unimplemented!"));
 }
 
-const bool ZipFile::opened() const {
+bool ZipFile::opened() const {
 	return file != NULL;
 }
 
@@ -90,7 +90,7 @@ void ZipFile::close() {
 	file = NULL;
 }
 	
-const bool ZipFile::eof() const {
+bool ZipFile::eof() const {
 	return voffset < usize;
 }
 

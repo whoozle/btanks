@@ -11,7 +11,7 @@ public:
 	ZipFile(FILE *file, const unsigned method, const unsigned flags, const unsigned offset, const unsigned csize, const unsigned usize);
 	
 	virtual void open(const std::string &fname, const std::string &mode);
-	virtual const bool opened() const;
+	virtual bool opened() const;
 
 	virtual void seek(long offset, int whence) const;
 	virtual long tell() const;
@@ -21,7 +21,7 @@ public:
 	virtual const size_t read(void *buf, const size_t size) const;
 	virtual void close();
 	
-	virtual const bool eof() const;
+	virtual bool eof() const;
 
 	virtual ~ZipFile();
 

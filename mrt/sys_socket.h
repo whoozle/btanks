@@ -47,15 +47,15 @@ namespace mrt {
 			addr() : ip(0), port(0) {}
 			addr(unsigned ip, unsigned port) : ip(ip), port(port) {}
 			
-			const bool empty() const { return ip == 0; }
+			bool empty() const { return ip == 0; }
 
-			const bool operator<(const addr &other) const {
+			bool operator<(const addr &other) const {
 				return ip != other.ip ? ip < other.ip: port < other.port;
 			}
-			const bool operator==(const addr &other) const {
+			bool operator==(const addr &other) const {
 				return ip == other.ip && port == other.port;
 			}
-			const bool operator!=(const addr &other) const {
+			bool operator!=(const addr &other) const {
 				return !(*this == other);
 			}
 

@@ -40,8 +40,8 @@ public:
 	void remove(const Socket &sock);
 	
 	const int check(const unsigned int timeout);
-	const bool check(const Socket &sock, const int how);
-	const bool check(const Socket *sock, const int how);
+	bool check(const Socket &sock, const int how);
+	bool check(const Socket *sock, const int how);
 	
 	void reset();
 	
