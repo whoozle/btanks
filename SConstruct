@@ -16,7 +16,7 @@ picLibBuilder = Builder(
 env['BUILDERS']['StaticLibrary'] = picLibBuilder
 env['BUILDERS']['Library'] = picLibBuilder
 
-opts = Variables(['options.cache'])
+opts = Options(['options.cache'])
 opts.Add('CC', 'C compiler')
 opts.Add('CXX', 'C++ compiler')
 opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
@@ -31,9 +31,9 @@ if sys.platform != "win32":
 	opts.Add('lib_dir', 'resources directory (default: prefix/lib)', '')
 	opts.Add('plugins_dir', 'plugins directory (default: prefix/lib/btanks)', '')
 	opts.Add('resources_dir', 'resources directory (default: prefix/share/btanks)', '')
-	opts.Add(BoolVariable('gcc_visibility', 'gcc visibility', 'true'))
+	opts.Add(BoolOption('gcc_visibility', 'gcc visibility', 'true'))
 
-opts.Add(EnumVariable('mode', 'build mode', 'release', allowed_values=('debug','release')))
+opts.Add(EnumOption('mode', 'build mode', 'release', allowed_values=('debug','release')))
 
 opts.Update(env)
 opts.Save('options.cache', env.Clone())
