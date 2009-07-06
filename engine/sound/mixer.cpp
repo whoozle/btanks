@@ -218,10 +218,11 @@ void IMixer::loadSample(const std::string &filename, const std::string &classnam
 		OggStream::decode(*sample, Finder->find("sounds/" + filename));
 		LOG_DEBUG(("sample %s decoded. ", filename.c_str()));
 		_sounds[filename] = sample;
+		
+		if (!classname.empty())
+			_classes[classname].insert(filename);
 	} CATCH("loadSample", { delete sample; sample = NULL; });
 
-	if (!classname.empty())
-		_classes[classname].insert(filename);
 }
 
 void IMixer::playRandomSample(Object *o, const std::string &classname, const bool loop, const float gain) {
