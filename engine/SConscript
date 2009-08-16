@@ -37,7 +37,7 @@ bt_sources = 	[
 	'menu/slider.cpp', 'menu/redefine_keys.cpp', 'menu/tooltip.cpp', 'menu/player_name_control.cpp', 
 	'menu/host_item.cpp', 'menu/number_control.cpp', 'menu/video_control.cpp', 'menu/network_status.cpp', 
 	'menu/join_team.cpp', 'menu/mode_panel.cpp', 'menu/grid.cpp', 'menu/notepad.cpp', 'menu/video_control_disabled.cpp', 
-	'menu/simple_gamepad_setup.cpp', 'menu/medals.cpp', 'menu/image.cpp', 'menu/main_menu.cpp', 
+	'menu/simple_gamepad_setup.cpp', 'menu/medals.cpp', 'menu/image.cpp', 'menu/main_menu.cpp', 'menu/profiles_menu.cpp', 
 #end of menu
 
 	'src/finder.cpp', 'src/zbox.cpp', 'src/campaign.cpp', 'src/netstats.cpp', 

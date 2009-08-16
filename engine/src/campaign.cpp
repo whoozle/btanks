@@ -61,8 +61,8 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		item.object = attr["object"];
 		item.animation = attr["animation"];
 		item.pose = attr["preview-pose"];
-		
-		std::string kname = "campaign." + this->name + ".wares." + item.name + ".amount";
+
+		std::string kname = get_config_prefix() + ".wares." + item.name + ".amount";
 		//LOG_DEBUG(("querying %s", kname.c_str()));
 		if (Config->has(kname)) {
 			int am;
@@ -70,6 +70,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			item.amount = am;
 		}
 		item.validate();
+
 	} else if (name == "medal") {
 		Medal medal;
 		medal.id = attr.get("id", std::string());
@@ -83,6 +84,16 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	}
 }
 
+std::string Campaign::get_config_prefix() const {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+	
+	return "campaign." + profile + "." + this->name;
+}
+
+
 void Campaign::end(const std::string &name) {
 	if (name == "wares") {
 		LOG_DEBUG(("wares section parsed... %u wares in store.", (unsigned)wares.size()));
@@ -91,7 +102,7 @@ void Campaign::end(const std::string &name) {
 }
 
 void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) const {
-	std::string mname = "campaign." + name + ".maps." + map_id + ".win";
+	std::string mname = get_config_prefix() + ".maps." + map_id + ".win";
 	//LOG_DEBUG(("mname: %s", mname.c_str()));
 	played = Config->has(mname);
 	won = false;
@@ -164,11 +175,13 @@ void Campaign::init(const std::string &base, const std::string &filename) {
 	for(size_t i = 0; i < maps.size(); ++i) {
 		GameMonitor->useInCampaign(base, maps[i].id);
 	}
+	
+	
 }
 
 const int Campaign::getCash() const {
 	int cash;
-	Config->get("campaign." + name + ".score", cash, 0);
+	Config->get(get_config_prefix() + ".score", cash, 0);
 	return cash;
 }
 
@@ -184,8 +197,10 @@ const bool Campaign::buy(ShopItem &item) const {
 	cash -= item.price;
 	++item.amount;
 
-	Config->set("campaign." + name + ".score", cash);
-	Config->set("campaign." + name + ".wares." + item.name + ".amount", item.amount);
+	std::string prefix = get_config_prefix();
+
+	Config->set(prefix + ".score", cash);
+	Config->set(prefix + ".wares." + item.name + ".amount", item.amount);
 	return true;
 }
 
@@ -199,8 +214,10 @@ const bool Campaign::sell(ShopItem &item) const {
 	cash += item.price * 4 / 5;
 	--item.amount;
 
-	Config->set("campaign." + name + ".score", cash);
-	Config->set("campaign." + name + ".wares." + item.name + ".amount", item.amount);
+	std::string prefix = get_config_prefix();
+
+	Config->set(prefix + ".score", cash);
+	Config->set(prefix + ".wares." + item.name + ".amount", item.amount);
 	return true;
 }
 
@@ -223,9 +240,11 @@ const Campaign::ShopItem * Campaign::find(const std::string &name) const {
 }
 
 void Campaign::clearBonuses() {
+	std::string prefix = get_config_prefix();
+
 	for(std::vector<ShopItem>::iterator i = wares.begin(); i != wares.end(); ++i) {
 		i->amount = 0;
-		std::string kname = "campaign." + name + ".wares." + i->name + ".amount";
+		std::string kname = prefix + ".wares." + i->name + ".amount";
 		if (Config->has(kname)) {
 			Config->remove(kname);
 		}
@@ -236,11 +255,13 @@ bool Campaign::Map::got_medal(const Campaign &campaign, const Medal &medal) cons
 	if (no_medals)
 		return false;
 	
+	std::string prefix = campaign.get_config_prefix();
+
 	if (medal.id == "elimination") {
 		if (score <= 0)
 			return false;
 
-		std::string mname = "campaign." + campaign.name + ".maps." + id + ".maximum-score";
+		std::string mname = prefix + ".maps." + id + ".maximum-score";
 		if (!Config->has(mname))
 			return false;
 
@@ -251,7 +272,7 @@ bool Campaign::Map::got_medal(const Campaign &campaign, const Medal &medal) cons
 		if (time <= 0)
 			return false;
 
-		std::string mname = "campaign." + campaign.name + ".maps." + id + ".best-time";
+		std::string mname = prefix + ".maps." + id + ".best-time";
 		if (!Config->has(mname))
 			return false;
 			

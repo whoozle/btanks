@@ -4,6 +4,10 @@
 #include "start_server_menu.h"
 #include "join_server_menu.h"
 #include "options_menu.h"
+#include "profiles_menu.h"
+#include "prompt.h"
+#include "config.h"
+#include "text_control.h"
 
 #include "resource_manager.h"
 #include "sdlx/font.h"
@@ -15,7 +19,18 @@
 
 bool MainMenu::generate_key_events_for_gamepad;
 
-MainMenu::MainMenu(int w, int h) : active(NULL) , _netstat(new NetworkStatusControl) {
+MainMenu::MainMenu(int w, int h) : active(NULL), w(w), h(h), _netstat(new NetworkStatusControl), _profile_dialog(NULL) {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	
+	if (profile.empty()) {
+		LOG_DEBUG(("no profile, creating dialog"));
+		_profile_dialog = new Prompt(320, 50, new TextControl("small"));
+	} else 
+		init();
+}
+
+void MainMenu::init() {
 	CampaignMenu * cm = new CampaignMenu(w, h);
 	if (cm->empty()) {
 		delete cm;
@@ -27,6 +42,7 @@ MainMenu::MainMenu(int w, int h) : active(NULL) , _netstat(new NetworkStatusCont
 	add(new MenuItem("big", "menu", "start-game"), new StartServerMenu(w, h));
 	add(new MenuItem("big", "menu", "join-game"), new JoinServerMenu(w, h));
 	add(new MenuItem("big", "menu", "options"), new OptionsMenu(w, h));
+	add(new MenuItem("big", "menu", "profiles"), new ProfilesMenu(w, h));
 	
 	add(new MenuItem("big", "menu", "credits"));
 	add(new MenuItem("big", "menu", "quit"));
@@ -47,6 +63,23 @@ void MainMenu::add(MenuItem *item, Control *slave) {
 }
 
 void MainMenu::tick(const float dt) {
+	if (_profile_dialog) {
+		_profile_dialog->tick(dt);
+		if (_profile_dialog->changed()) {
+			_profile_dialog->reset();
+			std::string name = _profile_dialog->get();
+			if (!name.empty()) {
+				Config->set("profile.0.name", name);
+				Config->set("engine.profile", std::string("0"));
+				delete _profile_dialog;
+				_profile_dialog = NULL;
+				
+				init();
+			}
+		}
+		return;
+	}
+	
 	if (hidden())
 		return;
 
@@ -72,6 +105,13 @@ void MainMenu::tick(const float dt) {
 }
 
 void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
+	if (_profile_dialog) {
+		int cw, ch;
+		_profile_dialog->get_size(cw, ch);
+		_profile_dialog->render(surface, (w - cw) / 2, (h - ch) / 2);
+		return;
+	}
+	
 	if (hidden())
 		return;
 	
@@ -85,6 +125,10 @@ void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 }
 
 bool MainMenu::onKey(const SDL_keysym sym) {
+	if (_profile_dialog) {
+		return _profile_dialog->onKey(sym);
+	}
+
 	if (hidden())
 		return false;
 	
@@ -95,6 +139,10 @@ bool MainMenu::onKey(const SDL_keysym sym) {
 }
 
 bool MainMenu::onMouse(const int button, const bool pressed, const int x, const int y) {
+	if (_profile_dialog) {
+		return _profile_dialog->onMouse(button, pressed, x, y);
+	}
+
 	if (hidden())
 		return false;
 
@@ -113,6 +161,10 @@ bool MainMenu::onMouse(const int button, const bool pressed, const int x, const 
 }
 
 bool MainMenu::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
+	if (_profile_dialog) {
+		return _profile_dialog->onMouseMotion(state, x, y, xrel, yrel);
+	}
+
 	if (hidden())
 		return false;
 	
@@ -123,6 +175,10 @@ bool MainMenu::onMouseMotion(const int state, const int x, const int y, const in
 }
 
 void MainMenu::on_mouse_enter(bool enter) {
+	if (_profile_dialog) {
+		return _profile_dialog->on_mouse_enter(enter);
+	}
+
 	if (hidden())
 		return;
 	
@@ -134,6 +190,7 @@ void MainMenu::on_mouse_enter(bool enter) {
 
 MainMenu::~MainMenu() {
 	delete _netstat;
+	delete _profile_dialog;
 	for(size_t i = 0; i < items.size(); ++i) {
 		delete items[i];
 	}
@@ -142,6 +199,9 @@ MainMenu::~MainMenu() {
 #include "math/unary.h"
 
 void MainMenu::onEvent(const SDL_Event &e) {
+	if (_profile_dialog)
+		return;
+	
 	if (hidden())
 		return;
 

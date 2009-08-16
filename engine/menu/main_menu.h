@@ -32,6 +32,7 @@
 #include "sl08/sl08.h"
 
 class NetworkStatusControl;
+class Prompt;
 
 class MainMenu : public Menu {
 public: 
@@ -39,6 +40,7 @@ public:
 
 
 	MainMenu(int w, int h);
+	void init();
 	static bool generate_key_events_for_gamepad;
 	virtual void tick(const float dt);
 
@@ -59,8 +61,9 @@ private:
 	std::vector<Control *> items;
 	Control * active;
 	
-	int dx, dy;
+	int w, h, dx, dy;
 	NetworkStatusControl * _netstat;
+	Prompt * _profile_dialog;
 	
 	//keyboard emulation 
 	bool _key_active;

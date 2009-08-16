@@ -205,6 +205,9 @@
 		<string id="start-game" lang="it">NUOVO GIOCO</string>
 		<string id="start-game" lang="es">EMPEZAR JUEGO</string>
 		<string id="start-game" lang="ca">COMENÇAR JOC</string>
+
+		<string id="profiles">PROFILES</string>
+		<string id="profiles" lang="ru">ПРОФИЛИ</string>
 		
 		<string id="random-respawn">Random respawn</string>
 		<string id="random-respawn" lang="ru">Случайный респаун</string>

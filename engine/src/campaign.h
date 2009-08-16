@@ -60,6 +60,8 @@ public:
 	void clearBonuses();
 	
 protected: 
+	std::string get_config_prefix() const;
+	
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;
 
 	void start(const std::string &name, Attrs &attr);
