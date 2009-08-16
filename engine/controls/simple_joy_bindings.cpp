@@ -115,8 +115,7 @@ void SimpleJoyBindings::set(int idx, const State &s) {
 	validate();
 }
 
-SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) :
-	config_base("player.controls.joystick." + profile + ".") { 
+SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy) : profile(profile) { 
 	LOG_DEBUG(("loading joystick bindings for the '%s'", profile.c_str()));
 	
 	axis = joy.get_axis_num();
@@ -129,6 +128,13 @@ SimpleJoyBindings::SimpleJoyBindings(const std::string &profile, const sdlx::Joy
 static const char * names[] = {"left", "right", "up", "down", "fire", "alt-fire", "disembark", "hint-ctrl"};
 
 void SimpleJoyBindings::save() {
+	std::string p;
+	Config->get("engine.profile", p, std::string());
+	if (p.empty())
+		throw_ex(("empty profile"));
+
+	std::string config_base = "profile" + p + ".controls.joystick." + profile + ".";
+
 	for(int i = 0; i < 8; ++i) {
 		if (state[i].need_save) {
 			Config->set(config_base + names[i], state[i].to_string());
@@ -137,6 +143,12 @@ void SimpleJoyBindings::save() {
 }
 
 void SimpleJoyBindings::load() {
+	std::string p;
+	Config->get("engine.profile", p, std::string());
+	if (p.empty())
+		throw_ex(("empty profile"));
+
+	std::string config_base = "profile" + p + ".controls.joystick." + profile + ".";
 	Config->get(config_base + "dead-zone", dead_zone, 0.8f);
 
 	for(int i = 0; i < 8; ++i) {
@@ -371,5 +383,12 @@ void SimpleJoyBindings::update(PlayerState &dst, const SDL_Event &event) const {
 
 void SimpleJoyBindings::set_dead_zone(const float dz) {
 	dead_zone = dz;
+
+	std::string p;
+	Config->get("engine.profile", p, std::string());
+	if (p.empty())
+		throw_ex(("empty profile"));
+
+	std::string config_base = "profile" + p + ".controls.joystick." + profile + ".";
 	Config->set(config_base + "dead-zone", dz);
 }

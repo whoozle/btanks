@@ -47,14 +47,20 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 		i = 2;
 	else throw_ex(("unknown keyboard variant used (%s)", variant.c_str()));
 
-	Config->get("player.controls." + variant + ".up", up, keys[i][0]);
-	Config->get("player.controls." + variant + ".down", down, keys[i][1]);
-	Config->get("player.controls." + variant + ".left", left, keys[i][2]);
-	Config->get("player.controls." + variant + ".right", right, keys[i][3]);
-	Config->get("player.controls." + variant + ".fire", fire, keys[i][4]);
-	Config->get("player.controls." + variant + ".alt-fire", alt_fire, keys[i][5]);
-	Config->get("player.controls." + variant + ".disembark", leave, keys[i][6]);
-	Config->get("player.controls." + variant + ".hint-control", hint_control, keys[i][7]);
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+	std::string base = "profile." + profile + ".controls." + variant;
+
+	Config->get(base + ".up", up, keys[i][0]);
+	Config->get(base + ".down", down, keys[i][1]);
+	Config->get(base + ".left", left, keys[i][2]);
+	Config->get(base + ".right", right, keys[i][3]);
+	Config->get(base + ".fire", fire, keys[i][4]);
+	Config->get(base + ".alt-fire", alt_fire, keys[i][5]);
+	Config->get(base + ".disembark", leave, keys[i][6]);
+	Config->get(base + ".hint-control", hint_control, keys[i][7]);
 
 	_up = (SDLKey)up;
 	_down = (SDLKey)down;

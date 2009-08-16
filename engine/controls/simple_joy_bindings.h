@@ -40,7 +40,7 @@ public:
 	};
 
 	//by index (0-8) get joystick state (Axis, 1, -1 (negative)), (Button, 2), (Hat, Center)
-	SimpleJoyBindings() : config_base(), axis(0), buttons(0), hats(0) {}
+	SimpleJoyBindings() : axis(0), buttons(0), hats(0) {}
 	SimpleJoyBindings(const std::string &profile, const sdlx::Joystick &joy);
 	void save();
 	void load();
@@ -62,8 +62,9 @@ private:
 	void validate();
 	static void set_opposite(State &dst, const State &src);
 	
+	std::string profile;
+	
 	State state[8];
-	std::string config_base;
 	int axis, buttons, hats;
 	float dead_zone;
 };
