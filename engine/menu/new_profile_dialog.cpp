@@ -35,11 +35,18 @@ NewProfileDialog::NewProfileDialog() {
 bool NewProfileDialog::onKey(const SDL_keysym sym) {
 	if (Container::onKey(sym))
 		return true;
-		
+
+	if (sym.sym == SDLK_ESCAPE) {
+		_name->set(std::string());
+		invalidate();
+		return true;
+	}
+	
 	if (sym.sym == SDLK_RETURN || sym.sym == SDLK_KP_ENTER) {
 		_name->invalidate(true);
 		return true;
 	} 
+	
 	return false;
 }
 
