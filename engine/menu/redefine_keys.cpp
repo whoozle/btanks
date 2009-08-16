@@ -99,19 +99,29 @@ void RedefineKeys::tick(const float dt) {
 
 
 void RedefineKeys::load() {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+	
 	_actions.clear();
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		_actions.push_back(Actions::value_type(I18n->get("menu", _labels[i]), sdlx::Rect()));
 		for(size_t j = 0; j < 3; ++j) {
-			Config->get("player.controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
+			Config->get("profile." + profile + ".controls." + variants[j] + "." + _labels[i], _keys[j][i], _keys[j][i]);
 		}
 	}
 }
 
 void RedefineKeys::revert_to_defaults() {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		for(size_t j = 0; j < 3; ++j) {
-			Config->remove("player.controls." + variants[j] + "." + _labels[i]);
+			Config->remove("profile." + profile + ".controls." + variants[j] + "." + _labels[i]);
 		}
 	}
 	load();
@@ -205,6 +215,11 @@ bool RedefineKeys::onKey(const SDL_keysym sym) {
 }
 
 void RedefineKeys::save() {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
 	for(int i = 0; i < 3; ++i) 
 		for(int j = 0; j < 7; ++j) {
 			if (_keys[i][j] == 0)
@@ -213,7 +228,7 @@ void RedefineKeys::save() {
 
 	for(size_t i = 0; i < _labels.size(); ++i) {
 		for(size_t j = 0; j < 3; ++j) {
-			Config->set("player.controls." + variants[j] + "." + _labels[i], _keys[j][i]);
+			Config->set("profile." + profile + ".controls." + variants[j] + "." + _labels[i], _keys[j][i]);
 		}
 	}	
 }

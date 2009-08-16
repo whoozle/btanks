@@ -72,13 +72,23 @@ ControlPicker::ControlPicker(const int w, const std::string &font, const std::st
 }
 
 void ControlPicker::save() {
-	Config->set(_config_key, _controls->getValue());
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
+	Config->set("profile." + profile + "." + _config_key, _controls->getValue());
 }
 
 void ControlPicker::reload() {
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
 	TRY {
 		std::string cm;
-		Config->get(_config_key, cm, _default);
+		Config->get("profile." + profile + "." + _config_key, cm, _default);
 		_controls->set(cm);
 	} CATCH("reload", {})
 }

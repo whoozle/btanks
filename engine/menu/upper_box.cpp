@@ -64,10 +64,10 @@ UpperBox::UpperBox(int _w, int _h, const bool server) : value("deathmatch"), _se
 	int players_w = w / 5;
 	
 	int cw1, ch1, cw2, ch2;
-	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "player.name-1", players_w);
+	_player1_name = new PlayerNameControl(I18n->get("menu", "player-name-1"), "name", players_w);
 	_player1_name->get_size(cw1, ch1);
 
-	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "player.name-2", players_w);
+	_player2_name = new PlayerNameControl(I18n->get("menu", "player-name-2"), "name-2", players_w);
 	_player2_name->get_size(cw2, ch2);
 
 	const int dh = 8;

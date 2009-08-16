@@ -120,7 +120,7 @@ void ProfilesMenu::tick(const float dt) {
 		
 		const std::string &id = _ids[_list->get()];
 		Config->remove("profile." + id + ".name");
-		Config->remove("profile." + id + ".name2");
+		Config->remove("profile." + id + ".name-2");
 		//do not remove all campaign stuff for now
 		
 		init();

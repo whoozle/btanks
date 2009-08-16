@@ -282,24 +282,28 @@ void MapPicker::fillSlots() const {
 		LOG_DEBUG(("after: %s:%s", object.c_str(), animation.c_str()));
 		
 		mrt::to_lower(type);
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
 
 		std::string cm = "ai";
 		if (!split) {
 			if (type == "player") {
 				idx1 = i;
-				Config->get("player.control-method", cm, "keys");
-				Config->get("player.name-1", slot.name, Nickname::generate());
+				Config->get("profile." + profile + ".control-method", cm, "keys");
+				Config->get("profile." + profile + ".name", slot.name, Nickname::generate());
 			} else 
 				slot.name = Nickname::generate();
 		} else {
 			if (type == "player-1") {
 				idx1 = i;
-				Config->get("player.control-method-1", cm, "keys-1");		
-				Config->get("player.name-1", slot.name, Nickname::generate());
+				Config->get("profile." + profile + ".control-method-1", cm, "keys-1");		
+				Config->get("profile." + profile + ".name", slot.name, Nickname::generate());
 			} else if (type == "player-2") {
 				idx2 = i;
-				Config->get("player.control-method-2", cm, "keys-2");
-				Config->get("player.name-2", slot.name, Nickname::generate());
+				Config->get("profile." + profile + ".control-method-2", cm, "keys-2");
+				Config->get("profile." + profile + ".name-2", slot.name, Nickname::generate());
 			} else 
 				slot.name = Nickname::generate();
 		}
