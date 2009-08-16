@@ -32,7 +32,7 @@
 #include "sl08/sl08.h"
 
 class NetworkStatusControl;
-class Prompt;
+class NewProfileDialog;
 
 class MainMenu : public Menu {
 public: 
@@ -63,7 +63,7 @@ private:
 	
 	int w, h, dx, dy;
 	NetworkStatusControl * _netstat;
-	Prompt * _profile_dialog;
+	NewProfileDialog * _profile_dialog;
 	
 	//keyboard emulation 
 	bool _key_active;

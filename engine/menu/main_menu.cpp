@@ -15,6 +15,7 @@
 #include "tmx/map.h"
 
 #include "network_status.h"
+#include "new_profile_dialog.h"
 #include "player_manager.h"
 
 bool MainMenu::generate_key_events_for_gamepad;
@@ -25,7 +26,7 @@ MainMenu::MainMenu(int w, int h) : active(NULL), w(w), h(h), _netstat(new Networ
 	
 	if (profile.empty()) {
 		LOG_DEBUG(("no profile, creating dialog"));
-		_profile_dialog = new Prompt(320, 50, new TextControl("small"));
+		_profile_dialog = new NewProfileDialog;
 	} else 
 		init();
 }

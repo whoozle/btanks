@@ -111,6 +111,9 @@
 		<string id="off" lang="es">APAGADO</string>
 		<string id="off" lang="ca">APAGAT</string>
 
+		<string id="enter-profile-name">Enter your name:</string>
+		<string id="enter-profile-name" lang="ru">Введите имя профиля:</string>
+		
 		<area id="modes">
 			<string id="racing">RACING</string>
 			<string id="racing" lang="ru">ГОНКИ</string>
