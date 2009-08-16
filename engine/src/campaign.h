@@ -59,9 +59,9 @@ public:
 	const ShopItem * find(const std::string &name) const;
 	void clearBonuses();
 	
-protected: 
 	std::string get_config_prefix() const;
-	
+
+protected: 
 	void getStatus(const std::string &map_id, bool &played, bool &won) const;
 
 	void start(const std::string &name, Attrs &attr);

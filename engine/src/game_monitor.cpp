@@ -1200,12 +1200,14 @@ void IGameMonitor::saveCampaign() {
 
 	const std::string mname = "campaign." + profile + "." + _campaign->name + ".maps." + Map->getName();
 	
+	std::string prefix = _campaign->get_config_prefix();
+	
 	if (PlayerManager->get_slots_count()) {
 		PlayerSlot &slot = PlayerManager->get_slot(0); 
 		int score; 
-		Config->get("campaign." + _campaign->name + ".score", score, 0);
+		Config->get(prefix + ".score", score, 0);
 		score += slot.score;
-		Config->set("campaign." + _campaign->name + ".score", score);
+		Config->set(prefix + ".score", score);
 		LOG_DEBUG(("total score: %d", score));
 
 		int mscore;
