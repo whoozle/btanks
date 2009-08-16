@@ -175,6 +175,10 @@ TRY {
 			slot.deserialize(s);
 			_players.push_back(slot);
 		}
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
 		
 		for(size_t i = 0; i < _local_clients; ++i) {
 			Message m(Message::RequestPlayer);
@@ -184,7 +188,11 @@ TRY {
 			m.set("vehicle", vehicle);
 
 			std::string name;
-			Config->get(mrt::format_string("player.name-%u", (unsigned)(i + 1)), name, Nickname::generate());
+			if (i == 0)
+				Config->get("profile." + profile + ".name", name, Nickname::generate());
+			else
+				Config->get(mrt::format_string("profile.%s.name-%u", profile.c_str(), (unsigned)(i + 1)), name, Nickname::generate());
+
 			m.set("name", name);
 			_client->send(m);
 		}	
@@ -225,6 +233,11 @@ TRY {
 	}
 	
 	case Message::GameJoined: {
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
+		
 		int id = message.channel;
 		if (id < 0 || (unsigned)id >= _players.size())
 			throw_ex(("player id exceeds players count (%d/%d)", id, (int)_players.size()));
@@ -237,7 +250,7 @@ TRY {
 
 		assert(slot.control_method == NULL);
 		if (_local_clients == 1) {
-			GET_CONFIG_VALUE("player.control-method", std::string, control_method, "keys");	
+			GET_CONFIG_VALUE("profile." + profile + ".control-method", std::string, control_method, "keys");	
 			slot.createControlMethod(control_method);
 		} else if (_local_clients == 2) {
 			size_t idx = 0;
@@ -247,7 +260,7 @@ TRY {
 			}
 			assert(idx == 1 || idx == 2);
 			std::string control_method;
-			Config->get(mrt::format_string("player.control-method-%u", (unsigned)idx), control_method, mrt::format_string("keys-%u", (unsigned)idx));	
+			Config->get(mrt::format_string("profile.%s.control-method-%u", profile.c_str(), (unsigned)idx), control_method, mrt::format_string("keys-%u", (unsigned)idx));	
 			slot.createControlMethod(control_method);
 		} else throw_ex(("cannot handle %u clients", (unsigned)_local_clients));
 		
@@ -1443,16 +1456,21 @@ void IPlayerManager::update_controls() {
 		}
 	}
 	//LOG_DEBUG(("p1: %d, p2: %d", p1, p2));
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+		
 	std::string cm1, cm2;
 	switch(pn) {
 	case 2: 
-		Config->get("player.control-method-1", cm1, "keys-1");	
-		Config->get("player.control-method-2", cm2, "keys-2");	
+		Config->get("profile." + profile + ".control-method-1", cm1, "keys-1");	
+		Config->get("profile." + profile + ".control-method-2", cm2, "keys-2");	
 		_players[p1].createControlMethod(cm1);
 		_players[p2].createControlMethod(cm2);
 	break;
 	case 1: 
-		Config->get("player.control-method", cm1, "keys");	
+		Config->get("profile." + profile + ".control-method", cm1, "keys");	
 		_players[p1].createControlMethod(cm1);
 	break;	
 	}

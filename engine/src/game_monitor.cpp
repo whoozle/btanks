@@ -1109,10 +1109,15 @@ void IGameMonitor::startGame(Campaign *campaign, const std::string &name) {
 	if (RTConfig->server_mode)
 		return;
 	
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
 	PlayerSlot &slot = PlayerManager->get_slot(0);
 	std::string cm;
-	Config->get("player.control-method", cm, "keys");
-	Config->get("player.name-1", slot.name, Nickname::generate());
+	Config->get("profile." + profile + ".control-method", cm, "keys");
+	Config->get("profile." + profile + ".name", slot.name, Nickname::generate());
 	slot.createControlMethod(cm);
 
 	std::string object, vehicle;
