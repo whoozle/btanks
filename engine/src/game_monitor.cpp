@@ -795,7 +795,13 @@ void IGameMonitor::loadMap(Campaign *campaign, const std::string &name, const bo
 	int difficulty = 2; //map as is == hard, default: normal
 
 	if (campaign) {
-		Config->get("campaign." + campaign->name + ".difficulty", difficulty, 1);
+	
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
+	
+		Config->get("campaign." + profile + "." + campaign->name + ".difficulty", difficulty, 1);
 
 		Var v_true("bool");
 		v_true.b = (difficulty >= 3);
@@ -1182,7 +1188,12 @@ void IGameMonitor::saveCampaign() {
 		return;
 
 	LOG_DEBUG(("saving compaign state..."));
-	const std::string mname = "campaign." + _campaign->name + ".maps." + Map->getName();
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
+	const std::string mname = "campaign." + profile + "." + _campaign->name + ".maps." + Map->getName();
 	
 	if (PlayerManager->get_slots_count()) {
 		PlayerSlot &slot = PlayerManager->get_slot(0); 

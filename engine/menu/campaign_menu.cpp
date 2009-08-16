@@ -156,12 +156,19 @@ void CampaignMenu::init() {
 	Campaign &campaign = _campaigns[ci];
 
 	std::string current_map;
+
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
 	TRY {
-		if (Config->has("campaign." + campaign.name + ".current-map")) {
-			Config->get("campaign." + campaign.name + ".current-map", current_map, std::string());
+		std::string key = "campaign." + profile + "." + campaign.name + ".current-map";
+		if (Config->has(key)) {
+			Config->get(key, current_map, std::string());
 		}
 		int diff;
-		Config->get("campaign." + campaign.name + ".difficulty", diff, 1);
+		Config->get("campaign." + profile + "." + campaign.name + ".difficulty", diff, 1);
 		LOG_DEBUG(("difficulty = %d", diff));
 
 		_c_difficulty->set(diff);
@@ -262,7 +269,12 @@ void CampaignMenu::tick(const float dt) {
 	}
 	if (_c_difficulty->changed()) {
 		_c_difficulty->reset();
-		Config->set("campaign." + campaign.name + ".difficulty", _c_difficulty->get());
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
+
+		Config->set("campaign." + profile + "." + campaign.name + ".difficulty", _c_difficulty->get());
 	}
 	if (_b_start->changed()) {
 		_b_start->reset();
@@ -279,13 +291,18 @@ void CampaignMenu::update_map() {
 	int mi = _maps->get();
 	if (mi < 0 || mi >= (int)map_id.size())
 		return;
+
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
 	
 	Campaign::Map map = campaign.maps[map_id[mi]];
-	Config->set(std::string("campaign.") + campaign.name + ".current-map", map.id);
+	Config->set(std::string("campaign.") + profile + "." + campaign.name + ".current-map", map.id);
 	_map_view->setOverlay(map.map_frame, map.position);
 	_map_view->setDestination(map.position.convert<float>());
 
-	std::string mname = std::string("campaign.") + campaign.name + ".maps." + map.id;
+	std::string mname = std::string("campaign.") + profile + "." + campaign.name + ".maps." + map.id;
 	
 	update_time(_last_time, mname + ".last-time");
 	update_time(_best_time, mname + ".best-time");

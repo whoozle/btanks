@@ -1227,9 +1227,12 @@ static int lua_hooks_get_difficulty(lua_State *L) {
 		const Campaign *campaign = GameMonitor->getCampaign();
 		if (campaign == NULL)
 			throw_ex(("get_difficulty could be used only from campaign script"));
+			
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
 
 		int difficulty;
-		Config->get("campaign." + campaign->name + ".difficulty", difficulty, 1);
+		Config->get("campaign." + profile + "." + campaign->name + ".difficulty", difficulty, 1);
 		lua_pushinteger(L, difficulty);
 		return 1;
 	} LUA_CATCH("get_difficulty");

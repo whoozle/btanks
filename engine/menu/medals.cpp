@@ -84,7 +84,12 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 				continue;
 
 			++total;
-			std::string mname = "campaign." + campaign->name + ".maps." + map.id + ".maximum-score";
+			std::string profile;
+			Config->get("engine.profile", profile, std::string());
+			if (profile.empty())
+				throw_ex(("empty profile"));
+
+			std::string mname = "campaign." + profile + "." + campaign->name + ".maps." + map.id + ".maximum-score";
 			if (!Config->has(mname))
 				continue;
 

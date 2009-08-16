@@ -25,7 +25,12 @@ void Shop::init(Campaign *campaign) {
 	if (_campaign == NULL)
 		return;
 	
-	_prefix = "campaign." + campaign->name + ".";
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
+	_prefix = "campaign." + profile + "." + campaign->name + ".";
 	LOG_DEBUG(("selecting campaign %s, cash: %d", campaign->name.c_str(), campaign->getCash()));
 
 	int w, h;

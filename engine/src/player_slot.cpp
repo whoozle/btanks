@@ -400,9 +400,15 @@ void PlayerSlot::spawn_player(const int slot_id, const std::string &classname_, 
 	if (spawn_limit <= 0 && Config->has("map.spawn-limit")) {
 		Config->get("map.spawn-limit", spawn_limit, 0);
 		const Campaign * campaign = GameMonitor->getCampaign();
-		if (campaign != NULL && Config->has("campaign." + campaign->name + ".wares.additional-life.amount")) {
+		
+		std::string profile;
+		Config->get("engine.profile", profile, std::string());
+		if (profile.empty())
+			throw_ex(("empty profile"));
+		
+		if (campaign != NULL && Config->has("campaign." + profile + "." +  campaign->name + ".wares.additional-life.amount")) {
 			int al;
-			Config->get("campaign." + campaign->name + ".wares.additional-life.amount", al, 0);
+			Config->get("campaign." + profile + "." + campaign->name + ".wares.additional-life.amount", al, 0);
 			spawn_limit += al;
 		}
 	}
