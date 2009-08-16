@@ -694,6 +694,19 @@ void IGame::onEvent(const SDL_Event &event) {
 
 	if (event.type == SDL_QUIT)
 		quit();
+		
+	if (event.type == SDL_ACTIVEEVENT) {
+		const SDL_ActiveEvent & active = event.active;
+		if (active.state == SDL_APPMOUSEFOCUS)
+			return;
+		
+		LOG_DEBUG(("active event: %d, %d", active.state, active.gain));
+		if (active.gain == 0 && !_paused)
+			pause();
+	}
+	
+	if (_paused && (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN))
+		pause();
 }
 
 void IGame::onMenu(const std::string &name) {
