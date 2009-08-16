@@ -12,7 +12,13 @@ PlayerNameControl::PlayerNameControl(const std::string &label, const std::string
 	_edit = ResourceManager->load_surface("menu/edit.png");
 
 	std::string name;
-	Config->get(config_key, name, Nickname::generate());
+
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+	
+	Config->get("profile." + profile + "." + config_key, name, Nickname::generate());
 	mrt::utf8_resize(name, 32);
 
 	_label = new Label(_font, label);
@@ -49,7 +55,12 @@ const std::string PlayerNameControl::get() const {
 }
 
 void PlayerNameControl::set(const std::string &name) {
-	Config->set(_config_key, name);
+	std::string profile;
+	Config->get("engine.profile", profile, std::string());
+	if (profile.empty())
+		throw_ex(("empty profile"));
+
+	Config->set("profile." + profile + "." + _config_key, name);
 	_name->set(name);
 	_edit_flag = false;
 	invalidate(true);

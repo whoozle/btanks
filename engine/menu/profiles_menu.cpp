@@ -68,17 +68,16 @@ void ProfilesMenu::init() {
 	for(std::set<std::string>::iterator i = keys.begin(); i != keys.end(); ++i) {
 		const std::string &key = *i;
 		std::vector<std::string> r;
-		mrt::split(r, key, ".", 3);
+		mrt::split(r, key, ".", 4);
+		if (r[2] != "name")
+			continue;
+
 		const std::string &id = r[1];
+		
 		LOG_DEBUG(("profile '%s'", id.c_str()));
 
 		std::string name, config_key = "profile." + id + ".name";
 		Config->get(config_key, name, std::string());
-		if (name.empty()) {
-			LOG_WARN(("invalid profile, removing..."));
-			Config->remove(config_key);
-			continue;
-		}
 		
 		_ids.push_back(id);
 		_list->append(name);

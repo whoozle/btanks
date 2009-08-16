@@ -63,6 +63,7 @@ public:
 	void set(const std::string &name, const std::string &value);
 	
 	void remove(const std::string &name);
+	void rename(const std::string &old_name, const std::string &new_name);
 	
 	~IConfig();
 	

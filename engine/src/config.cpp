@@ -224,6 +224,16 @@ void IConfig::remove(const std::string &name) {
 	_map.erase(name);
 }
 
+void IConfig::rename(const std::string &old_name, const std::string &new_name) {
+	if (old_name == new_name)
+		return;
+	
+	VarMap::iterator i = _map.find(old_name);
+	if (i != _map.end()) {
+		_map[new_name] = i->second;
+		_map.erase(i);
+	}
+}
 
 void IConfig::registerInvalidator(bool *ptr) {
 	_invalidators.insert(ptr);

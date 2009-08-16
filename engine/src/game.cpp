@@ -331,6 +331,16 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->remove("engine.sound.positioning-divisor");
 		}
 		
+		if (revision < 8041) {
+			std::set<std::string> keys;
+			Config->enumerateKeys(keys, "player.");
+			for(std::set<std::string>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
+				std::string id = "profile.0." + i->substr(7);
+				LOG_DEBUG(("renaming %s to %s", i->c_str(), id.c_str()));
+				Config->rename(*i, id);
+			}
+		}
+		
 		Config->set("engine.revision", getRevision());
 	}
 
