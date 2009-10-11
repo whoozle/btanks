@@ -60,7 +60,7 @@ public:
 	static GameType parse_game_type(const std::string &type);
 };
 
-SINGLETON(BTANKSAPI, RTConfig, IRTConfig);
+PUBLIC_SINGLETON(BTANKSAPI, RTConfig, IRTConfig);
 
 #endif
 

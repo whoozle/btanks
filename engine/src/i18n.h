@@ -75,6 +75,6 @@ private:
 	std::set<std::string> _unlocalized, _langs;
 };
 
-SINGLETON(BTANKSAPI, I18n, II18n);
+PUBLIC_SINGLETON(BTANKSAPI, I18n, II18n);
 
 #endif

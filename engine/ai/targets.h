@@ -29,7 +29,7 @@ private:
 	void insert(std::set<std::string> &x, const char *array[]);
 };
 
-SINGLETON(BTANKSAPI, Targets, ITargets);
+PUBLIC_SINGLETON(BTANKSAPI, Targets, ITargets);
 
 }
 

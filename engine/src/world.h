@@ -186,6 +186,6 @@ private:
 	const IWorld& operator=(const IWorld &);
 };
 
-SINGLETON(BTANKSAPI, World, IWorld);
+PUBLIC_SINGLETON(BTANKSAPI, World, IWorld);
 
 #endif

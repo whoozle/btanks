@@ -226,7 +226,7 @@ private:
 	float total_time;
 };
 
-SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
+PUBLIC_SINGLETON(BTANKSAPI, GameMonitor, IGameMonitor);
 
 #endif
 

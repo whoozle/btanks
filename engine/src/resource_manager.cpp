@@ -705,7 +705,7 @@ sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s, const
 			Finder->load(data, name + ".map");
 			if (cmap->load(s->get_width(), s->get_height(), data))
 				return cmap;
-		} CATCH("create_map(load)", );
+		} CATCH("create_map(load)", {});
 	}
 	cmap->init(s, sdlx::CollisionMap::OnlyOpaque);
 	if (gscm) {
@@ -720,7 +720,7 @@ sdlx::CollisionMap * IResourceManager::create_cmap(const sdlx::Surface *s, const
 			std::string fname = base + "/" + name + ".map";
 			LOG_DEBUG(("saving collision map in %s", fname.c_str()));
 			cmap->save(fname);
-		} CATCH("create_map(save)", )
+		} CATCH("create_map(save)", {})
 	}
 	return cmap;
 }

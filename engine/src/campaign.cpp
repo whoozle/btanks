@@ -37,7 +37,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		
 		TRY {
 			map.map_frame = ResourceManager->load_surface("../maps/" + map.id + "_frame.png");
-		} CATCH("loading map frame", );
+		} CATCH("loading map frame", {});
 
 		LOG_DEBUG(("map: %s, visible: '%s'", map.id.c_str(), map.visible_if.c_str()));
 

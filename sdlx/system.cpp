@@ -201,7 +201,7 @@ end:
 	XCloseDisplay(display);
 	
 #endif
-} CATCH("accelerated_gl", )
+} CATCH("accelerated_gl", {})
 	return accel;
 }
 

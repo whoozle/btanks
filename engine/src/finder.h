@@ -82,7 +82,7 @@ private:
 	std::string _base_path;
 };
 
-SINGLETON(BTANKSAPI, Finder, IFinder);
+PUBLIC_SINGLETON(BTANKSAPI, Finder, IFinder);
 
 #endif
 

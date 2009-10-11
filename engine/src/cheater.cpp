@@ -111,7 +111,7 @@ void Cheater::onEvent(const SDL_Event &event) {
 		if (o == NULL)
 			throw_ex(("you are already dead"));
 		o->impassability = (o->impassability > 0)?0:1;		
-	} CATCH("activating cheat", )
+	} CATCH("activating cheat", {})
 	}
 	return;
 }

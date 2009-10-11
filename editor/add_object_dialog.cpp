@@ -206,7 +206,7 @@ AddObjectDialog::~AddObjectDialog() {
 		file.write_all(xml);
 		file.close();
 		
-	} CATCH("AddObjectDialog dtor", );
+	} CATCH("AddObjectDialog dtor", {});
 }
 
 const bool AddObjectDialog::get(std::string &classname, std::string &animation, int &z) {

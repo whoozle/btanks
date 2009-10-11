@@ -316,7 +316,7 @@ private:
 	void correctGids();
 };
 
-SINGLETON(BTANKSAPI, Map, IMap);
+PUBLIC_SINGLETON(BTANKSAPI, Map, IMap);
 
 #endif
 

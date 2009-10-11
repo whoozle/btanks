@@ -472,12 +472,12 @@ TRY {
 						pack(result, data, _comp_level);
 						r = _dgram_sock->send(addr, result.get_ptr(), result.get_size()); //returning same message
 						LOG_DEBUG(("send(%u) returned %d", (unsigned)result.get_size(), r));
-					} CATCH("discovery message", );
+					} CATCH("discovery message", {});
 					if (!ok) {
 						LOG_WARN(("incoming datagram from unknown client (%s)", addr.getAddr().c_str()));
 					}
 				}
-			} CATCH("datagram", )
+			} CATCH("datagram", {})
 			/*} else {
 				LOG_WARN(("short datagram recv-ed [%d]", r));
 			}*/
@@ -504,7 +504,7 @@ TRY {
 						if (r != (int)task->data.get_size()) {
 							LOG_WARN(("short sendto(%08x:%d, %u) == %d", addr.ip, addr.port, (unsigned)task->data.get_size(), r));
 						}
-					} CATCH("sendto", )
+					} CATCH("sendto", {})
 				} else LOG_WARN(("task to invalid connection %d found (purged)", task->id));
 				delete task;
 			}

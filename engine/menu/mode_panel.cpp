@@ -113,6 +113,6 @@ void ModePanel::validate() {
 			_teams->disable(i, false);
 		try {
 			_teams->set(mrt::format_string("%d", t));
-		} CATCH("set", );
+		} CATCH("set", {});
 	}
 }

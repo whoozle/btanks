@@ -131,7 +131,7 @@ private:
 	const IResourceManager& operator=(const IResourceManager &);
 };
 
-SINGLETON(BTANKSAPI, ResourceManager, IResourceManager);
+PUBLIC_SINGLETON(BTANKSAPI, ResourceManager, IResourceManager);
 
 #endif
 

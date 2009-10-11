@@ -58,7 +58,7 @@ private:
 	FILE *fd;
 };
 
-SINGLETON(MRTAPI, Logger, ILogger);
+PUBLIC_SINGLETON(MRTAPI, Logger, ILogger);
 }
 
 #define LOG_DEBUG(msg) mrt::ILogger::get_instance()->log(LL_DEBUG, __FILE__, __LINE__, mrt::format_string msg)

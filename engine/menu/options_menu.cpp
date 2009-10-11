@@ -204,7 +204,7 @@ OptionsMenu::OptionsMenu(const int w, const int h) : _shoot(0.5f, false), _gamep
 
 	TRY {
 		_c_res->set(mrt::format_string("%dx%d", screen_w, screen_h));
-	} CATCH("default resolution setup", );
+	} CATCH("default resolution setup", {});
 
 	l = new Label("medium", I18n->get("menu", "fullscreen-mode"));
 	add(_bx + mx, yp, l);
@@ -325,7 +325,7 @@ void OptionsMenu::load() {
 		Config->get("engine.window.width", w, 800);
 		Config->get("engine.window.height", h, 600);
 		_c_res->set(mrt::format_string("%dx%d", w, h));
-	} CATCH("default resolution setup", );
+	} CATCH("default resolution setup", {});
 
 	bool fs;
 	Config->get("engine.window.fullscreen", fs, false);
@@ -375,7 +375,7 @@ void OptionsMenu::save() {
 				Config->remove("engine.language");
 			need_restart = true;
 		}
-	} CATCH("saving language", );
+	} CATCH("saving language", {});
 	
 	TRY {
 		int screen_w, screen_h;
@@ -402,7 +402,7 @@ void OptionsMenu::save() {
 		Window->initSDL();
 		Window->createMainWindow();
 	*/
-	} CATCH("setting video mode", );
+	} CATCH("setting video mode", {});
 
 	bool fsmode;
 	Config->get("engine.window.fullscreen", fsmode, false);

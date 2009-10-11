@@ -1276,7 +1276,7 @@ void IGameMonitor::processGameTimers(const float dt) {
 		TRY {
 			LOG_DEBUG(("calling on_timer(%s)", name.c_str()));
 			lua_hooks->on_timer(name); //callback could add/delete timers!!
-		} CATCH("processGameTimers", );
+		} CATCH("processGameTimers", {});
 	}
 #endif
 }

@@ -96,8 +96,7 @@ private:
 	std::set<bool *> _invalidators;
 };
 
-SINGLETON(BTANKSAPI, Config, IConfig);
-
+PUBLIC_SINGLETON(BTANKSAPI, Config, IConfig);
 
 #define GET_CONFIG_VALUE(name, type, value, default_value) \
 	type value; \

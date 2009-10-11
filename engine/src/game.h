@@ -53,7 +53,6 @@ class Connection;
 class ControlMethod;
 class PlayerSlot;
 class Hud;
-class Credits;
 class Cheater;
 class MainMenu;
 class Tooltip;
@@ -64,6 +63,11 @@ namespace sdlx {
 	class Rect;
 	class Font;
 }
+
+struct Cutscene {
+	virtual void render(const float dt, sdlx::Surface &surface) = 0;
+	virtual ~Cutscene() {}
+};
 
 class BTANKSAPI IGame {
 
@@ -128,7 +132,7 @@ private:
 
 	void quit();
 	
-	void stopCredits();
+	void stopCutscene();
 
 	bool _paused;
 
@@ -146,7 +150,7 @@ private:
 	bool _show_stats;
 	int _loading_bar_total, _loading_bar_now;
 	
-	Credits *_credits;
+	Cutscene *_cutscene;
 	Cheater *_cheater;
 	
 	const sdlx::Surface *_donate;
@@ -165,7 +169,7 @@ private:
 	const IGame& operator=(const IGame &);
 };
 
-SINGLETON(BTANKSAPI, Game, IGame);
+PUBLIC_SINGLETON(BTANKSAPI, Game, IGame);
 
 #endif
 

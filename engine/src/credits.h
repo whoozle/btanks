@@ -30,12 +30,13 @@
 
 #include "sdlx/surface.h"
 #include "math/v3.h"
+#include "game.h"
 
 namespace sdlx {
 class Font;
 }
 
-class Credits {
+class Credits : public Cutscene {
 public:
 	Credits();
 	void render(const float dt, sdlx::Surface &surface);

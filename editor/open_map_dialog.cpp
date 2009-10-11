@@ -190,7 +190,7 @@ OpenMapDialog::OpenMapDialog() {
 
 	TRY {
 		c_base->set(Finder->get_base_path());
-	} CATCH("ctor", )
+	} CATCH("ctor", {})
 	
 	for(size_t i = 0; i < path.size(); ++i) {
 		std::multimap<const std::string, std::string>::const_iterator b = _maps.lower_bound(path[i]);

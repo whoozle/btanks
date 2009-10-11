@@ -84,6 +84,6 @@ private:
 	float _fr;
 };
 
-SINGLETON(BTANKSAPI, Window, IWindow);
+PUBLIC_SINGLETON(BTANKSAPI, Window, IWindow);
 
 #endif

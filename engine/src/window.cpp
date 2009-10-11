@@ -299,7 +299,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		ULONG r = SetClassLongPtr(NULL, GCLP_HICON, (LONG_PTR)h);
 		LOG_DEBUG(("SetClassLongPtr returned %08lx", (unsigned long)r));
 
-	} CATCH("icon setup", );
+	} CATCH("icon setup", {});
 #endif
 #endif
 
@@ -380,7 +380,7 @@ void IWindow::createMainWindow() {
 				resolutions.push_front(*modes[i]);
 			}
 		}
-	} CATCH("screen modes probe", );
+	} CATCH("screen modes probe", {});
 	
 #ifndef _WINDOWS
 	if (_opengl) {

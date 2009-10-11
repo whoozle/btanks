@@ -165,7 +165,7 @@ private:
 	int _connection_id;
 };
 
-SINGLETON(BTANKSAPI, PlayerManager, IPlayerManager);
+PUBLIC_SINGLETON(BTANKSAPI, PlayerManager, IPlayerManager);
 
 #endif
 	

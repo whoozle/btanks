@@ -187,7 +187,7 @@ void Editor::onTick(const float dt) {
 			_brush = NULL;
 			TRY {
 				_brush = new ObjectBrush(this, classname, animation, z);
-			} CATCH("adding object brush", );
+			} CATCH("adding object brush", {});
 		}
 		/*
 		if (_add_object->get(classname, animation, z)) {
@@ -445,7 +445,7 @@ void Editor::deinit() {
 
 	TRY {
 		Config->save();
-	} CATCH("saving config", );
+	} CATCH("saving config", {});
 }
 
 bool Editor::onKey(const SDL_keysym sym) {

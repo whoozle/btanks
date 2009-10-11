@@ -163,7 +163,7 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 		LOG_DEBUG(("broadcasting packet[%u]", (unsigned)data.get_size()));
 		if (send(mrt::Socket::addr(INADDR_BROADCAST, port), data.get_ptr(), data.get_size()) == -1)
 			throw_net(("sendto"));
-	} CATCH("broadcast", );
+	} CATCH("broadcast", {});
 }
 #else 
 #	include <net/if.h>
@@ -189,12 +189,12 @@ void UDPSocket::broadcast(const mrt::Chunk &data, const int port) {
 			TRY {
 				if (send(mrt::Socket::addr(addr->sin_addr.s_addr, port), data.get_ptr(), data.get_size()) == -1)
 					throw_net(("sendto"));
-			} CATCH("sendto", );
+			} CATCH("sendto", {});
 #		else
 			LOG_WARN(("implement broadcast address obtaining."));
 #		endif
 		}
-	} CATCH("broadcast", );
+	} CATCH("broadcast", {});
 	if (ifs != NULL) 	
 		freeifaddrs(ifs);
 }

@@ -89,7 +89,7 @@ IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), 
- _credits(NULL), _cheater(NULL), _donate(NULL), _donate_timer(0), _tip(NULL), _net_talk(NULL), 
+ _cutscene(NULL), _cheater(NULL), _donate(NULL), _donate_timer(0), _tip(NULL), _net_talk(NULL), 
  spawn_ai(0) {
 
 	std::string path;
@@ -550,9 +550,9 @@ void IGame::start_random_map() {
 #include "controls/keyplayer.h"
 
 bool IGame::onKey(const SDL_keysym key, const bool pressed) {
-	if (_credits) {
+	if (_cutscene) {
 		if (pressed)
-			stopCredits();
+			stopCutscene();
 		return true;
 	}
 	
@@ -616,7 +616,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		LOG_DEBUG(("saving screenshot to %s", fname.c_str()));
 		TRY {
 			Window->get_surface().save_bmp(fname);
-		} CATCH("saving screenshot", );
+		} CATCH("saving screenshot", {});
 		return true;
 	}
 	if (key.sym==SDLK_m && key.mod & KMOD_SHIFT && Map->loaded()) {
@@ -637,7 +637,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 		World->render(screenshot, viewport, viewport);
 		TRY {
 			screenshot.save_bmp(path);
-		} CATCH("saving screenshot", );
+		} CATCH("saving screenshot", {});
 		return true;
 	}
 
@@ -675,9 +675,9 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 }
 
 bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
-	if (_credits) {
+	if (_cutscene) {
 		if (pressed)
-			stopCredits();
+			stopCutscene();
 		return true;
 	}
 	if (_main_menu && _main_menu->onMouse(button, pressed, x, y));
@@ -686,7 +686,7 @@ bool IGame::onMouse(const int button, const bool pressed, const int x, const int
 }
 
 bool IGame::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
-	if (_credits)
+	if (_cutscene)
 		return true;
 	return _main_menu && _main_menu->onMouseMotion(state, x, y, xrel, yrel);
 }
@@ -725,13 +725,13 @@ void IGame::onMenu(const std::string &name) {
 		//Window->stop();
 	} else if (name == "credits" && !PlayerManager->is_server_active()) {
 		LOG_DEBUG(("show credits."));
-		_credits = new Credits;
+		_cutscene = new Credits;
 	}
 }
 
-void IGame::stopCredits() {
-	delete _credits;
-	_credits = NULL;
+void IGame::stopCutscene() {
+	delete _cutscene;
+	_cutscene = NULL;
 	
 	Window->resetTimer();
 }
@@ -791,7 +791,7 @@ void IGame::onTick(const float dt) {
 			}
 		}
 
-		if (Map->loaded() && _credits == NULL && Window->running() && !_paused) {
+		if (Map->loaded() && _cutscene == NULL && Window->running() && !_paused) {
 			if (!PlayerManager->is_client())
 				GameMonitor->checkItems(dt);
 			
@@ -822,11 +822,11 @@ void IGame::onTick(const float dt) {
 
 		window.fill(window.map_rgb(0x10, 0x10, 0x10));
 
-		if (!_credits && !Map->loaded())
+		if (!_cutscene && !Map->loaded())
 			_hud->renderSplash(window);
 		
-		if (_credits) {
-			_credits->render(dt, window);
+		if (_cutscene) {
+			_cutscene->render(dt, window);
 			goto flip;
 		}
 	
@@ -892,8 +892,8 @@ void IGame::deinit() {
 	delete _hud;
 	_hud = NULL;
 
-	delete _credits;
-	_credits = NULL;
+	delete _cutscene;
+	_cutscene = NULL;
 	
 	delete _tip;
 	_tip = NULL;
@@ -905,7 +905,7 @@ void IGame::deinit() {
 
 	TRY {
 		Config->save();
-	} CATCH("saving config", );
+	} CATCH("saving config", {});
 
 	//TTF_Quit();
 	Window->deinit();
@@ -927,8 +927,8 @@ void IGame::clear() {
 	_show_stats = false;
 	Map->clear();
 	
-	delete _credits;
-	_credits = NULL;
+	delete _cutscene;
+	_cutscene = NULL;
 	
 	delete _cheater;
 	_cheater = NULL;

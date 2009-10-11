@@ -114,7 +114,7 @@ void IFinder::scan(std::vector<std::string> &path) {
 					path.push_back(std::string(PLUGINS_DIR "/") + dname); //plugins loaded from path ../bt_objects.
 #endif
 			}
-		} CATCH("scan", )
+		} CATCH("scan", {})
 	}
 #ifdef RESOURCES_DIR
 	std::string dname = RESOURCES_DIR "/data";
@@ -178,7 +178,7 @@ IFinder::IFinder() {
 				if (!found)
 					_path.push_back(p);
 				found = true;
-			} CATCH("loading packed resources", );
+			} CATCH("loading packed resources", {});
 		} 
 		
 		if (!found)
@@ -303,7 +303,7 @@ void IFinder::enumerate(std::vector<std::string>&files, const std::string &base,
 			dir.close();
 			return;
 		}
-	} CATCH("scanning directory", );
+	} CATCH("scanning directory", {});
 	
 	Packages::const_iterator p_i = packages.find(base);
 	if (p_i == packages.end())

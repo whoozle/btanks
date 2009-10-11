@@ -172,7 +172,7 @@ void CampaignMenu::init() {
 		LOG_DEBUG(("difficulty = %d", diff));
 
 		_c_difficulty->set(diff);
-	} CATCH("init", )
+	} CATCH("init", {})
 
 	_shop->init(&campaign);
 	_map_view->init(campaign.map);

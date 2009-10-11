@@ -83,7 +83,7 @@ void Server::init() {
 				int r = sock.send(buf, 3);
 				LOG_DEBUG(("sent %d bytes...", r));
 				//sock.recv(buf, 3);
-			} CATCH("registering on master server", );
+			} CATCH("registering on master server", {});
 		}
 	}
 }
@@ -122,7 +122,7 @@ void Server::tick(const float dt) {
 		return;
 	TRY {
 		_monitor->accept();
-	} CATCH("accepting client", );
+	} CATCH("accepting client", {});
 	
 	int id = -1;
 	TRY {

@@ -112,6 +112,6 @@ private:
 	const IMixer& operator=(const IMixer &);
 };
 
-SINGLETON(BTANKSAPI, Mixer, IMixer);
+PUBLIC_SINGLETON(BTANKSAPI, Mixer, IMixer);
 
 #endif

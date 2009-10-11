@@ -38,7 +38,10 @@ namespace mrt {
 	};
 }
 
-#define SINGLETON(e, name, class) \
+#define SINGLETON(name, class) \
+	extern const mrt::Accessor<class> name
+
+#define PUBLIC_SINGLETON(e, name, class) \
 	extern e const mrt::Accessor<class> name
 
 #define DECLARE_SINGLETON(class) \
