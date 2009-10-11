@@ -64,7 +64,7 @@ void ProfilesMenu::init() {
 	
 	std::set<std::string> keys;
 	Config->enumerateKeys(keys, "profile.");
-	LOG_DEBUG(("found %u profile(s)", (unsigned)keys.size()));
+	LOG_DEBUG(("found %u profile keys", (unsigned)keys.size()));
 	for(std::set<std::string>::iterator i = keys.begin(); i != keys.end(); ++i) {
 		const std::string &key = *i;
 		std::vector<std::string> r;

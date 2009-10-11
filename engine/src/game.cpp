@@ -85,6 +85,7 @@
 #include "mrt/calendar.h"
 #include "sdlx/cursor.h"
 #include "logo.h"
+#include "campaign.h"
 
 IMPLEMENT_SINGLETON(Game, IGame);
 
@@ -108,9 +109,7 @@ IGame::IGame() : _main_menu(NULL),
 		}
 	}
 #endif
-		LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
-		
-		//LOG_NOTICE(("mem avail: %d mb", mrt::MemoryInfo::available()));
+	LOG_NOTICE(("starting up... version: %s", getVersion().c_str()));
 }
  
 IGame::~IGame() {
@@ -357,10 +356,10 @@ void IGame::init(const int argc, char *argv[]) {
 	GET_CONFIG_VALUE("engine.sound.disable-sound", bool, no_sound, false);
 	GET_CONFIG_VALUE("engine.sound.disable-music", bool, no_music, false);
 	
-	std::string address, lang, bind;
+	std::string lang, bind;
 	bool xmas = mrt::xmas();
 	for(int i = 1; i < argc; ++i) {
-		if (strncmp(argv[i], "--connect=", 10) == 0) { address = argv[i] + 10; _autojoin = true; }
+		if (strncmp(argv[i], "--connect=", 10) == 0) { _address = argv[i] + 10; _autojoin = true; }
 		else if (strncmp(argv[i], "--bind=", 7) == 0) { bind = argv[i] + 7; }
 		else if (strncmp(argv[i], "--lang=", 7) == 0) { lang = argv[i] + 7; }
 		else if (strncmp(argv[i], "--map=", 6) == 0) { mrt::split(preload_map, argv[i] + 6, ","); preload_map_pool.init(0, preload_map.size()); }
@@ -491,10 +490,13 @@ void IGame::init(const int argc, char *argv[]) {
 	reset_slot.assign(this, &IGame::resetLoadingBar, ResourceManager->reset_progress);
 	notify_slot.assign(this, &IGame::notifyLoadingBar, ResourceManager->notify_progress);
 
-	if (!RTConfig->server_mode) 
-		on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
+	_need_postinit = true;
+	parse_logos();
+}
 
+void IGame::resource_init() {
 	LOG_DEBUG(("initializing resource manager..."));
+	_need_postinit = false;
 	
 	std::vector<std::pair<std::string, std::string> > files;
 	Finder->findAll(files, "resources.xml");
@@ -519,7 +521,7 @@ void IGame::init(const int argc, char *argv[]) {
 
 		if (_autojoin) {
 			mrt::Socket::addr addr;
-			addr.parse(address);
+			addr.parse(_address);
 			PlayerManager->start_client(addr, 1);
 			if (_main_menu)
 				_main_menu->hide();
@@ -527,8 +529,60 @@ void IGame::init(const int argc, char *argv[]) {
 	} else {
 		_net_talk = NULL;
 	}
+
+	if (!RTConfig->server_mode) 
+		on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
 	
 	start_random_map();
+}
+
+void IGame::logo_tick(const float dt) {
+	if (_cutscene == NULL) {
+		if (!_logos.empty()) {
+			_cutscene = _logos.front();
+			_logos.pop_front();
+		} else {
+			//finished
+			if (_need_postinit) {
+				//on_logo_tick_slot.disconnect();
+				resource_init();
+			}
+		}
+	} else {
+		_cutscene->render(dt, Window->get_surface());
+		if (_cutscene->finished())
+			stop_cutscene();
+	}
+}
+
+void IGame::parse_logos() {
+	LOG_DEBUG(("searching for prestart stuff: logos..."));
+	IFinder::FindResult files;
+
+	Finder->findAll(files, "campaign.xml");
+	if (files.empty()) {
+		LOG_DEBUG(("nothing to show, switching to the normal startup..."));
+		resource_init();
+		return;
+	}
+
+	LOG_DEBUG(("found %u campaign(s)", (unsigned)files.size()));
+	std::vector<std::string> titles;
+
+	for(size_t i = 0; i < files.size(); ++i) {
+		LOG_DEBUG(("campaign[%u]: %s %s", (unsigned)i, files[i].first.c_str(), files[i].second.c_str()));
+		Campaign c;
+		c.init(files[i].first, files[i].second, true);
+	}
+
+	if (_logos.empty()) {
+		LOG_DEBUG(("nothing to show, switching to the normal startup..."));
+		resource_init();
+		return;
+	}
+
+	if (!RTConfig->server_mode) 
+		on_logo_tick_slot.assign(this, &IGame::logo_tick, Window->tick_signal);
 }
 
 void IGame::start_random_map() {
@@ -557,7 +611,7 @@ void IGame::start_random_map() {
 bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 	if (_cutscene) {
 		if (pressed)
-			stopCutscene();
+			stop_cutscene();
 		return true;
 	}
 	
@@ -682,7 +736,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_cutscene) {
 		if (!pressed)
-			stopCutscene();
+			stop_cutscene();
 		return true;
 	}
 	if (_main_menu && _main_menu->onMouse(button, pressed, x, y));
@@ -734,7 +788,7 @@ void IGame::onMenu(const std::string &name) {
 	}
 }
 
-void IGame::stopCutscene() {
+void IGame::stop_cutscene() {
 	delete _cutscene;
 	_cutscene = NULL;
 	
@@ -796,11 +850,6 @@ void IGame::onTick(const float dt) {
 			}
 		}
 
-		if (!_logos.empty() && _cutscene == NULL) {
-			_cutscene = _logos.front();
-			_logos.pop_front();
-		}
-
 		if (Map->loaded() && _cutscene == NULL && Window->running() && !_paused) {
 			if (!PlayerManager->is_client())
 				GameMonitor->checkItems(dt);
@@ -835,12 +884,8 @@ void IGame::onTick(const float dt) {
 		if (!_cutscene && !Map->loaded())
 			_hud->renderSplash(window);
 		
-		if (_cutscene) {
-			_cutscene->render(dt, window);
-			if (_cutscene->finished())
-				stopCutscene();
+		if (_cutscene) 
 			goto flip;
-		}
 	
 		if (_shake > 0) {
 			vy += (int)floor(_shake_int * 5 * sin((1 - _shake / _shake_max) * M_PI * 2 * 6) * (_shake / _shake_max));

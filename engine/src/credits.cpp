@@ -115,7 +115,7 @@ Credits::Credits() : _w(0), _h(0) {
 		int w = _medium_font->render(NULL, 0, 0, str);
 		_medium_font->render(_surface, (_w - w) / 2, lines.size() * fh + i * mfh, str);
 	}
-	//copy-paste ninjas have done its evil deed and vanishes.
+	//copy-paste ninja has been done its evil deed and vanishes.
 	_velocity.x = 2;
 	_velocity.y = 3;
 	_velocity.normalize();

@@ -49,7 +49,7 @@ public:
 	std::vector<ShopItem> wares;
 	std::vector<Medal> medals;
 	
-	void init(const std::string &base, const std::string &file);
+	void init(const std::string &base, const std::string &file, bool preparse = false);
 	const bool visible(const Map &map_id) const;
 	const int getCash() const;
 
@@ -68,6 +68,7 @@ protected:
 	void end(const std::string &name);
 private: 
 	bool _wares_section;
+	bool _preparse;
 };
 
 #endif

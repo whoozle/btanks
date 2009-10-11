@@ -9,6 +9,40 @@
 #include "window.h"
 
 void Campaign::start(const std::string &name, Attrs &attr) {
+	if (_preparse && name == "logo") {
+		std::string file = attr.get("file", std::string());
+		std::string bgcolor = attr.get("background", "000000");
+		float duration = attr.get("duration", 3);
+
+		unsigned r = 0, g = 0, b = 0;
+		if (bgcolor.size() == 6) {
+			sscanf(bgcolor.c_str(), "%02x%02x%02x", &r, &g, &b);
+		} else if (bgcolor.size() == 3) {
+			sscanf(bgcolor.c_str(), "%1x%1x%1x", &r, &g, &b);
+			r *= 16; g *= 16; b *= 16;
+		} else {
+			LOG_ERROR(("logo %s has invalid background %s", file.c_str(), bgcolor.c_str()));
+			bgcolor.clear();
+		}
+		Uint32 color = Window->get_surface().map_rgb(r, g, b);
+
+		sdlx::Surface * s = NULL;
+		try {
+			mrt::Chunk data;
+			std::string tname = "tiles/" + file;
+			Finder->load(data, tname);
+
+			s = new sdlx::Surface;
+			s->load_image(data);
+			s->display_format();
+			LOG_DEBUG(("adding logo '%s' for %g seconds", file.c_str(), duration));
+			Game->add_logo(s, duration, color);
+		} CATCH("parsing logo entry", delete s)
+	}
+
+	if (_preparse)
+		return;
+
 	if (name == "campaign") {
 		if (attr["name"].empty())
 			throw_ex(("campaign must have title attr"));
@@ -86,35 +120,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		if (!icon.empty())
 			medal.icon = ResourceManager->load_surface(icon);
 		medals.push_back(medal);
-	} else if (name == "logo") {
-		std::string file = attr.get("file", std::string());
-		std::string bgcolor = attr.get("background", "000000");
-		float duration = attr.get("duration", 3);
-
-		unsigned r = 0, g = 0, b = 0;
-		if (bgcolor.size() == 6) {
-			sscanf(bgcolor.c_str(), "%02x%02x%02x", &r, &g, &b);
-		} else if (bgcolor.size() == 3) {
-			sscanf(bgcolor.c_str(), "%1x%1x%1x", &r, &g, &b);
-			r *= 16; g *= 16; b *= 16;
-		} else {
-			LOG_ERROR(("logo %s has invalid background %s", file.c_str(), bgcolor.c_str()));
-			bgcolor.clear();
-		}
-		Uint32 color = Window->get_surface().map_rgb(r, g, b);
-
-		sdlx::Surface * s = NULL;
-		try {
-			mrt::Chunk data;
-			std::string tname = "tiles/" + file;
-			Finder->load(data, tname);
-
-			s = new sdlx::Surface;
-			s->load_image(data);
-			s->display_format();
-			Game->add_logo(s, duration, color);
-		} CATCH("parsing logo entry", delete s)
-	}
+	} 
 }
 
 std::string Campaign::get_config_prefix() const {
@@ -199,17 +205,16 @@ Campaign::Campaign() : minimal_score(0), map(NULL), disable_donations(false), _w
 #include "mrt/scoped_ptr.h"
 #include "mrt/base_file.h"
 
-void Campaign::init(const std::string &base, const std::string &filename) {
+void Campaign::init(const std::string &base, const std::string &filename, bool preparse) {
 	this->base = base;
 	map = NULL;
 	_wares_section = false;
+	_preparse = preparse;
 	scoped_ptr<mrt::BaseFile> ptr(Finder->get_file(filename, "rt"));
 	parse_file(*ptr);
 	for(size_t i = 0; i < maps.size(); ++i) {
 		GameMonitor->useInCampaign(base, maps[i].id);
 	}
-	
-	
 }
 
 const int Campaign::getCash() const {

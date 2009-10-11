@@ -78,6 +78,7 @@ public:
 	DECLARE_SINGLETON(IGame);
 
 	void init(const int argc, char *argv[]);
+	void resource_init();
 	void run();
 	void deinit();
 	
@@ -109,6 +110,8 @@ private:
 
 	sl08::slot1<void, const float, IGame> on_tick_slot;
 	void onTick(const float dt);
+	sl08::slot1<void, const float, IGame> on_logo_tick_slot;
+	void logo_tick(const float dt);
 	void tick(const float dt);
 
 	sl08::slot2<bool, const SDL_keysym, const bool, IGame>  on_key_slot;
@@ -137,7 +140,8 @@ private:
 
 	void quit();
 	
-	void stopCutscene();
+	void stop_cutscene();
+	void parse_logos();
 
 	bool _paused;
 
@@ -147,6 +151,7 @@ private:
 	const sdlx::Font * small_font;
 
 	bool _autojoin;
+	std::string _address;
 
 	float _shake, _shake_max;
 	int _shake_int;
@@ -174,6 +179,7 @@ private:
 	const IGame& operator=(const IGame &);
 
 	std::list<Logo *> _logos;
+	bool _need_postinit;
 };
 
 PUBLIC_SINGLETON(BTANKSAPI, Game, IGame);
