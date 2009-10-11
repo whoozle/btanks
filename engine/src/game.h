@@ -97,8 +97,6 @@ public:
 	
 	void stop();
 	
-	void reload_donate_timer();
-
 	void add_logo(sdlx::Surface * surface, float duration, Uint32 color);
 
 private:
@@ -163,9 +161,6 @@ private:
 	Cutscene *_cutscene;
 	Cheater *_cheater;
 	
-	const sdlx::Surface *_donate;
-	float _donate_timer;
-	
 	Tooltip *_tip;
 	Chat *_net_talk;
 	bool server_running;
@@ -179,7 +174,7 @@ private:
 	const IGame& operator=(const IGame &);
 
 	std::list<Logo *> _logos;
-	bool _need_postinit;
+	bool _need_postinit, _quit;
 };
 
 PUBLIC_SINGLETON(BTANKSAPI, Game, IGame);

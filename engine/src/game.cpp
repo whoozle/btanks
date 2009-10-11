@@ -91,7 +91,7 @@ IMPLEMENT_SINGLETON(Game, IGame);
 
 IGame::IGame() : _main_menu(NULL),
  _autojoin(false), _shake(0), _shake_max(0), _show_stats(false), 
- _cutscene(NULL), _cheater(NULL), _donate(NULL), _donate_timer(0), _tip(NULL), _net_talk(NULL), 
+ _cutscene(NULL), _cheater(NULL), _tip(NULL), _net_talk(NULL), 
  spawn_ai(0) {
 
 	std::string path;
@@ -163,16 +163,12 @@ void IGame::pause() {
 		_paused = true;
 }
 
-void IGame::reload_donate_timer() {
-	Config->get("engine.donate-screen-duration", _donate_timer, 1.5f);
-}
-
 void IGame::add_logo(sdlx::Surface * surface, float duration, Uint32 color) {
 	_logos.push_back(new Logo(surface, duration, color));
 }
 
 void IGame::init(const int argc, char *argv[]) {
-	_donate = NULL;
+	_quit = false;
 	{
 		//setup some defaults
 		
@@ -347,8 +343,6 @@ void IGame::init(const int argc, char *argv[]) {
 		
 		Config->set("engine.revision", getRevision());
 	}
-
-	reload_donate_timer();
 
 	Config->get("multiplayer.port", RTConfig->port, 27255);
 	Config->get("engine.show-fps", _show_fps, false);
@@ -798,19 +792,27 @@ void IGame::stop_cutscene() {
 
 void IGame::quit() {
 	_main_menu->hide();
+	_quit = true;
 
-	if (_donate_timer <= 0 || RTConfig->disable_donations) {
-		_donate_timer = 0;
-		Window->stop();
+	if (RTConfig->disable_donations)
 		return;
-	} else if (_donate == NULL) {
-		LOG_DEBUG(("donate_timer = %g", _donate_timer));
-		if (_donate_timer > 2) {
-			LOG_WARN(("donation_timer out of range, resetting to default value"));
-			_donate_timer = 1.5f;
-		}
-		_donate = ResourceManager->load_surface("donate.jpg");
-	}
+
+	sdlx::Surface *s = NULL;
+	try {
+		mrt::Chunk data;
+		std::string tname = "tiles/donate.jpg";
+		Finder->load(data, tname);
+
+		s = new sdlx::Surface;
+		s->load_image(data);
+		s->display_format();
+
+		float duration;
+		Config->get("engine.donate-screen-duration", duration, 1.5f);
+
+		add_logo(s, duration, 0);
+	} CATCH("showing donate screen", delete s);
+
 }
 
 void IGame::tick(const float dt) {
@@ -830,19 +832,11 @@ void IGame::tick(const float dt) {
 void IGame::onTick(const float dt) {
 	sdlx::Surface &window = Window->get_surface();
 	int vx = 0, vy = 0;
-	
-	if (_donate_timer > 0 && _donate && Window->running()) {
-		_donate_timer -= dt;
-		if (_donate_timer <= 0) {
-			Window->stop();
-			return;
-		}
-		window.fill(0);
-		sdlx::Rect window_size = Window->get_size();
-		window.blit(*_donate, (window_size.w - _donate->get_width()) / 2, (window_size.h - _donate->get_height()) / 2);
-		goto flip;
-	}
 
+	if (_quit) {
+		Window->stop();
+	}
+	
 		if (Window->running() && !_paused) {
 			GameMonitor->tick(dt);
 			if (GameMonitor->game_over()) {

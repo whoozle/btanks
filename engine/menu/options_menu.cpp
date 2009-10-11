@@ -414,7 +414,6 @@ void OptionsMenu::save() {
 	Config->set("engine.fog-of-war.enabled", _fog_of_war->get());
 	
 	PlayerManager->update_controls();
-	Game->reload_donate_timer();
 
 	if (need_restart) 
 		GameMonitor->displayMessage("messages", "restart-game", 2.0f);
