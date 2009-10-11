@@ -797,6 +797,11 @@ void IGame::quit() {
 	if (RTConfig->disable_donations)
 		return;
 
+	float duration;
+	Config->get("engine.donate-screen-duration", duration, 1.5f);
+	if (duration < 0.1f)
+		return;
+
 	sdlx::Surface *s = NULL;
 	try {
 		mrt::Chunk data;
@@ -807,8 +812,6 @@ void IGame::quit() {
 		s->load_image(data);
 		s->display_format();
 
-		float duration;
-		Config->get("engine.donate-screen-duration", duration, 1.5f);
 
 		add_logo(s, duration, 0);
 	} CATCH("showing donate screen", delete s);
