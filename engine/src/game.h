@@ -98,7 +98,7 @@ public:
 	
 	void reload_donate_timer();
 
-	void add_logo(sdlx::Surface * surface, float duration);
+	void add_logo(sdlx::Surface * surface, float duration, Uint32 color);
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot;

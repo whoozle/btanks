@@ -168,8 +168,8 @@ void IGame::reload_donate_timer() {
 	Config->get("engine.donate-screen-duration", _donate_timer, 1.5f);
 }
 
-void IGame::add_logo(sdlx::Surface * surface, float duration) {
-	_logos.push_back(new Logo(surface, duration));
+void IGame::add_logo(sdlx::Surface * surface, float duration, Uint32 color) {
+	_logos.push_back(new Logo(surface, duration, color));
 }
 
 void IGame::init(const int argc, char *argv[]) {
@@ -681,7 +681,7 @@ bool IGame::onKey(const SDL_keysym key, const bool pressed) {
 
 bool IGame::onMouse(const int button, const bool pressed, const int x, const int y) {
 	if (_cutscene) {
-		if (pressed)
+		if (!pressed)
 			stopCutscene();
 		return true;
 	}
@@ -837,6 +837,8 @@ void IGame::onTick(const float dt) {
 		
 		if (_cutscene) {
 			_cutscene->render(dt, window);
+			if (_cutscene->finished())
+				stopCutscene();
 			goto flip;
 		}
 	

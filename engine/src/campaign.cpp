@@ -2,6 +2,11 @@
 #include "i18n.h"
 #include "config.h"
 #include "resource_manager.h"
+#include "mrt/chunk.h"
+#include "finder.h"
+#include "sdlx/surface.h"
+#include "game.h"
+#include "window.h"
 
 void Campaign::start(const std::string &name, Attrs &attr) {
 	if (name == "campaign") {
@@ -81,6 +86,33 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		if (!icon.empty())
 			medal.icon = ResourceManager->load_surface(icon);
 		medals.push_back(medal);
+	} else if (name == "logo") {
+		std::string file = attr.get("file", std::string());
+		std::string bgcolor = attr.get("background", "000000");
+		float duration = attr.get("duration", 3);
+
+		unsigned r = 0, g = 0, b = 0;
+		if (bgcolor.size() == 6) {
+			sscanf(bgcolor.c_str(), "%02x%02x%02x", &r, &g, &b);
+		} else if (bgcolor.size() == 3) {
+			sscanf(bgcolor.c_str(), "%1x%1x%1x", &r, &g, &b);
+			r *= 16; g *= 16; b *= 16;
+		} else {
+			LOG_ERROR(("logo %s has invalid background %s", file.c_str(), bgcolor.c_str()));
+			bgcolor.clear();
+		}
+		Uint32 color = Window->get_surface().map_rgb(r, g, b);
+
+		sdlx::Surface * s = NULL;
+		try {
+			mrt::Chunk data;
+			std::string tname = "tiles/" + file;
+			Finder->load(data, tname);
+
+			s = new sdlx::Surface;
+			s->load_image(data);
+			Game->add_logo(s, duration, color);
+		} CATCH("parsing logo entry", delete s)
 	}
 }
 

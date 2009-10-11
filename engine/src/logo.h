@@ -37,9 +37,10 @@ namespace sdlx {
 class Logo : public Cutscene {
 	sdlx::Surface * logo;
 	float t;
+	Uint32 color;
 
 public:
-	Logo(sdlx::Surface *surface, float t);
+	Logo(sdlx::Surface *surface, float t, Uint32 color);
 	~Logo();
 	virtual void render(const float dt, sdlx::Surface &surface);
 	virtual bool finished() const { return t <= 0; }
