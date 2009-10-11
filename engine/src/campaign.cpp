@@ -111,6 +111,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 
 			s = new sdlx::Surface;
 			s->load_image(data);
+			s->display_format();
 			Game->add_logo(s, duration, color);
 		} CATCH("parsing logo entry", delete s)
 	}
