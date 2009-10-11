@@ -725,9 +725,7 @@ bool IGame::onMouse(const int button, const bool pressed, const int x, const int
 			stop_cutscene();
 		return true;
 	}
-	if (_main_menu && _main_menu->onMouse(button, pressed, x, y));
-		return true;
-	return false;
+	return _main_menu && _main_menu->onMouse(button, pressed, x, y);
 }
 
 bool IGame::onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel) {
