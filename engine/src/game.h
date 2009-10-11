@@ -33,6 +33,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <list>
 
 #include "math/v2.h"
 #include "player_state.h"
@@ -57,6 +58,7 @@ class Cheater;
 class MainMenu;
 class Tooltip;
 class Chat;
+class Logo;
 
 namespace sdlx {
 	class Surface;
@@ -66,6 +68,7 @@ namespace sdlx {
 
 struct Cutscene {
 	virtual void render(const float dt, sdlx::Surface &surface) = 0;
+	virtual bool finished() const = 0;
 	virtual ~Cutscene() {}
 };
 
@@ -94,6 +97,8 @@ public:
 	void stop();
 	
 	void reload_donate_timer();
+
+	void add_logo(sdlx::Surface * surface, float duration);
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot;
@@ -167,6 +172,8 @@ private:
 	
 	IGame(const IGame &);
 	const IGame& operator=(const IGame &);
+
+	std::list<Logo *> _logos;
 };
 
 PUBLIC_SINGLETON(BTANKSAPI, Game, IGame);

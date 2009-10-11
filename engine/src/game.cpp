@@ -84,6 +84,7 @@
 #include "special_owners.h"
 #include "mrt/calendar.h"
 #include "sdlx/cursor.h"
+#include "logo.h"
 
 IMPLEMENT_SINGLETON(Game, IGame);
 
@@ -165,6 +166,10 @@ void IGame::pause() {
 
 void IGame::reload_donate_timer() {
 	Config->get("engine.donate-screen-duration", _donate_timer, 1.5f);
+}
+
+void IGame::add_logo(sdlx::Surface * surface, float duration) {
+	_logos.push_back(new Logo(surface, duration));
 }
 
 void IGame::init(const int argc, char *argv[]) {
@@ -789,6 +794,11 @@ void IGame::onTick(const float dt) {
 			if (GameMonitor->game_over()) {
 				_show_stats = true;
 			}
+		}
+
+		if (!_logos.empty() && _cutscene == NULL) {
+			_cutscene = _logos.front();
+			_logos.pop_front();
 		}
 
 		if (Map->loaded() && _cutscene == NULL && Window->running() && !_paused) {

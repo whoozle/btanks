@@ -1,8 +1,8 @@
-#ifndef __BTANKS_CREDITS_H__
-#define __BTANKS_CREDITS_H__
+#ifndef BTANKS_LOGO_H__
+#define BTANKS_LOGO_H__
 
 /* Battle Tanks Game
- * Copyright (C) 2006-2008 Battle Tanks team
+ * Copyright (C) 2006-2009 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,29 +28,21 @@
  * from your version and license this file solely under the GPL without exception. 
 */
 
-#include "sdlx/surface.h"
-#include "math/v3.h"
 #include "game.h"
 
 namespace sdlx {
-class Font;
+	class Surface;
 }
 
-class Credits : public Cutscene {
-public:
-	Credits();
-	virtual void render(const float dt, sdlx::Surface &surface);
-	virtual bool finished() const { return false; }
+class Logo : public Cutscene {
+	sdlx::Surface * logo;
+	float t;
 
-	~Credits();
-private: 
-	unsigned int _w, _h;
-	const sdlx::Font *_font, *_medium_font;
-	sdlx::Surface _surface;
-	v3<float> _position;
-	v3<float> _velocity;
+public:
+	Logo(sdlx::Surface *surface, float t);
+	~Logo();
+	virtual void render(const float dt, sdlx::Surface &surface);
+	virtual bool finished() const { return t <= 0; }
 };
 
-
 #endif
-

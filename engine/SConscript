@@ -61,7 +61,7 @@ bt_sources = 	[
 	'src/var.cpp', 'src/config.cpp', 'src/registrar.cpp', 'src/profiler.cpp', 
 	
 	'src/player_slot.cpp', 'src/hud.cpp', 'src/console.cpp',
-	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 
+	'src/i18n.cpp', 'src/game.cpp', 'src/window.cpp', 'src/logo.cpp', 
 	'src/credits.cpp', 'src/cheater.cpp', 
 	'src/vehicle_traits.cpp', 'src/nickname.cpp',
 	'src/rt_config.cpp', 'src/team.cpp', 
