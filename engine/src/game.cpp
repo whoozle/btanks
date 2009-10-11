@@ -151,7 +151,7 @@ void IGame::run() {
 }
 
 void IGame::pause() {
-	if (!_main_menu->hidden())
+	if (_main_menu == NULL || !_main_menu->hidden())
 		return;
 	
 	if (_paused) {
@@ -163,8 +163,8 @@ void IGame::pause() {
 		_paused = true;
 }
 
-void IGame::add_logo(sdlx::Surface * surface, float duration, Uint32 color) {
-	_logos.push_back(new Logo(surface, duration, color));
+void IGame::add_logo(sdlx::Surface * surface, float duration, Uint32 color, bool fade) {
+	_logos.push_back(new Logo(surface, duration, color, fade));
 }
 
 void IGame::init(const int argc, char *argv[]) {
@@ -777,7 +777,9 @@ void IGame::stop_cutscene() {
 
 
 void IGame::quit() {
-	_main_menu->hide();
+	if (_main_menu)
+		_main_menu->hide();
+	
 	_quit = true;
 
 	if (RTConfig->disable_donations)
@@ -799,7 +801,7 @@ void IGame::quit() {
 		s->display_format();
 
 
-		add_logo(s, duration, 0);
+		add_logo(s, duration, 0, false);
 	} CATCH("showing donate screen", delete s);
 
 }
@@ -820,16 +822,17 @@ bool IGame::tick(const float dt) {
 }
 
 bool IGame::onTick(const float dt) {
+	if (_quit) {
+		Window->stop();
+		return true;
+	}
+	
 	if (_need_postinit)
 		resource_init();
 
 	sdlx::Surface &window = Window->get_surface();
 	int vx = 0, vy = 0;
 
-	if (_quit) {
-		Window->stop();
-	}
-	
 	if (Window->running() && !_paused) {
 		GameMonitor->tick(dt);
 		if (GameMonitor->game_over()) {

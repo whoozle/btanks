@@ -38,9 +38,10 @@ class Logo : public Cutscene {
 	sdlx::Surface * logo;
 	float duration, t;
 	Uint32 color;
+	bool fade;
 
 public:
-	Logo(sdlx::Surface *surface, float duration, Uint32 color);
+	Logo(sdlx::Surface *surface, float duration, Uint32 color, bool fade);
 	~Logo();
 	virtual void render(const float dt, sdlx::Surface &surface);
 	virtual bool finished() const { return t >= duration; }

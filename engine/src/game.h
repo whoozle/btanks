@@ -97,7 +97,7 @@ public:
 	
 	void stop();
 	
-	void add_logo(sdlx::Surface * surface, float duration, Uint32 color);
+	void add_logo(sdlx::Surface * surface, float duration, Uint32 color, bool fade = true);
 
 private:
 	sl08::slot1<void, const int, IGame> reset_slot;
