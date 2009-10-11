@@ -148,7 +148,7 @@ TRY {
 } CATCH("loadMap", throw;)
 }
 
-void Editor::onTick(const float dt) {
+bool Editor::onTick(float dt) {
 	static const Uint8 *keys = SDL_GetKeyState(0);
 	bool active = (keys[SDLK_LSHIFT] != 0 || keys[SDLK_RSHIFT] != 0 || _layers_dialog->active()) && Map->loaded() && _tileset_dialog->hidden();
 	_layers_dialog->hide(!active);
@@ -236,7 +236,8 @@ void Editor::onTick(const float dt) {
 	
 	World->purge(0);
 	
-	render(Window->get_surface(), dt);	
+	render(Window->get_surface(), dt);
+	return true;
 }
 
 

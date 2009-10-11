@@ -136,6 +136,7 @@ void Credits::render(const float dt, sdlx::Surface &surface) {
 	if (_position.y + _h > surface.get_height() + ymargin)
 		_velocity.y = -math::abs(_velocity.y);
 	
+	surface.fill(surface.map_rgb(0x10, 0x10, 0x10));
 	surface.blit(_surface, (int)_position.x, (int)_position.y);
 }
 

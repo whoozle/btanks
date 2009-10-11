@@ -78,8 +78,8 @@ private:
 	void render(sdlx::Surface &surface, const float dt);
 
 	//slots:	
-	sl08::slot1<void, const float, Editor> on_tick_slot;
-	void onTick(const float dt);
+	sl08::slot1<bool, float, Editor> on_tick_slot;
+	bool onTick(float dt);
 
 	sl08::slot2<bool, const SDL_keysym, const bool, Editor> on_key_slot;
 	bool onKeySignal(const SDL_keysym sym, const bool pressed);

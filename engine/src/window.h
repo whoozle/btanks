@@ -43,7 +43,7 @@ public:
 
 	//signals
 	sl08::signal1<void, const SDL_Event& > event_signal;
-	sl08::signal1<void, const float> tick_signal;
+	sl08::signal1<bool, float, sl08::exclusive_validator<bool> > tick_signal;
 	sl08::signal2<bool, const SDL_keysym, const bool, sl08::exclusive_validator<bool> > key_signal;
 	sl08::signal3<void, const int, const int, const bool> joy_button_signal;
 	sl08::signal4<bool, const int, const bool, const int, const int, sl08::exclusive_validator<bool> > mouse_signal;

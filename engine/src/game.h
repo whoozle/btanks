@@ -106,11 +106,11 @@ private:
 	sl08::slot2<void, const int, const char *, IGame> notify_slot;
 	void notifyLoadingBar(const int progress, const char *what);
 
-	sl08::slot1<void, const float, IGame> on_tick_slot;
-	void onTick(const float dt);
-	sl08::slot1<void, const float, IGame> on_logo_tick_slot;
-	void logo_tick(const float dt);
-	void tick(const float dt);
+	sl08::slot1<bool, float, IGame> on_tick_slot;
+	bool onTick(float dt);
+	sl08::slot1<bool, float, IGame> on_logo_tick_slot;
+	bool logo_tick(float dt);
+	bool tick(float dt);
 
 	sl08::slot2<bool, const SDL_keysym, const bool, IGame>  on_key_slot;
 	bool onKey(const SDL_keysym sym, const bool pressed);

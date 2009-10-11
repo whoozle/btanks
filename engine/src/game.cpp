@@ -476,6 +476,9 @@ void IGame::init(const int argc, char *argv[]) {
 	
 	if (!RTConfig->server_mode) {
 		on_map_slot.assign(this, &IGame::onMap, Map->load_map_signal);
+
+		on_logo_tick_slot.assign(this, &IGame::logo_tick, Window->tick_signal);
+		on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
 	}
 
 	reset_slot.assign(this, &IGame::resetLoadingBar, Map->reset_progress);
@@ -485,6 +488,7 @@ void IGame::init(const int argc, char *argv[]) {
 	notify_slot.assign(this, &IGame::notifyLoadingBar, ResourceManager->notify_progress);
 
 	_need_postinit = true;
+
 	parse_logos();
 }
 
@@ -524,29 +528,22 @@ void IGame::resource_init() {
 		_net_talk = NULL;
 	}
 
-	if (!RTConfig->server_mode) 
-		on_tick_slot.assign(this, &IGame::onTick, Window->tick_signal);
-	
 	start_random_map();
 }
 
-void IGame::logo_tick(const float dt) {
+bool IGame::logo_tick(const float dt) {
 	if (_cutscene == NULL) {
-		if (!_logos.empty()) {
-			_cutscene = _logos.front();
-			_logos.pop_front();
-		} else {
-			//finished
-			if (_need_postinit) {
-				//on_logo_tick_slot.disconnect();
-				resource_init();
-			}
-		}
+		if (_logos.empty())
+			return false;
+
+		_cutscene = _logos.front();
+		_logos.pop_front();
 	} else {
 		_cutscene->render(dt, Window->get_surface());
 		if (_cutscene->finished())
 			stop_cutscene();
 	}
+	return true;
 }
 
 void IGame::parse_logos() {
@@ -555,8 +552,6 @@ void IGame::parse_logos() {
 
 	Finder->findAll(files, "campaign.xml");
 	if (files.empty()) {
-		LOG_DEBUG(("nothing to show, switching to the normal startup..."));
-		resource_init();
 		return;
 	}
 
@@ -564,19 +559,10 @@ void IGame::parse_logos() {
 	std::vector<std::string> titles;
 
 	for(size_t i = 0; i < files.size(); ++i) {
-		LOG_DEBUG(("campaign[%u]: %s %s", (unsigned)i, files[i].first.c_str(), files[i].second.c_str()));
+		LOG_DEBUG(("campaign[%u](preparse): %s %s", (unsigned)i, files[i].first.c_str(), files[i].second.c_str()));
 		Campaign c;
 		c.init(files[i].first, files[i].second, true);
 	}
-
-	if (_logos.empty()) {
-		LOG_DEBUG(("nothing to show, switching to the normal startup..."));
-		resource_init();
-		return;
-	}
-
-	if (!RTConfig->server_mode) 
-		on_logo_tick_slot.assign(this, &IGame::logo_tick, Window->tick_signal);
 }
 
 void IGame::start_random_map() {
@@ -818,7 +804,7 @@ void IGame::quit() {
 
 }
 
-void IGame::tick(const float dt) {
+bool IGame::tick(const float dt) {
 	GameMonitor->tick(dt);
 	if (Map->loaded()) {
 		GameMonitor->checkItems(dt);
@@ -830,9 +816,13 @@ void IGame::tick(const float dt) {
 		PlayerManager->update_players(dt);
 		PlayerManager->tick(dt);
 	}
+	return true;
 }
 
-void IGame::onTick(const float dt) {
+bool IGame::onTick(const float dt) {
+	if (_need_postinit)
+		resource_init();
+
 	sdlx::Surface &window = Window->get_surface();
 	int vx = 0, vy = 0;
 
@@ -840,103 +830,99 @@ void IGame::onTick(const float dt) {
 		Window->stop();
 	}
 	
-		if (Window->running() && !_paused) {
-			GameMonitor->tick(dt);
-			if (GameMonitor->game_over()) {
-				_show_stats = true;
-			}
+	if (Window->running() && !_paused) {
+		GameMonitor->tick(dt);
+		if (GameMonitor->game_over()) {
+			_show_stats = true;
 		}
+	}
 
-		if (Map->loaded() && _cutscene == NULL && Window->running() && !_paused) {
-			if (!PlayerManager->is_client())
-				GameMonitor->checkItems(dt);
-			
-			Map->tick(dt);
-			World->tick(dt);
-
-			PlayerManager->update_players(dt);
-			World->purge(dt);
-		}
-
-		if (Window->running() && !_paused) {
-			PlayerManager->tick(dt); //avoid any dead objects in serialization
-		}
-
-		Mixer->tick(dt);
-
+	if (Map->loaded() && Window->running() && !_paused) {
+		if (!PlayerManager->is_client())
+			GameMonitor->checkItems(dt);
 		
-		if (_main_menu) {
-			_main_menu->tick(dt);
-			bool cursor = sdlx::Cursor::enabled();
-			bool menu = !_main_menu->hidden();
-			if (!menu && cursor) {
-				sdlx::Cursor::Disable();
-			} else if (menu && !cursor) {
-				sdlx::Cursor::Enable();
-			}
-		}
+		Map->tick(dt);
+		World->tick(dt);
+		PlayerManager->update_players(dt);
+		World->purge(dt);
+	}
 
-		window.fill(window.map_rgb(0x10, 0x10, 0x10));
+	if (Window->running() && !_paused) {
+		PlayerManager->tick(dt); //avoid any dead objects in serialization
+	}
 
-		if (!_cutscene && !Map->loaded())
-			_hud->renderSplash(window);
-		
-		if (_cutscene) 
-			goto flip;
+	Mixer->tick(dt);
+
 	
-		if (_shake > 0) {
-			vy += (int)floor(_shake_int * 5 * sin((1 - _shake / _shake_max) * M_PI * 2 * 6) * (_shake / _shake_max));
-			//vy += _shake_int;
-		}		
-
-		PlayerManager->render(window, vx, vy);
-		
-		if (_shake > 0) {
-			//_shake_int = -_shake_int;
-			_shake -= dt;
+	if (_main_menu) {
+		_main_menu->tick(dt);
+		bool cursor = sdlx::Cursor::enabled();
+		bool menu = !_main_menu->hidden();
+		if (!menu && cursor) {
+			sdlx::Cursor::Disable();
+		} else if (menu && !cursor) {
+			sdlx::Cursor::Enable();
 		}
-		
-		if (Map->loaded()) {
-			_hud->render(window);
+	}
 
-			const PlayerSlot *slot = PlayerManager->get_my_slot();
-			_hud->renderRadar(dt, window, GameMonitor->getSpecials(), GameMonitor->getFlags(), 
-				slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
+	window.fill(window.map_rgb(0x10, 0x10, 0x10));
+
+	if (!Map->loaded())
+		_hud->renderSplash(window);
+		
+	if (_shake > 0) {
+		vy += (int)floor(_shake_int * 5 * sin((1 - _shake / _shake_max) * M_PI * 2 * 6) * (_shake / _shake_max));
+		//vy += _shake_int;
+	}		
+
+	PlayerManager->render(window, vx, vy);
+		
+	if (_shake > 0) {
+		//_shake_int = -_shake_int;
+		_shake -= dt;
+	}
+		
+	if (Map->loaded()) {
+		_hud->render(window);
+
+		const PlayerSlot *slot = PlayerManager->get_my_slot();
+		_hud->renderRadar(dt, window, GameMonitor->getSpecials(), GameMonitor->getFlags(), 
+			slot?sdlx::Rect((int)slot->map_pos.x, (int)slot->map_pos.y, slot->viewport.w, slot->viewport.h): sdlx::Rect());
 			
-			if (_main_menu && _main_menu->hidden() && _show_stats) {
-				_hud->renderStats(window);
-			}
-
-			if (_net_talk != NULL) {
-				_net_talk->tick(dt);
-				
-			}
-			_net_talk->render(window, 8, 32);
+		if (_main_menu && _main_menu->hidden() && _show_stats) {
+			_hud->renderStats(window);
 		}
 
-		if (_main_menu) {
-			_main_menu->render(window, 0, 0);
+		if (_net_talk != NULL) {
+			_net_talk->tick(dt);
 		}
+		_net_talk->render(window, 8, 32);
+	}
+
+	if (_main_menu) {
+		_main_menu->render(window, 0, 0);
+	}
 		
-		GameMonitor->render(window);
-		Console->render(window);
-		
-flip:
-		if (_show_fps && small_font) {
-			float fr = Window->getFrameRate();
-			std::string fps = mrt::format_string("%d", (int)fr);
-			int w = small_font->render(NULL, 0, 0, fps);
-			small_font->render(window, window.get_width() - w, window.get_height() - small_font->get_height(), fps);
-		}
-		
-		if (_paused) {
-			static const sdlx::Font * font;
-			if (font == NULL) 
-				font = ResourceManager->loadFont("medium_dark", true);
-			std::string pstr = I18n->get("messages", "game-paused");
-			int w = font->render(NULL, 0, 0, pstr);
-			font->render(window, (window.get_width() - w) / 2, (window.get_height() - font->get_height()) / 2, pstr);
-		}
+	GameMonitor->render(window);
+	Console->render(window);
+
+	if (_show_fps && small_font) {
+		float fr = Window->getFrameRate();
+		std::string fps = mrt::format_string("%d", (int)fr);
+		int w = small_font->render(NULL, 0, 0, fps);
+		small_font->render(window, window.get_width() - w, window.get_height() - small_font->get_height(), fps);
+	}
+
+	if (_paused) {
+		static const sdlx::Font * font;
+		if (font == NULL) 
+			font = ResourceManager->loadFont("medium_dark", true);
+		std::string pstr = I18n->get("messages", "game-paused");
+		int w = font->render(NULL, 0, 0, pstr);
+		font->render(window, (window.get_width() - w) / 2, (window.get_height() - font->get_height()) / 2, pstr);
+	}
+
+	return true;
 }
 
 void IGame::deinit() {
