@@ -38,6 +38,9 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 			LOG_DEBUG(("adding logo '%s' for %g seconds", file.c_str(), duration));
 			Game->add_logo(s, duration, color, true);
 		} CATCH("parsing logo entry", delete s)
+	} else if (_preparse && name == "campaign") {
+		std::string donation = attr.get("donations", "true");
+		disable_donations = donation[0] == 'f';
 	}
 
 	if (_preparse)

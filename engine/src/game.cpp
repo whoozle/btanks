@@ -532,6 +532,11 @@ void IGame::resource_init() {
 }
 
 bool IGame::logo_tick(const float dt) {
+	if (_quit) {
+		Window->stop();
+		return true;
+	}
+
 	if (_cutscene == NULL) {
 		if (_logos.empty())
 			return false;
@@ -562,6 +567,7 @@ void IGame::parse_logos() {
 		LOG_DEBUG(("campaign[%u](preparse): %s %s", (unsigned)i, files[i].first.c_str(), files[i].second.c_str()));
 		Campaign c;
 		c.init(files[i].first, files[i].second, true);
+		RTConfig->disable_donations |= c.disable_donations;
 	}
 }
 
