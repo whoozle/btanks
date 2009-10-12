@@ -56,20 +56,12 @@ template <typename FuncPtr> union union_ptr {
 
 #endif
 
-#ifdef __APPLE__
-
-const bool System::accelerated_gl(const bool windowed) {
-	return true;
-}
-
-#elif not defined _WINDOWS
-//remove it if you want
-
 const bool System::accelerated_gl(const bool windowed) {
 	bool accel = true;
 	LOG_DEBUG(("checking for accelerating GL..."));
 TRY {
-#ifdef _WINDOWS
+#if 0
+//#ifdef _WINDOWS
 	HWND hwnd = CreateWindow("SDL_app", "SDL_app", WS_POPUP | WS_DISABLED,
 	                    0, 0, 10, 10,
 	                    NULL, NULL, GetModuleHandle(NULL), NULL);
@@ -141,7 +133,8 @@ TRY {
 	ReleaseDC(hwnd, hdc);
 	DestroyWindow(hwnd);
 	WIN_FlushMessageQueue();
-#else 
+#endif
+#ifndef _WINDOWS 
 	int errorBase, eventBase; 
 	
 	if (SDL_GL_LoadLibrary(NULL) != 0) {
@@ -204,8 +197,6 @@ end:
 } CATCH("accelerated_gl", {})
 	return accel;
 }
-
-#endif
 
 void System::init(int system) {
 	LOG_DEBUG(("calling SDL_init('%08x')", (unsigned)system));
