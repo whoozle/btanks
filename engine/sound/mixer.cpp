@@ -90,7 +90,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	if (_context == NULL)
 		return;
 
-	Config->get("engine.sound.volume.fx", _volume_fx, 1.0f);
+	Config->get("engine.sound.volume.fx", _volume_fx, 0.66f);
 	Config->get("engine.sound.volume.ambience", _volume_ambience, 0.5f);
 	Config->get("engine.sound.volume.music", _volume_music, 1.0f);
 	

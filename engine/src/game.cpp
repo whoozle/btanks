@@ -340,6 +340,12 @@ void IGame::init(const int argc, char *argv[]) {
 				Config->rename(*i, id);
 			}
 		}
+		if (revision < 8061) {
+			float fx_volume;
+			Config->get("engine.sound.volume.fx", fx_volume, 0.66f);
+			if (fx_volume >= 1.0f)
+				Config->set("engine.sound.volume.fx", 0.66f);
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
@@ -364,7 +370,7 @@ void IGame::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "--server") == 0) { RTConfig->server_mode = true; }
 		else if (strncmp(argv[i], "--ai=", 5) == 0) { spawn_ai = atoi(argv[i] + 5); }
 		else if (strncmp(argv[i], "--game-type=", 12) == 0) { RTConfig->game_type = IRTConfig::parse_game_type(argv[i] + 12); RTConfig->teams = 2; }
-		else if (strncmp(argv[i], "--time-limit=", 13) == 0) { RTConfig->time_limit = atof(argv[i] + 13); }
+		else if (strncmp(argv[i], "--time-limit=", 13) == 0) { RTConfig->time_limit = (float)atof(argv[i] + 13); }
 		else if (strncmp(argv[i], "--port=", 7) == 0) { RTConfig->port = atoi(argv[i] + 7); if (RTConfig->port <= 0) throw_ex(("invalid port specified: %d", RTConfig->port)); }
 		else if (strncmp(argv[i], "--log=", 6) == 0) { mrt::Logger->assign(argv[i] + 6); }
 		else if (strcmp(argv[i], "--help") == 0) { 
@@ -1048,7 +1054,7 @@ void IGame::notifyLoadingBar(const int progress, const char *what) {
 	
 	sdlx::Surface &window = Window->get_surface();
 	const sdlx::Rect window_size = Window->get_size();
-	if (_hud->renderLoadingBar(window, old_progress, 1.0 * _loading_bar_now / _loading_bar_total, what)) {
+	if (_hud->renderLoadingBar(window, old_progress, 1.0f * _loading_bar_now / _loading_bar_total, what)) {
 		if (_tip != NULL) {
 			int w, h;
 			_tip->get_size(w, h);

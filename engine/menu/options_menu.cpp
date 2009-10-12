@@ -136,7 +136,7 @@ OptionsMenu::OptionsMenu(const int w, const int h) : _shoot(0.5f, false), _gamep
 
 ////////////////////
 
-	Config->get("engine.sound.volume.fx", volume, 1.0f);
+	Config->get("engine.sound.volume.fx", volume, 0.66f);
 	
 	l = new Label("medium", I18n->get("menu", "fx-volume"));
 	s = _fx = new Slider(volume);
@@ -295,7 +295,7 @@ void OptionsMenu::load() {
 	Config->get("engine.sound.volume.music", volume, 1.0f);
 	_music->set(volume);
 
-	Config->get("engine.sound.volume.fx", volume, 1.0f);
+	Config->get("engine.sound.volume.fx", volume, 0.66f);
 	_fx->set(volume);
 
 	Config->get("engine.sound.volume.ambience", volume, 0.5f);
