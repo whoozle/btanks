@@ -1,7 +1,7 @@
 import os, sys
 
-#builder for static libraries
-env = Environment()
+env = Environment(ENV=os.environ)
+
 if sys.platform == 'win32':
 	env['SHLINKCOM'] = [env['SHLINKCOM'], 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2']
 
@@ -17,13 +17,15 @@ env['BUILDERS']['StaticLibrary'] = picLibBuilder
 env['BUILDERS']['Library'] = picLibBuilder
 
 opts = Options(['options.cache'])
-opts.Add('CC', 'C compiler')
-opts.Add('CXX', 'C++ compiler')
+#opts.Add('CC', 'C compiler')
+#opts.Add('CXX', 'C++ compiler')
 opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
 opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
 if sys.platform == "win32":
 	opts.Add('LINK', 'Linker program', '')
 opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
+opts.Add('LIBPATH', 'Path to external libraries', '')
+opts.Add('LINK', 'Linker', '')
 opts.Add('CPPPATH', 'extra cpp path', '')
 
 if sys.platform != "win32":
@@ -119,7 +121,7 @@ if sys.platform == "win32":
 	conf.env.Append(LINKFLAGS = ['/SUBSYSTEM:WINDOWS', '/FORCE'])
 	conf.env.Append(LIBS=['SDLmain'])
 
-if not conf.CheckLibWithHeader('SDL', 'SDL/SDL.h', 'c++', "SDL_Init(0);", False):
+if not conf.CheckLibWithHeader('SDL', 'SDL.h', 'c++', "SDL_Init(0);", False):
 	Exit(1)
 	
 if sys.platform != "win32":
@@ -140,7 +142,7 @@ Export('smpeg_lib')
 if not conf.CheckLibWithHeader(smpeg_lib, 'smpeg/smpeg.h', 'c++', "SMPEG_new_data(malloc(42), 42, NULL, 0);", False):
 	Exit(1)
 
-if not conf.CheckLibWithHeader('SDL_image', 'SDL/SDL_image.h', 'c++', "IMG_Load(0);", False):
+if not conf.CheckLibWithHeader('SDL_image', 'SDL_image.h', 'c++', "IMG_Load(0);", False):
 	Exit(1)
 
 if not conf.CheckLibWithHeader('vorbisfile', 'vorbis/vorbisfile.h', 'c++', "ov_open(0, 0, 0, 0);", False):
