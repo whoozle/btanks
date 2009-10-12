@@ -1,6 +1,6 @@
 
 /* Battle Tanks Game
- * Copyright (C) 2006-2008 Battle Tanks team
+ * Copyright (C) 2006-2009 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 
 #include "version.h"
 #ifdef _WINDOWS
-#pragma comment(exestr, "Battle Tanks (c)2006-2008 Battle tanks team. version " VERSION)
+#pragma comment(exestr, "Battle Tanks (c)2006-2009 Battle tanks team. version " VERSION)
 #pragma comment( user, "Compiled on " __DATE__ " at " __TIME__ ) 
 #endif
 

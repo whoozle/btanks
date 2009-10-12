@@ -2,7 +2,7 @@
 #define BTANKS_TROOPER_H_
 
 /* Battle Tanks Game
- * Copyright (C) 2006-2008 Battle Tanks team
+ * Copyright (C) 2006-2009 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

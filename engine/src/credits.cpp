@@ -1,5 +1,5 @@
 /* Battle Tanks Game
- * Copyright (C) 2006-2008 Battle Tanks team
+ * Copyright (C) 2006-2009 Battle Tanks team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ Credits::Credits() : _w(0), _h(0) {
 	lines.push_back("");
 	
 	lines.push_back("GAME DESIGN");
-	lines.push_back("NETIVE MEDIA GROUP 2006-2008");
+	lines.push_back("NETIVE MEDIA GROUP 2006-2009");
 
 	lines.push_back("");
 	lines.push_back("");
