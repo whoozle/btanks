@@ -925,7 +925,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
 							idx, tex->n, pos.x, pos.y));
 					*/
-					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, &pos, 0xffffffff))) {
+					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, &pos, D3DCOLOR_RGBA(0xff, 0xff, 0xff, src->format->alpha)))) {
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
 					}

@@ -261,12 +261,6 @@ void d3dSDL_Quit() {
 	SDL_Quit();	
 }
 
-SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
-	if (g_pD3D == NULL)
-		return SDL_DisplayFormat(surface);
-	return NULL;
-}
-
 static int pow2(const int tex_size) {
 	if (tex_size > 8192) {
 		return -1;
@@ -304,7 +298,7 @@ static int pow2(const int tex_size) {
 
 
 static LPDIRECT3DTEXTURE8 d3d_CreateTexture(SDL_Surface * surface, int tex_size_w, int tex_size_h, 
-	int x1, int y1, int x2, int y2
+	int x1, int y1, int x2, int y2, bool alpha_channel
 ) {
 	//LOG_DEBUG(("creating %dx%d texture...", tex_size_w, tex_size_h));
 
@@ -312,7 +306,7 @@ static LPDIRECT3DTEXTURE8 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 	HRESULT err;
 	if (FAILED(err = g_pd3dDevice->CreateTexture(tex_size_w, tex_size_h, 1, 0, 
 				//D3DFMT_A8B8G8R8, 
-				D3DFMT_A8R8G8B8, 
+				alpha_channel? D3DFMT_A8R8G8B8: D3DFMT_X8R8G8B8, 
 				D3DPOOL_MANAGED, 
 				//D3DPOOL_DEFAULT, 
 				&tex))) {
@@ -362,10 +356,7 @@ static LPDIRECT3DTEXTURE8 d3d_CreateTexture(SDL_Surface * surface, int tex_size_
 	return tex;
 }
 
-SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
-	//assert(g_pD3D != NULL);
-	if (g_pD3D == NULL)
-		return SDL_DisplayFormatAlpha(surface);
+static SDL_Surface * convert_to_display(SDL_Surface *surface, bool alpha_channel) {
 	{
 		texinfo * texinfo = getTexture(surface);
 		if (texinfo != NULL) {
@@ -425,7 +416,7 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	int idx = 0;
 	for(int y = 0; y < surface->h; y += tex_split_h) {
 		for(int x = 0; x < surface->w; x += tex_split_w) {
-			LPDIRECT3DTEXTURE8 tex = d3d_CreateTexture(surface, tex_split_w, tex_split_h, x, y, x + tex_split_w, y + tex_split_h);
+			LPDIRECT3DTEXTURE8 tex = d3d_CreateTexture(surface, tex_split_w, tex_split_h, x, y, x + tex_split_w, y + tex_split_h, alpha_channel);
 			if (tex == NULL) 
 				return NULL;
 	
@@ -453,6 +444,19 @@ SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
 	//LOG_DEBUG(("created texture with id %d, fragments: %d (max: %d)", r->unused1, info.n, max_f));
 	
 	return r;
+}
+
+SDL_Surface *d3dSDL_DisplayFormatAlpha(SDL_Surface *surface) {
+	//assert(g_pD3D != NULL);
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormatAlpha(surface);
+	return convert_to_display(surface, true);
+}
+
+SDL_Surface *d3dSDL_DisplayFormat(SDL_Surface *surface) {
+	if (g_pD3D == NULL)
+		return SDL_DisplayFormat(surface);
+	return convert_to_display(surface, false);
 }
 
 SDL_Surface *d3dSDL_ConvertSurface
@@ -931,7 +935,7 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
 							idx, tex->n, pos.x, pos.y));
 					*/
-					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, NULL, 0, &pos, 0xffffffff))) { //dx9
+					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, NULL, 0, &pos, D3DCOLOR_RGBA(0xff, 0xff, 0xff, src->format->alpha)))) { //dx9
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
 					}
