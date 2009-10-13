@@ -555,7 +555,7 @@ TRY {
 		LOG_DEBUG(("gameover, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 
 		TRY {
-			GameMonitor->game_over(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt, false);
+			GameMonitor->game_over(message.get("area"), message.get("message"), (float)atof(message.get("duration").c_str()) - dt, false);
 		} CATCH("on-message(gameover)", throw; )
 		break;
 	}
@@ -572,7 +572,7 @@ TRY {
 			LOG_DEBUG(("respawn, delta: %+d, dt: %g", _net_stats.getDelta(), dt));
 
 			TRY {
-				GameMonitor->displayMessage(message.get("area"), message.get("message"), atof(message.get("duration").c_str()) - dt);
+				GameMonitor->displayMessage(message.get("area"), message.get("message"), (float)atof(message.get("duration").c_str()) - dt);
 			} CATCH("on-message(text-message)", throw; )		
 		}
 		break;
@@ -989,7 +989,7 @@ void IPlayerManager::start_server() {
 			_client = NULL;
 			_recent_address.clear();
 		}
-		if (_server == NULL) {
+		if (_server == NULL && !RTConfig->disable_network) {
 			_server = new Server;
 			_server->init();
 		}
@@ -1015,6 +1015,9 @@ void IPlayerManager::start_client(const mrt::Socket::addr &address, const size_t
 	_client = NULL;
 	
 	_local_clients = n;
+	
+	if (RTConfig->disable_network)
+		throw_ex(("networking was disabled from the campaign."));
 
 	TRY {
 		_client = new Client;
@@ -1039,7 +1042,7 @@ void IPlayerManager::clear(bool disconnect) {
 	}
 	_net_stats.clear();
 
-	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0/101);
+	GET_CONFIG_VALUE("multiplayer.sync-interval", float, sync_interval, 103.0f/101);
 	GET_CONFIG_VALUE("multiplayer.sync-interval-divisor", int, sync_div, 5);
 	_next_sync.set(sync_interval / sync_div);
 

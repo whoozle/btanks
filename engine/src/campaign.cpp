@@ -12,7 +12,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	if (_preparse && name == "logo") {
 		std::string file = attr.get("file", std::string());
 		std::string bgcolor = attr.get("background", "000000");
-		float duration = attr.get("duration", 3);
+		float duration = attr.get("duration", 3.0f);
 
 		unsigned r = 0, g = 0, b = 0;
 		if (bgcolor.size() == 6) {
@@ -40,7 +40,9 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		} CATCH("parsing logo entry", delete s)
 	} else if (_preparse && name == "campaign") {
 		std::string donation = attr.get("donations", "true");
-		disable_donations = donation[0] == 'f';
+		disable_donations = !donation.empty() && donation[0] == 'f';
+		std::string network = attr.get("donations", "true");
+		disable_network = !network.empty() && network[0] == 'f';
 	}
 
 	if (_preparse)
@@ -49,9 +51,6 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	if (name == "campaign") {
 		if (attr["name"].empty())
 			throw_ex(("campaign must have title attr"));
-		
-		std::string donation = attr.get("donations", "true");
-		disable_donations = donation[0] == 'f';
 		
 		this->name = attr["name"];
 		title = I18n->get("campaign", this->name);
@@ -98,7 +97,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 		item.name = attr["name"];
 		item.price = attr["price"].empty()?0:atoi(attr["price"].c_str());
 		item.max_amount = attr["maximum-amount"].empty()?0:atoi(attr["maximum-amount"].c_str());
-		item.dir_speed = attr["cycle-directions"].empty()?0.0f:atof(attr["cycle-directions"].c_str());
+		item.dir_speed = attr["cycle-directions"].empty()?0.0f: (float)atof(attr["cycle-directions"].c_str());
 		
 		item.object = attr["object"];
 		item.animation = attr["animation"];
@@ -201,7 +200,7 @@ const bool Campaign::visible(const Map &map) const {
 	return false;
 }
 
-Campaign::Campaign() : minimal_score(0), map(NULL), disable_donations(false), _wares_section(false) {}
+Campaign::Campaign() : minimal_score(0), map(NULL), disable_donations(false), disable_network(false), _wares_section(false) {}
 
 #include "game_monitor.h"
 #include "finder.h"

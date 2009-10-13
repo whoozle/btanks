@@ -16,7 +16,7 @@ public:
 	
 	const sdlx::Surface *map;
 	
-	bool disable_donations;
+	bool disable_donations, disable_network;
 	
 	struct Medal {
 		std::string id, tile;

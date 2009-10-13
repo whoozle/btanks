@@ -523,7 +523,7 @@ void IGame::resource_init() {
 		_net_talk = new Chat();
 		_net_talk->hide();
 
-		if (_autojoin) {
+		if (_autojoin && !RTConfig->disable_network) {
 			mrt::Socket::addr addr;
 			addr.parse(_address);
 			PlayerManager->start_client(addr, 1);
@@ -574,6 +574,7 @@ void IGame::parse_logos() {
 		Campaign c;
 		c.init(files[i].first, files[i].second, true);
 		RTConfig->disable_donations |= c.disable_donations;
+		RTConfig->disable_network |= c.disable_network;
 	}
 }
 

@@ -17,6 +17,7 @@
 #include "network_status.h"
 #include "new_profile_dialog.h"
 #include "player_manager.h"
+#include "rt_config.h"
 
 bool MainMenu::generate_key_events_for_gamepad;
 
@@ -40,8 +41,10 @@ void MainMenu::init() {
 		add(new MenuItem("big", "menu", "start-campaign"), cm);
 	}
 	
-	add(new MenuItem("big", "menu", "start-game"), new StartServerMenu(w, h));
-	add(new MenuItem("big", "menu", "join-game"), new JoinServerMenu(w, h));
+	if (!RTConfig->disable_network) {
+		add(new MenuItem("big", "menu", "start-game"), new StartServerMenu(w, h));
+		add(new MenuItem("big", "menu", "join-game"), new JoinServerMenu(w, h));
+	}
 	add(new MenuItem("big", "menu", "options"), new OptionsMenu(w, h));
 	add(new MenuItem("big", "menu", "profiles"), new ProfilesMenu(w, h));
 	
