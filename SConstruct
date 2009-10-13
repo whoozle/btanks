@@ -244,7 +244,7 @@ Export('revision')
 Export('lib_dir')
 Export('plugins_dir')
 
-version = '0.8.%s' %version
+version = '0.9.%s' %version
 print "version: %s" %version
 
 bt_sublibs = ['mrt', 'sdlx', 'objects', 'clunk']
