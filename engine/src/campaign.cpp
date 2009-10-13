@@ -41,7 +41,7 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 	} else if (_preparse && name == "campaign") {
 		std::string donation = attr.get("donations", "true");
 		disable_donations = !donation.empty() && donation[0] == 'f';
-		std::string network = attr.get("donations", "true");
+		std::string network = attr.get("network", "true");
 		disable_network = !network.empty() && network[0] == 'f';
 	}
 
