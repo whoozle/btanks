@@ -116,7 +116,6 @@ bool BaseFile::readline(std::string &str, const size_t bufsize) const {
 		if (r <= 0)
 			return !str.empty();
 		str += c;
-		if (c == '\n')
-			return true;
-	} while(true);
+	} while(c != '\n');
+        return true;
 }
