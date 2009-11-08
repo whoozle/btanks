@@ -30,6 +30,8 @@
 
 #include "menu/container.h"
 #include "menu/text_control.h"
+#include "menu/checkbox.h"
+#include "menu/scroll_list.h"
 
 class LayerProperties : public Container {
 public:
