@@ -134,7 +134,7 @@ TRY {
 	DestroyWindow(hwnd);
 	WIN_FlushMessageQueue();
 #endif
-#ifndef _WINDOWS 
+#if !defined(_WINDOWS) && !defined(__APPLE__)
 	int errorBase, eventBase; 
 	
 	if (SDL_GL_LoadLibrary(NULL) != 0) {
