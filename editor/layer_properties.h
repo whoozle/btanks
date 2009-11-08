@@ -28,7 +28,8 @@
  * from your version and license this file solely under the GPL without exception. 
 */
 
-#include "container.h"
+#include "menu/container.h"
+#include "menu/text_control.h"
 
 class LayerProperties : public Container {
 public:
