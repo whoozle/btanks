@@ -78,7 +78,6 @@ struct quad_rect {
 
 template<typename T, typename V, int capacity> 
 struct quad_node {
-	enum { unsplit_capacity = capacity * 2 / 3 };
 	typedef quad_rect<T, V> rect_type;
 	typedef quad_node<T, V, capacity> node_type;
 	typedef std::list<rect_type> rects_type;
