@@ -109,6 +109,14 @@ else:
 conf_env = env.Clone()
 conf = Configure(conf_env)
 
+if sys.platform != "win32":
+	sdl_cflags = env.ParseFlags('!pkg-config --cflags sdl')
+	sdl_libs = env.ParseFlags('!pkg-config --libs sdl')
+	conf.env.MergeFlags(sdl_cflags, sdl_libs)
+else: 
+	sdl_cflags = {}
+	sdl_libs = {}
+
 #print conf.env['CCFLAGS']
 
 if not conf.CheckLibWithHeader('expat', 'expat.h', 'c', "XML_ParserCreate(NULL);", False):
@@ -124,13 +132,6 @@ if sys.platform == "win32":
 if not conf.CheckLibWithHeader('SDL', 'SDL.h', 'c++', "SDL_Init(0);", False):
 	Exit(1)
 	
-if sys.platform != "win32":
-	sdl_cflags = env.ParseFlags('!pkg-config --cflags sdl')
-	sdl_libs = env.ParseFlags('!pkg-config --libs sdl')
-	conf.env.MergeFlags(sdl_cflags, sdl_libs)
-else: 
-	sdl_cflags = {}
-	sdl_libs = {}
 
 Export('sdl_cflags')
 Export('sdl_libs')
