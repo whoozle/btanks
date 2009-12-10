@@ -80,7 +80,7 @@ void ResizeDialog::resize() {
 	invalidate();
 	TRY { 
 		Map->resize(c_l->get(), c_r->get(), c_u->get(), c_d->get());
-	} CATCH("resize", );
+	} CATCH("resize", {});
 }
 
 bool ResizeDialog::onKey(const SDL_keysym sym) {

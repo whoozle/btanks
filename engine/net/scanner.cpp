@@ -74,7 +74,7 @@ TRY {
 			LOG_DEBUG(("my address %s", inet_ntoa(addr)));
 			banned_addrs.insert(addr.S_un.S_addr);
 		}
-	} CATCH("getting host ip addresses", )
+	} CATCH("getting host ip addresses", {})
 	    
 #endif	
 	
@@ -111,7 +111,7 @@ TRY {
 					sdlx::AutoMutex m(_hosts_lock);
 					check_queue.push(CheckQueue::value_type(addr, std::string()));
 				}
-			} CATCH("scanning", );
+			} CATCH("scanning", {});
 
 			createMessage(data);
 	
@@ -128,7 +128,7 @@ TRY {
 		if (set.check(udp_sock, mrt::SocketSet::Exception)) {
 			TRY {
 				throw_net(("udp_socket"));
-			} CATCH("select", )
+			} CATCH("select", {})
 			LOG_DEBUG(("restarting udp socket..."));
 			udp_sock.create();
 			udp_sock.set_broadcast_mode(1);
@@ -193,7 +193,7 @@ TRY {
 				host.map = msg.has("map")?msg.get("map"): std::string();
 				host.game_type = (GameType) game_type;
 				_changed = true;
-			}CATCH("reading message", )
+			}CATCH("reading message", {})
 		}
 	}
 	return 0;
@@ -247,7 +247,7 @@ void Scanner::ping(mrt::UDPSocket &udp_sock) {
 			mrt::Chunk data;
 			createMessage(data);
 			udp_sock.send(addr, data.get_ptr(), data.get_size());
-		} CATCH("pinging known server", )
+		} CATCH("pinging known server", {} )
 }
 
 void Scanner::get(HostMap &hosts) const {
