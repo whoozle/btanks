@@ -19,14 +19,14 @@ env['BUILDERS']['Library'] = picLibBuilder
 opts = Options(['options.cache'])
 #opts.Add('CC', 'C compiler')
 #opts.Add('CXX', 'C++ compiler')
-opts.Add('CCFLAGS', 'General options that are passed to the C compiler', '')
-opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler', '')
+opts.Add('CCFLAGS', 'General options that are passed to the C compiler')
+opts.Add('CXXFLAGS', 'General options that are passed to the C++ compiler')
 if sys.platform == "win32":
-	opts.Add('LINK', 'Linker program', '')
-opts.Add('LINKFLAGS', 'General options that are passed to the linker', '')
-opts.Add('LIBPATH', 'Path to external libraries', '')
-opts.Add('LINK', 'Linker', '')
-opts.Add('CPPPATH', 'extra cpp path', '')
+	opts.Add('LINK', 'Linker program')
+opts.Add('LINKFLAGS', 'General options that are passed to the linker')
+opts.Add('LIBPATH', 'Path to external libraries')
+opts.Add('LINK', 'Linker')
+opts.Add('CPPPATH', 'extra cpp path')
 
 if sys.platform != "win32":
 	opts.Add('prefix', 'prefix for **nix packaging', '')
