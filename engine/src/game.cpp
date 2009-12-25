@@ -346,6 +346,9 @@ void IGame::init(const int argc, char *argv[]) {
 			if (fx_volume >= 1.0f)
 				Config->set("engine.sound.volume.fx", 0.66f);
 		}
+		if (revision < 8076) {
+			Config->set("multiplayer.client.master-server", "btanks.servegame.com");
+		}
 		
 		Config->set("engine.revision", getRevision());
 	}
