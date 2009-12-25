@@ -346,8 +346,10 @@ void IGame::init(const int argc, char *argv[]) {
 			if (fx_volume >= 1.0f)
 				Config->set("engine.sound.volume.fx", 0.66f);
 		}
-		if (revision < 8076) {
+		if (revision < 8077) {
+			LOG_DEBUG(("setting new servers..."));
 			Config->set("multiplayer.client.master-server", "btanks.servegame.com");
+			Config->set("multiplayer.server.master-server", "btanks.servegame.com");
 		}
 		
 		Config->set("engine.revision", getRevision());
@@ -497,6 +499,11 @@ void IGame::init(const int argc, char *argv[]) {
 	notify_slot.assign(this, &IGame::notifyLoadingBar, ResourceManager->notify_progress);
 
 	_need_postinit = true;
+
+	if (RTConfig->server_mode) {
+		resource_init();
+		return;
+	}
 
 	parse_logos();
 }
