@@ -111,7 +111,7 @@ if sys.platform != 'win32':
 	env.Append(LINKFLAGS=['-Wl,-rpath-link,build/' + env['mode'] + '/clunk'])
 
 
-bt = env.SharedLibrary('bt', bt_sources, LIBS=bt_libs)
+bt = env.SharedLibrary('btanks_engine', bt_sources, LIBS=bt_libs)
 
 if sys.platform != 'win32' and len(env['prefix']) > 0:
 	Import('install_targets')
@@ -121,7 +121,7 @@ else:
 	Install('#', bt[0])
 
 bt_main_sources = ['src/main.cpp']
-bt_main_libs =  ['mrt', 'bt', 'SDL', 'sdlx']
+bt_main_libs =  ['mrt', 'btanks_engine', 'SDL', 'sdlx']
 
 if sys.platform == "win32":
 	bt_rc = env.RES('src/bt.rc')

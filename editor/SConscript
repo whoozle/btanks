@@ -6,7 +6,7 @@ Import('sdl_libs')
 
 env = env.Clone()
 
-libs = ['bt', 'sdlx', 'mrt', 'SDL']
+libs = ['btanks_engine', 'sdlx', 'mrt', 'SDL']
 
 ed_src = [
 	'base_brush.cpp', 

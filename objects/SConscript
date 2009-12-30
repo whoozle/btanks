@@ -7,7 +7,7 @@ Import('lib_dir')
 env = env.Clone()
 buildmode = env['mode']
 
-libs = ['bt', 'sdlx', 'mrt']
+libs = ['btanks_engine', 'sdlx', 'mrt']
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/engine'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/mrt'])
 env.Prepend(LIBPATH=['#/build/' + buildmode + '/sdlx'])
