@@ -432,7 +432,7 @@ void IWindow::createMainWindow() {
 		try {
 			_window.set_video_mode(_w, _h, 0, flags );
 	   	} CATCH("setting video mode", {
-	   		LOG_WARNING(("could not set up video mode, falling back to 800x600"));
+	   		LOG_WARN(("could not set up video mode, falling back to 800x600"));
 	   		//fixme: show UI warning?
 	   		_w = 800; _h = 600;
 	   		flags &= ~SDL_FULLSCREEN; 
