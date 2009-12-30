@@ -424,7 +424,6 @@ void IWindow::createMainWindow() {
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, _fsaa);
 		}
 	
-		//_window.set_video_mode(w, h, 0,  SDL_OPENGL | SDL_OPENGLBLIT | flags );
 #ifdef USE_GLSDL
 		flags |= SDL_GLSDL;
 #endif
@@ -462,7 +461,15 @@ void IWindow::createMainWindow() {
 #endif
 
 	} else {
-		_window.set_video_mode(_w, _h, 0, flags);
+		try {
+			_window.set_video_mode(_w, _h, 0, flags);
+	   	} CATCH("setting video mode", {
+	   		LOG_WARN(("could not set up video mode, falling back to 800x600"));
+	   		//fixme: show UI warning?
+	   		_w = 800; _h = 600;
+	   		flags &= ~SDL_FULLSCREEN; 
+			_window.set_video_mode(_w, _h, 0, flags );
+	   	})
 	}
 
 #else //_WINDOWS
@@ -470,7 +477,15 @@ void IWindow::createMainWindow() {
 #ifdef USE_GLSDL
 		flags |= _dx?SDL_GLSDL : 0;
 #endif
-		_window.set_video_mode(_w, _h, 0, flags);
+		try {
+			_window.set_video_mode(_w, _h, 0, flags);
+	   	} CATCH("setting video mode", {
+	   		LOG_WARN(("could not set up video mode, falling back to 800x600"));
+	   		//fixme: show UI warning?
+	   		_w = 800; _h = 600;
+	   		flags &= ~SDL_FULLSCREEN; 
+			_window.set_video_mode(_w, _h, 0, flags );
+	   	})
 	
 #endif
 
