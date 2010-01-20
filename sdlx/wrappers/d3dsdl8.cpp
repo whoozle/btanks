@@ -935,7 +935,8 @@ int d3dSDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect,
 							src_rect.left, src_rect.right, src_rect.top, src_rect.bottom, 
 							idx, tex->n, pos.x, pos.y));
 					*/
-					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, NULL, 0, &pos, D3DCOLOR_RGBA(0xff, 0xff, 0xff, src->format->alpha)))) { //dx9
+					Uint8 alpha = ((src->flags & SDL_SRCALPHA) == SDL_SRCALPHA)? 255: src->format->alpha; //do not handle both SDL_SRCALPHA & alpha channel
+					if (FAILED(g_sprite->Draw(tex->tex[idx], &src_rect, NULL, NULL, 0, &pos, D3DCOLOR_RGBA(0xff, 0xff, 0xff, alpha)))) {
 						SDL_SetError("Sprite::Draw failed");
 						return -1;
 					}
