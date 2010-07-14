@@ -31,7 +31,7 @@ void CampaignMenu::start() {
 	int ci = _active_campaign->get();
 	Campaign &campaign = _campaigns[ci];
 	const Campaign::Map &map = campaign.maps[map_id[_maps->get()]];
-	if (!campaign.visible(map))
+	if (!campaign.visible(map).first)
 		return;
 
 	RTConfig->game_type = GameTypeCooperative;
@@ -146,10 +146,11 @@ CampaignMenu::CampaignMenu(const int w, const int h) : _w(w), _h(h), _invalidate
 	add((w - bw) / 2, (h - bh) / 2, medals);
 	medals->hide();
 	
-	init();
+	init(true);
 }
 
-void CampaignMenu::init() {
+void CampaignMenu::init(bool first_time) {
+	LOG_DEBUG(("init(first_time: %s)", first_time? "yes": "no"));
 	_c_difficulty->set(1);
 
 	int ci = _active_campaign->get();
@@ -180,17 +181,26 @@ void CampaignMenu::init() {
 	_maps->clear();
 
 	map_id.clear();
+
+	bool fix_just_opened = true;
 	for(size_t i = 0; i < campaign.maps.size(); ++i) {
 
 		const Campaign::Map &map = campaign.maps[i];
 		Control *c = NULL;
+		std::pair<bool, bool> vstatus = campaign.visible(map);
+		bool visible = vstatus.first, just_opened = vstatus.second;
 		TRY {
-		c = campaign.visible(map)? 
+			c = visible? 
 				static_cast<Control *>(new VideoControl(campaign.base, map.id)): 
 				static_cast<Control *>(new DisabledVideoControl(campaign.base, map.id));
 		} CATCH("init", continue; );
 		
 		_maps->append(c);
+		if (fix_just_opened && just_opened) {
+			LOG_DEBUG(("just opened map %u, selecting", (unsigned)i));
+			fix_just_opened = false;
+			_maps->set(i);
+		}
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
 			_maps->set(_maps->size() - 1);
@@ -227,7 +237,7 @@ void CampaignMenu::update_score(Label *l, const std::string &name) {
 void CampaignMenu::tick(const float dt) {
 	Container::tick(dt);
 	if (_invalidate_me) {
-		init();
+		init(false);
 		_invalidate_me = false;
 	}
 	
@@ -241,7 +251,7 @@ void CampaignMenu::tick(const float dt) {
 
 	if (_active_campaign->changed()) {
 		_active_campaign->reset();
-		init();
+		init(true);
 	}
 	
 	if (_maps->changed()) {

@@ -155,19 +155,21 @@ void Campaign::getStatus(const std::string &map_id, bool &played, bool &won) con
 
 #include <vector>
 
-const bool Campaign::visible(const Map &map) const {
+const std::pair<bool, bool> Campaign::visible(const Map &map) const {
 	//LOG_DEBUG(("visible('%s')", map.id.c_str()));
 	if (minimal_score > 0) {
 		if (minimal_score > getCash())
-			return false;
+			return std::pair<bool, bool>(false, false);
 	}
 	if (map.visible_if.empty()) 
-		return true;
+		return std::pair<bool, bool>(true, false);
 
 	//LOG_DEBUG(("visible attr : %s", map.visible_if.c_str()));
 	
 	std::vector<std::string> ors;
 	mrt::split(ors, map.visible_if, "|");
+
+	bool opened = false;
 	for(size_t i = 0; i < ors.size(); ++i) {
 		std::string &token = ors[i];
 		mrt::trim(token);
@@ -182,22 +184,30 @@ const bool Campaign::visible(const Map &map) const {
 		switch(op) {
 			case '-' : 
 				if (played && !won)
-					return true;
+					opened = true;
 				break;
 			case '+' : 
 				if (won)
-					return true;
+					opened = true;
 				break;
 			case '*': 
 				if (played)
-					return true;
+					opened = true;
 				break;
 			default: 
 				throw_ex(("invalid operation: '%c' (%s)", op, map.visible_if.c_str()));
 		}
+		if (opened)
+			break;
 	}
 	
-	return false;
+	if (opened) {
+		bool just_opened = !map.last_opened;
+		map.last_opened = true;
+		return std::pair<bool, bool>(opened, just_opened);
+	}
+	
+	return std::pair<bool, bool>(false, false);
 }
 
 Campaign::Campaign() : minimal_score(0), map(NULL), disable_donations(false), disable_network(false), _wares_section(false) {}
@@ -320,7 +330,7 @@ bool Campaign::Map::got_medal(const Campaign &campaign, const Medal &medal) cons
 		Config->get(mname, bt, 3600);
 		return bt <= time;
 	} else if (medal.id == "secrets") {
-		return secret && campaign.visible(*this);
+		return secret && campaign.visible(*this).first;
 	}
 
 	return false;

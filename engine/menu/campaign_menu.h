@@ -29,7 +29,7 @@ public:
 	void update_map();
 	
 private:
-	void init();
+	void init(bool first_time);
 	static const std::string convert_time(const float t);
 	static void update_time(Label *l, const std::string &name);
 	static void update_score(Label *l, const std::string &name);

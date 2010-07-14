@@ -120,7 +120,7 @@ void Medals::get_medals(const std::string &id, int &now, int &total) const {
 			if (!map.secret)
 				continue;
 			++total;
-			if (campaign->visible(map)) 
+			if (campaign->visible(map).first) 
 				++now;
 		}		
 	}

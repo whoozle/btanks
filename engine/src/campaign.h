@@ -31,8 +31,9 @@ public:
 		v2<int> position;
 		
 		bool no_medals, secret;
+		mutable bool last_opened;
 		int time, score;
-		Map() : id(), visible_if(), map_frame(NULL), position(), no_medals(false), secret(false), time(0), score(0) {}
+		Map() : id(), visible_if(), map_frame(NULL), position(), no_medals(false), secret(false), last_opened(false), time(0), score(0) {}
 		bool got_medal(const Campaign &campaign, const Medal &medal) const;
 	};
 	
@@ -50,7 +51,8 @@ public:
 	std::vector<Medal> medals;
 	
 	void init(const std::string &base, const std::string &file, bool preparse = false);
-	const bool visible(const Map &map_id) const;
+	//returns visible, just-opened pair
+	const std::pair<bool, bool> visible(const Map &map_id) const;
 	const int getCash() const;
 
 	const bool buy(ShopItem &item) const;
