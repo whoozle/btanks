@@ -42,6 +42,7 @@ IMPLEMENT_SINGLETON(Config, IConfig);
 IConfig::IConfig() {}
 
 void IConfig::load(const std::string &file) {
+	LOG_DEBUG(("loading config from %s", file.c_str()));
 	_file = file;
 	TRY {
 		parse_file(file);
