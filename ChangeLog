@@ -1,4 +1,7 @@
 0.9.1:
+	*) Clunk - 3d sound library:
+		*) Added IIT - left/right panning depending on angle
+
 	*) Campaign improvements
 		*) Move level cursor to the just opened map if available
 
