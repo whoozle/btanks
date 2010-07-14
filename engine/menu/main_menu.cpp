@@ -27,7 +27,7 @@ MainMenu::MainMenu(int w, int h) : active(NULL), w(w), h(h), _netstat(new Networ
 	if (profile.empty()) {
 		LOG_DEBUG(("no profile, creating one..."));
 		Config->set("profile.0.name", "default profile");
-		Config->set("engine.profile", std::string("0"));
+		Config->set("engine.profile", "0");
 	}
 	init();
 }

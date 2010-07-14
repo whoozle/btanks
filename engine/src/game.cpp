@@ -195,8 +195,8 @@ void IGame::init(const int argc, char *argv[]) {
 			Config->get("player.control-method-2", s2, "keys-2");
 			if (s == "keys" && s2 == "keys") {
 				LOG_WARN(("bogus control methods found. fixing..."));
-				Config->set("player.control-method-1", std::string("keys-1"));
-				Config->set("player.control-method-2", std::string("keys-2"));
+				Config->set("player.control-method-1", "keys-1");
+				Config->set("player.control-method-2", "keys-2");
 				Config->invalidateCachedValues();
 			}
 		}
@@ -347,8 +347,8 @@ void IGame::init(const int argc, char *argv[]) {
 				Config->set("engine.sound.volume.fx", 0.66f);
 		}
 		if (revision < 8084) {
-			Config->set("multiplayer.client.master-server", std::string("btanks.svalko.org"));
-			Config->set("multiplayer.server.master-server", std::string("btanks.svalko.org"));
+			Config->set("multiplayer.client.master-server", "btanks.svalko.org");
+			Config->set("multiplayer.server.master-server", "btanks.svalko.org");
 		}
 		
 		Config->set("engine.revision", getRevision());
