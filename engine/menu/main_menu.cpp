@@ -8,6 +8,7 @@
 #include "prompt.h"
 #include "config.h"
 #include "text_control.h"
+#include "nickname.h"
 
 #include "resource_manager.h"
 #include "sdlx/font.h"
@@ -26,7 +27,7 @@ MainMenu::MainMenu(int w, int h) : active(NULL), w(w), h(h), _netstat(new Networ
 	
 	if (profile.empty()) {
 		LOG_DEBUG(("no profile, creating one..."));
-		Config->set("profile.0.name", "default profile");
+		Config->set("profile.0.name", Nickname::generate());
 		Config->set("engine.profile", "0");
 	}
 	init();
