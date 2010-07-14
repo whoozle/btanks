@@ -363,6 +363,7 @@ bool JoinServerMenu::onKey(const SDL_keysym sym) {
 
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
+	case SDLK_SPACE:
 		join();
 		return true;
 	
