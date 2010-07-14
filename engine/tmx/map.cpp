@@ -961,6 +961,25 @@ const bool IMap::hasSoloLayers() const {
 void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect &dst, const int z1, const int z2) const {
 	if (_w == 0 || z1 >= z2)  //not loaded
 		return;
+		
+	sdlx::Rect old_clip;
+	//LOG_DEBUG(("%d, %d, %d, %d -> %d, %d, %d, %d", src.x, src.y, src.w, src.h, dst.x, dst.y, dst.w, dst.h));
+	if (!_torus) {
+		//clip to map size for non-torus maps
+		sdlx::Rect clip;
+		if (src.x < 0)
+			clip.x = dst.x - src.x;
+		if (src.y < 0)
+			clip.y = dst.y - src.y;
+
+		clip.w = (src.w > _w * _tw)? _w * _tw: src.w;
+		clip.h = (src.h > _h * _th)? _h * _th: src.h;
+		clip.x += dst.x;
+		clip.y += dst.y;
+		
+		window.get_clip_rect(old_clip);
+		window.set_clip_rect(clip);
+	}
 
 	int txn = (dst.w - 1) / _tw + 2;
 	int tyn = (dst.h - 1) / _th + 2;
@@ -1021,6 +1040,8 @@ void IMap::render(sdlx::Surface &window, const sdlx::Rect &src, const sdlx::Rect
 			}
 		}
 	}
+	if (!_torus)
+		window.set_clip_rect(old_clip);
 	//LOG_DEBUG(("blits skipped: %u", skipped));
 	//LOG_DEBUG(("====================================="));
 }
