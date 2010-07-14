@@ -275,6 +275,7 @@ void IWindow::init(const int argc, char *argv[]) {
 		else if (strcmp(argv[i], "-2") == 0) { _w = 1024; _h = 768; }
 		else if (strcmp(argv[i], "-3") == 0) { _w = 1152; _h = 864; }
 		else if (strcmp(argv[i], "-4") == 0) { _w = 1280; _h = 1024; }
+		else if (strcmp(argv[i], "-5") == 0) { _w = 1920; _h = 1080; }
 		else if (strcmp(argv[i], "--fsaa") == 0) { _fsaa = (_fsaa)?(_fsaa<< 1) : 1; }
 		else if (strcmp(argv[i], "--no-joystick") == 0) { _init_joystick = false; }
 		else if (strcmp(argv[i], "--help") == 0) { 
