@@ -60,6 +60,7 @@ public:
 	void set(const std::string &name, const bool value);
 	void set(const std::string &name, const int value);
 	void set(const std::string &name, const float value);
+	inline void set(const std::string &name, const char *value) { set(name, std::string(value)); }
 	void set(const std::string &name, const std::string &value);
 	
 	void remove(const std::string &name);
