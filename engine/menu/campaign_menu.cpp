@@ -199,7 +199,7 @@ void CampaignMenu::init(bool first_time) {
 		if (fix_just_opened && just_opened) {
 			LOG_DEBUG(("just opened map %u, selecting", (unsigned)i));
 			fix_just_opened = false;
-			_maps->set(i);
+			_maps->set(_maps->size() - 1);
 		}
 		map_id.push_back((int)i);
 		if (map.id == current_map) {
