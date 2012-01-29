@@ -1,0 +1,3 @@
+[submodule "clunk"]
+	path = clunk
+	url = git://github.com/whoozle/clunk.git
