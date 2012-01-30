@@ -54,7 +54,7 @@ void Base64::decode(mrt::Chunk &dst, const std::string &src) {
 	unsigned char * p_dst = (unsigned char *)dst.get_ptr();
 	unsigned int p_idx = 0;
 
-	size_t size = src.size(), dst_size = dst.get_size();
+	size_t size = src.size();
 
 	unsigned int dst24 = 0;
 	int got = 0, padded = 0;
