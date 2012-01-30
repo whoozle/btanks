@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_USE_RELATIVE_PATHS TRUE)
+
 include(CheckLibraryExists)
 
 add_definitions(-DUSE_GLSDL -DV3_DISABLE_Z -D_REENTRANT)
