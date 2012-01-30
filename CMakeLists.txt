@@ -42,6 +42,7 @@ endif(WIN32)
 include_directories(engine)
 add_executable(btanks ${btanks_SOURCES})
 target_link_libraries(btanks mrt sdlx btanks_engine)
+add_dependencies(btanks bt_objects)
 
 if (WIN32)
 	target_link_libraries(btanks SDL sdlx_main user32)

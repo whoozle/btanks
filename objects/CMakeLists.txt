@@ -21,4 +21,6 @@ set(bt_objects_SOURCES
 
 add_library(bt_objects SHARED ${bt_objects_SOURCES})
 target_link_libraries(bt_objects btanks_engine sdlx mrt)
-set_target_properties(bt_objects PROPERTIES LIBRARY_OUTPUT_DIR ${CMAKE_BINARY_DIR})
+get_property(BT_OBJECTS_LOCATION TARGET bt_objects PROPERTY LOCATION)
+message(STATUS "${BT_OBJECTS_LOCATION} ---- ${CMAKE_BINARY_DIR}")
+file(COPY ${BT_OBJECTS_LOCATION} DESTINATION ${CMAKE_BINARY_DIR})
