@@ -84,7 +84,6 @@ bool Serializator::end() const {
 
 void Serializator::add(const int n) {
 	//LOG_DEBUG(("added int %d", n));
-	unsigned char buf[sizeof(unsigned long)];
 	
 	unsigned int x = (n >= 0)?n:-n;
 	unsigned int len;
@@ -101,14 +100,19 @@ void Serializator::add(const int n) {
 
 	mask |= 0x40;
 	
+	unsigned char buf[4];
 	if (x <= 255) {
 		buf[0] = x;
 		len = 1;
 	} else if (x <= 65535) {
-		* (uint16_t *)buf = htons(x);
+		buf[0] = (x >> 8);
+		buf[1] = x;
 		len = 2;
 	} else if (x <= 2147483647) {
-		* (uint32_t *)buf = htonl(x); //defined as uint32 even on 64bit arch
+		buf[0] = (x >> 24);
+		buf[1] = (x >> 16);
+		buf[2] = (x >> 8);
+		buf[3] = x;
 		len = 4;
 	} else throw_ex(("implement me (64bit values serialization)"));
 
