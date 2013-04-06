@@ -18,8 +18,6 @@ if (${CMAKE_COMPILER_IS_GNUCC})
 	set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
 endif (${CMAKE_COMPILER_IS_GNUCC})
 
-find_package(Lua51)
-
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
 include_directories(${SDL_INCLUDE_DIR})

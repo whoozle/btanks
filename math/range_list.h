@@ -53,14 +53,14 @@ public:
 			return;
 		}
 	
-		typename parent_type::iterator i = lower_bound(value);
+		typename parent_type::iterator i = parent_type::lower_bound(value);
 		if (i != parent_type::end()) {
 			if (i->first == value)
 				return;
 
 			if (value + 1 == i->first) {
 				T e = i->second;
-				erase(i);
+				parent_type::erase(i);
 				i = parent_type::insert(typename parent_type::value_type(value, e)).first; //expand beginning
 				i = pack_left(i);
 			}

@@ -52,8 +52,12 @@ set(bt_SOURCES
 set_source_files_properties(src/version.cpp PROPERTIES COMPILE_DEFINITIONS "VERSION=\"git\";REVISION=9999")
 
 #lua support
-add_definitions(-DENABLE_LUA)
-list(APPEND bt_SOURCES luaxx/state.cpp luaxx/lua_hooks.cpp)
+find_package(Lua51)
+if (Lua51_FOUND)
+	include_directories(${Lua51_INCLUDE_DIRS})
+	add_definitions(-DENABLE_LUA)
+	list(APPEND bt_SOURCES luaxx/state.cpp luaxx/lua_hooks.cpp)
+endif (Lua51_FOUND)
 
 add_library(btanks_engine SHARED ${bt_SOURCES})
 target_link_libraries(btanks_engine vorbisfile SDL smpeg mrt sdlx vorbis clunk ${LUA_LIBRARY})

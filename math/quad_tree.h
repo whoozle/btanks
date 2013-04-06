@@ -114,7 +114,7 @@ struct quad_node {
 			delete child[i];
 			child[i] = NULL;
 		}
-		children_count = NULL;
+		children_count = 0;
 	}
 	
 	void merge(std::set<V> &result) const {
