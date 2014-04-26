@@ -46,6 +46,7 @@
 #include "clunk/sample.h"
 #include "clunk/source.h"
 #include "clunk/context.h"
+#include "clunk/backend/sdl/backend.h"
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 
@@ -57,7 +58,7 @@ void IMixer::reset() {
 
 IMixer::IMixer() : _nosound(true), _nomusic(true), 
 	_volume_fx(1.0f), _volume_ambience(0.5f), _volume_music(1.0f), _debug(false), _loop(false), 
-	_context(NULL) {
+	_backend(NULL), _context(NULL) {
 	}
 
 void IMixer::init(const bool nosound, const bool nomusic) {
@@ -68,14 +69,13 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	
 	Config->get("engine.sound.debug", _debug, false);
 
-	try {	
-		_context = new clunk::Context();
-	
+	try {
 		int sample_rate, period = 1024;
 		Config->get("engine.sound.sample-rate", sample_rate, 22050);
 		//Config->get("engine.sound.period", period, 1024);
 
-		_context->init(sample_rate, 2, period);
+		_backend = new clunk::sdl::Backend(sample_rate, 2, period);
+		_context = &_backend->get_context();
 		
 		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, false);
 		Config->get("engine.sound.speed-of-sound", dm.speed_of_sound, 2000.0f);
@@ -85,10 +85,12 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		dm.rolloff_factor = 0.5f;
 		
 		_context->set_distance_model(dm);
-	} CATCH("clunk initialization", { delete _context; _context = NULL; _nomusic = _nosound = true; });
+	} CATCH("clunk initialization", { delete _backend; _backend = NULL; _context = NULL; _nomusic = _nosound = true; });
 	
-	if (_context == NULL)
+	if (_context == NULL) {
+		LOG_DEBUG(("no sound"));
 		return;
+	}
 
 	Config->get("engine.sound.volume.fx", _volume_fx, 0.66f);
 	Config->get("engine.sound.volume.ambience", _volume_ambience, 0.5f);
@@ -106,10 +108,11 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 	//} CATCH("setting distance model", {})
 	
 	_nomusic = nomusic;
+	_backend->start();
 }
 
 void IMixer::deinit() {
-	if (_context != NULL) {
+	if (_backend != NULL) {
 		_context->stop_all();
 		
 		_context->deinit();
@@ -117,7 +120,9 @@ void IMixer::deinit() {
 		std::for_each(_sounds.begin(), _sounds.end(), delete_ptr2<Sounds::value_type>());
 		_sounds.clear();
 
-		delete _context;
+		_backend->stop();
+		delete _backend;
+		_backend = NULL;
 		_context = NULL;
 	}
 

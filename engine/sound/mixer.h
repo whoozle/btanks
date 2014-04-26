@@ -45,6 +45,9 @@ class Context;
 class Object;
 class Source;
 class Sample;
+namespace sdl {
+	class Backend;
+}
 }
 
 class Object;
@@ -103,7 +106,7 @@ private:
 	
 	bool _debug, _loop;
 	
-	
+	clunk::sdl::Backend *_backend;
 	clunk::Context *_context;
 	
 	v3<float> listener_pos, listener_vel;

@@ -83,8 +83,7 @@ static long   stream_tell_func  (void *datasource) {
 OggStream::OggStream(const std::string &fname) {
 	_file = Finder->get_file(fname, "rb");
 
-	ov_callbacks ov_cb;
-	memset(&ov_cb, 0, sizeof(ov_cb));
+	ov_callbacks ov_cb = {};
 
 	ov_cb.read_func = stream_read_func;
 	ov_cb.seek_func = stream_seek_func;
@@ -97,10 +96,10 @@ OggStream::OggStream(const std::string &fname) {
 	
 	_vorbis_info = ov_info(&_ogg_stream, -1);
 
-	sample_rate = _vorbis_info->rate;
+	_spec.sample_rate = _vorbis_info->rate;
 	//LOG_DEBUG(("open(%s) : %d", fname.c_str(), sample_rate));
-	format = AUDIO_S16LSB;
-	channels = _vorbis_info->channels;
+	_spec.format = clunk::AudioSpec::S16;
+	_spec.channels = _vorbis_info->channels;
 
 	//_vorbis_comment = ov_comment(&_ogg_stream, -1);
 	assert(_vorbis_info != NULL);
@@ -142,8 +141,7 @@ OggStream::~OggStream() {
 void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 	scoped_ptr<mrt::BaseFile> file(Finder->get_file(fname, "rb"));
 	
-	ov_callbacks ov_cb;
-	memset(&ov_cb, 0, sizeof(ov_cb));
+	ov_callbacks ov_cb = {};
 
 	ov_cb.read_func = stream_read_func;
 	ov_cb.seek_func = stream_seek_func;
@@ -183,7 +181,7 @@ void OggStream::decode(clunk::Sample &sample, const std::string &fname) {
 	vorbis_info *info = ov_info(&ogg, -1);
 	assert(info != NULL);
 	
-	sample.init(data, info->rate, AUDIO_S16LSB, info->channels);
+	sample.init(data, clunk::AudioSpec(clunk::AudioSpec::S16, info->rate, info->channels));
 
 	ov_clear(&ogg);	
 }
