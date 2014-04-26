@@ -43,7 +43,7 @@
 #include "game_monitor.h"
 #include "zbox.h"
 
-#include "clunk/object.h"
+#include <clunk/object.h>
 
 const v2<float> Object::get_relative_position(const Object *obj) const {
 	return Map->distance(this->get_center_position(), obj->get_center_position());

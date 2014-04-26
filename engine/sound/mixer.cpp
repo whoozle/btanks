@@ -43,10 +43,10 @@
 #include "tmx/map.h"
 #include "finder.h"
 
-#include "clunk/sample.h"
-#include "clunk/source.h"
-#include "clunk/context.h"
-#include "clunk/backend/sdl/backend.h"
+#include <clunk/sample.h>
+#include <clunk/source.h>
+#include <clunk/context.h>
+#include <clunk/backend/sdl/backend.h>
 
 IMPLEMENT_SINGLETON(Mixer, IMixer);
 

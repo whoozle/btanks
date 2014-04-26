@@ -28,7 +28,7 @@
 
 #include "ogg_stream.h"
 #include "finder.h"
-#include "clunk/sample.h"
+#include <clunk/sample.h>
 #include <assert.h>
 #include "mrt/logger.h"
 #include "mrt/exception.h"

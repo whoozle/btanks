@@ -4,7 +4,8 @@ set(CMAKE_USE_RELATIVE_PATHS TRUE)
 include(CheckLibraryExists)
 
 add_definitions(-DUSE_GLSDL -DV3_DISABLE_Z -D_REENTRANT)
-include_directories(.)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/clunk)
 
 if (WIN32)
 	add_definitions(-D_WINDOWS -DWIN32)

@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include "var.h"
 #include "config.h"
-#include "clunk/object.h"
+#include <clunk/object.h>
 
 #define LUA_TRY try
 #define LUA_CATCH(where) catch(const std::exception &e) {\
