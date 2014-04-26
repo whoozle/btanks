@@ -78,7 +78,7 @@ void IMixer::init(const bool nosound, const bool nomusic) {
 		_context = &_backend->get_context();
 		
 		clunk::DistanceModel dm(clunk::DistanceModel::Exponent, false);
-		Config->get("engine.sound.speed-of-sound", dm.speed_of_sound, 2000.0f);
+		Config->get("engine.sound.speed", dm.speed_of_sound, 200.0f);
 		Config->get("engine.sound.doppler-factor", dm.doppler_factor, 1.0f);
 		dm.distance_divisor = 40;
 		dm.reference_distance = 1;
