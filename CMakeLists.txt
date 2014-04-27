@@ -12,8 +12,8 @@ if (WIN32)
 endif(WIN32)
 
 if (${CMAKE_COMPILER_IS_GNUCC})
-	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ggdb -D_FORTIFY_SOURCE=2")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ggdb -D_FORTIFY_SOURCE=2")
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ggdb")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
 	set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
