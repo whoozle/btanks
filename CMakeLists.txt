@@ -11,13 +11,13 @@ if (WIN32)
 	add_definitions(-D_WINDOWS -DWIN32)
 endif(WIN32)
 
-if (${CMAKE_COMPILER_IS_GNUCC})
+if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_CLANGXX)
 	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -ggdb")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
 
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread  -DGCC_HASCLASSVISIBILITY=1 -fvisibility=hidden -fvisibility-inlines-hidden")
 	set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
-endif (${CMAKE_COMPILER_IS_GNUCC})
+endif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_CLANGXX)
 
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
