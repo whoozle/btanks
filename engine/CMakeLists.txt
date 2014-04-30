@@ -49,7 +49,17 @@ set(bt_SOURCES
 	src/version.cpp
 )
 
-set_source_files_properties(src/version.cpp PROPERTIES COMPILE_DEFINITIONS "VERSION=\"git\";REVISION=9999")
+if (EXISTS ${CMAKE_SOURCE_DIR}/.revision)
+	file(READ ${CMAKE_SOURCE_DIR}/.revision BTANKS_REVISION)
+	string(REGEX REPLACE "[\n\r]" "" BTANKS_REVISION "${BTANKS_REVISION}")
+	message(STATUS "release revision: ${BTANKS_REVISION}")
+else ()
+	find_package(Git REQUIRED)
+	exec_program(${GIT_EXECUTABLE} ARGS rev-list HEAD --count OUTPUT_VARIABLE BTANKS_REVISION)
+	message(STATUS "git revision: ${BTANKS_REVISION}")
+endif ()
+
+set_source_files_properties(src/version.cpp PROPERTIES COMPILE_DEFINITIONS "VERSION=\"git\";REVISION=${BTANKS_REVISION}")
 
 #lua support
 find_package(Lua51)

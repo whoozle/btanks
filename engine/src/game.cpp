@@ -205,7 +205,7 @@ void IGame::init(const int argc, char *argv[]) {
 		//place for upgrade.
 		int revision;
 		Config->get("engine.revision", revision, getRevision()); 
-		LOG_DEBUG(("engine revision = %d\n", revision));
+		LOG_DEBUG(("engine revision = %d", revision));
 		if (revision < 1852) {
 			int rz;
 			Config->get("hud.radar.zoom", rz, 2);
