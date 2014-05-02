@@ -286,7 +286,7 @@ TRY {
 		v2<float> pos = Map->distance(v2<float>(listener_pos.x, listener_pos.y), o->get_center_position()), vel;
 		o->get_velocity(vel);
 		
-		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, 0), clunk::v3<float>(vel.x, -vel.y, 0), clunk::v3<float>(0, 1, 0));
+		clunk_object->update(clunk::v3<float>(pos.x, -pos.y, 0), clunk::v3<float>(vel.x, -vel.y, 0));
 	
 		double pitch = 1;
 		GET_CONFIG_VALUE("engine.sound.delta-pitch", float, sdp, 0.019440643702144828169815632631f); //1/3 semitone
