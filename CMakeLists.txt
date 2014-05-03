@@ -48,3 +48,7 @@ if (WIN32)
 else(WIN32)
 	target_link_libraries(btanks ${SDLMAIN_LIBRARY})
 endif(WIN32)
+
+if (EXISTS "${CMAKE_SOURCE_DIR}/private")
+	add_subdirectory(private)
+endif()
