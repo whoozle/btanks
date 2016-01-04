@@ -3,5 +3,10 @@ CMakeFiles/
 Makefile
 cmake_install.cmake
 *.so
+
+*.ninja
+.ninja_*
+
 btanks
 bted
+*.log
