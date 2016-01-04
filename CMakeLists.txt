@@ -32,6 +32,7 @@ add_subdirectory(sdlx)
 add_subdirectory(clunk)
 add_subdirectory(engine)
 add_subdirectory(objects)
+add_subdirectory(editor)
 
 set(btanks_SOURCES engine/src/main.cpp)
 if (WIN32)
