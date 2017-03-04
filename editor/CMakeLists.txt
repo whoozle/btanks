@@ -21,8 +21,7 @@ add_executable(bted ${bted_SOURCES})
 target_link_libraries(bted mrt sdlx btanks_engine)
 add_dependencies(bted bt_objects)
 
-get_property(BTED_LOCATION TARGET bted PROPERTY LOCATION)
-add_custom_command(TARGET bted POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ARGS ${BTED_LOCATION} ${CMAKE_BINARY_DIR})
+add_custom_command(TARGET bted POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy ARGS $<TARGET_FILE:bted> ${CMAKE_BINARY_DIR})
 
 if (WIN32)
 	target_link_libraries(bted SDL sdlx_main user32)
