@@ -45,8 +45,7 @@ TimeSpy::TimeSpy(const std::string &message): message(message) {
 
 TimeSpy::~TimeSpy() {
 	struct timeval now;
-	if (gettimeofday(&now, NULL) == -1)
-		throw_io(("gettimeofday"));
-	
+	gettimeofday(&now, NULL);
+
 	LOG_DEBUG(("%s: %ld mcs", message.c_str(), (now.tv_sec - tm.tv_sec) * 1000000 + (now.tv_usec - tm.tv_usec)));
 }
