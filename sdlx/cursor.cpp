@@ -28,10 +28,3 @@ void sdlx::Cursor::Disable() {
 void sdlx::Cursor::Enable() {
     SDL_ShowCursor(SDL_ENABLE);
 }
-
-void sdlx::Cursor::set_position(const int x, const int y) {
-    SDL_WarpMouse(x, y);
-}
-void sdlx::Cursor::get_position(int &x, int &y) {
-	SDL_GetMouseState(&x, &y);
-}
