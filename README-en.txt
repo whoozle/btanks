@@ -1,5 +1,4 @@
 Battle Tanks demo version
-(Beta testers may use this file as their manual.)
 
 Installation:
 Unpack the files into any folder (for example, C:\Games\Btanks\).

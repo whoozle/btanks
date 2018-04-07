@@ -1,5 +1,4 @@
 Version bêta de Battle Tanks
-(Les bêta testeurs peuvent considérer que ce fichier est leur manuel.)
 
 Installation :
 Décompactez les fichiers dans un répertoire quelconque (par exemple, C:\Jeux\Btanks\).
