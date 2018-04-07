@@ -28,7 +28,8 @@ Scanner::Scanner() : _running(true), _scan(false), _changed(false) {
 Scanner::~Scanner() {
 	LOG_DEBUG(("stopping scanner..."));
 	_running = false;
-	sdlx::Thread::kill();
+	sdlx::Thread::wait();
+	LOG_DEBUG(("scanner stopped..."));
 }
 
 #include "monitor.h" //hack me, move all packet related code to message! 

@@ -40,12 +40,6 @@ void Surface::assign(SDL_Surface *x) {
 	surface = x;
 }
 
-
-void Surface::get_video() {
-    free();
-    surface = SDL_GetVideoSurface();
-}
-
 void Surface::create_rgb(int width, int height, int depth, Uint32 flags) {
 	free();
 	if (flags == Default) flags = default_flags;

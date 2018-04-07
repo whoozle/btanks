@@ -67,7 +67,6 @@ namespace sdlx {
 		void convert(Surface &dest, PixelFormat *fmt, Uint32 flags = Default) const;
 		void convert(Uint32 flags);
 
-		void get_video();
 		void set_video_mode(int w, int h, int bpp, int flags = Default);
 
 		void load_bmp(const std::string &fname);
