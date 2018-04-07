@@ -3,8 +3,9 @@ set(CMAKE_USE_RELATIVE_PATHS TRUE)
 set(MACOSX_RPATH TRUE)
 
 include(CheckLibraryExists)
+include(FindPkgConfig)
 
-add_definitions(-DUSE_GLSDL -DV3_DISABLE_Z -D_REENTRANT)
+add_definitions(-DV3_DISABLE_Z -D_REENTRANT)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/clunk)
 
@@ -20,10 +21,10 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_CLANGXX)
 	set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -pipe -pthread")
 endif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_CLANGXX)
 
-find_package(SDL REQUIRED)
-find_package(SDL_image REQUIRED)
-include_directories(${SDL_INCLUDE_DIR})
-include_directories(${SDLIMAGE_INCLUDE_DIR})
+find_package(SDL2 REQUIRED)
+pkg_check_modules(SDL2IMAGE REQUIRED SDL2_image)
+include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(${SDL2IMAGE_INCLUDE_DIR})
 
 check_library_exists(smpeg SMPEG_new_data "" SMPEG_FOUND)
 check_library_exists(vorbisfile ov_open "" VORBISFILE_FOUND)
