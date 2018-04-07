@@ -37,22 +37,21 @@ void mrt::install_crash_handlers() {
 #if not defined _WINDOWS and not defined __APPLE__
 	if (getenv("MRT_NO_CRASH_HANDLER") != NULL)
 		return;
-	
-		struct sigaction sa;
-		memset(&sa, 0, sizeof(sa));
-		sa.sa_handler = crash_handler;
-		
-		if (sigaction(SIGSEGV, &sa, NULL) == -1) 
-			perror("sigaction");
-		if (sigaction(SIGABRT, &sa, NULL) == -1) 
-			perror("sigaction");
-		if (sigaction(SIGFPE, &sa, NULL) == -1) 
-			perror("sigaction");
-		if (sigaction(SIGILL, &sa, NULL) == -1) 
-			perror("sigaction");
-		if (sigaction(SIGBUS, &sa, NULL) == -1) 
-			perror("sigaction");
 
-#endif		
+	struct sigaction sa;
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = crash_handler;
 
+	if (sigaction(SIGSEGV, &sa, NULL) == -1)
+		perror("sigaction");
+	if (sigaction(SIGABRT, &sa, NULL) == -1)
+		perror("sigaction");
+	if (sigaction(SIGFPE, &sa, NULL) == -1)
+		perror("sigaction");
+	if (sigaction(SIGILL, &sa, NULL) == -1)
+		perror("sigaction");
+	if (sigaction(SIGBUS, &sa, NULL) == -1)
+		perror("sigaction");
+
+#endif
 }
