@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_USE_RELATIVE_PATHS TRUE)
+set(MACOSX_RPATH TRUE)
 
 include(CheckLibraryExists)
 
