@@ -65,7 +65,7 @@ void Server::init() {
 	_monitor = new Monitor(cl);
 	_monitor->add(&_udp_sock);
 	_monitor->add(&_sock);
-	_monitor->start();
+	_monitor->start("monitor");
 	
 	if (RTConfig->server_mode) {
 		GET_CONFIG_VALUE("multiplayer.server.register-on-master-server", bool, rms, true);

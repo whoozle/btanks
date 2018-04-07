@@ -254,7 +254,7 @@ void ScrollList::render(sdlx::Surface &surface, const int x, const int y) const 
 	Container::render(surface, x, y);
 }
 
-bool ScrollList::onKey(const SDL_keysym sym) {
+bool ScrollList::onKey(const SDL_Keysym sym) {
 	_grab = false;
 	if (Container::onKey(sym))
 		return true;

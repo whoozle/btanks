@@ -49,7 +49,7 @@ public:
 	void join();
 	void remove();
 	
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	
 	void update();
 

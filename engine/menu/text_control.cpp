@@ -100,7 +100,7 @@ void TextControl::tick(const float dt) {
 }
 
 
-bool TextControl::onKey(const SDL_keysym sym) {
+bool TextControl::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 	case SDLK_HOME: 
 		_cursor_position = 0;
@@ -148,7 +148,7 @@ bool TextControl::onKey(const SDL_keysym sym) {
 		break;
 		
 	default: {
-		int c = sym.unicode;
+		int c = sym.key.keysym.unicode;
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE) {
 			if (_max_len && mrt::utf8_length(_text) >= _max_len)

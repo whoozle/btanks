@@ -220,7 +220,7 @@ void TilesetDialog::tick(const float dt) {
 }
 
 
-bool TilesetDialog::onKey(const SDL_keysym sym) {
+bool TilesetDialog::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym)) {
 		return true;
 	}

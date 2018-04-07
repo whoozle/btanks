@@ -45,7 +45,7 @@ public:
 	void set(const std::string &value);
 	const std::string &get() const;
 	void get_size(int &w, int &h) const;
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 
 protected:

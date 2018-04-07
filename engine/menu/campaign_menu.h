@@ -23,7 +23,7 @@ public:
 	const bool empty() const;
 
 	virtual void tick(const float dt);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	
 	void start();
 	void update_map();

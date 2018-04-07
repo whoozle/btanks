@@ -11,7 +11,7 @@ public:
 	NewProfileDialog();
 	const std::string &get() const { return _name->get(); }
 	virtual void tick(const float dt);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 private: 
 	TextControl * _name;
 	Button *_ok;

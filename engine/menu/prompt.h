@@ -47,7 +47,7 @@ public:
 
 	virtual void render(sdlx::Surface& surface, const int x, const int y) const;
 	virtual void tick(const float dt);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 
 	~Prompt();

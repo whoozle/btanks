@@ -309,7 +309,7 @@ void PlayerPicker::render(sdlx::Surface &surface, const int x, const int y) cons
 	Container::render(surface, x, y);
 }
 
-bool PlayerPicker::onKey(const SDL_keysym sym) {
+bool PlayerPicker::onKey(const SDL_Keysym sym) {
 	return Container::onKey(sym);
 }
 

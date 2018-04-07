@@ -79,7 +79,7 @@ void Prompt::tick(const float dt) {
 	}
 }
 
-bool Prompt::onKey(const SDL_keysym sym) {
+bool Prompt::onKey(const SDL_Keysym sym) {
 	if (sym.sym == SDLK_ESCAPE) {
 		//LOG_DEBUG(("invalidating prompt"));
 		set(std::string());

@@ -338,7 +338,7 @@ const int Font::render(sdlx::Surface &window, const std::string &str) const {
 	int h = get_height();
 	int w = render(NULL, 0, 0, str);
 	
-	window.create_rgb(w, h, 32, SDL_SRCALPHA);
+	window.create_rgb(w, h, 32, 0);
 	window.display_format_alpha();
 	return render(&window, 0, 0, str);
 }

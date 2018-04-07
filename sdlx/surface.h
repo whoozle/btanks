@@ -37,11 +37,8 @@ namespace sdlx {
 	
 		enum {
 			Default = 0x7fffffff,
-			Software = SDL_SWSURFACE,
-			Hardware = SDL_HWSURFACE,
-			Fullscreen = SDL_FULLSCREEN,
-			ColorKey = SDL_SRCCOLORKEY,
-			Alpha    = SDL_SRCALPHA
+			SDL_SRCCOLORKEY = Default, //port me
+			SDL_SRCALPHA = Default, //port me
 		};
 		
 		Surface();

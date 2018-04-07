@@ -243,7 +243,7 @@ void Medals::validate() {
 		active -= tiles.size();
 }
 
-bool Medals::onKey(const SDL_keysym sym) {
+bool Medals::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 

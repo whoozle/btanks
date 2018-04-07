@@ -42,7 +42,7 @@ public:
 	const Object *object;
 	ObjectPropertiesDialog(const int w);
 
-	virtual bool onKey(const SDL_keysym sym); 
+	virtual bool onKey(const SDL_Keysym sym); 
 
 	void show(const Object *o, const std::set<std::string> &variants);
 	void reset();

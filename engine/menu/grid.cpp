@@ -224,7 +224,7 @@ void Grid::get_size(int &w, int &h) const {
 		h += _split_h[j];
 }
 	
-bool Grid::onKey(const SDL_keysym sym) {
+bool Grid::onKey(const SDL_Keysym sym) {
 	for(size_t i = 0; i < _controls.size(); ++i) {
 		Row &row = _controls[i];
 		for(size_t j = 0; j < row.size(); ++j) {

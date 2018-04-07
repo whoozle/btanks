@@ -43,7 +43,7 @@ public:
 	OpenMapDialog();
 	
 	virtual void tick(const float dt);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	
 	void load();
 	void getMap(std::string &dir, std::string &name) const;

@@ -25,8 +25,9 @@
 namespace sdlx {
 class SDLXAPI Joystick {
 public: 
-	static const int getCount();
-	static const std::string getName(const int idx);
+	static int getCount();
+	std::string getName(const int idx);
+
 	static void sendEvents(const bool enable);
 	
 	Joystick();

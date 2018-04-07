@@ -106,7 +106,7 @@ void MainMenu::render(sdlx::Surface &surface, const int x, const int y) const {
 		_netstat->render(surface, 0, 0);
 }
 
-bool MainMenu::onKey(const SDL_keysym sym) {
+bool MainMenu::onKey(const SDL_Keysym sym) {
 	if (hidden())
 		return false;
 	
@@ -167,7 +167,7 @@ void MainMenu::onEvent(const SDL_Event &e) {
 	if (hidden())
 		return;
 
-	SDL_keysym sym;
+	SDL_Keysym sym;
 	memset(&sym, 0, sizeof(sym));
 	sym.mod = KMOD_NONE;
 

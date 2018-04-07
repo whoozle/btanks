@@ -32,7 +32,7 @@ NewProfileDialog::NewProfileDialog() {
 	box->init("menu/background_box_dark.png", w, h);
 }
 
-bool NewProfileDialog::onKey(const SDL_keysym sym) {
+bool NewProfileDialog::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 

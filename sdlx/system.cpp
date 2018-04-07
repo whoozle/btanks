@@ -206,16 +206,15 @@ void System::init(int system) {
 
 void System::probe_video_mode() {
 	LOG_DEBUG(("probing video info..."));
-	char drv_name[256];
-	if (SDL_VideoDriverName(drv_name, sizeof(drv_name)) == NULL)
-		throw_sdl(("SDL_VideoDriverName"));
-	LOG_DEBUG(("driver name: %s", drv_name));
+	LOG_DEBUG(("driver name: %s", SDL_GetCurrentVideoDriver()));
 
-	const SDL_VideoInfo * vinfo = SDL_GetVideoInfo();
-	if (vinfo == NULL)
-		throw_sdl(("SDL_GetVideoInfo()"));
-	LOG_DEBUG(("hw_available: %u; wm_available: %u; blit_hw: %u; blit_hw_CC:%u; blit_hw_A:%u; blit_sw:%u; blit_sw_CC:%u; blit_sw_A: %u; blit_fill: %u; video_mem: %u", 
-		vinfo->hw_available, vinfo->wm_available, vinfo->blit_hw, vinfo->blit_hw_CC, vinfo->blit_hw_A, vinfo->blit_sw, vinfo->blit_sw_CC, vinfo->blit_sw_A, vinfo->blit_fill, vinfo->video_mem ));
+	SDL_DisplayMode mode;
+	if (SDL_GetCurrentDisplayMode(0, &mode) == 0)
+	{
+		LOG_DEBUG(("current display mode: %dx%dx%d @%d %s", mode.w, mode.h, mode.refresh_rate, SDL_BITSPERPIXEL(mode.format), SDL_GetPixelFormatName(mode.format)));
+	}
+	else
+		LOG_ERROR(("could not get display mode"));
 }
 
 void System::deinit() {

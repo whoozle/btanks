@@ -121,7 +121,7 @@ bool Chooser::onMouse(const int button, const bool pressed, const int x, const i
 	return false;
 }
 
-bool Chooser::onKey(const SDL_keysym sym) {
+bool Chooser::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 /*		case SDLK_LEFT: 
 			left();

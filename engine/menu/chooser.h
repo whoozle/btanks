@@ -49,7 +49,7 @@ public:
 
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 
 	void set(const int i);
 	const int get() const { return _i; }

@@ -449,7 +449,7 @@ void Editor::deinit() {
 	} CATCH("saving config", {});
 }
 
-bool Editor::onKey(const SDL_keysym sym) {
+bool Editor::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	
@@ -929,7 +929,7 @@ void Editor::updateLayers() {
 }
 
 
-bool Editor::onKeySignal(const SDL_keysym sym, const bool pressed) {
+bool Editor::onKeySignal(const SDL_Keysym sym, const bool pressed) {
 	if (pressed && onKey(sym))
 		return true;
 	return false;

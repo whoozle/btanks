@@ -62,7 +62,7 @@ void Cheater::onEvent(const SDL_Event &event) {
 	if (event.type != SDL_KEYDOWN)
 		return;
 	
-	const SDL_keysym &sym = event.key.keysym;
+	const SDL_Keysym &sym = event.key.keysym;
 	const bool pressed = event.type == SDL_KEYDOWN;
 	
 	if (!pressed)

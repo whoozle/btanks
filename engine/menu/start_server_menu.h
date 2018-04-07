@@ -41,7 +41,7 @@ public:
 
 	void start();	
 	void tick(const float dt);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	
 private: 
 	MapPicker *_map_picker;

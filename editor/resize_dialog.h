@@ -37,7 +37,7 @@ public:
 	const bool get(int &left, int &right, int &up, int &down) const;
 	void show();
 private: 
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	void resize();
 	
 	mutable bool done;

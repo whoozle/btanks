@@ -44,7 +44,7 @@ void MenuItem::get_size(int& x, int& y) const {
 	y = font->get_height();
 }
 
-bool MenuItem::onKey(const SDL_keysym sym) {
+bool MenuItem::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 	case SDLK_RETURN:
 	case SDLK_SPACE:

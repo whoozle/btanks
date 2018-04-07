@@ -148,7 +148,7 @@ void ProfilesMenu::tick(const float dt) {
 	}
 }
 
-bool ProfilesMenu::onKey(const SDL_keysym sym) {
+bool ProfilesMenu::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym)) 
 		return true;
 

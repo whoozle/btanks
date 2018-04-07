@@ -91,7 +91,7 @@ void Shop::tick(const float dt) {
 	}
 }
 
-bool Shop::onKey(const SDL_keysym sym) {
+bool Shop::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 

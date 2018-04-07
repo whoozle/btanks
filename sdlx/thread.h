@@ -22,6 +22,7 @@
 
 #include "sdlx.h"
 #include <SDL_thread.h>
+#include <string>
 #include "semaphore.h"
 
 int sdlx_thread_starter(void *o);
@@ -33,18 +34,18 @@ public:
 	Thread();
 	virtual ~Thread();
 
-	void start();
-
+	void start(const std::string &name);
 
 	Uint32 get_id() const;
 	
-	const int wait();
-	void kill();
+	int wait();
+
 protected: 
 	virtual const int run() = 0;
 	friend int ::sdlx_thread_starter(void *o);
+
 private: 
-	const int runWrap();
+	int runWrap();
 	
 	Thread(const Thread &);
 	const Thread& operator=(const Thread &);

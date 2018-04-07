@@ -39,7 +39,7 @@ class AddObjectDialog : public ScrollList, private mrt::XMLParser {
 public: 
 	AddObjectDialog(const int w, const int h);
 	~AddObjectDialog();
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	virtual void tick(const float dt);
 	
 	const bool get(std::string &classname, std::string &animation, int &z);

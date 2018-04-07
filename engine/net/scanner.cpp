@@ -22,7 +22,7 @@
 Scanner::Scanner() : _running(true), _scan(false), _changed(false) {
 	//Config->get("multiplayer.bind-address", _bindaddr, std::string());
 	Config->get("multiplayer.port", _port, 27255);
-	start();
+	start("scanner");
 }
 
 Scanner::~Scanner() {

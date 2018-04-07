@@ -37,7 +37,7 @@ class Prompt;
 class LayerListDialog : public ScrollList {
 public: 
 	LayerListDialog(const int w, const int h);
-	virtual bool onKey(const SDL_keysym sym); 
+	virtual bool onKey(const SDL_Keysym sym); 
 	virtual void tick(const float dt);
 	
 	const bool active() const;

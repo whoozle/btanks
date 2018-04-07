@@ -120,7 +120,7 @@ void AddObjectDialog::start(const std::string &name, Attrs &attr) {
 	}
 }
 
-bool AddObjectDialog::onKey(const SDL_keysym sym) {
+bool AddObjectDialog::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 	case SDLK_LCTRL:
 	case SDLK_KP_ENTER:

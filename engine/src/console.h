@@ -61,8 +61,8 @@ protected:
 	~IConsole();
 	
 private:
-	sl08::slot2<bool, const SDL_keysym, const bool, IConsole> on_key_slot;
-	bool onKey(const SDL_keysym sym, const bool pressed);
+	sl08::slot2<bool, const SDL_Keysym, const bool, IConsole> on_key_slot;
+	bool onKey(const SDL_Keysym sym, const bool pressed);
 	bool _active; 
 
 	typedef std::deque<std::pair<std::string, sdlx::Surface *> > Buffer;

@@ -112,7 +112,7 @@ void OpenMapDialog::tick(const float dt) {
 	}
 }
 
-bool OpenMapDialog::onKey(const SDL_keysym sym) {
+bool OpenMapDialog::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 	case SDLK_PAGEDOWN:
 		c_base->left();

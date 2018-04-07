@@ -59,7 +59,7 @@ void Client::init(const mrt::Socket::addr &host) {
 	_monitor = new Monitor(cl);
 	_monitor->add(&_udp_sock);
 	_monitor->connect(host);
-	_monitor->start();
+	_monitor->start("monitor");
 	sent_req = false;
 }
 

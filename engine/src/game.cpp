@@ -611,7 +611,7 @@ void IGame::start_random_map() {
 
 #include "controls/keyplayer.h"
 
-bool IGame::onKey(const SDL_keysym key, const bool pressed) {
+bool IGame::onKey(const SDL_Keysym key, const bool pressed) {
 	if (_cutscene) {
 		if (pressed)
 			stop_cutscene();

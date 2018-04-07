@@ -44,7 +44,7 @@ void MorphDialog::initMap() {
 	reset();
 }
 
-bool MorphDialog::onKey(const SDL_keysym sym) {
+bool MorphDialog::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_ESCAPE: 

@@ -52,7 +52,7 @@ void NumberControl::down(const int v) {
 	validate();
 }
 
-bool NumberControl::onKey(const SDL_keysym sym) {
+bool NumberControl::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 		case SDLK_UP: up(); return true;
 		case SDLK_DOWN: down(); return true;

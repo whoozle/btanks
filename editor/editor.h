@@ -71,7 +71,7 @@ public:
 	void moveObjectHack(Object *object, const v2<int>& screen_pos);
 	
 private: 
-	virtual bool onKey(const SDL_keysym sym); //from ::Control
+	virtual bool onKey(const SDL_Keysym sym); //from ::Control
 	virtual bool onMouse(const int button, const bool pressed, const int x, const int y);
 	virtual bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 
@@ -81,8 +81,8 @@ private:
 	sl08::slot1<bool, float, Editor> on_tick_slot;
 	bool onTick(float dt);
 
-	sl08::slot2<bool, const SDL_keysym, const bool, Editor> on_key_slot;
-	bool onKeySignal(const SDL_keysym sym, const bool pressed);
+	sl08::slot2<bool, const SDL_Keysym, const bool, Editor> on_key_slot;
+	bool onKeySignal(const SDL_Keysym sym, const bool pressed);
 	
 	sl08::slot4<bool, const int, const bool, const int, const int, Editor> on_mouse_slot;
 	bool onMouseSignal(const int button, const bool pressed, const int x, const int y);

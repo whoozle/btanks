@@ -17,7 +17,7 @@ public:
 	void save();
 
 private:
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	std::vector<std::string> _ids;
 	ScrollList * _list;
 	NewProfileDialog * _new_profile;

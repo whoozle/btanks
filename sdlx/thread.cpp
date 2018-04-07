@@ -30,7 +30,7 @@ int sdlx_thread_starter(void *o) {
 
 using namespace sdlx;
 
-const int Thread::runWrap() {
+int Thread::runWrap() {
 	_starter.post();
 	return run();
 }
@@ -51,25 +51,18 @@ Uint32 Thread::get_id() const {
 }
 
 
-void Thread::start() {
+void Thread::start(const std::string &name) {
 	if (_thread != NULL) 
 		throw_ex(("thread was already started."));
-	_thread = SDL_CreateThread(sdlx_thread_starter, reinterpret_cast<void *>(this));
+	_thread = SDL_CreateThread(sdlx_thread_starter, name.c_str(), static_cast<void *>(this));
 	_starter.wait();
 }
 
-const int Thread::wait() {
+int Thread::wait() {
 	if (_thread == NULL)
 		throw_sdl(("wait: thread was not started"));
 	int r;
 	SDL_WaitThread(_thread, &r);
 	_thread = NULL;
 	return r;
-}
-
-void Thread::kill() {
-	if (_thread == NULL)
-		throw_sdl(("kill: thread was not started"));
-	SDL_KillThread(_thread);
-	_thread = NULL;
 }

@@ -56,7 +56,7 @@ public:
 	void revert_to_defaults();
 	void save();
 	
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	virtual void render(sdlx::Surface &dst, const int x, const int y) const;
 
 private: 

@@ -39,8 +39,8 @@ public:
 	KeyPlayer(const std::string &variant);
 
 private:
-	sl08::slot2<bool, const SDL_keysym, const bool, KeyPlayer> on_key_slot;
-	bool on_key(const SDL_keysym sym, const bool pressed);
+	sl08::slot2<bool, const SDL_Keysym, const bool, KeyPlayer> on_key_slot;
+	bool on_key(const SDL_Keysym sym, const bool pressed);
 	
 	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);

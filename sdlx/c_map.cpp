@@ -209,7 +209,9 @@ const bool CollisionMap::collides(const sdlx::Rect &src, const CollisionMap *oth
 
 static inline const bool test_pixel(const sdlx::Surface * surface, const unsigned x, const unsigned y, const CollisionMap::Type type) {
 	Uint32 pixelcolor = surface->get_pixel(x, y);
-	
+
+#warning port me
+#if 0
 	switch(type) {
 	case CollisionMap::OnlyOpaque:
 		if ((surface->getFlags() & SDL_SRCALPHA) == SDL_SRCALPHA) {
@@ -227,7 +229,7 @@ static inline const bool test_pixel(const sdlx::Surface * surface, const unsigne
 		}
 		return (pixelcolor !=  surface->get_pixel_format()->colorkey);
 	}
-	
+#endif
 	return false;
 }
 

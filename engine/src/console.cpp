@@ -43,7 +43,7 @@
 
 IMPLEMENT_SINGLETON(Console, IConsole);
 
-bool IConsole::onKey(const SDL_keysym sym, const bool pressed) {
+bool IConsole::onKey(const SDL_Keysym sym, const bool pressed) {
 	if (!pressed || !Game->getChat()->hidden())
 		return false;
 	

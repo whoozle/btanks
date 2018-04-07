@@ -171,7 +171,7 @@ void RedefineKeys::get_size(int &w, int &h) const {
 		h = _background.h;
 }
 
-bool RedefineKeys::onKey(const SDL_keysym sym) {
+bool RedefineKeys::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_RETURN:

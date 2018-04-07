@@ -39,7 +39,7 @@ public:
 	void add(MenuItem *item);
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
 	
-	bool onKey(const SDL_keysym sym);
+	bool onKey(const SDL_Keysym sym);
 	bool onMouse(const int button, const bool pressed, const int x, const int y);
 	bool onMouseMotion(const int state, const int x, const int y, const int xrel, const int yrel);
 	

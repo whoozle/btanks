@@ -82,7 +82,7 @@ void Chat::add_message(const PlayerSlot &slot, const std::string &m) {
 }
 
 
-bool Chat::onKey(const SDL_keysym sym) {
+bool Chat::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN: 

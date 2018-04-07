@@ -71,7 +71,7 @@ const bool LayerListDialog::active() const {
 	return !_new_layer->hidden(); 
 }
 
-bool LayerListDialog::onKey(const SDL_keysym sym) {
+bool LayerListDialog::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	

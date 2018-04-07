@@ -54,7 +54,7 @@ void ObjectPropertiesDialog::tick(const float dt) {
 }
 
 
-bool ObjectPropertiesDialog::onKey(const SDL_keysym sym) {
+bool ObjectPropertiesDialog::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 
 	case SDLK_ESCAPE: 

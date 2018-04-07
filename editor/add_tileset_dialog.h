@@ -40,7 +40,7 @@ public:
 	AddTilesetDialog(const int w, const int h);
 
 	const bool init(const std::string &map_fname, TilesetList &tilesets, const std::vector<std::string> &all_tilesets);
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 
 	const std::string getTileset();
 	

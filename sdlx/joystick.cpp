@@ -23,15 +23,15 @@
 
 using namespace sdlx;
 
-const int Joystick::getCount() {
+int Joystick::getCount() {
 	const int c = SDL_NumJoysticks();
 	if (c < 0)
 		throw_sdl(("SDL_NumJoysticks"));
 	return c;
 }
 
-const std::string Joystick::getName(const int idx) {
-	const char * name_str = SDL_JoystickName(idx);
+std::string Joystick::getName(const int idx) {
+	const char * name_str = SDL_JoystickName(_joy);
 	if (name_str == NULL)
 		throw_sdl(("SDL_JoystickName(%d)", idx));
 	std::string name = name_str;

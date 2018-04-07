@@ -16,7 +16,7 @@ class Chat : public Container {
 public:
 	Chat();
 	virtual void render(sdlx::Surface &surface, const int x, const int y) const;
-	virtual bool onKey(const SDL_keysym sym);
+	virtual bool onKey(const SDL_Keysym sym);
 	void tick(const float dt);
 	const std::string get() const { return last_message; }
 

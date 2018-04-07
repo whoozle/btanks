@@ -76,7 +76,7 @@ void Container::get_size(int &w, int &h) const {
 }
 
 
-bool Container::onKey(const SDL_keysym sym) {
+bool Container::onKey(const SDL_Keysym sym) {
 	if (_focus != NULL && !_focus->hidden() && _focus->onKey(sym)) //first, pass key event to control with focus
 		return true;
 	

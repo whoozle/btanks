@@ -96,7 +96,7 @@ void Menu::render(sdlx::Surface &surface, const int x, const int y) const {
 	Container::render(surface, x, y);
 }
 
-bool Menu::onKey(const SDL_keysym sym) {
+bool Menu::onKey(const SDL_Keysym sym) {
 	Control *item = get_current_item();
 	if (item != NULL && item->onKey(sym)) {
 		if (item->changed()) {

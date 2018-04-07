@@ -83,7 +83,7 @@ void ResizeDialog::resize() {
 	} CATCH("resize", {});
 }
 
-bool ResizeDialog::onKey(const SDL_keysym sym) {
+bool ResizeDialog::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	switch(sym.sym) {

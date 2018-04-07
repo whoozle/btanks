@@ -39,7 +39,7 @@ void Control::hide(const bool hide) {
 	_hidden = hide;
 }
 
-bool Control::onKey(const SDL_keysym sym) {
+bool Control::onKey(const SDL_Keysym sym) {
 	return false;
 }
 

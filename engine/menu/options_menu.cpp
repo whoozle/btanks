@@ -464,7 +464,7 @@ void OptionsMenu::render(sdlx::Surface &surface, const int x, const int y) const
 	Container::render(surface, x, y);	
 }
 
-bool OptionsMenu::onKey(const SDL_keysym sym) {
+bool OptionsMenu::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym)) 
 		return true;
 

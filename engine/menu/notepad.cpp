@@ -91,7 +91,7 @@ void Notepad::right() {
 	invalidate(true);
 }
 
-bool Notepad::onKey(const SDL_keysym sym) {
+bool Notepad::onKey(const SDL_Keysym sym) {
 	switch(sym.sym) {
 		case SDLK_LEFT: 
 			left(); 

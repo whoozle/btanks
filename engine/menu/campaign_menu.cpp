@@ -349,7 +349,7 @@ void CampaignMenu::update_map() {
 	}
 }
 
-bool CampaignMenu::onKey(const SDL_keysym sym) {
+bool CampaignMenu::onKey(const SDL_Keysym sym) {
 	if (Container::onKey(sym))
 		return true;
 	switch(sym.sym) {

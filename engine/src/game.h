@@ -41,6 +41,7 @@
 
 #include "export_btanks.h"
 #include "sdlx/sdlx.h"
+#include <SDL_keyboard.h>
 #include "sl08/sl08.h"
 
 #include "random_pool.h"
@@ -112,8 +113,8 @@ private:
 	bool logo_tick(float dt);
 	bool tick(float dt);
 
-	sl08::slot2<bool, const SDL_keysym, const bool, IGame>  on_key_slot;
-	bool onKey(const SDL_keysym sym, const bool pressed);
+	sl08::slot2<bool, const SDL_Keysym, const bool, IGame>  on_key_slot;
+	bool onKey(const SDL_Keysym sym, const bool pressed);
 
 	sl08::slot3<void, const int, const int, const bool, IGame> on_joy_slot;
 	void onJoyButton(const int, const int, const bool);
