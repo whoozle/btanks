@@ -44,7 +44,7 @@ private:
 	
 	virtual void get_name(std::vector<std::string> &controls, const PlayerState &state) const;
 	virtual void _updateState(PlayerSlot &slot, PlayerState &state, const float dt);
-	SDLKey _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
+	SDL_Keycode _up, _down, _left, _right, _fire, _alt_fire, leave, _hint_control;
 	PlayerState _state;
 };
 

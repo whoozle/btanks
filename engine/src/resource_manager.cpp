@@ -163,7 +163,6 @@ void IResourceManager::start(const std::string &name, Attrs &attr) {
 					
 					s = new sdlx::Surface;
 					s->load_image(data);
-					s->display_format_alpha();
 					
 					cmap = create_cmap(s, tname);
 			
@@ -370,7 +369,6 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 	
 	sdlx::Surface *s = NULL;
 		TRY {
-			GET_CONFIG_VALUE("engine.generate-alpha-tiles", bool, gat, false);
 			mrt::Chunk data;
 			std::string tname = "tiles/" + id;
 			Finder->load(data, tname);
@@ -386,7 +384,6 @@ const sdlx::Surface *IResourceManager::load_surface(const std::string &id, int s
 				LOG_DEBUG(("scaling surface to %dx%d", scale_to_w, scale_to_h));
 				s->zoom(1.0 * scale_to_w / s->get_width(), 1.0 * scale_to_h / s->get_height());
 			}
-			s->display_format_alpha();
 			_surfaces[id] = s;
 		} CATCH("loading surface", { delete s; throw; });
 	return s;
@@ -627,7 +624,6 @@ void IResourceManager::check_surface(const std::string &animation, const sdlx::S
 			Finder->load(data, tname);
 			s = new sdlx::Surface;
 			s->load_image(data);
-			s->display_format_alpha();
 			GET_CONFIG_VALUE("engine.strip-alpha-from-object-tiles", bool, strip_alpha, false);
 			if (strip_alpha) {
 				s->lock();

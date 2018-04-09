@@ -84,7 +84,6 @@ void TilesetDialog::initMap() {
 	
 	_tile_size = Map->getTileSize();
 	_brush.create_rgb(_tile_size.x, _tile_size.y, 32);
-	_brush.display_format_alpha();
 	_brush.fill_rect(_brush.get_size(), _brush.map_rgba(0xdd, 0xdd, 0x11, 0x80));
 	_tilesets = Map->getTilesets();
 	
@@ -141,7 +140,7 @@ bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, c
 			_editor_brush.size = v2<int>(x1 - x0 + 1, y1 - y0 + 1);
 			invalidate();
 			
-			static const Uint8 *keys = SDL_GetKeyState(0);
+			static const Uint8 *keys = SDL_GetKeyboardState(0);
 			if (keys[SDLK_LCTRL] == 0)
 				hide();
 		}
@@ -150,7 +149,9 @@ bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, c
 	case SDL_BUTTON_RIGHT: 
 		_selected = false;
 	break;
-	
+
+#warning fixme: mouse
+#if 0
 	case SDL_BUTTON_WHEELUP: 
 		if (_current_tileset) 
 			_pos.y -= _tile_size.y;
@@ -160,6 +161,7 @@ bool TilesetDialog::onMouse(const int button, const bool pressed, const int x, c
 		if (_current_tileset) 
 			_pos.y += _tile_size.y;
 	break;
+#endif
 	}
 	
 	return true;
@@ -237,7 +239,7 @@ bool TilesetDialog::onKey(const SDL_Keysym sym) {
 		return true;
 	}
 	
-	if (sym.mod & (KMOD_CTRL | KMOD_ALT | KMOD_META | KMOD_SHIFT))
+	if (sym.mod & (KMOD_CTRL | KMOD_ALT | KMOD_GUI | KMOD_SHIFT))
 		return false;
 
 	int cd = (int)(sym.sym - SDLK_0);

@@ -3,7 +3,7 @@
 
 #include <string>
 #include "control.h"
-#include <smpeg/smpeg.h>
+#include <smpeg2/smpeg.h>
 #include "sdlx/surface.h"
 #include <SDL_thread.h>
 

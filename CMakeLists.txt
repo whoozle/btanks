@@ -26,7 +26,7 @@ pkg_check_modules(SDL2IMAGE REQUIRED SDL2_image)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2IMAGE_INCLUDE_DIR})
 
-check_library_exists(smpeg SMPEG_new_data "" SMPEG_FOUND)
+check_library_exists(smpeg2 SMPEG_new_data "" SMPEG_FOUND)
 check_library_exists(vorbisfile ov_open "" VORBISFILE_FOUND)
 
 add_subdirectory(mrt)

@@ -39,11 +39,10 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 
 		shadow.create_rgb(screenshot->get_width(), screenshot->get_height(), 24, SDL_SWSURFACE);
 		shadow.fill(shadow.map_rgba(0, 0, 255, 0));
-		shadow.set_alpha(255, 0);
+		shadow.set_alpha(255);
 
 		frame.create_rgb(screenshot->get_width(), screenshot->get_height(), 24, SDL_SWSURFACE);
 		frame.fill(frame.map_rgba(255, 255, 255, 255));
-		frame.display_format_alpha();
 
 		LOG_DEBUG(("video file info: %dx%d, %.02g seconds", mpeg_info.width, mpeg_info.height, mpeg_info.total_time));
 
@@ -51,11 +50,12 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		SMPEG_CHECK("SMPEG_enableaudio");
 		SMPEG_enablevideo(mpeg, 1);
 		SMPEG_CHECK("SMPEG_enablevideo");
-		
-		SMPEG_setdisplay(mpeg, shadow.get_sdl_surface(), lock, NULL); //update);
+
+#warning port me: smpeg new api
+		//SMPEG_setdisplay(mpeg, shadow.get_sdl_surface(), lock, NULL); //update);
 		SMPEG_CHECK("SMPEG_setdisplay");
 		
-		SMPEG_scaleXY(mpeg, screenshot->get_width(), screenshot->get_height());
+		//SMPEG_scaleXY(mpeg, screenshot->get_width(), screenshot->get_height());
 		SMPEG_CHECK("SMPEG_scaleXY");
 
 		checkStatus();

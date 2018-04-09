@@ -62,14 +62,14 @@ KeyPlayer::KeyPlayer(const std::string &variant) {
 	Config->get(base + ".disembark", leave, keys[i][6]);
 	Config->get(base + ".hint-control", hint_control, keys[i][7]);
 
-	_up = (SDLKey)up;
-	_down = (SDLKey)down;
-	_left = (SDLKey)left;
-	_right = (SDLKey)right;
-	_fire = (SDLKey)fire;
-	_alt_fire = (SDLKey)alt_fire;
-	this->leave = (SDLKey)leave;
-	_hint_control = (SDLKey)hint_control;
+	_up = up;
+	_down = down;
+	_left = left;
+	_right = right;
+	_fire = fire;
+	_alt_fire = alt_fire;
+	this->leave = leave;
+	_hint_control = hint_control;
 }
 
 void KeyPlayer::_updateState(PlayerSlot &slot, PlayerState &state, const float dt) {

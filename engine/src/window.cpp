@@ -144,85 +144,21 @@ void IWindow::initSDL() {
 #endif
 	{
 		SDL_version compiled;
+		SDL_version linked;
 		SDL_VERSION(&compiled);
-		const SDL_version *linked = SDL_Linked_Version();
-		assert(linked != NULL); //paranoid, 1.2 SDL got return &static_version; there.
+		SDL_GetVersion(&linked);
 		LOG_DEBUG(("compiled version: %u.%u.%u, linked: %u.%u.%u", 
 			compiled.major, compiled.minor, compiled.patch, 
-			linked->major, linked->minor, linked->patch
+			linked.major, linked.minor, linked.patch
 		));
 		
-		if (compiled.major != linked->major || 
-			compiled.minor != linked->minor || 
-			compiled.patch != linked->patch) {
+		if (compiled.major != linked.major ||
+			compiled.minor != linked.minor ||
+			compiled.patch != linked.patch) {
 			LOG_WARN(("Engine was compiled with different version of SDL library. Do not report any bugs then!"));
 		}
 	}
-	
-	LOG_DEBUG(("enabling unicode..."));
-	SDL_EnableUNICODE(1);
-	
-	LOG_DEBUG(("turning on keyboard repeat..."));
-	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
-		LOG_ERROR(("SDL_EnableKeyRepeat failed: %s", SDL_GetError()));
-
-	int default_flags = sdlx::Surface::Hardware | sdlx::Surface::Alpha;
-
-#ifndef _WINDOWS
-	default_flags |= (_opengl? SDL_OPENGL: 0);
-
-	if (_opengl) {
-		LOG_DEBUG(("loading GL library"));
-		int r = SDL_GL_LoadLibrary(NULL);
-		if (r == -1) {
-			LOG_WARN(("SDL_GL_LoadLibrary failed: %s", SDL_GetError()));
-			_opengl = false;
-		}
-	}
-
-#endif
-	
-#ifdef _WINDOWS
-	if (_dx) {
-#else
-	if (_opengl) {
-#endif
-
-#ifdef USE_GLSDL
-		default_flags &= ~SDL_OPENGL;
-		default_flags |= SDL_GLSDL;
-#endif
-	}
-
-	sdlx::Surface::set_default_flags(default_flags);
-
-	//LOG_DEBUG(("initializing SDL_ttf..."));
-	//sdlx::TTF::init();
 }
-
-#if !defined _WINDOWS && !defined __APPLE__
-static std::string getGLString(const GLenum name) {
-	typedef const GLubyte * (APIENTRY * PGLGETSTRING) (GLenum);
-	union {
-		PGLGETSTRING pglGetString;
-		void *ptr;
-	} ptr_hack;
-
-	memset(&ptr_hack, 0, sizeof(ptr_hack));
-	
-	ptr_hack.ptr = SDL_GL_GetProcAddress("glGetString");
-	if (ptr_hack.pglGetString) {
-		const char * cstr = (const char *) ptr_hack.pglGetString(name);
-		if (cstr != NULL) {
-			return cstr;
-		} else {
-			LOG_WARN(("could not get value for GLenum %d.", (int)name));
-		}
-	} else LOG_WARN(("glGetString not found."));
-	return std::string();
-}
-
-#endif
 
 #include "mrt/chunk.h"
 
@@ -304,8 +240,10 @@ void IWindow::init(const int argc, char *argv[]) {
 #endif
 #endif
 
+#warning window caption here
+#if 0
 LOG_DEBUG(("setting caption..."));		
-SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
+//SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 
 #if !defined _WINDOWS && !defined __APPLE__
 	TRY {
@@ -322,6 +260,7 @@ SDL_WM_SetCaption(("Battle tanks - " + getVersion()).c_str(), "btanks");
 		LOG_WARN(("could not find accelerated GL, falling back to software mode"));
 		_opengl = false;
 	}
+#endif
 #endif
 
 	createMainWindow();

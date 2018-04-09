@@ -151,7 +151,7 @@ void RedefineKeys::render(sdlx::Surface &surface, const int x, const int y) cons
 		_font->render(surface, x + 66, yp, _actions[i].first);
 		
 		for(size_t j = 0; j < 3; ++j) {
-			const char *cname = _keys[j][i] ? SDL_GetKeyName((SDLKey)_keys[j][i]): NULL;
+			const char *cname = _keys[j][i] ? SDL_GetKeyName((SDL_Keycode)_keys[j][i]): NULL;
 			std::string name = (cname)?cname:"???";
 			_small_font->render(surface, x + dx + 155 + 110 * j, yp + (_font->get_height() - _small_font->get_height()) / 2, name);
 		}

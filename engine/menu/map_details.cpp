@@ -39,7 +39,6 @@ MapDetails::MapDetails(const int w, const int h) : _w(w), _h(h), _map_desc(0), _
 	mrt::Chunk data;
 	Finder->load(data, "maps/null.png");
 	_null_screenshot.load_image(data);
-	_null_screenshot.display_format_alpha();
 	_small_font = ResourceManager->loadFont("small", true);
 
 /*
@@ -69,7 +68,6 @@ bool MapDetails::onMouse(const int button, const bool pressed, const int x, cons
 			mrt::Chunk data;
 			Finder->load(data, fname);
 			_tactics.load_image(data);
-			_tactics.display_format_alpha();
 			has_tactics = true;
 		}
 	} CATCH("loading tactic map", {});
@@ -90,7 +88,6 @@ void MapDetails::set(const MapDesc & map_desc) {
 			mrt::Chunk data;
 			Finder->load(data, fname);
 			_screenshot.load_image(data);
-			_screenshot.display_format_alpha();
 		}
 	} CATCH("loading screenshot", {});
 

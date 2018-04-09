@@ -63,7 +63,6 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 		xn = yn = 1;
 		if (hl_h > 0) {
 			_highlight.create_rgb(w, hl_h, 32);
-			_highlight.display_format_alpha();
 			_highlight.fill(_highlight.map_rgba(255, 255, 255, 77));
 		}
 		return;
@@ -96,23 +95,14 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 	
 	//16x blending optimization.
 	_filler.create_rgb(cw * TILE_SIZE, cw * TILE_SIZE, 32);
-	_filler.display_format_alpha();
-
 	_filler_l.create_rgb(cw, cw * TILE_SIZE, 32);
-	_filler_l.display_format_alpha();
-
 	_filler_r.create_rgb(cw, cw * TILE_SIZE, 32);
-	_filler_r.display_format_alpha();
-
 	_filler_u.create_rgb(cw * TILE_SIZE, cw, 32);
-	_filler_u.display_format_alpha();
-
 	_filler_d.create_rgb(cw * TILE_SIZE, cw, 32);
-	_filler_d.display_format_alpha();
 
 	sdlx::Surface * foo = const_cast<sdlx::Surface *>(_surface);
 	assert(foo != NULL);
-	foo->set_alpha(0,0);
+	foo->set_alpha(0);
 
 	sdlx::Rect u (x1,	0,	x2 - x1,	 					y1);
 	sdlx::Rect cl(0,	y1, x1, 							y2 - y1);
@@ -142,7 +132,6 @@ void Box::init(const std::string &tile, int _w, int _h, int hl_h) {
 
 	if (hl_h > 0) {
 		_highlight.create_rgb(w, hl_h, 32);
-		_highlight.display_format_alpha();
 		_highlight.fill(_highlight.map_rgba(255, 255, 255, 77));
 	}
 }
@@ -234,9 +223,12 @@ void Box::render(sdlx::Surface &surface, const int x0, const int y0) const {
 
 void Box::copyTo(sdlx::Surface &surface, const int x, const int y) {
 	//terrible terrible hack. do not try it at home.
+#warning port me
+#if 0
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0,0);
 	render(surface, x, y);
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
+#endif
 }
 
 

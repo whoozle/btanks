@@ -856,7 +856,7 @@ bool Editor::onMouseMotion(const int state, const int x, const int y, const int 
 		}
 	}
 		
-	static const Uint8 *keys = SDL_GetKeyState(0);
+	static const Uint8 *keys = SDL_GetKeyboardState(0);
 
 	if (lmb && _brush != NULL && !_brush->size.is0() && keys[SDLK_SPACE] == 0 && !undo_queue.empty()) { //no space
 		v2<int> tile_pos ((map_pos.x + x)/ _tile_size.x, (map_pos.y + y) / _tile_size.y);

@@ -23,15 +23,6 @@
 
 using namespace sdlx;
 
-int Surface::default_flags  = Default;
-
-void Surface::set_default_flags(const Uint32 flags) {
-	if (flags == Default)
-		throw_ex(("set_default_flags doesnt accept 'Default' argument"));
-	default_flags = flags;
-}
-
-
 Surface::Surface():surface(NULL) {}
 Surface::Surface(SDL_Surface *x) : surface(x) {}
 
@@ -42,8 +33,6 @@ void Surface::assign(SDL_Surface *x) {
 
 void Surface::create_rgb(int width, int height, int depth, Uint32 flags) {
 	free();
-	if (flags == Default) flags = default_flags;
-	if (flags == Default) throw_ex(("setup default flags before using it."));
 
 	Uint32 rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -87,9 +76,6 @@ void Surface::create_rgb_from(void *pixels, int width, int height, int depth,  i
 }
 
 void Surface::convert(Surface &dest, PixelFormat *fmt, Uint32 flags)  const {
-	if (flags == Default) flags = default_flags;
-	if (flags == Default) throw_ex(("setup default flags before using it."));
-
 	SDL_Surface *x = SDL_ConvertSurface(surface, fmt, flags);
 	if (x == NULL) 
 		throw_sdl(("SDL_ConvertSurface"));
@@ -97,25 +83,11 @@ void Surface::convert(Surface &dest, PixelFormat *fmt, Uint32 flags)  const {
 }
 
 void Surface::convert(Uint32 flags) {
-	if (flags == Default) flags = default_flags;
-	if (flags == Default) throw_ex(("setup default flags before using it."));
-
 	SDL_Surface *x = SDL_ConvertSurface(surface, surface->format, flags);
 	if (x == NULL) 
 		throw_sdl(("SDL_ConvertSurface"));
 	assign(x);
 }
-
-
-
-void Surface::set_video_mode(int w, int h, int bpp, int flags) {
-	if (flags == Default) flags = default_flags;
-	if (flags == Default) throw_ex(("setup default flags before using it."));
-    free();
-    if ((surface = SDL_SetVideoMode(w, h, bpp, flags)) == NULL ) 
-		throw_sdl(("SDL_SetVideoMode(%d, %d, %d, %x)", w, h, bpp, flags));
-}
-
 
 void Surface::put_pixel(int x, int y, Uint32 pixel) {
 	if (surface->pixels == NULL)
@@ -242,69 +214,17 @@ void Surface::blit(const Surface &from, const Rect &fromRect) {
     if (SDL_BlitSurface(from.surface, const_cast<Rect*>(&fromRect), surface, NULL) == -1) throw_sdl(("SDL_BlitSurface"));
 }
 
-void Surface::update(const Rect &rect) {
-    SDL_UpdateRect(surface, rect.x, rect.y, rect.w, rect.h);
-}
-
-void Surface::update() {
-    SDL_UpdateRect(surface, 0, 0, 0, 0);
-}
-
-void Surface::update(const int x, const int y, const int w, const int h) {
-    SDL_UpdateRect(surface, x, y, w, h);
-}
-
-void Surface::flip() {
-	//SDL_Flip(surface);
-	if ((surface->flags & SDL_OPENGL) == SDL_OPENGL) {
-		SDL_GL_SwapBuffers();
-	} else {
-		if (SDL_Flip(surface) == -1)
-			throw_sdl(("SDL_Flip"));
-	}
-}
-
-void Surface::toggle_fullscreen() {
-	if (SDL_WM_ToggleFullScreen(surface) != 1) 
-		throw_sdl(("SDL_WM_ToggleFullScreen"));
+void Surface::set_alpha(Uint8 alpha) {
+    if (SDL_SetSurfaceAlphaMod(surface, alpha) == -1) throw_sdl(("SDL_SetAlpha"));
 }
 
 void Surface::fill(Uint32 color) {
-    if ( SDL_FillRect(surface, NULL, color) == -1) throw_sdl(("SDL_FillRect"));
+	if ( SDL_FillRect(surface, NULL, color) == -1) throw_sdl(("SDL_FillRect"));
 }
 
 void Surface::fill_rect(const Rect &r, Uint32 color) {
-    if ( SDL_FillRect(surface, (SDL_Rect *)&r , color) == -1) throw_sdl(("SDL_FillRect"));
+	if ( SDL_FillRect(surface, (SDL_Rect *)&r , color) == -1) throw_sdl(("SDL_FillRect"));
 }
-
-
-void Surface::set_alpha(Uint8 alpha, Uint32 flags) {
-	if (flags == Default) flags = default_flags;
-	if (flags == Default) throw_ex(("setup default flags before using it."));
-
-    if (SDL_SetAlpha(surface, flags, alpha) == -1) throw_sdl(("SDL_SetAlpha"));
-}
-
-void Surface::display_format_alpha() {
-	SDL_Surface *r = SDL_DisplayFormatAlpha(surface);
-	if (r == surface) 
-		return; //hack :)
-
-	if (r == NULL)
-		throw_sdl(("SDL_DisplayFormatAlpha"));
-	assign(r);
-}
-
-void Surface::display_format() {
-	SDL_Surface *r = SDL_DisplayFormat(surface);
-	if (r == surface)
-		return;
-	
-	if (r == NULL)
-		throw_sdl(("SDL_DisplayFormat"));
-	assign(r);
-}
-
 
 void Surface::free() {
     if (surface == NULL) return;

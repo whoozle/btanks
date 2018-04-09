@@ -33,10 +33,9 @@ namespace sdlx {
 
 	class SDLXAPI Surface {
 	public:
-		static void set_default_flags(const Uint32 flags);
 	
 		enum {
-			Default = 0x7fffffff,
+			Default = 0,
 			SDL_SRCCOLORKEY = Default, //port me
 			SDL_SRCALPHA = Default, //port me
 		};
@@ -67,8 +66,6 @@ namespace sdlx {
 		void convert(Surface &dest, PixelFormat *fmt, Uint32 flags = Default) const;
 		void convert(Uint32 flags);
 
-		void set_video_mode(int w, int h, int bpp, int flags = Default);
-
 		void load_bmp(const std::string &fname);
 		void save_bmp(const std::string &fname) const;
 #ifndef NO_SDL_IMAGE
@@ -83,12 +80,6 @@ namespace sdlx {
 		void blit(const Surface &s, const int x, const int y);
 		void blit(const Surface &s, const Rect &from, const int x, const int y);
 		void blit(const Surface &s, const Rect &from); //to pos 0:0
-		
-		void update();
-		void update(const Rect &rect);
-		void update(const int x, const int y, const int w, const int h);
-		void flip();
-		void toggle_fullscreen();
 
 		inline const Uint32 map_rgb(const Uint8 r, const Uint8 g, const Uint8 b) const {
 		    return SDL_MapRGB(surface->format, r, g, b);
@@ -110,9 +101,7 @@ namespace sdlx {
 		void fill_rect(const Rect &r, Uint32 color);
 
 		void set_color_key(Uint32 key, Uint32 flag = SDL_SRCCOLORKEY);
-		void set_alpha(Uint8 alpha, Uint32 flags = SDL_SRCALPHA);
-		void display_format_alpha();
-		void display_format();
+		void set_alpha(Uint8 alpha);
 
 		PixelFormat* get_pixel_format() const { return surface->format; }
 
@@ -139,7 +128,6 @@ namespace sdlx {
 		Surface(const Surface &x);
 		const Surface& operator=(const Surface &x);
 		SDL_Surface *surface;
-		static int default_flags;
 	};
 }
 

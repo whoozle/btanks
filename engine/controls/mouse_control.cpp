@@ -51,11 +51,14 @@ bool MouseControl::onMouse(const int button, const bool pressed, const int x, co
 		bleave = pressed;
 		return true;
 	}
+#warning port me (mouse wheels)
+#if 0
 	if (button == SDL_BUTTON_WHEELUP || button == SDL_BUTTON_WHEELDOWN) { //fixme: hardcoded
 		_shoot_alt = true;
 		alt_fire.reset();
 		return true;
 	}
+#endif
 	if (!pressed) {
 		if (button == SDL_BUTTON_LEFT) 
 			target_screen_set = false;
@@ -102,8 +105,9 @@ void MouseControl::_updateState(PlayerSlot &slot, PlayerState &state, const floa
 	object->get_center_position(pos);
 
 	if (target_screen_set) {
-		//hack hack hack 
-		sdlx::Cursor::get_position(target_screen.x, target_screen.y);
+		//hack hack hack
+#warning track latest event
+		//sdlx::Cursor::get_position(target_screen.x, target_screen.y);
 		//target_screen_set = false;
 		_target = slot.screen2world(target_screen);
 

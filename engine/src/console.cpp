@@ -107,8 +107,8 @@ bool IConsole::onKey(const SDL_Keysym sym, const bool pressed) {
 
 	default: {
 		std::string &line = _buffer.back().first;
-		if (sym.unicode >= SDLK_SPACE)
-			mrt::utf8_add_wchar(line, sym.unicode);
+		if (sym.sym >= SDLK_SPACE)
+			mrt::utf8_add_wchar(line, sym.sym);
 		}
 	} 
 	return true;
@@ -163,7 +163,6 @@ void IConsole::render(sdlx::Surface &window) {
 		if (i->second == NULL) {
 			i->second = new sdlx::Surface;
 			_font->render(*i->second, i->first);
-			i->second->display_format_alpha();
 		}
 		ch += i->second->get_height();
 	}

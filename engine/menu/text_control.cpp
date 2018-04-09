@@ -148,7 +148,7 @@ bool TextControl::onKey(const SDL_Keysym sym) {
 		break;
 		
 	default: {
-		int c = sym.key.keysym.unicode;
+		int c = sym.sym;
 		//LOG_DEBUG(("%d", c));
 		if (c >= SDLK_SPACE) {
 			if (_max_len && mrt::utf8_length(_text) >= _max_len)

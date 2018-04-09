@@ -6,6 +6,7 @@ set(sdlx_SOURCES
 	cursor.cpp sdl_ex.cpp surface.cpp system.cpp joystick.cpp
 	thread.cpp mutex.cpp semaphore.cpp color.cpp
 	c_map.cpp font.cpp timer.cpp module.cpp file_rw.cpp
+	window.cpp
 )
 
 add_library(sdlx SHARED ${sdlx_SOURCES})

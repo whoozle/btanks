@@ -101,7 +101,6 @@ Credits::Credits() : _w(0), _h(0) {
 			_w = w;
 	}
 	_surface.create_rgb(_w, _h, 24);
-	_surface.display_format_alpha();
 	
 	LOG_DEBUG(("credits %dx%d", _w, _h));
 	

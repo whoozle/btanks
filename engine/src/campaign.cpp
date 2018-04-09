@@ -34,7 +34,6 @@ void Campaign::start(const std::string &name, Attrs &attr) {
 
 			s = new sdlx::Surface;
 			s->load_image(data);
-			s->display_format();
 			LOG_DEBUG(("adding logo '%s' for %g seconds", file.c_str(), duration));
 			Game->add_logo(s, duration, color, true);
 		} CATCH("parsing logo entry", delete s)

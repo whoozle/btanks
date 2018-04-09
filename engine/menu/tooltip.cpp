@@ -161,13 +161,12 @@ void Tooltip::init(const std::string &_text, const bool use_background, int widt
 		const sdlx::Surface *bg = ResourceManager->load_surface("menu/background_box.png");
 		int mx = bg->get_width() / 3, my =  bg->get_height() / 3;
 		_background.init("menu/background_box.png", real_width + mx * 2, height + my * 2);
-		_surface.create_rgb(_background.w, _background.h, 32, SDL_SRCALPHA);
+		_surface.create_rgb(_background.w, _background.h, 32);
 		xp = (_background.w - real_width) / 2;
 		yp = (_background.h - height) / 2;
 	} else {
-		_surface.create_rgb(real_width, height, 32, SDL_SRCALPHA);
+		_surface.create_rgb(real_width, height, 32);
 	}
-	_surface.display_format_alpha();
 	
 	for(size_t i = 0; i < lines.size(); ++i) {
 		font->render(_surface, xp, yp + i * line_h, lines[i]);

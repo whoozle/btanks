@@ -1273,7 +1273,6 @@ void IPlayerManager::render(sdlx::Surface &window, const int vx, const int vy) {
 					if (zone.isNull()) {
 						//zone.create_rgb(_zones[i].size.x, _zones[i].size.y, 32); 
 						zone.create_rgb(32, 32, 32); 
-						zone.display_format_alpha();
 						zone.fill(zone.map_rgba(255, 0, 0, 51));
 					}
 

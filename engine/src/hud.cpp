@@ -100,7 +100,6 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 	const Matrix<int>& matrix = Map->get_impassability_matrix(0);
 	
 	_radar_bg.create_rgb(zoom * matrix.get_width(), zoom * matrix.get_height(), 32);
-	_radar_bg.display_format_alpha();
 	_radar_bg.lock();
 	LOG_DEBUG(("rendering radar..."));
 
@@ -140,7 +139,8 @@ void Hud::generateRadarBG(const sdlx::Rect &viewport) {
 			}
 	}
 	_radar_bg.unlock();
-	_radar_bg.set_alpha(0, 0);
+#warning port me (alpha)
+	//_radar_bg.set_alpha_mod(0, 0);
 }
 
 void Hud::renderStats(sdlx::Surface &surface) {
@@ -285,7 +285,6 @@ void Hud::renderRadar(const float dt, sdlx::Surface &window, const std::vector<v
 	
 	if (_radar.isNull()) {
 		_radar.create_rgb(radar_size.x, radar_size.y, 32);
-		_radar.display_format_alpha();
 	}
 
 	const int x = window.get_width() - _radar.get_width(), y = _background->get_height();

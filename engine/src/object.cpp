@@ -513,10 +513,9 @@ void Object::render(sdlx::Surface &surface, const int x_, const int y_) {
 	if (_fadeout_surface == NULL) {
 		_fadeout_surface = new sdlx::Surface;
 		_fadeout_surface->create_rgb(_tw, _th, 32, SDL_SWSURFACE);
-		_fadeout_surface->display_format_alpha();
 	}
 	
-	const_cast<sdlx::Surface *>(_surface)->set_alpha(0,0);
+	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
 	_fadeout_surface->blit(*_surface, src);
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
 

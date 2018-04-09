@@ -452,7 +452,7 @@ void IGame::init(const int argc, char *argv[]) {
 				sdlx::Joystick j;
 				j.open(i);
 				LOG_DEBUG(("%d: %s axes: %d, buttons: %d, hats: %d, balls: %d", 
-					i, sdlx::Joystick::getName(i).c_str(), 
+					i, j.getName().c_str(),
 					j.get_axis_num(), j.get_buttons_num(), j.get_hats_num(), j.get_balls_num()
 				));
 			

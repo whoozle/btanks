@@ -71,9 +71,10 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	if (src_surface == NULL) {
 		src_surface = new sdlx::Surface;
 		src_surface->create_rgb((int)size.x, (int)size.y, 32);
-		src_surface->display_format_alpha();
 	}
 
+#warning port me
+#if 0
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0,0);
 	Object::render(*src_surface, 0, 0); 
 	const_cast<sdlx::Surface *>(_surface)->set_alpha(0);
@@ -83,6 +84,7 @@ void RotatingObject::render(sdlx::Surface &surface, const int x, const int y) {
 	surface.blit(*cached_surface, x + (int)size.x - cached_surface->get_width(), y + (int)size.y - cached_surface->get_height());
 	last_pos = (int)_pos;
 	last_state = get_state();
+#endif
 }
 
 RotatingObject::~RotatingObject() {

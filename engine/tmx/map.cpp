@@ -74,7 +74,6 @@ Matrix<int> &IMap::getMatrix(int z, const bool only_pierceable) {
 		return i->second;
 
 	Matrix<int> map;
-	GET_CONFIG_VALUE("map.default-impassability", int, def_im, 0);
 	map.set_size(_h * _split, _w * _split, 0);
 	map.useDefault(-1);
 	std::pair<MatrixMap::iterator, bool> r = _imp_map.insert(MatrixMap::value_type(MatrixMap::key_type(box, only_pierceable), map));
@@ -763,7 +762,6 @@ void IMap::end(const std::string &name) {
 			_image->load_image(_data);
 			_image_is_tileset = false;
 		}
-		_image->display_format_alpha();
 		
 		LOG_DEBUG(("image loaded. (%dx%d)", _image->get_width(), _image->get_height()));
 	} else if (name == "layer") {
@@ -1290,7 +1288,6 @@ void IMap::deserialize(const mrt::Serializator &s) {
 			
 			image = new sdlx::Surface;
 			image->load_image(data);
-			image->display_format_alpha();
 			
 			n = addTiles(image, gid);
 			
@@ -1368,7 +1365,8 @@ void IMap::deserialize(const mrt::Serializator &s) {
 const int IMap::addTiles(const sdlx::Surface *image, const int first_gid) {
 	int id = 0;
 TRY {
-	const_cast<sdlx::Surface *>(image)->set_alpha(0, 0);
+#warning fixme (alpha)
+	//const_cast<sdlx::Surface *>(image)->set_alpha(0, 0);
 	int w = image->get_width(), h = image->get_height();
 
 	for(int y = 0; y < h; y += _th) {
@@ -1429,7 +1427,8 @@ TRY {
 			s = NULL;
 		}
 	}
-	const_cast<sdlx::Surface *>(image)->set_alpha(0, SDL_SRCALPHA);	//fixme: dangerous
+	#warning fixme (alpha)
+	//const_cast<sdlx::Surface *>(image)->set_alpha(0, SDL_SRCALPHA);	//fixme: dangerous
 } CATCH("addTiles", {const_cast<sdlx::Surface *>(image)->set_alpha(0, SDL_SRCALPHA); throw; })
 	return id;
 }

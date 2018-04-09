@@ -62,8 +62,8 @@ bool NumberControl::onKey(const SDL_Keysym sym) {
 		case SDLK_BACKSPACE: value /= 10;
 			return true;
 		default: 
-			if (sym.unicode >= '0' && sym.unicode <= '9') {
-				value = sym.unicode - '0' + 10 * value;
+			if (sym.sym >= '0' && sym.sym <= '9') {
+				value = sym.sym - '0' + 10 * value;
 				if (value > max)
 					value = max;
 				return true;

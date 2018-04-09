@@ -41,7 +41,6 @@ current_team(0), join_logo(ResourceManager->load_surface("menu/team_chooser.png"
 	
 	for(int i = 0; i < teams; ++i) {
 		team_logo[i].create_rgb(SQUARE_SIZE, SQUARE_SIZE, 32);
-		team_logo[i].display_format_alpha();
 		team_logo[i].fill(team_logo[i].map_rgba(colors[i][0], colors[i][1], colors[i][2], colors[i][3]));
 	}
 	memset(team_stats, 0, sizeof(team_stats));

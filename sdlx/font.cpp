@@ -68,10 +68,9 @@ void Font::add_page(const unsigned base, const mrt::Chunk &data, const bool alph
 
 	page.surface = new sdlx::Surface;
 	page.surface->load_image(data);
-	page.surface->display_format_alpha();
 	
 	if (!alpha)
-		page.surface->set_alpha(0, 0);
+		page.surface->set_alpha(0);
 	
 	//scanning pixel width;
 	int h = page.surface->get_height();
@@ -339,7 +338,6 @@ const int Font::render(sdlx::Surface &window, const std::string &str) const {
 	int w = render(NULL, 0, 0, str);
 	
 	window.create_rgb(w, h, 32, 0);
-	window.display_format_alpha();
 	return render(&window, 0, 0, str);
 }
 

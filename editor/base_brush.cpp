@@ -60,7 +60,6 @@ Eraser::Eraser(const v2<int> tile_size) : _tile_size(tile_size) {
 	_tiles.push_back(0); //Brush model compatibility
 	
 	_eraser.create_rgb(tile_size.x, tile_size.y, 32);
-	_eraser.display_format_alpha();
 	_eraser.fill(_eraser.map_rgba(255, 0, 0, 64));
 }
 

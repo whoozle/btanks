@@ -36,7 +36,7 @@
 
 JoyPlayer::JoyPlayer(const int idx): _idx(idx), _joy(idx) {
 	event_slot.assign(this, &JoyPlayer::on_event, Window->event_signal);
-	_name = sdlx::Joystick::getName(idx);
+	_name = _joy.getName(idx);
 	_bindings = SimpleJoyBindings(_name, _joy);
 }
 

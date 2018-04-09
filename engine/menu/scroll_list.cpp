@@ -340,6 +340,8 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 	if (button == SDL_BUTTON_MIDDLE) //skip accidental wheel clicks
 		return false;
 
+#warning port me
+#if 0
 	if (button == SDL_BUTTON_WHEELUP) {
 		if (!pressed)
 			up();
@@ -351,6 +353,7 @@ bool ScrollList::onMouse(const int button, const bool pressed, const int x, cons
 			down();
 		return true;
 	}
+#endif
 
 	int mx, my;
 	_background.getMargins(mx, my);
