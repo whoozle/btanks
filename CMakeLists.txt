@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 2.8.12)
 project(btanks)
 set(CMAKE_USE_RELATIVE_PATHS TRUE)
 set(MACOSX_RPATH TRUE)
+set(WITH_SDL2 OFF CACHE BOOL "Force SDL1 for clunk" FORCE)
 
 include(CheckLibraryExists)
 
 add_definitions(-DUSE_GLSDL -DV3_DISABLE_Z -D_REENTRANT)
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/clunk)
 
 if (WIN32)
 	add_definitions(-D_WINDOWS -DWIN32)
