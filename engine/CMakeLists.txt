@@ -64,7 +64,7 @@ set_source_files_properties(src/version.cpp PROPERTIES COMPILE_DEFINITIONS "VERS
 #lua support
 find_package(Lua51)
 if (Lua51_FOUND)
-	include_directories(${Lua51_INCLUDE_DIRS})
+	include_directories(${LUA_INCLUDE_DIR})
 	add_definitions(-DENABLE_LUA)
 	list(APPEND bt_SOURCES luaxx/state.cpp luaxx/lua_hooks.cpp)
 endif (Lua51_FOUND)
