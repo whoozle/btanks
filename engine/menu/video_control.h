@@ -3,9 +3,11 @@
 
 #include <string>
 #include "control.h"
-#include <smpeg/smpeg.h>
 #include "sdlx/surface.h"
 #include <SDL_thread.h>
+#ifdef ENABLE_SMPEG
+#	include <smpeg/smpeg.h>
+#endif
 
 class VideoControl : public Control {
 public: 
@@ -20,8 +22,12 @@ private:
 	void checkStatus();
 	std::string base, name;
 	const sdlx::Surface *screenshot;
+#ifdef ENABLE_SMPEG
 	SMPEG * mpeg;
 	SMPEG_Info mpeg_info;
+#else
+	void * mpeg;
+#endif
 	sdlx::Surface shadow, frame;
 	SDL_mutex * lock;
 	bool active, started;

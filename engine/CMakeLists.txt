@@ -70,7 +70,11 @@ if (Lua51_FOUND)
 endif (Lua51_FOUND)
 
 add_library(btanks_engine SHARED ${bt_SOURCES})
-target_link_libraries(btanks_engine vorbisfile SDL smpeg mrt sdlx vorbis clunk ${LUA_LIBRARY})
+target_link_libraries(btanks_engine vorbisfile SDL mrt sdlx vorbis clunk ${LUA_LIBRARY})
+if (SMPEG_FOUND)
+	add_definitions(-DENABLE_SMPEG)
+	target_link_libraries(btanks_engine smpeg)
+endif()
 
 if (WIN32)
 	target_link_libraries(btanks_engine Ws2_32 user32)

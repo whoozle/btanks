@@ -10,7 +10,7 @@
 #define SMPEG_CHECK(f) do { const char * err; if ((err = SMPEG_error(mpeg)) != NULL) throw_ex(("%s: %s", f, err)); } while(0)
 
 VideoControl::VideoControl(const std::string &base, const std::string &name) : 
-base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started(false) //, updated(false)  
+base(base), name(name), screenshot(), mpeg(), lock(SDL_CreateMutex()), active(false), started(false) //, updated(false)  
 {
 	if (lock == NULL)
 		throw_sdl(("SDL_CreateMutex"));
@@ -21,10 +21,11 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 	} else 
 		screenshot = ResourceManager->load_surface("../maps/null_video.png");
 
+#ifdef ENABLE_SMPEG
 	GET_CONFIG_VALUE("engine.disable-video", bool, edv, false);
 	if (edv)
 		return;
-	
+
 	fname = "maps/" + name + ".mpg";
 	if (Finder->exists(base, fname)) {
 		{
@@ -62,6 +63,7 @@ base(base), name(name), mpeg(0), lock(SDL_CreateMutex()), active(false), started
 		//SMPEG_play(mpeg);
 		//SMPEG_CHECK("SMPEG_play");
 	}
+#endif
 }
 
 void VideoControl::activate(const bool a) {
@@ -71,6 +73,7 @@ void VideoControl::activate(const bool a) {
 }
 
 void VideoControl::checkStatus() {
+#ifdef ENABLE_SMPEG
 	if (mpeg == NULL)
 		return;
 	
@@ -101,6 +104,7 @@ void VideoControl::checkStatus() {
 		mpeg = NULL;
 		break;
 	}
+#endif
 }
 
 void VideoControl::tick(const float dt) {
@@ -156,8 +160,10 @@ void VideoControl::get_size(int &w, int &h) const {
 
 VideoControl::~VideoControl() {
 	if (mpeg != NULL) {
+#ifdef ENABLE_SMPEG
 		SMPEG_stop(mpeg);
 		SMPEG_delete(mpeg);
+#endif
 	}
 	SDL_DestroyMutex(lock);
 }

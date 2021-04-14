@@ -3,7 +3,6 @@
 
 #include <string>
 #include "control.h"
-#include <smpeg/smpeg.h>
 #include "sdlx/surface.h"
 
 class DisabledVideoControl : public Control {
